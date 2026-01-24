@@ -266,7 +266,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex min-h-screen flex-col">
       <AppHeader
         accounts={accounts}
         currentAccount={currentAccount}
@@ -278,11 +278,11 @@ export default function Home() {
         onImportExport={() => setImportExportOpen(true)}
       />
 
-      <main className="container mx-auto min-h-0 max-w-screen-2xl flex-1 overflow-hidden p-4">
+      <main className="container mx-auto max-w-screen-2xl flex-1 p-4">
         {!currentAccount ? (
           <WelcomeCard />
         ) : (
-          <div className="grid h-full min-h-0 grid-cols-1 gap-6 overflow-hidden lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             {/* Left: Equipment Library */}
             <EquipmentLibrary
               db={db}
@@ -302,7 +302,7 @@ export default function Home() {
             />
 
             {/* Right: Simulation, Graduation, Stats panels */}
-            <section className="flex flex-col gap-3 self-start overflow-hidden">
+            <section className="flex flex-col gap-3">
               <SimulationPanel
                 expanded={rightPanels.simulation}
                 onToggle={() => toggleRightPanel('simulation')}

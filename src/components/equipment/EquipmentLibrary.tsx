@@ -31,7 +31,7 @@ export const EquipmentLibrary = ({
   const filteredDb = db.filter((item) => (filter === 'all' ? true : item.slotId === filter));
 
   return (
-    <section className="h-full min-h-0 space-y-4 overflow-y-auto pr-2">
+    <section className="space-y-4">
       <Card className="p-4 border-slate-500/20 bg-linear-to-br from-slate-500/5 via-transparent to-slate-600/5">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold flex items-center gap-2">
