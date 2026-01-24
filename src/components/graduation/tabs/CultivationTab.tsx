@@ -273,7 +273,7 @@ export const CultivationTab = ({
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-muted-foreground">提升空间</div>
-                  <div className="text-2xl font-bold text-green-400">
+                  <div className="text-2xl font-bold text-red-400">
                     {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export const CultivationTab = ({
                   {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%
                 </span>
                 ，提升空间为{' '}
-                <span className="font-semibold text-green-400">
+                <span className="font-semibold text-red-400">
                   {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                 </span>
                 ，是所有部位中提升空间最大的一个。基于此，建议优先培养或更换此部位的装备。
@@ -380,7 +380,7 @@ export const CultivationTab = ({
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-muted-foreground">提升空间</div>
-                  <div className="text-2xl font-bold text-green-400">
+                  <div className="text-2xl font-bold text-red-400">
                     {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
