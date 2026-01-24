@@ -5,6 +5,7 @@ export interface StatDisplayItem {
   value: string;
   highlight?: string; // 抗性后的值，用橘黄色显示
   suffix?: string; // 溢出信息等后缀
+  isLoaned?: boolean; // 是否为贷款值
 }
 
 const shouldPercent = (key: string) =>
@@ -14,10 +15,17 @@ const shouldPercent = (key: string) =>
   key.includes('增效') ||
   key.includes('增伤');
 
+// 贷款会影响的属性列表
+const LOANED_STATS = [
+  '外功穿透',
+  '指定武学技能增伤',
+];
+
 export const buildStatsDisplay = (
   rawTotals: Record<string, number>,
   currentClass: string,
-  setType: string
+  setType: string,
+  loanDingyin = false
 ): StatDisplayItem[] => {
   const totals = { ...rawTotals };
   const items: StatDisplayItem[] = [];
@@ -91,11 +99,23 @@ export const buildStatsDisplay = (
     '群体类奇术增伤',
   ];
 
+  // 检查当前职业对应的技能增伤属性名
+  const mappedSkillName = skillNameMap[currentClass];
+
+  const isLoanedStat = (key: string) => {
+    if (!loanDingyin) return false;
+    if (LOANED_STATS.includes(key)) return true;
+    // 检查是否为职业对应的技能增伤
+    if (mappedSkillName && key === mappedSkillName) return true;
+    return false;
+  };
+
   const renderItem = (key: string, val: number) => {
     const label = key.replace('实际', '');
     let displayValue = '';
     let highlight: string | undefined;
     let suffix: string | undefined;
+    const isLoaned = isLoanedStat(key);
 
     // 精准率、会心率、会意率显示为 "白值%（抗性后的值%）"
     if (key === '实际精准率') {
@@ -129,6 +149,7 @@ export const buildStatsDisplay = (
       value: displayValue,
       highlight,
       suffix,
+      isLoaned,
     });
   };
 

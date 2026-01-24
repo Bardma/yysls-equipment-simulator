@@ -13,6 +13,7 @@ import { StatsPanel } from '@/components/stats';
 import { Calculator } from '@/lib/calculator';
 import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
+import { addFullDingyinToEquips } from '@/lib/graduation/dingyin';
 import { buildStatsDisplay } from '@/lib/statsDisplay';
 import {
   clearAccountData,
@@ -83,6 +84,7 @@ export default function Home() {
     setType,
     xinfaLoadout,
     earlySeasonBonus,
+    loanDingyin,
     equippedItems,
     hydrateForAccount,
     setCurrentClass,
@@ -90,6 +92,7 @@ export default function Home() {
     setSetType,
     setXinfaLoadout,
     setEarlySeasonBonus,
+    setLoanDingyin,
     equipSlot,
     updateEquipsById,
   } = useSimulationStore();
@@ -113,10 +116,15 @@ export default function Home() {
   }, [mounted, currentAccount]);
 
   // Calculations
+  const effectiveEquippedItems = useMemo(() => {
+    if (!loanDingyin) return equippedItems;
+    return addFullDingyinToEquips(equippedItems);
+  }, [equippedItems, loanDingyin]);
+
   const totals = useMemo(() => {
     if (!currentAccount) return null;
     return Calculator.calculateTotal(
-      equippedItems,
+      effectiveEquippedItems,
       currentClass,
       bowType,
       xinfaLoadout,
@@ -125,7 +133,7 @@ export default function Home() {
       null,
       earlySeasonBonus
     );
-  }, [currentAccount, equippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus]);
+  }, [currentAccount, effectiveEquippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus]);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
@@ -141,13 +149,13 @@ export default function Home() {
     const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
     const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
     const dps = Math.round(accResult.totalDamage / useTime);
-    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps };
-  }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime]);
+    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
+  }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
-    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType);
-  }, [totals, currentClass, setType]);
+    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin);
+  }, [totals, currentClass, setType, loanDingyin]);
 
   // Handlers
   const handleCreateAccount = () => {
@@ -325,7 +333,9 @@ export default function Home() {
                 graduationInfo={graduationInfo}
                 hasRotation={rotation.length > 0}
                 earlySeasonBonus={earlySeasonBonus}
+                loanDingyin={loanDingyin}
                 onEarlySeasonChange={(value) => setEarlySeasonBonus(currentAccount, value)}
+                onLoanDingyinChange={(value) => setLoanDingyin(currentAccount, value)}
                 onAnalyze={() => setGradModalOpen(true)}
                 expanded={rightPanels.graduation}
                 onToggle={() => toggleRightPanel('graduation')}

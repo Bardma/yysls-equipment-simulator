@@ -13,7 +13,9 @@ interface GraduationRatePanelProps {
   } | null;
   hasRotation: boolean;
   earlySeasonBonus: boolean;
+  loanDingyin: boolean;
   onEarlySeasonChange: (value: boolean) => void;
+  onLoanDingyinChange: (value: boolean) => void;
   onAnalyze: () => void;
   expanded: boolean;
   onToggle: () => void;
@@ -23,7 +25,9 @@ export const GraduationRatePanel = ({
   graduationInfo,
   hasRotation,
   earlySeasonBonus,
+  loanDingyin,
   onEarlySeasonChange,
+  onLoanDingyinChange,
   onAnalyze,
   expanded,
   onToggle,
@@ -42,10 +46,26 @@ export const GraduationRatePanel = ({
             毕业率表格未配置，请等待更新
           </div>
         ) : (
-          <div className="relative rounded-xl bg-linear-to-br from-amber-500/10 via-yellow-500/5 to-orange-500/10 p-3 border border-yellow-500/20">
-            <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-yellow-400/20 to-transparent rounded-bl-full pointer-events-none" />
+          <div className={`relative rounded-xl p-3 border ${
+            loanDingyin
+              ? 'bg-linear-to-br from-purple-500/10 via-purple-500/5 to-amber-500/10 border-purple-500/30'
+              : 'bg-linear-to-br from-amber-500/10 via-yellow-500/5 to-orange-500/10 border-yellow-500/20'
+          }`}>
+            <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-full pointer-events-none ${
+              loanDingyin ? 'bg-linear-to-bl from-purple-400/20 to-transparent' : 'bg-linear-to-bl from-yellow-400/20 to-transparent'
+            }`} />
             <div className="relative space-y-2">
-              <div className="text-4xl font-bold bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400 bg-clip-text text-transparent drop-shadow-sm tracking-tight">
+              {loanDingyin && (
+                <div className="flex items-center gap-1.5 text-xs text-purple-300 mb-1">
+                  <span>💰</span>
+                  <span>贷款满定音</span>
+                </div>
+              )}
+              <div className={`text-4xl font-bold bg-clip-text text-transparent drop-shadow-sm tracking-tight ${
+                loanDingyin
+                  ? 'bg-linear-to-r from-purple-300 via-purple-200 to-amber-300'
+                  : 'bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400'
+              }`}>
                 {graduationInfo.accurate}
               </div>
               <div className="flex flex-col gap-1">
@@ -98,6 +118,16 @@ export const GraduationRatePanel = ({
               </div>
             </TooltipContent>
           </Tooltip>
+        </div>
+
+        <div className="flex items-center gap-2 px-1">
+          <Checkbox
+            checked={loanDingyin}
+            onCheckedChange={(value) => onLoanDingyinChange(Boolean(value))}
+          />
+          <span className="text-muted-foreground text-xs">
+            贷款本赛季满定音
+          </span>
         </div>
 
         <Button
