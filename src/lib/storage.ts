@@ -2,6 +2,7 @@ import type { EquipItem } from "./types";
 
 const ACCOUNTS_KEY = "game_account_list";
 const LAST_ACCOUNT_KEY = "last_selected_account";
+const UI_PANEL_KEY = "ui_right_panels";
 
 const safeParse = <T>(raw: string | null, fallback: T): T => {
   if (!raw) return fallback;
@@ -19,6 +20,7 @@ export const storageKeys = {
   lastAccount: LAST_ACCOUNT_KEY,
   equipKey: (account: string) => `game_equip_data_${account}`,
   simKey: (account: string) => `game_sim_data_${account}`,
+  uiPanelKey: (account: string) => `${UI_PANEL_KEY}_${account}`,
 };
 
 export const loadAccounts = (): string[] => {
@@ -84,6 +86,34 @@ export interface SimStorageState {
   loadouts: Record<string, SimLoadoutIds>;
 }
 
+export interface RightPanelState {
+  simulation: boolean;
+  graduation: boolean;
+  stats: boolean;
+}
+
+const defaultRightPanelState: RightPanelState = {
+  simulation: true,
+  graduation: true,
+  stats: true,
+};
+
+export const loadRightPanelState = (account: string | null): RightPanelState => {
+  if (!hasWindow() || !account) return defaultRightPanelState;
+  return safeParse<RightPanelState>(
+    localStorage.getItem(storageKeys.uiPanelKey(account)),
+    defaultRightPanelState
+  );
+};
+
+export const saveRightPanelState = (
+  account: string | null,
+  data: RightPanelState
+): void => {
+  if (!hasWindow() || !account) return;
+  localStorage.setItem(storageKeys.uiPanelKey(account), JSON.stringify(data));
+};
+
 export const loadSimState = (account: string | null): SimStorageState | null => {
   if (!hasWindow() || !account) return null;
   return safeParse<SimStorageState | null>(
@@ -104,4 +134,5 @@ export const clearAccountData = (account: string | null): void => {
   if (!hasWindow() || !account) return;
   localStorage.removeItem(storageKeys.equipKey(account));
   localStorage.removeItem(storageKeys.simKey(account));
+  localStorage.removeItem(storageKeys.uiPanelKey(account));
 };

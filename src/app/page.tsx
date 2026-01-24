@@ -12,7 +12,12 @@ import { ClassConfig } from "../lib/data/classConfig";
 import type { EquipItem, EquippedItems } from "../lib/types";
 import { Calculator } from "../lib/calculator";
 import { buildStatsDisplay } from "../lib/statsDisplay";
-import { clearAccountData, loadEquipData } from "../lib/storage";
+import {
+  clearAccountData,
+  loadEquipData,
+  loadRightPanelState,
+  saveRightPanelState,
+} from "../lib/storage";
 import { EquipmentModal } from "../components/modals/EquipmentModal";
 import { XinfaModal } from "../components/modals/XinfaModal";
 import { GraduationModal } from "../components/modals/GraduationModal";
@@ -63,6 +68,11 @@ export default function Home() {
   const [xinfaIndex, setXinfaIndex] = useState(0);
   const [gradModalOpen, setGradModalOpen] = useState(false);
   const [importExportOpen, setImportExportOpen] = useState(false);
+  const [rightPanels, setRightPanels] = useState({
+    simulation: true,
+    graduation: true,
+    stats: true,
+  });
 
   const { accounts, currentAccount, hydrated, hydrate, createAccount, deleteAccount, setCurrentAccount } =
     useAccountStore();
@@ -104,6 +114,11 @@ export default function Home() {
     hydrateDb(items);
     hydrateForAccount(currentAccount, items);
   }, [hydrated, currentAccount, hydrateDb, hydrateForAccount]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    setRightPanels(loadRightPanelState(currentAccount));
+  }, [mounted, currentAccount]);
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
@@ -266,6 +281,14 @@ export default function Home() {
     );
   }
 
+  const toggleRightPanel = (key: "simulation" | "graduation" | "stats") => {
+    setRightPanels((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      saveRightPanelState(currentAccount, next);
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur">
@@ -276,7 +299,7 @@ export default function Home() {
               value={currentAccount ?? ""}
               onValueChange={(value) => setCurrentAccount(value || null)}
             >
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-[200px] cursor-pointer">
                 <SelectValue placeholder="-- 请选择/添加角色 --" />
               </SelectTrigger>
               <SelectContent>
@@ -294,11 +317,11 @@ export default function Home() {
                 value={createName}
                 onChange={(event) => setCreateName(event.target.value)}
               />
-              <Button onClick={handleCreateAccount}>+ 新建角色</Button>
-              <Button variant="secondary" onClick={handleDeleteAccount} disabled={!currentAccount}>
+              <Button className="cursor-pointer" onClick={handleCreateAccount}>+ 新建角色</Button>
+              <Button variant="secondary" className="cursor-pointer" onClick={handleDeleteAccount} disabled={!currentAccount}>
                 删除
               </Button>
-              <Button variant="outline" onClick={() => setImportExportOpen(true)} disabled={!currentAccount}>
+              <Button variant="outline" className="cursor-pointer" onClick={() => setImportExportOpen(true)} disabled={!currentAccount}>
                 导出/导入数据
               </Button>
             </div>
@@ -306,7 +329,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 container max-w-screen-2xl mx-auto p-4">
+      <main className="flex-1 container max-w-screen-2xl mx-auto p-4 min-h-[calc(100vh-56px)] h-[calc(100vh-56px)]">
         {!currentAccount ? (
           <Card className="p-10 flex flex-col items-center justify-center min-h-[60vh] text-center">
             <h2 className="text-xl font-semibold mb-2">欢迎使用燕云十六声装备毕业率管理器</h2>
@@ -315,13 +338,14 @@ export default function Home() {
             </p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch h-full">
             <section className="space-y-4">
               <Card className="p-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">装备库</h3>
                   <Button
                     size="sm"
+                    className="cursor-pointer"
                     onClick={() => {
                       setEditingEquip(null);
                       setEquipModalOpen(true);
@@ -333,6 +357,7 @@ export default function Home() {
                 <div className="flex flex-wrap gap-2 mt-3">
                   <Button
                     size="sm"
+                    className="cursor-pointer"
                     variant={filter === "all" ? "default" : "secondary"}
                     onClick={() => setFilter("all")}
                   >
@@ -342,6 +367,7 @@ export default function Home() {
                     <Button
                       key={slot.id}
                       size="sm"
+                      className="cursor-pointer"
                       variant={filter === slot.id ? "default" : "secondary"}
                       onClick={() => setFilter(slot.id)}
                     >
@@ -436,175 +462,222 @@ export default function Home() {
               </div>
             </section>
 
-            <section className="space-y-4">
-              <Card className="p-4 space-y-4">
+            <section className="flex flex-col gap-2 h-full min-h-[calc(100vh-120px)] overflow-hidden">
+              <Card className="p-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">穿戴模拟</h3>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      setXinfaIndex(0);
-                      setXinfaModalOpen(true);
-                    }}
-                  >
-                    更换心法
-                  </Button>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <label className="text-xs text-muted-foreground">流派</label>
-                    <Select
-                      value={currentClass}
-                      onValueChange={(value) => setCurrentClass(currentAccount, value, db)}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      className="cursor-pointer"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        setXinfaIndex(0);
+                        setXinfaModalOpen(true);
+                      }}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ClassConfig.CLASSES.map((cls) => (
-                          <SelectItem key={cls} value={cls}>
-                            {cls}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs text-muted-foreground">弓诀</label>
-                    <Select value={bowType} onValueChange={(value) => setBowType(currentAccount, value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bowOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2 col-span-2">
-                    <label className="text-xs text-muted-foreground">套装</label>
-                    <Select value={setType} onValueChange={(value) => setSetType(currentAccount, value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.keys(CommonData.SET_DATA).map((setName) => (
-                          <SelectItem key={setName} value={setName}>
-                            {setName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="col-span-2 flex items-center gap-2">
-                    <Checkbox
-                      checked={earlySeasonBonus}
-                      onCheckedChange={(value) => setEarlySeasonBonus(currentAccount, Boolean(value))}
-                    />
-                    <span className="text-xs text-muted-foreground">提前获得下半赛季属性（毕业率将虚高）</span>
+                      更换心法
+                    </Button>
+                    <Button
+                      className="cursor-pointer"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleRightPanel("simulation")}
+                    >
+                      {rightPanels.simulation ? "折叠" : "展开"}
+                    </Button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {(Object.keys(SLOT_LABELS) as Array<keyof EquippedItems>).map((slotKey) => {
-                    const item = equippedItems[slotKey];
-                    return (
-                      <Card key={slotKey} className="p-2 flex items-center gap-2">
-                        <div className="h-10 w-10 rounded-md border border-border/60 flex items-center justify-center overflow-hidden">
-                          {item ? (
-                            <Image src={`/${item.icon}`} alt={item.name} width={40} height={40} />
-                          ) : (
-                            <span className="text-xs text-muted-foreground">{SLOT_LABELS[slotKey]}</span>
-                          )}
-                        </div>
-                        <div className="text-xs">
-                          <div className="font-medium">{SLOT_LABELS[slotKey]}</div>
-                          <div className="text-muted-foreground">{item ? item.name : "未穿戴"}</div>
-                        </div>
-                      </Card>
-                    );
-                  })}
-                </div>
-                <div className="space-y-2">
-                  <div className="text-xs text-muted-foreground">心法配置</div>
-                  <div className="grid grid-cols-4 gap-2">
-                    {Array.from({ length: 4 }).map((_, idx) => {
-                      const name = xinfaLoadout[idx] || "";
-                      const lockedList = ClassConfig.XINFA_LOCKED[currentClass] || [];
-                      const isLocked = name && lockedList.includes(name);
-                      return (
-                        <button
-                          key={`xinfa-${idx}`}
-                          className={`rounded-lg border p-2 text-xs ${
-                            isLocked
-                              ? "border-dashed border-muted-foreground/60 text-muted-foreground bg-muted/10"
-                              : "border-border/60"
-                          }`}
-                          onClick={() => {
-                            if (isLocked) return;
-                            setXinfaIndex(idx);
-                            setXinfaModalOpen(true);
-                          }}
+                {rightPanels.simulation ? (
+                  <div className="space-y-3 mt-3">
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-2">
+                        <label className="text-xs text-muted-foreground">流派</label>
+                        <Select
+                          value={currentClass}
+                          onValueChange={(value) => setCurrentClass(currentAccount, value, db)}
                         >
-                          <div className="flex flex-col items-center gap-1">
-                            <div className={`h-10 w-10 rounded-md border flex items-center justify-center overflow-hidden ${
-                              isLocked ? "border-muted-foreground/40" : "border-border/60"
-                            }`}>
-                              {name ? (
-                                <Image src={`/icon/${name}.jpg`} alt={name} width={40} height={40} />
+                          <SelectTrigger className="cursor-pointer">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ClassConfig.CLASSES.map((cls) => (
+                              <SelectItem key={cls} value={cls}>
+                                {cls}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs text-muted-foreground">弓诀</label>
+                        <Select value={bowType} onValueChange={(value) => setBowType(currentAccount, value)}>
+                          <SelectTrigger className="cursor-pointer">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {bowOptions.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs text-muted-foreground">套装</label>
+                        <Select value={setType} onValueChange={(value) => setSetType(currentAccount, value)}>
+                          <SelectTrigger className="cursor-pointer">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.keys(CommonData.SET_DATA).map((setName) => (
+                              <SelectItem key={setName} value={setName}>
+                                {setName}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2">
+                      {(["weapon1", "weapon2", "head", "chest", "ring", "pendant", "legs", "hands"] as Array<
+                        keyof EquippedItems
+                      >).map((slotKey) => {
+                        const item = equippedItems[slotKey];
+                        return (
+                          <Card key={slotKey} className="p-2 flex items-center gap-2">
+                            <div className="h-10 w-10 rounded-md border border-border/60 flex items-center justify-center overflow-hidden">
+                              {item ? (
+                                <Image src={`/${item.icon}`} alt={item.name} width={40} height={40} />
                               ) : (
-                                <span className="text-[10px] text-muted-foreground">空</span>
+                                <span className="text-xs text-muted-foreground">{SLOT_LABELS[slotKey]}</span>
                               )}
                             </div>
-                            <span>{name || "点击选择"}</span>
-                            {isLocked ? <span className="text-[10px]">不可变更</span> : null}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-4 space-y-3">
-                <h3 className="font-semibold">当前毕业率</h3>
-                {rotation.length === 0 || !graduationInfo ? (
-                  <div className="text-muted-foreground text-sm">
-                    毕业率表格未配置，请等待更新
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <div className="text-3xl font-semibold text-yellow-300">
-                      {graduationInfo.accurate}
+                            <div className="text-xs">
+                              <div className="font-medium">{SLOT_LABELS[slotKey]}</div>
+                              <div className="text-muted-foreground">{item ? item.name : "未穿戴"}</div>
+                            </div>
+                          </Card>
+                        );
+                      })}
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      excel表格显示：{graduationInfo.excel}
-                    </div>
-                    <div className="text-sm text-muted-foreground">轴期望秒伤：{graduationInfo.dps}</div>
-                  </div>
-                )}
-                <Button className="w-full" onClick={() => setGradModalOpen(true)}>
-                  毕业率分析
-                </Button>
-              </Card>
-
-              <Card className="p-4 space-y-3">
-                <h3 className="font-semibold">面板属性</h3>
-                {statDisplay.length === 0 ? (
-                  <div className="text-muted-foreground text-sm">暂无面板属性</div>
-                ) : (
-                  <div className="space-y-2 text-sm">
-                    {statDisplay.map((item) => (
-                      <div key={item.label} className="flex items-center justify-between">
-                        <span className="text-muted-foreground">{item.label}</span>
-                        <span>{item.value}</span>
+                    <div className="space-y-2">
+                      <div className="text-xs text-muted-foreground">心法配置</div>
+                      <div className="grid grid-cols-4 gap-2">
+                        {Array.from({ length: 4 }).map((_, idx) => {
+                          const name = xinfaLoadout[idx] || "";
+                          const lockedList = ClassConfig.XINFA_LOCKED[currentClass] || [];
+                          const isLocked = name && lockedList.includes(name);
+                          return (
+                            <button
+                              key={`xinfa-${idx}`}
+                              className={`rounded-lg border p-2 text-xs  ${
+                                isLocked
+                                  ? "border-dashed border-muted-foreground/60 text-muted-foreground bg-muted/10 cursor-not-allowed"
+                                  : "border-border/60 cursor-pointer"
+                              }`}
+                              onClick={() => {
+                                if (isLocked) return;
+                                setXinfaIndex(idx);
+                                setXinfaModalOpen(true);
+                              }}
+                            >
+                              <div className="flex flex-col items-center gap-1">
+                                <div className={`h-10 w-10 rounded-md border flex items-center justify-center overflow-hidden ${
+                                  isLocked ? "border-muted-foreground/40" : "border-border/60"
+                                }`}>
+                                  {name ? (
+                                    <Image src={`/icon/${name}.jpg`} alt={name} width={40} height={40} />
+                                  ) : (
+                                    <span className="text-[10px] text-muted-foreground">空</span>
+                                  )}
+                                </div>
+                                <span>{name || "点击选择"}</span>
+                                {isLocked ? <span className="text-[10px]">不可变更</span> : null}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                )}
+                ) : null}
+              </Card>
+
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">当前毕业率</h3>
+                  <Button
+                    className="cursor-pointer"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleRightPanel("graduation")}
+                  >
+                    {rightPanels.graduation ? "折叠" : "展开"}
+                  </Button>
+                </div>
+                {rightPanels.graduation ? (
+                  <div className="space-y-2 mt-3">
+                    {rotation.length === 0 || !graduationInfo ? (
+                      <div className="text-muted-foreground text-sm">
+                        毕业率表格未配置，请等待更新
+                      </div>
+                    ) : (
+                      <div className="space-y-1">
+                        <div className="text-3xl font-semibold text-yellow-300">
+                          {graduationInfo.accurate}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          excel表格显示：{graduationInfo.excel}
+                        </div>
+                        <div className="text-sm text-muted-foreground">轴期望秒伤：{graduationInfo.dps}</div>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        checked={earlySeasonBonus}
+                        onCheckedChange={(value) => setEarlySeasonBonus(currentAccount, Boolean(value))}
+                      />
+                      <span className="text-xs text-muted-foreground">提前获得下半赛季属性（毕业率将虚高）</span>
+                    </div>
+                    <Button className="w-full cursor-pointer" onClick={() => setGradModalOpen(true)}>
+                      毕业率分析
+                    </Button>
+                  </div>
+                ) : null}
+              </Card>
+
+              <Card
+                className={`p-3 ${rightPanels.stats ? "flex-1 overflow-y-auto" : "overflow-hidden"}`}
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">面板属性</h3>
+                  <Button
+                    className="cursor-pointer"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleRightPanel("stats")}
+                  >
+                    {rightPanels.stats ? "折叠" : "展开"}
+                  </Button>
+                </div>
+                {rightPanels.stats ? (
+                  <div className="space-y-2 mt-3">
+                    {statDisplay.length === 0 ? (
+                      <div className="text-muted-foreground text-sm">暂无面板属性</div>
+                    ) : (
+                      <div className="space-y-1 text-sm">
+                        {statDisplay.map((item) => (
+                          <div key={item.label} className="flex items-center justify-between">
+                            <span className="text-muted-foreground">{item.label}</span>
+                            <span>{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </Card>
             </section>
           </div>
