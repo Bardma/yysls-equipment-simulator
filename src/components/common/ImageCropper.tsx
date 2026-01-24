@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
+import ReactCrop, { Crop, PixelCrop, centerCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 import { Crop as CropIcon, RotateCcw } from 'lucide-react';
@@ -20,16 +20,15 @@ interface ImageCropperProps {
  */
 function centerAspectCrop(mediaWidth: number, mediaHeight: number) {
   // 默认使用自由裁剪，不限制比例
+  // 直接创建一个居中的裁剪区域，不使用 makeAspectCrop（它需要固定比例）
   return centerCrop(
-    makeAspectCrop(
-      {
-        unit: '%',
-        width: 90,
-      },
-      undefined, // 无固定比例
-      mediaWidth,
-      mediaHeight
-    ),
+    {
+      unit: '%',
+      width: 90,
+      height: 90,
+      x: 0,
+      y: 0,
+    },
     mediaWidth,
     mediaHeight
   );
