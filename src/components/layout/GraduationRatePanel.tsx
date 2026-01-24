@@ -47,24 +47,48 @@ export const GraduationRatePanel = ({
           </div>
         ) : (
           <div className={`relative rounded-lg sm:rounded-xl p-2.5 sm:p-3 border ${
-            loanDingyin
-              ? 'bg-linear-to-br from-purple-500/10 via-purple-500/5 to-amber-500/10 border-purple-500/30'
-              : 'bg-linear-to-br from-amber-500/10 via-yellow-500/5 to-orange-500/10 border-yellow-500/20'
+            loanDingyin && earlySeasonBonus
+              ? 'bg-linear-to-br from-purple-500/10 via-cyan-500/5 to-cyan-500/10 border-purple-500/30'
+              : loanDingyin
+                ? 'bg-linear-to-br from-purple-500/10 via-purple-500/5 to-amber-500/10 border-purple-500/30'
+                : earlySeasonBonus
+                  ? 'bg-linear-to-br from-cyan-500/10 via-cyan-500/5 to-amber-500/10 border-cyan-500/30'
+                  : 'bg-linear-to-br from-amber-500/10 via-yellow-500/5 to-orange-500/10 border-yellow-500/20'
           }`}>
             <div className={`absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 rounded-bl-full pointer-events-none ${
-              loanDingyin ? 'bg-linear-to-bl from-purple-400/20 to-transparent' : 'bg-linear-to-bl from-yellow-400/20 to-transparent'
+              loanDingyin && earlySeasonBonus
+                ? 'bg-linear-to-bl from-purple-400/20 via-cyan-400/10 to-transparent'
+                : loanDingyin
+                  ? 'bg-linear-to-bl from-purple-400/20 to-transparent'
+                  : earlySeasonBonus
+                    ? 'bg-linear-to-bl from-cyan-400/20 to-transparent'
+                    : 'bg-linear-to-bl from-yellow-400/20 to-transparent'
             }`} />
             <div className="relative space-y-1.5 sm:space-y-2">
-              {loanDingyin && (
-                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-purple-300 mb-1">
-                  <span>💰</span>
-                  <span>贷款满定音</span>
+              {(loanDingyin || earlySeasonBonus) && (
+                <div className="flex items-center gap-2 text-[10px] sm:text-xs mb-1">
+                  {loanDingyin && (
+                    <div className="flex items-center gap-1.5 text-purple-300">
+                      <span>💰</span>
+                      <span>贷款满定音</span>
+                    </div>
+                  )}
+                  {earlySeasonBonus && (
+                    <div className="flex items-center gap-1.5 text-cyan-300">
+                      <span>⏩</span>
+                      <span>下赛季属性</span>
+                    </div>
+                  )}
                 </div>
               )}
               <div className={`text-3xl sm:text-4xl font-bold bg-clip-text text-transparent drop-shadow-sm tracking-tight ${
-                loanDingyin
-                  ? 'bg-linear-to-r from-purple-300 via-purple-200 to-amber-300'
-                  : 'bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400'
+                loanDingyin && earlySeasonBonus
+                  ? 'bg-linear-to-r from-purple-300 via-cyan-200 to-cyan-300'
+                  : loanDingyin
+                    ? 'bg-linear-to-r from-purple-300 via-purple-200 to-amber-300'
+                    : earlySeasonBonus
+                      ? 'bg-linear-to-r from-cyan-300 via-cyan-200 to-amber-300'
+                      : 'bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400'
               }`}>
                 {graduationInfo.accurate}
               </div>

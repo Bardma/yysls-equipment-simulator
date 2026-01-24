@@ -6,6 +6,7 @@ export interface StatDisplayItem {
   highlight?: string; // 抗性后的值，用橘黄色显示
   suffix?: string; // 溢出信息等后缀
   isLoaned?: boolean; // 是否为贷款值
+  isEarlySeason?: boolean; // 是否为提前获得下赛季属性
 }
 
 const shouldPercent = (key: string) =>
@@ -21,11 +22,20 @@ const LOANED_STATS = [
   '指定武学技能增伤',
 ];
 
+// 提前获得下赛季属性会影响的属性列表
+const EARLY_SEASON_STATS = [
+  '实际精准率',
+  '实际会心率',
+  '实际会意率',
+  '外功攻击', // 攻击范围的特殊处理
+];
+
 export const buildStatsDisplay = (
   rawTotals: Record<string, number>,
   currentClass: string,
   setType: string,
-  loanDingyin = false
+  loanDingyin = false,
+  earlySeasonBonus = false
 ): StatDisplayItem[] => {
   const totals = { ...rawTotals };
   const items: StatDisplayItem[] = [];
@@ -55,7 +65,9 @@ export const buildStatsDisplay = (
     const min = totals[pair.min] || 0;
     const max = totals[pair.max] || 0;
     if (min > 0 || max > 0) {
-      items.push({ label: pair.label, value: `${min} - ${max}` });
+      // 外功攻击受下赛季属性影响
+      const isEarlySeason = earlySeasonBonus && EARLY_SEASON_STATS.includes(pair.label);
+      items.push({ label: pair.label, value: `${min} - ${max}`, isEarlySeason });
       delete totals[pair.min];
       delete totals[pair.max];
     }
@@ -110,12 +122,18 @@ export const buildStatsDisplay = (
     return false;
   };
 
+  const isEarlySeasonStat = (key: string) => {
+    if (!earlySeasonBonus) return false;
+    return EARLY_SEASON_STATS.includes(key);
+  };
+
   const renderItem = (key: string, val: number) => {
     const label = key.replace('实际', '');
     let displayValue = '';
     let highlight: string | undefined;
     let suffix: string | undefined;
     const isLoaned = isLoanedStat(key);
+    const isEarlySeason = isEarlySeasonStat(key);
 
     // 精准率、会心率、会意率显示为 "白值%（抗性后的值%）"
     if (key === '实际精准率') {
@@ -150,6 +168,7 @@ export const buildStatsDisplay = (
       highlight,
       suffix,
       isLoaned,
+      isEarlySeason,
     });
   };
 

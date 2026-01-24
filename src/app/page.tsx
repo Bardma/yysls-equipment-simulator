@@ -154,8 +154,8 @@ export default function Home() {
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
-    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin);
-  }, [totals, currentClass, setType, loanDingyin]);
+    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin, earlySeasonBonus);
+  }, [totals, currentClass, setType, loanDingyin, earlySeasonBonus]);
 
   // Handlers
   const handleCreateAccount = () => {
