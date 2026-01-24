@@ -7,7 +7,6 @@ interface StatDisplayProps {
   type: string;
   value: number;
   isPercent?: boolean;
-  isMain?: boolean;
   highlightThreshold?: number;
 }
 
@@ -15,27 +14,21 @@ export const StatDisplay = ({
   type,
   value,
   isPercent = false,
-  isMain = false,
   highlightThreshold = 0.875,
 }: StatDisplayProps) => {
   const maxValue = CommonData.MAX_VALUES[type] || 0;
   const ratio = maxValue > 0 ? value / maxValue : 0;
   const isHighQuality = ratio > highlightThreshold;
 
-  const colorClass = isHighQuality
-    ? 'text-amber-400'
-    : isMain
-      ? 'text-[#dfa8ff]'
-      : 'text-[#dfa8ff]/85';
+  const colorClass = isHighQuality ? 'text-amber-400' : 'text-[#dfa8ff]/85';
 
   return (
     <div
       className={cn(
-        'grid grid-cols-[auto_1fr_auto] items-center gap-1',
+        'flex items-center justify-between gap-2',
         colorClass
       )}
     >
-      <span className="w-3 text-center">{isMain ? '' : '·'}</span>
       <span className="truncate">{type}</span>
       <span className={cn('text-right tabular-nums', isHighQuality && 'font-medium')}>
         +{value}

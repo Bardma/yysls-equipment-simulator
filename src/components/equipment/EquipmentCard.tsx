@@ -1,12 +1,42 @@
 'use client';
 
+import { Check } from 'lucide-react';
+
 import { EquipmentImage } from '@/components/common/EquipmentImage';
 import { StatDisplay } from '@/components/common/StatDisplay';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { EquipItem } from '@/lib/types';
+import { CommonData } from '@/lib/data/commonData';
+import type { EquipItem, StatValue } from '@/lib/types';
 import { cn } from '@/lib/utils';
+
+// 计算单个词条的完整度
+const getStatCompleteness = (stat: StatValue): number => {
+  const maxValue = CommonData.MAX_VALUES[stat.type] || 0;
+  if (maxValue <= 0) return 0;
+  return Math.min(stat.value / maxValue, 1);
+};
+
+// 计算装备总完整度（主词条 + 副词条的平均值）
+const getEquipCompleteness = (equip: EquipItem): number => {
+  const allStats = [equip.mainStat, ...equip.subStats];
+  if (allStats.length === 0) return 0;
+
+  const totalCompleteness = allStats.reduce(
+    (sum, stat) => sum + getStatCompleteness(stat),
+    0
+  );
+  return (totalCompleteness / allStats.length) * 100;
+};
+
+// 根据完整度返回颜色样式
+const getCompletenessColor = (completeness: number): string => {
+  if (completeness >= 90) return 'text-amber-400 bg-amber-500/20 border-amber-500/30';
+  if (completeness >= 80) return 'text-purple-400 bg-purple-500/20 border-purple-500/30';
+  if (completeness >= 70) return 'text-sky-400 bg-sky-500/20 border-sky-500/30';
+  return 'text-slate-400 bg-slate-500/20 border-slate-500/30';
+};
 
 interface EquipmentCardProps {
   equip: EquipItem;
@@ -26,19 +56,26 @@ export const EquipmentCard = ({
   return (
     <Card
       className={cn(
-        'cursor-pointer p-4 transition-all border-slate-500/20 bg-slate-800/30 hover:bg-slate-800/50',
+        'relative cursor-pointer p-3 transition-all border-slate-500/20 bg-slate-800/30 hover:bg-slate-800/50',
         isEquipped
           ? 'border-amber-400 ring-1 ring-amber-400/40 shadow-md shadow-amber-500/10'
           : 'hover:border-slate-400/40'
       )}
       onClick={onClick}
     >
-      <div className="-mt-1 flex justify-end gap-1">
+      {/* 选中标记 */}
+      {isEquipped && (
+        <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 shadow-md shadow-amber-500/30">
+          <Check className="h-3 w-3 text-slate-900" strokeWidth={3} />
+        </div>
+      )}
+
+      <div className="flex justify-end gap-1">
         {onEdit && (
           <Button
             size="icon"
             variant="ghost"
-            className="h-7 w-7 text-slate-400 hover:text-slate-300 hover:bg-slate-500/20"
+            className="h-6 w-6 text-slate-400 hover:text-slate-300 hover:bg-slate-500/20"
             onClick={(event) => {
               event.stopPropagation();
               onEdit();
@@ -51,7 +88,7 @@ export const EquipmentCard = ({
           <Button
             size="icon"
             variant="ghost"
-            className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 h-7 w-7"
+            className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 h-6 w-6"
             onClick={(event) => {
               event.stopPropagation();
               onDelete();
@@ -61,31 +98,55 @@ export const EquipmentCard = ({
           </Button>
         )}
       </div>
-      <div className="flex items-center gap-3">
-        <EquipmentImage src={equip.icon} name={equip.name} size="md" />
-        <div className="flex-1">
-          <div className="font-medium text-slate-100">{equip.name}</div>
-          <div className="text-slate-400 text-xs">
-            {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
+      <div className="flex items-center gap-2">
+        <EquipmentImage src={equip.icon} name={equip.name} size="sm" />
+        <div className="flex-1 min-w-0">
+          <div className="font-medium text-slate-100 truncate">{equip.name}</div>
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-slate-400">
+              {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
+            </span>
+            {/* 完整度标签 */}
+            <span
+              className={cn(
+                'px-1.5 py-0.5 rounded text-[10px] font-medium border',
+                getCompletenessColor(getEquipCompleteness(equip))
+              )}
+            >
+              {getEquipCompleteness(equip).toFixed(1)}%
+            </span>
           </div>
         </div>
       </div>
-      <Separator className="my-3 bg-slate-600/40" />
-      <div className="space-y-1.5 text-xs">
+      {/* 词条组 */}
+      <div className="mt-1.5 text-xs">
         <StatDisplay
           type={equip.mainStat.type}
           value={equip.mainStat.value}
           isPercent={equip.mainStat.isPercent}
-          isMain
         />
-        {equip.subStats.map((sub, idx) => (
-          <StatDisplay
-            key={`${equip.id}-sub-${idx}`}
-            type={sub.type}
-            value={sub.value}
-            isPercent={sub.isPercent}
-          />
-        ))}
+        <Separator className="my-1 bg-slate-600/40" />
+        <div className="space-y-1">
+          {equip.subStats.map((sub, idx) => (
+            <StatDisplay
+              key={`${equip.id}-sub-${idx}`}
+              type={sub.type}
+              value={sub.value}
+              isPercent={sub.isPercent}
+            />
+          ))}
+        </div>
+        {/* 定音词条 */}
+        {equip.dingyinStat && equip.dingyinStat.type !== '无' && (
+          <>
+            <Separator className="my-1 bg-cyan-600/40" />
+            <StatDisplay
+              type={equip.dingyinStat.type}
+              value={equip.dingyinStat.value}
+              isPercent={equip.dingyinStat.isPercent}
+            />
+          </>
+        )}
       </div>
     </Card>
   );
