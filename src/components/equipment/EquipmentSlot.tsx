@@ -20,15 +20,24 @@ interface EquipmentSlotProps {
   slotKey: keyof EquippedItems;
   item: EquipItem | null;
   onClick?: () => void;
+  onUnequip?: (slotKey: keyof EquippedItems) => void;
 }
 
-export const EquipmentSlot = ({ slotKey, item, onClick }: EquipmentSlotProps) => {
+export const EquipmentSlot = ({ slotKey, item, onClick, onUnequip }: EquipmentSlotProps) => {
   const label = SLOT_LABELS[slotKey];
+
+  const handleClick = () => {
+    if (item && onUnequip) {
+      onUnequip(slotKey);
+    } else if (onClick) {
+      onClick();
+    }
+  };
 
   return (
     <Card
       className="p-0 w-fit border-sky-500/20 hover:border-sky-500/30 transition-colors cursor-pointer overflow-hidden"
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="bg-sky-950/20 relative flex h-20 w-20 items-center justify-center overflow-hidden">
         {item ? (

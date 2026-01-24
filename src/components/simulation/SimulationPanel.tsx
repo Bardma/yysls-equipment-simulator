@@ -20,6 +20,7 @@ interface SimulationPanelProps {
   onBowChange: (value: string) => void;
   onSetChange: (value: string) => void;
   onXinfaClick: (index: number) => void;
+  onUnequip: (slotKey: keyof EquippedItems) => void;
 }
 
 const LEFT_SLOTS: Array<keyof EquippedItems> = [
@@ -48,6 +49,7 @@ export const SimulationPanel = ({
   onBowChange,
   onSetChange,
   onXinfaClick,
+  onUnequip,
 }: SimulationPanelProps) => {
   const lockedList = ClassConfig.XINFA_LOCKED[currentClass] || [];
 
@@ -76,6 +78,7 @@ export const SimulationPanel = ({
                 key={slotKey}
                 slotKey={slotKey}
                 item={equippedItems[slotKey]}
+                onUnequip={onUnequip}
               />
             ))}
           </div>
@@ -85,6 +88,7 @@ export const SimulationPanel = ({
                 key={slotKey}
                 slotKey={slotKey}
                 item={equippedItems[slotKey]}
+                onUnequip={onUnequip}
               />
             ))}
           </div>

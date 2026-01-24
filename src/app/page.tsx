@@ -318,6 +318,7 @@ export default function Home() {
                   setXinfaIndex(idx);
                   setXinfaModalOpen(true);
                 }}
+                onUnequip={(slotKey) => equipSlot(currentAccount, slotKey, null)}
               />
 
               <GraduationRatePanel
