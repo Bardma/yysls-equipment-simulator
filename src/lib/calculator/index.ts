@@ -133,7 +133,7 @@ export const Calculator = {
         this.addStatWithTrack(total, equip.mainStat, track);
       }
       if (equip.dingyinStat) this.addStatWithTrack(total, equip.dingyinStat, track);
-      equip.subStats.forEach((sub) => {
+      equip.subStats.forEach((sub: { type: string; value: number }) => {
         if (sub.type !== '生存类词条' && sub.type !== '生存向') {
           this.addStatWithTrack(total, sub, track);
         }
@@ -451,7 +451,7 @@ export const Calculator = {
       intentDmgBonus: getVal('会意伤害加成'),
     };
 
-    const weaponBonusMap = {
+    const weaponBonusMap: Record<string, number> = {
       剑: getVal('剑武学增效'),
       枪: getVal('枪武学增效'),
       伞: getVal('伞武学增效'),
@@ -585,7 +585,7 @@ export const Calculator = {
       if (skillData.weaponType === '群体奇术') weaponBonus += stats.groupMagicBonus / 100;
 
       let finalGlobalMult = 1 + action.generalBonus + stats.bossDmgBonus / 100 + weaponBonus;
-      if (cachedSetName === '连星') finalGlobalMult += skillData.modifiers?.['连星'] || 0;
+      if (cachedSetName === '连星') finalGlobalMult += Number(skillData.modifiers?.['连星']) || 0;
 
       if (skillData.isCharge === 1 && cachedCheckXinfa('威猛歌')) finalGlobalMult += 0.15;
       if (cachedCheckXinfa('抗造大法')) finalGlobalMult += 0.1;
@@ -616,10 +616,9 @@ export const Calculator = {
       const yiShuiBonus = cachedHasYiShui && action.yishui ? action.yishui : 0;
       const threeQiongPenBonus =
         skillData.modifiers?.['三穷'] === 2 && cachedCheckXinfa('三穷致知') ? 20 : 0;
+      const chuanHouModifier = Number(skillData.modifiers?.['穿喉']) || 0;
       const chuanHouPenBonus =
-        (skillData.modifiers?.['穿喉'] || 0) > 0 && cachedCheckXinfa('穿喉决')
-          ? (skillData.modifiers?.['穿喉'] as number)
-          : 0;
+        chuanHouModifier > 0 && cachedCheckXinfa('穿喉决') ? chuanHouModifier : 0;
 
       const outerPenBonus =
         (stats.outerPen +
@@ -646,8 +645,8 @@ export const Calculator = {
       if (skillData.modifiers?.['玉斗'] && cachedSetName === '玉斗') intentMult += 0.1;
       if (cachedCheckXinfa('凝神章')) intentMult += 0.1;
       if (skillData.modifiers?.['移经'] && cachedCheckXinfa('移经易武')) critMult += 0.2;
-      if ((skillData.modifiers?.['穿喉'] || 0) > 0 && cachedCheckXinfa('穿喉决')) {
-        critMult += (skillData.modifiers?.['穿喉'] as number) / 100;
+      if (chuanHouModifier > 0 && cachedCheckXinfa('穿喉决')) {
+        critMult += chuanHouModifier / 100;
       }
 
       const dOutGlance = calcDmg(
@@ -704,7 +703,7 @@ export const Calculator = {
       ) {
         let eleSetMult = cachedSetName === '撼天' ? 1.05 : 1.0;
         const extraEleAtk =
-          skillData.type === '武器' && skillData.element === eleName
+          skillData?.type === '武器' && skillData?.element === eleName
             ? 150.7 * (1 + stats.fixedDmgBonus)
             : 0;
         let effMinEle = minEle * eleSetMult + extraEleAtk;
@@ -712,7 +711,7 @@ export const Calculator = {
         if (effMaxEle < effMinEle) effMaxEle = effMinEle;
         const effAvgEle = (effMinEle + effMaxEle) / 2;
         const elePenBonus = elePen / 200;
-        const usedRatio = skillData.element === eleName ? skillData.eleRatio : skillData.outerRatio;
+        const usedRatio = skillData?.element === eleName ? skillData.eleRatio : (skillData?.outerRatio ?? 0);
         const effEleDmgBonus = eleDmgBonus / 100;
 
         const dGlance = calcDmg(effMinEle, usedRatio, elePenBonus, 1 + effEleDmgBonus, 1);
