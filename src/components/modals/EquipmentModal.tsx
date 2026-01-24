@@ -160,6 +160,12 @@ export const EquipmentModal = ({
   const handleSlotChange = (value: string) => {
     setSlotId(value);
     if (value !== '1') setWeaponTypeId('');
+    // 重置主词条、副词条和定音词条，因为不同装备位置的可选项不同
+    setMainStatType('');
+    setMainStatValue('');
+    setSubStats(emptySubStats());
+    setDingyinType('无');
+    setDingyinValue('');
     handleAutoName(value, weaponTypeId);
   };
 
@@ -317,25 +323,26 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="flex gap-2">
+                <div className="relative">
                   <Input
                     type="number"
                     value={mainStatValue}
                     onChange={(event) => setMainStatValue(event.target.value)}
                     disabled={disableMainInput}
                     placeholder="数值"
+                    className="h-10 pr-9"
                   />
-                  <Button
-                    variant="outline"
+                  <button
                     type="button"
-                    disabled={!mainStatType || mainStatType === '生存类词条'}
+                    disabled={disableMainInput || !mainStatType}
                     onClick={() => {
                       const max = CommonData.MAX_VALUES[mainStatType];
                       if (max) setMainStatValue(max.toString());
                     }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
                   >
                     ↑
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -373,7 +380,7 @@ export const EquipmentModal = ({
                           ))}
                         </SelectContent>
                       </Select>
-                      <div className="flex gap-2">
+                      <div className="relative">
                         <Input
                           type="number"
                           value={sub.value}
@@ -384,11 +391,11 @@ export const EquipmentModal = ({
                           }}
                           disabled={disableValue}
                           placeholder="数值"
+                          className="h-10 pr-9"
                         />
-                        <Button
-                          variant="outline"
+                        <button
                           type="button"
-                          disabled={!sub.type || sub.type === '生存类词条'}
+                          disabled={disableValue || !sub.type}
                           onClick={() => {
                             const max = CommonData.MAX_VALUES[sub.type];
                             if (max) {
@@ -397,9 +404,10 @@ export const EquipmentModal = ({
                               setSubStats(next);
                             }
                           }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
                         >
                           ↑
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   );
@@ -421,40 +429,41 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="flex gap-2">
+                <div className="relative">
                   <Input
                     type="number"
                     value={dingyinValue}
                     onChange={(event) => setDingyinValue(event.target.value)}
                     disabled={dingyinType === '无'}
                     placeholder="数值"
+                    className="h-10 pr-9"
                   />
-                  <Button
-                    variant="outline"
+                  <button
                     type="button"
                     disabled={dingyinType === '无'}
                     onClick={() => {
                       const max = CommonData.MAX_VALUES[dingyinType];
                       if (max) setDingyinValue(max.toString());
                     }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
                   >
                     ↑
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             <Label>装备预览</Label>
-            <div className="flex flex-col items-center gap-3 rounded-lg border p-4">
+            <div className="flex flex-col items-center gap-2 rounded-lg border p-3">
               <Image
                 src={iconPath}
                 alt="预览"
-                width={120}
-                height={120}
+                width={80}
+                height={80}
                 className="rounded-md border"
               />
-              <div className="text-muted-foreground text-sm">点击保存后将更新装备图标</div>
+              <div className="text-muted-foreground text-xs">点击保存后将更新装备图标</div>
             </div>
           </div>
         </div>
