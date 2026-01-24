@@ -1,10 +1,11 @@
-import { create } from "zustand";
+import { create } from 'zustand';
+
 import {
   loadAccounts,
   loadLastSelectedAccount,
   saveAccounts,
   saveLastSelectedAccount,
-} from "../lib/storage";
+} from '../lib/storage';
 
 interface AccountState {
   accounts: string[];
@@ -25,8 +26,7 @@ export const useAccountStore = create<AccountState>((set, get) => ({
   hydrate: () => {
     const accounts = loadAccounts();
     const last = loadLastSelectedAccount();
-    const currentAccount =
-      last && accounts.includes(last) ? last : accounts[0] || null;
+    const currentAccount = last && accounts.includes(last) ? last : accounts[0] || null;
     set({ accounts, currentAccount, hydrated: true });
   },
   createAccount: (name: string) => {

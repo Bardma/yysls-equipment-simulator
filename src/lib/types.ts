@@ -52,7 +52,7 @@ export interface RotationAction {
   generalBonus: number;
   included: boolean;
   yishui: number;
-  yongquan?: "TRUE" | "FALSE";
+  yongquan?: 'TRUE' | 'FALSE';
 }
 
 export interface RotationConfig {
@@ -69,10 +69,7 @@ export interface ClassConfigData {
   CLASSES: string[];
   WEAPON_RULES: Record<string, string[]>;
   DEFAULT_SETS: Record<string, string>;
-  XINFA_RULES: Record<
-    string,
-    { default: string[]; extra: string[] }
-  >;
+  XINFA_RULES: Record<string, { default: string[]; extra: string[] }>;
   XINFA_LOCKED: Record<string, string[]>;
   ROTATIONS: Record<string, RotationConfig>;
 }
@@ -123,7 +120,7 @@ export interface CalculatorStatModifier {
   type: StatType;
   value: number;
   isPercent?: boolean;
-  operation: "add" | "remove";
+  operation: 'add' | 'remove';
 }
 
 export interface GraduationRateResult {

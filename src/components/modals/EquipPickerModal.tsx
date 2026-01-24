@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { CommonData } from "../../lib/data/commonData";
-import type { EquipItem } from "../../lib/types";
+import Image from 'next/image';
+
+import { CommonData } from '../../lib/data/commonData';
+import type { EquipItem } from '../../lib/types';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 interface EquipPickerModalProps {
   open: boolean;
@@ -15,10 +16,10 @@ interface EquipPickerModalProps {
 }
 
 const getScore = (equip: EquipItem) => {
-  if (equip.isChengyin) return "94.0%";
+  if (equip.isChengyin) return '94.0%';
   let totalPct = 0;
   let count = 0;
-  if (equip.mainStat && equip.mainStat.type !== "生存类词条" && equip.mainStat.type !== "生存向") {
+  if (equip.mainStat && equip.mainStat.type !== '生存类词条' && equip.mainStat.type !== '生存向') {
     const mMax = CommonData.MAX_VALUES[equip.mainStat.type];
     if (mMax) {
       totalPct += equip.mainStat.value / mMax;
@@ -26,7 +27,7 @@ const getScore = (equip: EquipItem) => {
     }
   }
   equip.subStats.forEach((sub) => {
-    if (sub.type !== "生存类词条" && sub.type !== "生存向") {
+    if (sub.type !== '生存类词条' && sub.type !== '生存向') {
       const sMax = CommonData.MAX_VALUES[sub.type];
       if (sMax) {
         totalPct += sub.value / sMax;
@@ -34,7 +35,7 @@ const getScore = (equip: EquipItem) => {
       }
     }
   });
-  return count > 0 ? `${((totalPct / count) * 100).toFixed(1)}%` : "0.0%";
+  return count > 0 ? `${((totalPct / count) * 100).toFixed(1)}%` : '0.0%';
 };
 
 export const EquipPickerModal = ({
@@ -47,7 +48,7 @@ export const EquipPickerModal = ({
 }: EquipPickerModalProps) => {
   const candidates = db.filter((item) => {
     if (item.slotId !== slotId) return false;
-    if (slotId === "1" && weaponTypeId) {
+    if (slotId === '1' && weaponTypeId) {
       return item.weaponTypeId === weaponTypeId;
     }
     return true;
@@ -59,16 +60,14 @@ export const EquipPickerModal = ({
         <DialogHeader>
           <DialogTitle>选择装备</DialogTitle>
         </DialogHeader>
-        <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
+        <div className="max-h-[70vh] space-y-3 overflow-y-auto pr-2">
           {candidates.length === 0 ? (
-            <div className="text-center text-muted-foreground py-10">
-              没有找到符合条件的装备。
-            </div>
+            <div className="text-muted-foreground py-10 text-center">没有找到符合条件的装备。</div>
           ) : (
             candidates.map((equip) => (
               <button
                 key={equip.id}
-                className="w-full flex items-center gap-3 rounded-lg border border-border/60 bg-card p-3 text-left hover:border-primary/50"
+                className="border-border/60 bg-card hover:border-primary/50 flex w-full items-center gap-3 rounded-lg border p-3 text-left"
                 onClick={() => {
                   onSelect(equip);
                   onOpenChange(false);
@@ -79,16 +78,16 @@ export const EquipPickerModal = ({
                   alt={equip.name}
                   width={48}
                   height={48}
-                  className="rounded-md border border-border/60"
+                  className="border-border/60 rounded-md border"
                 />
                 <div className="flex-1">
                   <div className="font-medium">{equip.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {equip.mainStat.type}+{equip.mainStat.value} | 均值:{" "}
+                  <div className="text-muted-foreground text-xs">
+                    {equip.mainStat.type}+{equip.mainStat.value} | 均值:{' '}
                     <span className="text-yellow-300">{getScore(equip)}</span>
                   </div>
                 </div>
-                <div className="text-green-400 text-lg">+</div>
+                <div className="text-lg text-green-400">+</div>
               </button>
             ))
           )}

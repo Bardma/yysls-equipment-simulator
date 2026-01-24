@@ -1,7 +1,8 @@
-import { create } from "zustand";
-import type { EquipItem, EquippedItems } from "../lib/types";
-import { ClassConfig } from "../lib/data/classConfig";
-import { loadSimState, saveSimState, SimLoadoutIds } from "../lib/storage";
+import { create } from 'zustand';
+
+import { ClassConfig } from '../lib/data/classConfig';
+import { SimLoadoutIds, loadSimState, saveSimState } from '../lib/storage';
+import type { EquipItem, EquippedItems } from '../lib/types';
 
 const emptyEquippedItems = (): EquippedItems => ({
   weapon1: null,
@@ -28,16 +29,20 @@ interface SimulationState {
   setSetType: (account: string | null, value: string) => void;
   setXinfaLoadout: (account: string | null, loadout: string[]) => void;
   setEarlySeasonBonus: (account: string | null, value: boolean) => void;
-  equipSlot: (account: string | null, slotKey: keyof EquippedItems, equip: EquipItem | null) => void;
+  equipSlot: (
+    account: string | null,
+    slotKey: keyof EquippedItems,
+    equip: EquipItem | null
+  ) => void;
   updateEquipsById: (equips: EquipItem[]) => void;
   syncCurrentLoadoutIds: (account: string | null) => void;
 }
 
-const defaultClass = ClassConfig.CLASSES[0] || "";
+const defaultClass = ClassConfig.CLASSES[0] || '';
 
 const getDefaultXinfa = (cls: string): string[] => {
   const rules = ClassConfig.XINFA_RULES[cls];
-  return rules ? [...rules.default] : ["", "", "", ""];
+  return rules ? [...rules.default] : ['', '', '', ''];
 };
 
 const buildLoadoutIds = (
@@ -61,10 +66,7 @@ const buildLoadoutIds = (
   earlySeasonBonus,
 });
 
-const applyLoadout = (
-  loadout: SimLoadoutIds | undefined,
-  db: EquipItem[]
-): EquippedItems => {
+const applyLoadout = (loadout: SimLoadoutIds | undefined, db: EquipItem[]): EquippedItems => {
   const getItem = (id: number | string | null | undefined) =>
     id === undefined || id === null ? null : db.find((item) => item.id === id) || null;
   return {
@@ -81,8 +83,8 @@ const applyLoadout = (
 
 export const useSimulationStore = create<SimulationState>((set, get) => ({
   currentClass: defaultClass,
-  bowType: "precision",
-  setType: ClassConfig.DEFAULT_SETS[defaultClass] || "",
+  bowType: 'precision',
+  setType: ClassConfig.DEFAULT_SETS[defaultClass] || '',
   xinfaLoadout: getDefaultXinfa(defaultClass),
   earlySeasonBonus: false,
   equippedItems: emptyEquippedItems(),
@@ -92,9 +94,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const currentClass = saved?.currentClass || defaultClass;
     const allClassLoadouts = saved?.loadouts || {};
     const loadout = allClassLoadouts[currentClass];
-    const setType =
-      loadout?.setType || ClassConfig.DEFAULT_SETS[currentClass] || "";
-    const bowType = loadout?.bowType || "precision";
+    const setType = loadout?.setType || ClassConfig.DEFAULT_SETS[currentClass] || '';
+    const bowType = loadout?.bowType || 'precision';
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(currentClass);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
     const equippedItems = applyLoadout(loadout, db);
@@ -111,8 +112,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
   setCurrentClass: (account, name, db) => {
     const { allClassLoadouts } = get();
     const loadout = allClassLoadouts[name];
-    const setType = loadout?.setType || ClassConfig.DEFAULT_SETS[name] || "";
-    const bowType = loadout?.bowType || "precision";
+    const setType = loadout?.setType || ClassConfig.DEFAULT_SETS[name] || '';
+    const bowType = loadout?.bowType || 'precision';
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(name);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
     const equippedItems = applyLoadout(loadout, db);

@@ -1,6 +1,7 @@
-import { create } from "zustand";
-import type { EquipItem } from "../lib/types";
-import { loadEquipData, saveEquipData } from "../lib/storage";
+import { create } from 'zustand';
+
+import { loadEquipData, saveEquipData } from '../lib/storage';
+import type { EquipItem } from '../lib/types';
 
 interface EquipmentState {
   db: EquipItem[];
@@ -17,12 +18,12 @@ interface EquipmentState {
 
 export const useEquipmentStore = create<EquipmentState>((set, get) => ({
   db: [],
-  filter: "all",
+  filter: 'all',
   hydrate: (items) => {
-    set({ db: items, filter: "all" });
+    set({ db: items, filter: 'all' });
   },
   loadForAccount: (account) => {
-    set({ db: loadEquipData(account), filter: "all" });
+    set({ db: loadEquipData(account), filter: 'all' });
   },
   setFilter: (filter) => {
     set({ filter });

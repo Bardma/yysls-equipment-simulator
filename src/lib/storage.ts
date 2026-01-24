@@ -1,8 +1,8 @@
-import type { EquipItem } from "./types";
+import type { EquipItem } from './types';
 
-const ACCOUNTS_KEY = "game_account_list";
-const LAST_ACCOUNT_KEY = "last_selected_account";
-const UI_PANEL_KEY = "ui_right_panels";
+const ACCOUNTS_KEY = 'game_account_list';
+const LAST_ACCOUNT_KEY = 'last_selected_account';
+const UI_PANEL_KEY = 'ui_right_panels';
 
 const safeParse = <T>(raw: string | null, fallback: T): T => {
   if (!raw) return fallback;
@@ -13,7 +13,7 @@ const safeParse = <T>(raw: string | null, fallback: T): T => {
   }
 };
 
-const hasWindow = () => typeof window !== "undefined";
+const hasWindow = () => typeof window !== 'undefined';
 
 export const storageKeys = {
   accounts: ACCOUNTS_KEY,
@@ -49,21 +49,12 @@ export const saveLastSelectedAccount = (account: string | null): void => {
 
 export const loadEquipData = (account: string | null): EquipItem[] => {
   if (!hasWindow() || !account) return [];
-  return safeParse<EquipItem[]>(
-    localStorage.getItem(storageKeys.equipKey(account)),
-    []
-  );
+  return safeParse<EquipItem[]>(localStorage.getItem(storageKeys.equipKey(account)), []);
 };
 
-export const saveEquipData = (
-  account: string | null,
-  data: EquipItem[]
-): void => {
+export const saveEquipData = (account: string | null, data: EquipItem[]): void => {
   if (!hasWindow() || !account) return;
-  localStorage.setItem(
-    storageKeys.equipKey(account),
-    JSON.stringify(data)
-  );
+  localStorage.setItem(storageKeys.equipKey(account), JSON.stringify(data));
 };
 
 export interface SimLoadoutIds {
@@ -106,26 +97,17 @@ export const loadRightPanelState = (account: string | null): RightPanelState => 
   );
 };
 
-export const saveRightPanelState = (
-  account: string | null,
-  data: RightPanelState
-): void => {
+export const saveRightPanelState = (account: string | null, data: RightPanelState): void => {
   if (!hasWindow() || !account) return;
   localStorage.setItem(storageKeys.uiPanelKey(account), JSON.stringify(data));
 };
 
 export const loadSimState = (account: string | null): SimStorageState | null => {
   if (!hasWindow() || !account) return null;
-  return safeParse<SimStorageState | null>(
-    localStorage.getItem(storageKeys.simKey(account)),
-    null
-  );
+  return safeParse<SimStorageState | null>(localStorage.getItem(storageKeys.simKey(account)), null);
 };
 
-export const saveSimState = (
-  account: string | null,
-  data: SimStorageState
-): void => {
+export const saveSimState = (account: string | null, data: SimStorageState): void => {
   if (!hasWindow() || !account) return;
   localStorage.setItem(storageKeys.simKey(account), JSON.stringify(data));
 };

@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { CommonData } from "../../lib/data/commonData";
-import { ClassConfig } from "../../lib/data/classConfig";
+import Image from 'next/image';
+
+import { ClassConfig } from '../../lib/data/classConfig';
+import { CommonData } from '../../lib/data/commonData';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 interface XinfaModalProps {
   open: boolean;
@@ -23,7 +24,11 @@ export const XinfaModal = ({
   onSelect,
 }: XinfaModalProps) => {
   const rules = ClassConfig.XINFA_RULES[currentClass];
-  const pool = new Set([...(rules?.default || []), ...(rules?.extra || []), ...CommonData.GENERIC_XINFA]);
+  const pool = new Set([
+    ...(rules?.default || []),
+    ...(rules?.extra || []),
+    ...CommonData.GENERIC_XINFA,
+  ]);
 
   const options = CommonData.XINFA_LIST.filter((name) => {
     if (!pool.has(name)) return false;
@@ -37,11 +42,11 @@ export const XinfaModal = ({
         <DialogHeader>
           <DialogTitle>选择心法</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {options.map((name) => (
             <button
               key={name}
-              className="rounded-lg border border-border/60 bg-card hover:border-primary/50 transition p-3 text-left"
+              className="border-border/60 bg-card hover:border-primary/50 rounded-lg border p-3 text-left transition"
               onClick={() => {
                 onSelect(name);
                 onOpenChange(false);
@@ -53,7 +58,7 @@ export const XinfaModal = ({
                   alt={name}
                   width={64}
                   height={64}
-                  className="rounded-md border border-border/60"
+                  className="border-border/60 rounded-md border"
                 />
                 <span className="text-sm">{name}</span>
               </div>

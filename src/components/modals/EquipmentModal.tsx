@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
-import { CommonData } from "../../lib/data/commonData";
-import type { EquipItem } from "../../lib/types";
+import { useEffect, useMemo, useState } from 'react';
 
-const emptySubStats = () =>
-  Array.from({ length: 4 }).map(() => ({ type: "", value: "" }));
+import Image from 'next/image';
+
+import { CommonData } from '../../lib/data/commonData';
+import type { EquipItem } from '../../lib/types';
+import { Button } from '../ui/button';
+import { Checkbox } from '../ui/checkbox';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+
+const emptySubStats = () => Array.from({ length: 4 }).map(() => ({ type: '', value: '' }));
 
 interface EquipmentModalProps {
   open: boolean;
@@ -27,24 +28,24 @@ export const EquipmentModal = ({
   initialEquip,
   onSave,
 }: EquipmentModalProps) => {
-  const [slotId, setSlotId] = useState("1");
-  const [weaponTypeId, setWeaponTypeId] = useState("");
-  const [name, setName] = useState("");
+  const [slotId, setSlotId] = useState('1');
+  const [weaponTypeId, setWeaponTypeId] = useState('');
+  const [name, setName] = useState('');
   const [nameEdited, setNameEdited] = useState(false);
   const [isChengyin, setIsChengyin] = useState(false);
   const [isPurple, setIsPurple] = useState(false);
   const [isConvertible, setIsConvertible] = useState(false);
-  const [mainStatType, setMainStatType] = useState("");
-  const [mainStatValue, setMainStatValue] = useState("");
-  const [dingyinType, setDingyinType] = useState("无");
-  const [dingyinValue, setDingyinValue] = useState("");
+  const [mainStatType, setMainStatType] = useState('');
+  const [mainStatValue, setMainStatValue] = useState('');
+  const [dingyinType, setDingyinType] = useState('无');
+  const [dingyinValue, setDingyinValue] = useState('');
   const [subStats, setSubStats] = useState<{ type: string; value: string }[]>(emptySubStats());
 
   useEffect(() => {
     if (!open) return;
     if (initialEquip) {
       setSlotId(initialEquip.slotId);
-      setWeaponTypeId(initialEquip.weaponTypeId || "");
+      setWeaponTypeId(initialEquip.weaponTypeId || '');
       setName(initialEquip.name);
       setNameEdited(true);
       setIsChengyin(Boolean(initialEquip.isChengyin));
@@ -56,8 +57,8 @@ export const EquipmentModal = ({
         setDingyinType(initialEquip.dingyinStat.type);
         setDingyinValue(initialEquip.dingyinStat.value.toString());
       } else {
-        setDingyinType("无");
-        setDingyinValue("");
+        setDingyinType('无');
+        setDingyinValue('');
       }
       const nextSubStats = emptySubStats();
       initialEquip.subStats.forEach((sub, idx) => {
@@ -68,17 +69,17 @@ export const EquipmentModal = ({
       setSubStats(nextSubStats);
       return;
     }
-    setSlotId("1");
-    setWeaponTypeId("");
-    setName("");
+    setSlotId('1');
+    setWeaponTypeId('');
+    setName('');
     setNameEdited(false);
     setIsChengyin(false);
     setIsPurple(false);
     setIsConvertible(false);
-    setMainStatType("");
-    setMainStatValue("");
-    setDingyinType("无");
-    setDingyinValue("");
+    setMainStatType('');
+    setMainStatValue('');
+    setDingyinType('无');
+    setDingyinValue('');
     setSubStats(emptySubStats());
   }, [open, initialEquip]);
 
@@ -90,41 +91,41 @@ export const EquipmentModal = ({
   }, [slotId]);
 
   const dingyinOptions = useMemo(() => {
-    return CommonData.DINGYIN_RULES[slotId] || ["无"];
+    return CommonData.DINGYIN_RULES[slotId] || ['无'];
   }, [slotId]);
 
   const subStatOptions = useMemo(() => {
     let opts = [...CommonData.BASE_SUB_STATS];
-    if (slotId === "1") {
+    if (slotId === '1') {
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponTypeId);
       if (weapon) opts.push(weapon.stat);
     }
-    if (["3", "4"].includes(slotId)) opts.push("全武学增效");
-    if (["5", "6"].includes(slotId)) {
-      opts.push("单体类奇术增伤");
-      opts.push("群体类奇术增伤");
+    if (['3', '4'].includes(slotId)) opts.push('全武学增效');
+    if (['5', '6'].includes(slotId)) {
+      opts.push('单体类奇术增伤');
+      opts.push('群体类奇术增伤');
     }
-    if (["7", "8"].includes(slotId)) opts.push("对首领单位增伤");
-    opts.push("生存类词条");
+    if (['7', '8'].includes(slotId)) opts.push('对首领单位增伤');
+    opts.push('生存类词条');
     return Array.from(new Set(opts)).sort();
   }, [slotId, weaponTypeId]);
 
   const iconPath = useMemo(() => {
     const slot = CommonData.SLOTS.find((s) => s.id === slotId);
-    let icon = slot?.icon || "icon/icon1.jpg";
-    if (slotId === "1") {
+    let icon = slot?.icon || 'icon/icon1.jpg';
+    if (slotId === '1') {
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponTypeId);
       if (weapon) icon = weapon.icon;
     }
-    if (isPurple && icon.endsWith(".jpg")) {
-      icon = icon.replace(".jpg", "p.jpg");
+    if (isPurple && icon.endsWith('.jpg')) {
+      icon = icon.replace('.jpg', 'p.jpg');
     }
     return `/${icon}`;
   }, [slotId, weaponTypeId, isPurple]);
 
   const handleAutoName = (slotValue: string, weaponValue: string) => {
     if (nameEdited) return;
-    if (slotValue === "1") {
+    if (slotValue === '1') {
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponValue);
       if (weapon) setName(`我的${weapon.name}`);
     } else {
@@ -133,14 +134,18 @@ export const EquipmentModal = ({
     }
   };
 
-  const applyChengyin = (nextSubStats: { type: string; value: string }[], nextMainType: string, nextDingyinType: string) => {
+  const applyChengyin = (
+    nextSubStats: { type: string; value: string }[],
+    nextMainType: string,
+    nextDingyinType: string
+  ) => {
     if (!isChengyin) return;
-    if (nextMainType && nextMainType !== "生存类词条") {
+    if (nextMainType && nextMainType !== '生存类词条') {
       const max = CommonData.MAX_VALUES[nextMainType];
       if (max) setMainStatValue((max * 0.94).toFixed(1));
     }
     nextSubStats.forEach((sub, idx) => {
-      if (!sub.type || sub.type === "生存类词条") return;
+      if (!sub.type || sub.type === '生存类词条') return;
       const max = CommonData.MAX_VALUES[sub.type];
       if (max) {
         nextSubStats[idx] = { ...sub, value: (max * 0.94).toFixed(1) };
@@ -154,7 +159,7 @@ export const EquipmentModal = ({
 
   const handleSlotChange = (value: string) => {
     setSlotId(value);
-    if (value !== "1") setWeaponTypeId("");
+    if (value !== '1') setWeaponTypeId('');
     handleAutoName(value, weaponTypeId);
   };
 
@@ -175,14 +180,14 @@ export const EquipmentModal = ({
   }, [isChengyin, open]);
 
   const handleSave = () => {
-    const slotName = slotOptions.find((s) => s.id === slotId)?.name || "";
-    const mainIsSurvival = mainStatType === "生存类词条" || mainStatType === "生存向";
-    const mainValue = mainIsSurvival ? 0 : parseFloat(mainStatValue || "0");
+    const slotName = slotOptions.find((s) => s.id === slotId)?.name || '';
+    const mainIsSurvival = mainStatType === '生存类词条' || mainStatType === '生存向';
+    const mainValue = mainIsSurvival ? 0 : parseFloat(mainStatValue || '0');
     const finalSubStats = subStats
       .filter((sub) => sub.type)
       .map((sub) => {
-        const isSurvival = sub.type === "生存类词条" || sub.type === "生存向";
-        const value = isSurvival ? 0 : parseFloat(sub.value || "0");
+        const isSurvival = sub.type === '生存类词条' || sub.type === '生存向';
+        const value = isSurvival ? 0 : parseFloat(sub.value || '0');
         return {
           type: sub.type,
           value,
@@ -193,22 +198,22 @@ export const EquipmentModal = ({
       id: initialEquip?.id ?? Date.now(),
       slotId,
       slotName,
-      weaponTypeId: slotId === "1" ? weaponTypeId || null : null,
+      weaponTypeId: slotId === '1' ? weaponTypeId || null : null,
       name: name || `我的${slotName}`,
       isChengyin,
       isPurple,
       isConvertible,
-      icon: iconPath.replace("/", ""),
+      icon: iconPath.replace('/', ''),
       mainStat: {
         type: mainStatType,
         value: mainValue,
         isPercent: !mainIsSurvival && CommonData.PERCENT_STATS.includes(mainStatType),
       },
       dingyinStat:
-        dingyinType && dingyinType !== "无"
+        dingyinType && dingyinType !== '无'
           ? {
               type: dingyinType,
-              value: parseFloat(dingyinValue || "0"),
+              value: parseFloat(dingyinValue || '0'),
               isPercent: CommonData.PERCENT_STATS.includes(dingyinType),
             }
           : null,
@@ -217,15 +222,15 @@ export const EquipmentModal = ({
     onSave(equip, !initialEquip);
   };
 
-  const disableMainInput = isChengyin || mainStatType === "生存类词条";
+  const disableMainInput = isChengyin || mainStatType === '生存类词条';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{initialEquip ? "修改装备" : "录入装备"}</DialogTitle>
+          <DialogTitle>{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
@@ -248,7 +253,7 @@ export const EquipmentModal = ({
                 <Select
                   value={weaponTypeId}
                   onValueChange={handleWeaponChange}
-                  disabled={slotId !== "1"}
+                  disabled={slotId !== '1'}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="选择种类" />
@@ -297,7 +302,7 @@ export const EquipmentModal = ({
                   value={mainStatType}
                   onValueChange={(value) => {
                     setMainStatType(value);
-                    if (value === "生存类词条") setMainStatValue("");
+                    if (value === '生存类词条') setMainStatValue('');
                     applyChengyin(subStats, value, dingyinType);
                   }}
                 >
@@ -323,7 +328,7 @@ export const EquipmentModal = ({
                   <Button
                     variant="outline"
                     type="button"
-                    disabled={!mainStatType || mainStatType === "生存类词条"}
+                    disabled={!mainStatType || mainStatType === '生存类词条'}
                     onClick={() => {
                       const max = CommonData.MAX_VALUES[mainStatType];
                       if (max) setMainStatValue(max.toString());
@@ -338,7 +343,7 @@ export const EquipmentModal = ({
               <Label>副词条（4条）</Label>
               <div className="space-y-2">
                 {subStats.map((sub, idx) => {
-                  const disableValue = isChengyin || sub.type === "生存类词条";
+                  const disableValue = isChengyin || sub.type === '生存类词条';
                   return (
                     <div key={`sub-${idx}`} className="grid grid-cols-[1.2fr_0.8fr] gap-2">
                       <Select
@@ -359,7 +364,7 @@ export const EquipmentModal = ({
                               key={`${stat}-${idx}`}
                               value={stat}
                               disabled={
-                                stat !== "生存类词条" &&
+                                stat !== '生存类词条' &&
                                 subStats.some((other, sIdx) => sIdx !== idx && other.type === stat)
                               }
                             >
@@ -383,7 +388,7 @@ export const EquipmentModal = ({
                         <Button
                           variant="outline"
                           type="button"
-                          disabled={!sub.type || sub.type === "生存类词条"}
+                          disabled={!sub.type || sub.type === '生存类词条'}
                           onClick={() => {
                             const max = CommonData.MAX_VALUES[sub.type];
                             if (max) {
@@ -421,13 +426,13 @@ export const EquipmentModal = ({
                     type="number"
                     value={dingyinValue}
                     onChange={(event) => setDingyinValue(event.target.value)}
-                    disabled={dingyinType === "无"}
+                    disabled={dingyinType === '无'}
                     placeholder="数值"
                   />
                   <Button
                     variant="outline"
                     type="button"
-                    disabled={dingyinType === "无"}
+                    disabled={dingyinType === '无'}
                     onClick={() => {
                       const max = CommonData.MAX_VALUES[dingyinType];
                       if (max) setDingyinValue(max.toString());
@@ -441,9 +446,15 @@ export const EquipmentModal = ({
           </div>
           <div className="space-y-3">
             <Label>装备预览</Label>
-            <div className="border rounded-lg p-4 flex flex-col items-center gap-3">
-              <Image src={iconPath} alt="预览" width={120} height={120} className="rounded-md border" />
-              <div className="text-sm text-muted-foreground">点击保存后将更新装备图标</div>
+            <div className="flex flex-col items-center gap-3 rounded-lg border p-4">
+              <Image
+                src={iconPath}
+                alt="预览"
+                width={120}
+                height={120}
+                className="rounded-md border"
+              />
+              <div className="text-muted-foreground text-sm">点击保存后将更新装备图标</div>
             </div>
           </div>
         </div>

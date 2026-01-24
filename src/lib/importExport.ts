@@ -1,12 +1,12 @@
-import { CommonData } from "./data/commonData";
-import type { EquipItem } from "./types";
+import { CommonData } from './data/commonData';
+import type { EquipItem } from './types';
 
-const KEY = "YYSS2024";
+const KEY = 'YYSS2024';
 
 export const encryptData = (data: unknown): string | null => {
   try {
     const jsonStr = JSON.stringify(data);
-    let encrypted = "";
+    let encrypted = '';
     for (let i = 0; i < jsonStr.length; i++) {
       encrypted += String.fromCharCode(jsonStr.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
     }
@@ -21,7 +21,7 @@ export const decryptData = (encryptedStr: string): any | null => {
   try {
     const decoded = atob(encryptedStr);
     const decodedStr = decodeURIComponent(decoded);
-    let decrypted = "";
+    let decrypted = '';
     for (let i = 0; i < decodedStr.length; i++) {
       decrypted += String.fromCharCode(decodedStr.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
     }
@@ -63,12 +63,12 @@ export const optimizeEquipData = (equipData: EquipItem[]) => {
 export const restoreEquipData = (optimizedEquip: any): EquipItem => {
   const equip = { ...optimizedEquip } as EquipItem;
   const slotInfo = CommonData.SLOTS.find((s) => s.id === equip.slotId);
-  equip.slotName = slotInfo ? slotInfo.name : "";
-  if (equip.slotId === "1" && equip.weaponTypeId) {
+  equip.slotName = slotInfo ? slotInfo.name : '';
+  if (equip.slotId === '1' && equip.weaponTypeId) {
     const weaponInfo = CommonData.WEAPON_TYPES.find((w) => w.id === equip.weaponTypeId);
-    equip.icon = weaponInfo ? weaponInfo.icon : "icon/icon1.jpg";
+    equip.icon = weaponInfo ? weaponInfo.icon : 'icon/icon1.jpg';
   } else {
-    equip.icon = slotInfo ? slotInfo.icon : "icon/icon1.jpg";
+    equip.icon = slotInfo ? slotInfo.icon : 'icon/icon1.jpg';
   }
   equip.mainStat.isPercent = CommonData.PERCENT_STATS.includes(equip.mainStat.type);
   equip.subStats = equip.subStats.map((sub: any) => ({
