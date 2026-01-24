@@ -177,13 +177,13 @@ export const CompareTab = ({
                     {testEquip.name}
                     {assumeChengyin ? ' (拟)' : ''}
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs">
-                    <span className="text-slate-400">
-                      {testEquip.slotName} {testEquip.isChengyin ? '(承音)' : ''}
+                  <div className="flex items-center gap-1.5 text-xs flex-nowrap">
+                    <span className="text-slate-400 shrink-0">
+                      {testEquip.slotName}{testEquip.isChengyin ? '(承)' : ''}
                     </span>
                     <span
                       className={cn(
-                        'px-1.5 py-0.5 rounded text-[10px] font-medium border',
+                        'px-1.5 py-0.5 rounded text-[10px] font-medium border shrink-0',
                         getCompletenessColor(completeness)
                       )}
                     >

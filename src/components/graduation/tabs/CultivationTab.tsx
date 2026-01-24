@@ -200,31 +200,31 @@ export const CultivationTab = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="border-border/60 bg-card space-y-3 rounded-lg border p-4">
-        <div className="flex items-center justify-between">
-          <div className="font-medium text-yellow-300">培养总结</div>
-          <div className="text-muted-foreground text-sm">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="border-border/60 bg-card space-y-2 sm:space-y-3 rounded-lg border p-2.5 sm:p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+          <div className="font-medium text-yellow-300 text-sm sm:text-base">培养总结</div>
+          <div className="text-muted-foreground text-[10px] sm:text-sm">
             全词条统计（按满值比）总和：
             <span className="ml-1 font-semibold text-yellow-300">
               {cultivationSummary.totalStatsCount.toFixed(1)}/40条
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-1.5 sm:gap-2 md:grid-cols-3">
           {cultivationSummary.sortedStats.map(([stat, count]) => (
             <div
               key={stat}
-              className="border-border/60 bg-background/40 rounded-md border p-2 text-xs"
+              className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs"
             >
-              <div className="text-foreground font-medium">{stat}</div>
-              <div className="text-muted-foreground mt-1">{count.toFixed(2)}条</div>
+              <div className="text-foreground font-medium truncate">{stat}</div>
+              <div className="text-muted-foreground mt-0.5 sm:mt-1">{count.toFixed(2)}条</div>
             </div>
           ))}
         </div>
-        <div className="border-border/60 bg-background/40 rounded-md border p-2 text-xs">
+        <div className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs">
           <div className="text-foreground font-medium">定音词条总结</div>
-          <div className="text-muted-foreground mt-1">
+          <div className="text-muted-foreground mt-0.5 sm:mt-1">
             总体占满值百分比：
             <span className="ml-1 font-semibold text-yellow-300">
               {cultivationSummary.dingyinPercent.toFixed(1)}%
@@ -233,23 +233,23 @@ export const CultivationTab = ({
         </div>
       </div>
 
-      <Button onClick={startCultivation} disabled={status.running}>
+      <Button size="sm" onClick={startCultivation} disabled={status.running} className="text-xs sm:text-sm">
         {status.running ? '分析中...' : '计算培养建议'}
       </Button>
 
       {status.running && (
-        <div className="text-muted-foreground text-sm">
+        <div className="text-muted-foreground text-[10px] sm:text-sm">
           {status.text} ({status.percent.toFixed(1)}%)
         </div>
       )}
 
       {status.result && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {status.result.bestImprovementEquip && (
-            <div className="border-yellow-500/40 bg-card rounded-lg border p-4 space-y-4">
+            <div className="border-yellow-500/40 bg-card rounded-lg border p-2.5 sm:p-4 space-y-3 sm:space-y-4">
               {/* 装备头部信息 */}
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden shrink-0">
                   {status.result.bestImprovementEquip.equip?.icon ? (
                     <img
                       src={status.result.bestImprovementEquip.equip.icon}
@@ -257,66 +257,67 @@ export const CultivationTab = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-2xl text-muted-foreground">
+                    <span className="text-xl sm:text-2xl text-muted-foreground">
                       {status.result.bestImprovementEquip.slotName.charAt(0)}
                     </span>
                   )}
                 </div>
-                <div className="flex-1">
-                  <div className="text-lg font-semibold text-yellow-300">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm sm:text-lg font-semibold text-yellow-300">
                     {status.result.bestImprovementEquip.slotName}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm text-muted-foreground truncate">
                     {status.result.bestImprovementEquip.equip?.name || '未命名装备'}
                   </div>
-                  <div className="text-xs text-muted-foreground">提升空间最大</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间最大</div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs text-muted-foreground">提升空间</div>
-                  <div className="text-2xl font-bold text-red-400">
+                <div className="text-right shrink-0">
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
               </div>
 
               {/* 分析结果说明 */}
-              <div className="border-l-2 border-yellow-500/60 bg-yellow-500/10 px-3 py-2 text-sm">
+              <div className="border-l-2 border-yellow-500/60 bg-yellow-500/10 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm">
                 <span className="font-semibold text-yellow-300">分析结果：</span>
-                该部位当前装备的贡献率（所有主副词条加起来提高的毕业率）为{' '}
+                当前贡献率{' '}
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.originalContribution.toFixed(2)}%
                 </span>
-                ，最优词条配置的贡献率上限为{' '}
+                ，上限{' '}
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%
                 </span>
-                ，提升空间为{' '}
+                ，提升空间{' '}
                 <span className="font-semibold text-red-400">
                   {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                 </span>
-                ，是所有部位中提升空间最大的一个。基于此，建议优先培养或更换此部位的装备。
+                <span className="hidden sm:inline">
+                  ，是所有部位中提升空间最大的一个。建议优先培养或更换此部位的装备。
+                </span>
               </div>
 
               {/* 推荐词条配置 */}
-              <div className="border-border/60 bg-background/40 rounded-lg border p-4 space-y-3">
-                <div className="flex items-center gap-2 text-yellow-300 font-medium">
+              <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
+                <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
                   <span>推荐词条配置</span>
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  以下词条配置可以最大化该部位对毕业率的贡献（
-                  {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）：
+                <div className="text-[10px] sm:text-xs text-muted-foreground">
+                  最大化贡献（{status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）的配置：
                 </div>
 
                 {/* 主词条 */}
                 {status.result.bestImprovementEquip.bestMainStat && (
-                  <div className="space-y-2">
-                    <div className="text-xs text-muted-foreground">主词条</div>
-                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2">
-                      <div className="font-medium">
+                  <div className="space-y-1 sm:space-y-2">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
+                      <div className="font-medium text-xs sm:text-base">
                         {status.result.bestImprovementEquip.bestMainStat.stat}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-[10px] sm:text-xs text-muted-foreground">
                         满值：{CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.bestImprovementEquip.bestMainStat.stat) ? '%' : ''}
                       </div>
@@ -326,20 +327,20 @@ export const CultivationTab = ({
 
                 {/* 副词条 */}
                 {status.result.bestImprovementEquip.bestSubStats?.length > 0 && (
-                  <div className="space-y-2">
-                    <div className="text-xs text-muted-foreground">
+                  <div className="space-y-1 sm:space-y-2">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">
                       副词条（推荐{status.result.bestImprovementEquip.bestSubStats.length}条）
                     </div>
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.bestImprovementEquip.bestSubStats.map((stat: any, idx: number) => (
                         <div
                           key={stat.stat}
-                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2"
+                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1 sm:py-2"
                         >
-                          <div className="font-medium">
+                          <div className="font-medium text-[10px] sm:text-base truncate">
                             {idx + 1}. {stat.stat}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-[9px] sm:text-xs text-muted-foreground">
                             满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>
@@ -353,10 +354,10 @@ export const CultivationTab = ({
           )}
 
           {status.result.secondBestWeapon && (
-            <div className="border-border/60 bg-card rounded-lg border p-4 space-y-4">
+            <div className="border-border/60 bg-card rounded-lg border p-2.5 sm:p-4 space-y-3 sm:space-y-4">
               {/* 装备头部信息 */}
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden shrink-0">
                   {status.result.secondBestWeapon.equip?.icon ? (
                     <img
                       src={status.result.secondBestWeapon.equip.icon}
@@ -364,48 +365,47 @@ export const CultivationTab = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-2xl text-muted-foreground">
+                    <span className="text-xl sm:text-2xl text-muted-foreground">
                       {status.result.secondBestWeapon.slotName.charAt(0)}
                     </span>
                   )}
                 </div>
-                <div className="flex-1">
-                  <div className="text-lg font-semibold">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm sm:text-lg font-semibold">
                     {status.result.secondBestWeapon.slotName}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm text-muted-foreground truncate">
                     {status.result.secondBestWeapon.equip?.name || '未命名装备'}
                   </div>
-                  <div className="text-xs text-muted-foreground">武器提升空间更大者</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">武器提升空间更大者</div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs text-muted-foreground">提升空间</div>
-                  <div className="text-2xl font-bold text-red-400">
+                <div className="text-right shrink-0">
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
               </div>
 
               {/* 推荐词条配置 */}
-              <div className="border-border/60 bg-background/40 rounded-lg border p-4 space-y-3">
-                <div className="flex items-center gap-2 text-yellow-300 font-medium">
+              <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
+                <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
                   <span>推荐词条配置</span>
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  以下词条配置可以最大化该部位对毕业率的贡献（
-                  {status.result.secondBestWeapon.maxContribution.toFixed(2)}%）：
+                <div className="text-[10px] sm:text-xs text-muted-foreground">
+                  最大化贡献（{status.result.secondBestWeapon.maxContribution.toFixed(2)}%）的配置：
                 </div>
 
                 {/* 主词条 */}
                 {status.result.secondBestWeapon.bestMainStat && (
-                  <div className="space-y-2">
-                    <div className="text-xs text-muted-foreground">主词条</div>
-                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2">
-                      <div className="font-medium">
+                  <div className="space-y-1 sm:space-y-2">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
+                      <div className="font-medium text-xs sm:text-base">
                         {status.result.secondBestWeapon.bestMainStat.stat}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-[10px] sm:text-xs text-muted-foreground">
                         满值：{CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.secondBestWeapon.bestMainStat.stat) ? '%' : ''}
                       </div>
@@ -415,20 +415,20 @@ export const CultivationTab = ({
 
                 {/* 副词条 */}
                 {status.result.secondBestWeapon.bestSubStats?.length > 0 && (
-                  <div className="space-y-2">
-                    <div className="text-xs text-muted-foreground">
+                  <div className="space-y-1 sm:space-y-2">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">
                       副词条（推荐{status.result.secondBestWeapon.bestSubStats.length}条）
                     </div>
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.secondBestWeapon.bestSubStats.map((stat: any, idx: number) => (
                         <div
                           key={stat.stat}
-                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2"
+                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1 sm:py-2"
                         >
-                          <div className="font-medium">
+                          <div className="font-medium text-[10px] sm:text-base truncate">
                             {idx + 1}. {stat.stat}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-[9px] sm:text-xs text-muted-foreground">
                             满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>

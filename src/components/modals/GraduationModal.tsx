@@ -232,26 +232,90 @@ export const GraduationModal = ({
                 }
               }}
             />
-            {/* 展开/收起详情面板按钮 - 仅桌面端显示 */}
+            {/* 展开/收起详情面板按钮 */}
             {equippedItems[selectedSlotKey] && (
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden lg:flex w-full text-xs"
+                className="w-full text-xs"
                 onClick={() => setDetailPanelOpen(!detailPanelOpen)}
               >
                 {detailPanelOpen ? (
                   <>
-                    <ChevronLeft className="h-3 w-3 mr-1" />
-                    收起装备详情
+                    <ChevronLeft className="h-3 w-3 mr-1 hidden lg:inline" />
+                    <span className="lg:hidden">收起详情</span>
+                    <span className="hidden lg:inline">收起装备详情</span>
                   </>
                 ) : (
                   <>
-                    <ChevronRight className="h-3 w-3 mr-1" />
-                    查看装备详情
+                    <ChevronRight className="h-3 w-3 mr-1 hidden lg:inline" />
+                    <span className="lg:hidden">查看详情</span>
+                    <span className="hidden lg:inline">查看装备详情</span>
                   </>
                 )}
               </Button>
+            )}
+
+            {/* 移动端装备详情面板 */}
+            {detailPanelOpen && equippedItems[selectedSlotKey] && (
+              <div className="lg:hidden border-border/60 bg-card rounded-lg border p-2 space-y-1.5">
+                <div className="text-[10px] font-medium text-center border-b border-border/40 pb-1.5">
+                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                  {/* 左列：主词条 + 定音 */}
+                  <div className="space-y-1">
+                    {equippedItems[selectedSlotKey]?.mainStat && (
+                      <div>
+                        <div className="text-muted-foreground">主词条</div>
+                        <div className="flex justify-between">
+                          <span className="truncate">{equippedItems[selectedSlotKey]?.mainStat.type}</span>
+                          <span className="text-yellow-300 shrink-0 ml-1">
+                            {equippedItems[selectedSlotKey]?.mainStat.value}
+                            {equippedItems[selectedSlotKey]?.mainStat.isPercent ? '%' : ''}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {equippedItems[selectedSlotKey]?.dingyinStat && (
+                      <div>
+                        <div className="text-muted-foreground">定音</div>
+                        <div className="flex justify-between">
+                          <span className="truncate">{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
+                          <span className="text-yellow-300 shrink-0 ml-1">
+                            {equippedItems[selectedSlotKey]?.dingyinStat?.value}
+                            {equippedItems[selectedSlotKey]?.dingyinStat?.isPercent ? '%' : ''}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {/* 右列：副词条 */}
+                  <div className="space-y-0.5">
+                    <div className="text-muted-foreground">副词条</div>
+                    {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
+                      <div key={idx} className="flex justify-between">
+                        <span className="truncate">{sub.type}</span>
+                        <span className="text-yellow-300 shrink-0 ml-1">
+                          {sub.value}{sub.isPercent ? '%' : ''}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* 标签 */}
+                <div className="flex gap-1.5 pt-1 flex-wrap justify-center">
+                  {equippedItems[selectedSlotKey]?.isConvertible && (
+                    <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">可转律</span>
+                  )}
+                  {equippedItems[selectedSlotKey]?.isChengyin && (
+                    <span className="text-[9px] bg-yellow-500/20 text-yellow-300 px-1 py-0.5 rounded">承音</span>
+                  )}
+                  {equippedItems[selectedSlotKey]?.isPurple && (
+                    <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1 py-0.5 rounded">紫装</span>
+                  )}
+                </div>
+              </div>
             )}
           </div>
 
