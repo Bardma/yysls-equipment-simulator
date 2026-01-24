@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next
+out
+build
+
+# Misc
+*.min.js
+*.min.css
+package-lock.json
