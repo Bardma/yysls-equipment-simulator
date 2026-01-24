@@ -3,6 +3,7 @@
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface GraduationRatePanelProps {
   graduationInfo: {
@@ -79,6 +80,24 @@ export const GraduationRatePanel = ({
           <span className="text-muted-foreground text-xs">
             提前获得下半赛季属性（毕业率将虚高）
           </span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 text-[10px] cursor-help">
+                ?
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="bg-zinc-900 border border-zinc-700 p-2" hideArrow>
+              <div className="text-xs space-y-1">
+                <div className="text-amber-400 font-medium mb-1">增加属性</div>
+                <div className="text-zinc-300">精准率：+1.4%</div>
+                <div className="text-zinc-500 pl-2">劲：+14</div>
+                <div className="text-zinc-500 pl-2">敏：+14</div>
+                <div className="text-zinc-500 pl-2">势：+14</div>
+                <div className="text-zinc-500 pl-2">体：+14</div>
+                <div className="text-zinc-500 pl-2">御：+14</div>
+              </div>
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         <Button
