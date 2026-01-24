@@ -333,28 +333,28 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="relative z-50 w-full shrink-0 border-b border-violet-500/20 bg-linear-to-r from-violet-950/80 via-slate-900/90 to-indigo-950/80 backdrop-blur-md">
-        <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 via-transparent to-indigo-500/5 pointer-events-none" />
+      <header className="relative z-50 w-full shrink-0 border-b border-slate-700/50 bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-md">
+        <div className="absolute inset-0 bg-linear-to-r from-slate-500/5 via-transparent to-slate-500/5 pointer-events-none" />
         <div className="container relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-linear-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/25">
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-linear-to-br from-slate-600 to-slate-700 shadow-lg shadow-slate-900/50 border border-slate-500/20">
               <span className="text-white text-lg">⚔</span>
             </div>
             <div>
-              <div className="font-bold tracking-tight text-lg bg-linear-to-r from-violet-200 via-white to-indigo-200 bg-clip-text text-transparent">
+              <div className="font-bold tracking-tight text-lg bg-linear-to-r from-slate-200 via-white to-slate-200 bg-clip-text text-transparent">
                 燕云十六声
               </div>
-              <div className="text-xs text-violet-300/60 -mt-0.5">装备毕业率管理器</div>
+              <div className="text-xs text-slate-400 -mt-0.5">装备毕业率管理器</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
-              <span className="text-violet-400 text-xs">当前角色</span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-700/30 border border-slate-600/30">
+              <span className="text-slate-400 text-xs">当前角色</span>
               <Select
                 value={currentAccount ?? ''}
                 onValueChange={(value) => setCurrentAccount(value || null)}
               >
-                <SelectTrigger className="w-[160px] cursor-pointer border-violet-500/30 bg-violet-950/50 text-violet-100 hover:bg-violet-900/50">
+                <SelectTrigger className="w-[160px] cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
                   <SelectValue placeholder="请选择角色" />
                 </SelectTrigger>
                 <SelectContent>
@@ -366,16 +366,16 @@ export default function Home() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="h-6 w-px bg-violet-500/20" />
+            <div className="h-6 w-px bg-slate-600/40" />
             <div className="flex items-center gap-2">
               <input
-                className="h-9 w-36 rounded-md border border-violet-500/30 bg-violet-950/50 px-3 text-sm text-violet-100 placeholder:text-violet-400/50 focus:border-violet-400/50 focus:outline-none focus:ring-1 focus:ring-violet-400/30"
+                className="h-9 w-36 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
                 placeholder="新建角色名称"
                 value={createName}
                 onChange={(event) => setCreateName(event.target.value)}
               />
               <Button
-                className="cursor-pointer bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-md shadow-violet-500/20"
+                className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/30"
                 onClick={handleCreateAccount}
               >
                 + 新建
@@ -390,7 +390,7 @@ export default function Home() {
               </Button>
               <Button
                 variant="outline"
-                className="cursor-pointer border-violet-500/30 text-violet-300 hover:bg-violet-500/10 hover:text-violet-200"
+                className="cursor-pointer border-slate-600/50 text-slate-300 hover:bg-slate-700/30 hover:text-slate-200"
                 onClick={() => setImportExportOpen(true)}
                 disabled={!currentAccount}
               >
@@ -421,15 +421,15 @@ export default function Home() {
         ) : (
           <div className="grid h-full min-h-0 grid-cols-1 gap-6 overflow-hidden lg:grid-cols-[1.1fr_0.9fr]">
             <section className="h-full min-h-0 space-y-4 overflow-y-auto pr-2">
-              <Card className="p-4 border-violet-500/20 bg-linear-to-br from-violet-500/5 via-transparent to-purple-500/5">
+              <Card className="p-4 border-slate-500/20 bg-linear-to-br from-slate-500/5 via-transparent to-slate-600/5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-violet-500/20 text-violet-400 text-xs">📦</span>
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-500/20 text-slate-300 text-xs">📦</span>
                     装备库
                   </h3>
                   <Button
                     size="sm"
-                    className="cursor-pointer bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-md shadow-violet-900/20"
+                    className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/20"
                     onClick={() => {
                       setEditingEquip(null);
                       setEquipModalOpen(true);
@@ -443,8 +443,8 @@ export default function Home() {
                     size="sm"
                     className={`cursor-pointer transition-all ${
                       filter === 'all'
-                        ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-sm'
-                        : 'bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 border-violet-500/30'
+                        ? 'bg-slate-600 hover:bg-slate-500 text-white shadow-sm'
+                        : 'bg-slate-500/10 text-slate-300 hover:bg-slate-500/20 border-slate-500/30'
                     }`}
                     variant={filter === 'all' ? 'default' : 'outline'}
                     onClick={() => setFilter('all')}
@@ -457,8 +457,8 @@ export default function Home() {
                       size="sm"
                       className={`cursor-pointer transition-all ${
                         filter === slot.id
-                          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-sm'
-                          : 'bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 border-violet-500/30'
+                          ? 'bg-slate-600 hover:bg-slate-500 text-white shadow-sm'
+                          : 'bg-slate-500/10 text-slate-300 hover:bg-slate-500/20 border-slate-500/30'
                       }`}
                       variant={filter === slot.id ? 'default' : 'outline'}
                       onClick={() => setFilter(slot.id)}
@@ -470,8 +470,8 @@ export default function Home() {
               </Card>
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {db.length === 0 ? (
-                  <Card className="col-span-full p-8 text-center border-violet-500/20 bg-violet-500/5">
-                    <div className="text-violet-300/70">当前数据库无装备，请点击上方录入装备按钮。</div>
+                  <Card className="col-span-full p-8 text-center border-slate-500/20 bg-slate-500/5">
+                    <div className="text-slate-400">当前数据库无装备，请点击上方录入装备按钮。</div>
                   </Card>
                 ) : (
                   db
@@ -483,10 +483,10 @@ export default function Home() {
                       return (
                         <Card
                           key={equip.id}
-                          className={`cursor-pointer p-4 transition-all border-violet-500/15 bg-linear-to-br from-violet-500/5 to-transparent hover:from-violet-500/10 ${
+                          className={`cursor-pointer p-4 transition-all border-slate-500/20 bg-slate-800/30 hover:bg-slate-800/50 ${
                             isEquipped
                               ? 'border-amber-400 ring-1 ring-amber-400/40 shadow-md shadow-amber-500/10'
-                              : 'hover:border-violet-400/40'
+                              : 'hover:border-slate-400/40'
                           }`}
                           onClick={() => equipItemById(equip.id)}
                         >
@@ -494,7 +494,7 @@ export default function Home() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              className="h-7 w-7 text-violet-400 hover:text-violet-300 hover:bg-violet-500/20"
+                              className="h-7 w-7 text-slate-400 hover:text-slate-300 hover:bg-slate-500/20"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 setEditingEquip(equip);
@@ -521,16 +521,16 @@ export default function Home() {
                               alt={equip.name}
                               width={48}
                               height={48}
-                              className="rounded-md border border-violet-500/30 shadow-sm"
+                              className="rounded-md border border-slate-500/30 shadow-sm"
                             />
                             <div className="flex-1">
-                              <div className="font-medium text-violet-100">{equip.name}</div>
-                              <div className="text-violet-300/60 text-xs">
+                              <div className="font-medium text-slate-100">{equip.name}</div>
+                              <div className="text-slate-400 text-xs">
                                 {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
                               </div>
                             </div>
                           </div>
-                          <Separator className="my-3 bg-violet-500/20" />
+                          <Separator className="my-3 bg-slate-600/40" />
                           <div className="space-y-1.5 text-xs">
                             {(() => {
                               const mainMaxVal = CommonData.MAX_VALUES[equip.mainStat.type] || 0;
@@ -538,11 +538,11 @@ export default function Home() {
                               const isMainHighQuality = mainRatio > 0.875;
                               return (
                                 <div className={`grid grid-cols-[auto_1fr_auto] items-center gap-1 ${
-                                  isMainHighQuality ? 'text-amber-400' : 'text-violet-200'
+                                  isMainHighQuality ? 'text-amber-400' : 'text-[#dfa8ff]'
                                 }`}>
                                   <span className="w-3" />
                                   <span className="truncate">{equip.mainStat.type}</span>
-                                  <span className={`text-right tabular-nums ${isMainHighQuality ? 'font-medium' : 'font-medium text-violet-100'}`}>
+                                  <span className={`text-right tabular-nums ${isMainHighQuality ? 'font-medium' : 'font-medium'}`}>
                                     +{equip.mainStat.value}
                                     {equip.mainStat.isPercent ? '%' : ''}
                                   </span>
@@ -559,7 +559,7 @@ export default function Home() {
                                   className={`grid grid-cols-[auto_1fr_auto] items-center gap-1 ${
                                     isHighQuality
                                       ? 'text-amber-400'
-                                      : 'text-violet-300/60'
+                                      : 'text-[#dfa8ff]/85'
                                   }`}
                                 >
                                   <span className="w-3 text-center">·</span>
