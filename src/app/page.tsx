@@ -333,38 +333,56 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="border-border/60 bg-background/95 z-50 w-full shrink-0 border-b backdrop-blur">
-        <div className="container mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-4">
-          <div className="font-semibold tracking-tight">燕云十六声装备毕业率管理器</div>
-          <div className="flex items-center gap-2">
-            <Select
-              value={currentAccount ?? ''}
-              onValueChange={(value) => setCurrentAccount(value || null)}
-            >
-              <SelectTrigger className="w-[200px] cursor-pointer">
-                <SelectValue placeholder="-- 请选择/添加角色 --" />
-              </SelectTrigger>
-              <SelectContent>
-                {accounts.map((account) => (
-                  <SelectItem key={account} value={account}>
-                    {account}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <header className="relative z-50 w-full shrink-0 border-b border-violet-500/20 bg-linear-to-r from-violet-950/80 via-slate-900/90 to-indigo-950/80 backdrop-blur-md">
+        <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 via-transparent to-indigo-500/5 pointer-events-none" />
+        <div className="container relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-linear-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/25">
+              <span className="text-white text-lg">⚔</span>
+            </div>
+            <div>
+              <div className="font-bold tracking-tight text-lg bg-linear-to-r from-violet-200 via-white to-indigo-200 bg-clip-text text-transparent">
+                燕云十六声
+              </div>
+              <div className="text-xs text-violet-300/60 -mt-0.5">装备毕业率管理器</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
+              <span className="text-violet-400 text-xs">当前角色</span>
+              <Select
+                value={currentAccount ?? ''}
+                onValueChange={(value) => setCurrentAccount(value || null)}
+              >
+                <SelectTrigger className="w-[160px] cursor-pointer border-violet-500/30 bg-violet-950/50 text-violet-100 hover:bg-violet-900/50">
+                  <SelectValue placeholder="请选择角色" />
+                </SelectTrigger>
+                <SelectContent>
+                  {accounts.map((account) => (
+                    <SelectItem key={account} value={account}>
+                      {account}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="h-6 w-px bg-violet-500/20" />
             <div className="flex items-center gap-2">
               <input
-                className="border-input bg-background h-9 w-40 rounded-md border px-3 text-sm"
+                className="h-9 w-36 rounded-md border border-violet-500/30 bg-violet-950/50 px-3 text-sm text-violet-100 placeholder:text-violet-400/50 focus:border-violet-400/50 focus:outline-none focus:ring-1 focus:ring-violet-400/30"
                 placeholder="新建角色名称"
                 value={createName}
                 onChange={(event) => setCreateName(event.target.value)}
               />
-              <Button className="cursor-pointer" onClick={handleCreateAccount}>
-                + 新建角色
+              <Button
+                className="cursor-pointer bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-md shadow-violet-500/20"
+                onClick={handleCreateAccount}
+              >
+                + 新建
               </Button>
               <Button
-                variant="secondary"
-                className="cursor-pointer"
+                variant="ghost"
+                className="cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
                 onClick={handleDeleteAccount}
                 disabled={!currentAccount}
               >
@@ -372,11 +390,11 @@ export default function Home() {
               </Button>
               <Button
                 variant="outline"
-                className="cursor-pointer"
+                className="cursor-pointer border-violet-500/30 text-violet-300 hover:bg-violet-500/10 hover:text-violet-200"
                 onClick={() => setImportExportOpen(true)}
                 disabled={!currentAccount}
               >
-                导出/导入数据
+                导入/导出
               </Button>
             </div>
           </div>
@@ -385,32 +403,50 @@ export default function Home() {
 
       <main className="container mx-auto min-h-0 max-w-screen-2xl flex-1 overflow-hidden p-4">
         {!currentAccount ? (
-          <Card className="flex min-h-[60vh] flex-col items-center justify-center p-10 text-center">
-            <h2 className="mb-2 text-xl font-semibold">欢迎使用燕云十六声装备毕业率管理器</h2>
-            <p className="text-muted-foreground">请在顶部创建或选择角色后开始录入装备与模拟。</p>
+          <Card className="relative flex min-h-[60vh] flex-col items-center justify-center p-10 text-center overflow-hidden border-violet-500/20 bg-linear-to-br from-violet-500/5 via-transparent to-indigo-500/5">
+            <div className="absolute top-0 left-0 w-48 h-48 bg-linear-to-br from-violet-500/10 to-transparent rounded-br-full pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-linear-to-tl from-indigo-500/10 to-transparent rounded-tl-full pointer-events-none" />
+            <div className="relative">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-2xl bg-linear-to-br from-violet-500 to-indigo-600 shadow-xl shadow-violet-500/30">
+                <span className="text-white text-3xl">⚔</span>
+              </div>
+              <h2 className="mb-3 text-2xl font-bold bg-linear-to-r from-violet-200 via-white to-indigo-200 bg-clip-text text-transparent">
+                欢迎使用燕云十六声装备毕业率管理器
+              </h2>
+              <p className="text-violet-300/70 max-w-md">
+                请在顶部创建或选择角色后开始录入装备与模拟
+              </p>
+            </div>
           </Card>
         ) : (
           <div className="grid h-full min-h-0 grid-cols-1 gap-6 overflow-hidden lg:grid-cols-[1.1fr_0.9fr]">
             <section className="h-full min-h-0 space-y-4 overflow-y-auto pr-2">
-              <Card className="p-4">
+              <Card className="p-4 border-violet-500/20 bg-linear-to-br from-violet-500/5 via-transparent to-purple-500/5">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold">装备库</h3>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-violet-500/20 text-violet-400 text-xs">📦</span>
+                    装备库
+                  </h3>
                   <Button
                     size="sm"
-                    className="cursor-pointer"
+                    className="cursor-pointer bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-md shadow-violet-900/20"
                     onClick={() => {
                       setEditingEquip(null);
                       setEquipModalOpen(true);
                     }}
                   >
-                    录入装备
+                    + 录入装备
                   </Button>
                 </div>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
                   <Button
                     size="sm"
-                    className="cursor-pointer"
-                    variant={filter === 'all' ? 'default' : 'secondary'}
+                    className={`cursor-pointer transition-all ${
+                      filter === 'all'
+                        ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-sm'
+                        : 'bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 border-violet-500/30'
+                    }`}
+                    variant={filter === 'all' ? 'default' : 'outline'}
                     onClick={() => setFilter('all')}
                   >
                     全部
@@ -419,8 +455,12 @@ export default function Home() {
                     <Button
                       key={slot.id}
                       size="sm"
-                      className="cursor-pointer"
-                      variant={filter === slot.id ? 'default' : 'secondary'}
+                      className={`cursor-pointer transition-all ${
+                        filter === slot.id
+                          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-sm'
+                          : 'bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 border-violet-500/30'
+                      }`}
+                      variant={filter === slot.id ? 'default' : 'outline'}
                       onClick={() => setFilter(slot.id)}
                     >
                       {slot.name}
@@ -430,8 +470,8 @@ export default function Home() {
               </Card>
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {db.length === 0 ? (
-                  <Card className="text-muted-foreground col-span-full p-8 text-center">
-                    当前数据库无装备，请点击右上角录入装备按钮。
+                  <Card className="col-span-full p-8 text-center border-violet-500/20 bg-violet-500/5">
+                    <div className="text-violet-300/70">当前数据库无装备，请点击上方录入装备按钮。</div>
                   </Card>
                 ) : (
                   db
@@ -443,10 +483,10 @@ export default function Home() {
                       return (
                         <Card
                           key={equip.id}
-                          className={`cursor-pointer p-4 transition ${
+                          className={`cursor-pointer p-4 transition-all border-violet-500/15 bg-linear-to-br from-violet-500/5 to-transparent hover:from-violet-500/10 ${
                             isEquipped
-                              ? 'border-yellow-400 ring-1 ring-yellow-400/40'
-                              : 'hover:border-primary/50'
+                              ? 'border-amber-400 ring-1 ring-amber-400/40 shadow-md shadow-amber-500/10'
+                              : 'hover:border-violet-400/40'
                           }`}
                           onClick={() => equipItemById(equip.id)}
                         >
@@ -454,7 +494,7 @@ export default function Home() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              className="h-7 w-7"
+                              className="h-7 w-7 text-violet-400 hover:text-violet-300 hover:bg-violet-500/20"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 setEditingEquip(equip);
@@ -466,7 +506,7 @@ export default function Home() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              className="text-destructive h-7 w-7"
+                              className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 h-7 w-7"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 handleDeleteEquip(equip.id);
@@ -481,36 +521,56 @@ export default function Home() {
                               alt={equip.name}
                               width={48}
                               height={48}
-                              className="border-border/60 rounded-md border"
+                              className="rounded-md border border-violet-500/30 shadow-sm"
                             />
                             <div className="flex-1">
-                              <div className="font-medium">{equip.name}</div>
-                              <div className="text-muted-foreground text-xs">
+                              <div className="font-medium text-violet-100">{equip.name}</div>
+                              <div className="text-violet-300/60 text-xs">
                                 {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
                               </div>
                             </div>
                           </div>
-                          <Separator className="my-3" />
-                          <div className="space-y-1 text-xs">
-                            <div className="flex justify-between">
-                              <span>{equip.mainStat.type}</span>
-                              <span>
-                                +{equip.mainStat.value}
-                                {equip.mainStat.isPercent ? '%' : ''}
-                              </span>
-                            </div>
-                            {equip.subStats.map((sub, idx) => (
-                              <div
-                                key={`${equip.id}-sub-${idx}`}
-                                className="text-muted-foreground flex justify-between"
-                              >
-                                <span>· {sub.type}</span>
-                                <span>
-                                  +{sub.value}
-                                  {sub.isPercent ? '%' : ''}
-                                </span>
-                              </div>
-                            ))}
+                          <Separator className="my-3 bg-violet-500/20" />
+                          <div className="space-y-1.5 text-xs">
+                            {(() => {
+                              const mainMaxVal = CommonData.MAX_VALUES[equip.mainStat.type] || 0;
+                              const mainRatio = mainMaxVal > 0 ? equip.mainStat.value / mainMaxVal : 0;
+                              const isMainHighQuality = mainRatio > 0.875;
+                              return (
+                                <div className={`grid grid-cols-[auto_1fr_auto] items-center gap-1 ${
+                                  isMainHighQuality ? 'text-amber-400' : 'text-violet-200'
+                                }`}>
+                                  <span className="w-3" />
+                                  <span className="truncate">{equip.mainStat.type}</span>
+                                  <span className={`text-right tabular-nums ${isMainHighQuality ? 'font-medium' : 'font-medium text-violet-100'}`}>
+                                    +{equip.mainStat.value}
+                                    {equip.mainStat.isPercent ? '%' : ''}
+                                  </span>
+                                </div>
+                              );
+                            })()}
+                            {equip.subStats.map((sub, idx) => {
+                              const maxVal = CommonData.MAX_VALUES[sub.type] || 0;
+                              const ratio = maxVal > 0 ? sub.value / maxVal : 0;
+                              const isHighQuality = ratio > 0.875;
+                              return (
+                                <div
+                                  key={`${equip.id}-sub-${idx}`}
+                                  className={`grid grid-cols-[auto_1fr_auto] items-center gap-1 ${
+                                    isHighQuality
+                                      ? 'text-amber-400'
+                                      : 'text-violet-300/60'
+                                  }`}
+                                >
+                                  <span className="w-3 text-center">·</span>
+                                  <span className="truncate">{sub.type}</span>
+                                  <span className={`text-right tabular-nums ${isHighQuality ? 'font-medium' : ''}`}>
+                                    +{sub.value}
+                                    {sub.isPercent ? '%' : ''}
+                                  </span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </Card>
                       );
@@ -519,8 +579,8 @@ export default function Home() {
               </div>
             </section>
 
-            <section className="flex flex-col gap-2 self-start overflow-hidden">
-              <Card className="p-3">
+            <section className="flex flex-col gap-3 self-start overflow-hidden">
+              <Card className="p-4 gap-2 border-sky-500/20 bg-linear-to-br from-sky-500/5 via-transparent to-cyan-500/5">
                 <div
                   role="button"
                   tabIndex={0}
@@ -533,7 +593,10 @@ export default function Home() {
                     }
                   }}
                 >
-                  <h3 className="font-semibold">穿戴模拟</h3>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 text-xs">⚔</span>
+                    穿戴模拟
+                  </h3>
                   {rightPanels.simulation ? (
                     <ChevronUp className="text-muted-foreground h-4 w-4" />
                   ) : (
@@ -541,10 +604,10 @@ export default function Home() {
                   )}
                 </div>
                 {rightPanels.simulation ? (
-                  <div className="mt-3 space-y-3">
+                  <div className="mt-3 space-y-4">
                     <div className="grid grid-cols-3 gap-3">
                       <div className="space-y-2">
-                        <label className="text-muted-foreground text-xs">流派</label>
+                        <label className="text-sky-300/80 text-xs font-medium">流派</label>
                         <Select
                           value={currentClass}
                           onValueChange={(value) => setCurrentClass(currentAccount, value, db)}
@@ -562,7 +625,7 @@ export default function Home() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-muted-foreground text-xs">弓诀</label>
+                        <label className="text-sky-300/80 text-xs font-medium">弓诀</label>
                         <Select
                           value={bowType}
                           onValueChange={(value) => setBowType(currentAccount, value)}
@@ -580,7 +643,7 @@ export default function Home() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-muted-foreground text-xs">套装</label>
+                        <label className="text-sky-300/80 text-xs font-medium">套装</label>
                         <Select
                           value={setType}
                           onValueChange={(value) => setSetType(currentAccount, value)}
@@ -613,33 +676,35 @@ export default function Home() {
                       ).map((slotKey) => {
                         const item = equippedItems[slotKey];
                         return (
-                          <Card key={slotKey} className="flex items-center gap-2 p-2">
-                            <div className="border-border/60 flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border">
+                          <Card key={slotKey} className="p-2 border-sky-500/10 hover:border-sky-500/30 transition-colors">
+                            <div className="border-sky-500/20 bg-sky-950/20 relative flex h-16 w-full items-center justify-center overflow-hidden rounded-md border">
                               {item ? (
-                                <Image
-                                  src={`/${item.icon}`}
-                                  alt={item.name}
-                                  width={40}
-                                  height={40}
-                                />
+                                <>
+                                  <Image
+                                    src={`/${item.icon}`}
+                                    alt={item.name}
+                                    width={64}
+                                    height={64}
+                                    className="object-cover"
+                                  />
+                                  <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center bg-black/70 py-1">
+                                    <span className="text-xs font-medium text-white px-1 text-center leading-tight truncate">
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                </>
                               ) : (
                                 <span className="text-muted-foreground text-xs">
                                   {SLOT_LABELS[slotKey]}
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs">
-                              <div className="font-medium">{SLOT_LABELS[slotKey]}</div>
-                              <div className="text-muted-foreground">
-                                {item ? item.name : '未穿戴'}
-                              </div>
-                            </div>
                           </Card>
                         );
                       })}
                     </div>
                     <div className="space-y-2">
-                      <div className="text-muted-foreground text-xs">心法配置</div>
+                      <div className="text-sky-300/80 text-xs font-medium">心法配置</div>
                       <div className="grid grid-cols-4 gap-2">
                         {Array.from({ length: 4 }).map((_, idx) => {
                           const name = xinfaLoadout[idx] || '';
@@ -659,25 +724,34 @@ export default function Home() {
                                 setXinfaModalOpen(true);
                               }}
                             >
-                              <div className="flex flex-col items-center gap-1">
-                                <div
-                                  className={`flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border ${
-                                    isLocked ? 'border-muted-foreground/40' : 'border-border/60'
-                                  }`}
-                                >
-                                  {name ? (
+                              <div
+                                className={`relative flex h-16 w-full items-center justify-center overflow-hidden rounded-md border ${
+                                  isLocked ? 'border-muted-foreground/40' : 'border-border/60'
+                                }`}
+                              >
+                                {name ? (
+                                  <>
                                     <Image
                                       src={`/icon/${name}.jpg`}
                                       alt={name}
-                                      width={40}
-                                      height={40}
+                                      width={64}
+                                      height={64}
+                                      className="object-cover"
                                     />
-                                  ) : (
-                                    <span className="text-muted-foreground text-[10px]">空</span>
-                                  )}
-                                </div>
-                                <span>{name || '点击选择'}</span>
-                                {isLocked ? <span className="text-[10px]">不可变更</span> : null}
+                                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-black/70 py-1">
+                                      <span className="text-xs font-medium text-white px-1 text-center leading-tight truncate w-full">
+                                        {name}
+                                      </span>
+                                      {isLocked ? (
+                                        <span className="text-[10px] text-white/70">不可变更</span>
+                                      ) : null}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <span className="text-muted-foreground text-[10px]">
+                                    点击选择
+                                  </span>
+                                )}
                               </div>
                             </button>
                           );
@@ -688,7 +762,7 @@ export default function Home() {
                 ) : null}
               </Card>
 
-              <Card className="p-3">
+              <Card className="p-4 gap-2 overflow-hidden border-amber-500/20 bg-linear-to-br from-amber-500/5 via-transparent to-orange-500/5">
                 <div
                   role="button"
                   tabIndex={0}
@@ -701,7 +775,10 @@ export default function Home() {
                     }
                   }}
                 >
-                  <h3 className="font-semibold">当前毕业率</h3>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/20 text-amber-400 text-xs">🎓</span>
+                    当前毕业率
+                  </h3>
                   {rightPanels.graduation ? (
                     <ChevronUp className="text-muted-foreground h-4 w-4" />
                   ) : (
@@ -709,25 +786,34 @@ export default function Home() {
                   )}
                 </div>
                 {rightPanels.graduation ? (
-                  <div className="mt-3 space-y-2">
+                  <div className="mt-3 space-y-4">
                     {rotation.length === 0 || !graduationInfo ? (
                       <div className="text-muted-foreground text-sm">
                         毕业率表格未配置，请等待更新
                       </div>
                     ) : (
-                      <div className="space-y-1">
-                        <div className="text-3xl font-semibold text-yellow-300">
-                          {graduationInfo.accurate}
-                        </div>
-                        <div className="text-muted-foreground text-sm">
-                          excel表格显示：{graduationInfo.excel}
-                        </div>
-                        <div className="text-muted-foreground text-sm">
-                          轴期望秒伤：{graduationInfo.dps}
+                      <div className="relative rounded-xl bg-linear-to-br from-amber-500/10 via-yellow-500/5 to-orange-500/10 p-4 border border-yellow-500/20">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-yellow-400/20 to-transparent rounded-bl-full pointer-events-none" />
+                        <div className="relative space-y-3">
+                          <div className="text-5xl font-bold bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400 bg-clip-text text-transparent drop-shadow-sm tracking-tight">
+                            {graduationInfo.accurate}
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                            <div className="flex items-center gap-2 text-sm">
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded bg-yellow-500/20 text-yellow-400 text-xs font-medium">E</span>
+                              <span className="text-muted-foreground">表格显示</span>
+                              <span className="ml-auto font-medium text-yellow-200/90">{graduationInfo.excel}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded bg-orange-500/20 text-orange-400 text-xs font-medium">D</span>
+                              <span className="text-muted-foreground">轴期望秒伤</span>
+                              <span className="ml-auto font-medium text-orange-200/90">{graduationInfo.dps.toLocaleString()}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 px-1">
                       <Checkbox
                         checked={earlySeasonBonus}
                         onCheckedChange={(value) =>
@@ -739,7 +825,7 @@ export default function Home() {
                       </span>
                     </div>
                     <Button
-                      className="w-full cursor-pointer"
+                      className="w-full cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
                       onClick={() => setGradModalOpen(true)}
                     >
                       毕业率分析
@@ -749,7 +835,7 @@ export default function Home() {
               </Card>
 
               <Card
-                className={`p-3 ${rightPanels.stats ? 'flex-1 overflow-y-auto' : 'overflow-hidden'}`}
+                className={`p-4 gap-2 border-emerald-500/20 bg-linear-to-br from-emerald-500/5 via-transparent to-teal-500/5 ${rightPanels.stats ? 'flex-1 overflow-y-auto' : 'overflow-hidden'}`}
               >
                 <div
                   role="button"
@@ -763,7 +849,10 @@ export default function Home() {
                     }
                   }}
                 >
-                  <h3 className="font-semibold">面板属性</h3>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-emerald-500/20 text-emerald-400 text-xs">📊</span>
+                    面板属性
+                  </h3>
                   {rightPanels.stats ? (
                     <ChevronUp className="text-muted-foreground h-4 w-4" />
                   ) : (
@@ -775,11 +864,11 @@ export default function Home() {
                     {statDisplay.length === 0 ? (
                       <div className="text-muted-foreground text-sm">暂无面板属性</div>
                     ) : (
-                      <div className="space-y-1 text-sm">
+                      <div className="space-y-1.5 text-sm">
                         {statDisplay.map((item) => (
-                          <div key={item.label} className="flex items-center justify-between">
-                            <span className="text-muted-foreground">{item.label}</span>
-                            <span>{item.value}</span>
+                          <div key={item.label} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-emerald-500/5 transition-colors">
+                            <span className="text-emerald-300/70">{item.label}</span>
+                            <span className="font-medium text-emerald-100/90">{item.value}</span>
                           </div>
                         ))}
                       </div>

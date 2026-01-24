@@ -1,0 +1,123 @@
+---
+description: UI设计系统规范 - 定义项目的配色、卡片样式、渐变效果等视觉规范
+globs: "**/*.tsx,**/*.css"
+alwaysApply: false
+---
+
+# UI 设计系统规范
+
+## 主题色配色方案
+
+项目使用深紫色基调背景，各功能区域有独立的主题色：
+
+| 区域 | 主题色 | Tailwind 色系 | 用途 |
+|------|--------|---------------|------|
+| 装备库 | 紫色 | violet/purple | 装备管理、筛选、列表 |
+| 穿戴模拟 | 天蓝色 | sky/cyan | 装备槽位、配置选项 |
+| 毕业率 | 琥珀色 | amber/yellow/orange | 数据展示、分析 |
+| 面板属性 | 翠绿色 | emerald/teal | 属性统计、数值 |
+
+## 卡片样式规范
+
+### 基础卡片结构
+
+```tsx
+// ✅ 推荐的卡片样式
+<Card className="p-4 border-{color}-500/20 bg-linear-to-br from-{color}-500/5 via-transparent to-{color2}-500/5">
+  <h3 className="font-semibold flex items-center gap-2">
+    <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-{color}-500/20 text-{color}-400 text-xs">
+      {icon}
+    </span>
+    {title}
+  </h3>
+</Card>
+```
+
+### 颜色透明度规范
+
+- 边框: `border-{color}-500/20`
+- 背景渐变起点: `from-{color}-500/5`
+- 图标背景: `bg-{color}-500/20`
+- 图标文字: `text-{color}-400`
+- 标签文字: `text-{color}-300/80`
+- 悬停效果: `hover:bg-{color}-500/10`
+
+## 渐变效果
+
+### 背景渐变
+
+使用 `bg-linear-to-br`（右下方向）作为主要渐变方向：
+
+```tsx
+className="bg-linear-to-br from-violet-500/5 via-transparent to-purple-500/5"
+```
+
+### 文字渐变（用于重要数据）
+
+```tsx
+className="text-5xl font-bold bg-linear-to-r from-yellow-300 via-amber-300 to-yellow-400 bg-clip-text text-transparent"
+```
+
+### 按钮渐变
+
+```tsx
+className="bg-linear-to-r from-{color}-600 to-{color2}-600 hover:from-{color}-500 hover:to-{color2}-500 text-white shadow-md shadow-{color}-900/20"
+```
+
+## 装饰性元素
+
+### 光晕效果（用于突出显示区域）
+
+```tsx
+<div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-yellow-400/20 to-transparent rounded-bl-full pointer-events-none" />
+```
+
+## 交互状态
+
+### 悬停效果
+
+```tsx
+// 列表项悬停
+className="hover:bg-{color}-500/5 transition-colors"
+
+// 卡片悬停
+className="hover:border-{color}-400/40 transition-all"
+
+// 按钮悬停（带边框变化）
+className="hover:border-{color}-500/30"
+```
+
+### 选中/激活状态
+
+```tsx
+// 已装备的装备卡片
+className="border-amber-400 ring-1 ring-amber-400/40 shadow-md shadow-amber-500/10"
+
+// 选中的筛选按钮
+className="bg-violet-600 hover:bg-violet-500 text-white shadow-sm"
+```
+
+## 信息徽章样式
+
+用于显示关键指标旁的小标签：
+
+```tsx
+<span className="inline-flex items-center justify-center w-5 h-5 rounded bg-{color}-500/20 text-{color}-400 text-xs font-medium">
+  {letter}
+</span>
+```
+
+## 深色模式背景
+
+全局背景使用带紫色调的深色 + 多层渐变光晕：
+
+```css
+.dark body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 40%, oklch(0.2 0.05 280 / 30%) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, oklch(0.2 0.04 200 / 25%) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 60% 80%, oklch(0.18 0.03 50 / 20%) 0%, transparent 50%),
+    oklch(0.12 0.015 280);
+  background-attachment: fixed;
+}
+```

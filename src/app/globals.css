@@ -86,36 +86,36 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.12 0.015 280);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.16 0.02 280 / 80%);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.18 0.02 280);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: oklch(0.24 0.015 280);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
+  --muted: oklch(0.24 0.015 280);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent: oklch(0.24 0.015 280);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
+  --sidebar: oklch(0.14 0.015 280);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: oklch(0.24 0.015 280);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: oklch(0.556 0 0);
 }
 
@@ -126,6 +126,16 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* 深色模式下的渐变背景 */
+.dark body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 40%, oklch(0.2 0.05 280 / 30%) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, oklch(0.2 0.04 200 / 25%) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 60% 80%, oklch(0.18 0.03 50 / 20%) 0%, transparent 50%),
+    oklch(0.12 0.015 280);
+  background-attachment: fixed;
 }
 
 /* 自定义滚动条样式 */
@@ -139,16 +149,16 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.4 0 0);
+  background: oklch(0.35 0.03 280);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.5 0 0);
+  background: oklch(0.45 0.05 280);
 }
 
 /* 选中文字样式 */
 ::selection {
-  background: oklch(0.6 0.15 250);
+  background: oklch(0.5 0.15 280);
   color: white;
 }
