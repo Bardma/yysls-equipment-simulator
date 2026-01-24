@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { ScanLine } from 'lucide-react';
 import Image from 'next/image';
 
 import { CommonData } from '../../lib/data/commonData';
+import { ocrEquipmentStats } from '../../lib/ocrParser';
 import type { EquipItem } from '../../lib/types';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
@@ -12,6 +14,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { OcrModal } from './OcrModal';
 
 const emptySubStats = () => Array.from({ length: 4 }).map(() => ({ type: '', value: '' }));
 
@@ -40,6 +43,11 @@ export const EquipmentModal = ({
   const [dingyinType, setDingyinType] = useState('无');
   const [dingyinValue, setDingyinValue] = useState('');
   const [subStats, setSubStats] = useState<{ type: string; value: string }[]>(emptySubStats());
+
+  // OCR相关状态
+  const [isOcrModalOpen, setIsOcrModalOpen] = useState(false);
+  const [isOcrLoading, setIsOcrLoading] = useState(false);
+  const [ocrPreviewImage, setOcrPreviewImage] = useState<string | null>(null); // 识别后的预览图
 
   useEffect(() => {
     if (!open) return;
@@ -152,6 +160,86 @@ export const EquipmentModal = ({
 
   // 检查是否选择了武器但未选择武器种类
   const missingWeaponType = slotId === '1' && !weaponTypeId;
+
+  // OCR按钮是否可用：非武器位置直接可用，武器位置需要选择武器类型
+  const canUseOcr = slotId !== '1' || (slotId === '1' && weaponTypeId !== '');
+
+  // 打开OCR模态框
+  const handleOcrClick = () => {
+    setIsOcrModalOpen(true);
+  };
+
+  // OCR识别确认处理
+  const handleOcrConfirm = async (file: File) => {
+    setIsOcrLoading(true);
+    try {
+      const result = await ocrEquipmentStats(file, slotId, weaponTypeId || undefined);
+      console.log('[OCR] Parse result:', result);
+
+      // 设置可转律标记：有[转]说明已转律，不勾选；没有[转]说明可转律，勾选
+      if (result.convertedStat) {
+        // 已经转律过了，不可再转
+        setIsConvertible(false);
+        console.log('[OCR] Has converted stat, setting isConvertible to false');
+      } else {
+        // 没有转律，可以转律
+        setIsConvertible(true);
+        console.log('[OCR] No converted stat, setting isConvertible to true');
+      }
+
+      // 收集所有要填充的副词条（按解析顺序，包括转律词条）
+      const allSubStats: { type: string; value: string }[] = [];
+      const seenTypes = new Set<string>(); // 用于去重
+
+      // 添加副词条（已包含转律词条，按原始顺序）
+      for (const stat of result.subStats) {
+        if (allSubStats.length < 4) {
+          if (!seenTypes.has(stat.type)) {
+            // 不重复的词条正常添加
+            allSubStats.push({ type: stat.type, value: stat.value.toString() });
+            seenTypes.add(stat.type);
+          } else {
+            // 重复的词条设为空
+            console.log('[OCR] Duplicate stat type, skipping:', stat.type);
+          }
+        }
+      }
+
+      // 填充副词条
+      const newSubStats = emptySubStats();
+      allSubStats.forEach((stat, idx) => {
+        newSubStats[idx] = stat;
+      });
+      setSubStats(newSubStats);
+      console.log('[OCR] Setting subStats:', newSubStats);
+
+      // 填充定音词条
+      if (result.dingyinStat) {
+        setDingyinType(result.dingyinStat.type);
+        setDingyinValue(result.dingyinStat.value.toString());
+        console.log('[OCR] Setting dingyin:', result.dingyinStat);
+      }
+
+      // 填充主词条（如果有的话）
+      if (result.mainStat) {
+        setMainStatType(result.mainStat.type);
+        setMainStatValue(result.mainStat.value.toString());
+        console.log('[OCR] Setting mainStat:', result.mainStat);
+      }
+
+      // 保存预览图片供用户校验
+      const imageUrl = URL.createObjectURL(file);
+      setOcrPreviewImage(imageUrl);
+
+      // 关闭OCR模态框
+      setIsOcrModalOpen(false);
+    } catch (error) {
+      console.error('[OCR] Recognition failed:', error);
+      alert('OCR识别失败，请重试或手动输入');
+    } finally {
+      setIsOcrLoading(false);
+    }
+  };
 
   // 计算完成度百分比
   const getCompletionPercent = (type: string, value: string): number | null => {
@@ -285,11 +373,13 @@ export const EquipmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl sm:max-w-2xl">
+      <DialogContent className={ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}>
         <DialogHeader>
           <DialogTitle>{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-5">
+        <div className={ocrPreviewImage ? 'flex gap-4' : ''}>
+        {/* 主表单区域 */}
+        <div className={`space-y-5 ${ocrPreviewImage ? 'flex-1' : ''}`}>
           {/* 顶部区域：装备预览 + 基本信息 */}
           <div className="flex gap-4">
             {/* 装备预览 */}
@@ -579,14 +669,50 @@ export const EquipmentModal = ({
             </div>
           </div>
         </div>
-        <DialogFooter>
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
-            取消
-          </Button>
-          <Button onClick={handleSave} disabled={hasValidationError || missingWeaponType}>
-            保存装备
-          </Button>
+        {/* OCR 预览图区域 */}
+        {ocrPreviewImage && (
+          <div className="w-64 shrink-0 space-y-2">
+            <Label className="text-xs">识别原图（供校验）</Label>
+            <div className="rounded-md border bg-black/20 p-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={ocrPreviewImage}
+                alt="OCR原图"
+                className="max-h-96 w-full rounded object-contain"
+              />
+            </div>
+          </div>
+        )}
+        </div>
+        <DialogFooter className="flex-row justify-between sm:justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handleOcrClick}
+              disabled={!canUseOcr}
+              title={!canUseOcr ? '请先选择武器种类' : 'OCR识别装备词条'}
+            >
+              <ScanLine className="mr-1.5 h-4 w-4" />
+              OCR识别
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={() => onOpenChange(false)}>
+              取消
+            </Button>
+            <Button onClick={handleSave} disabled={hasValidationError || missingWeaponType}>
+              保存装备
+            </Button>
+          </div>
         </DialogFooter>
+
+        {/* OCR识别模态框 */}
+        <OcrModal
+          open={isOcrModalOpen}
+          onOpenChange={setIsOcrModalOpen}
+          onConfirm={handleOcrConfirm}
+          isLoading={isOcrLoading}
+        />
       </DialogContent>
     </Dialog>
   );
