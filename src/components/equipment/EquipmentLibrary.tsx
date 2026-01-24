@@ -53,7 +53,7 @@ export const EquipmentLibrary = ({
         </div>
       </Card>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredDb.length === 0 ? (
           <Card className="col-span-full p-8 text-center border-slate-500/20 bg-slate-500/5">
             <div className="text-slate-400">

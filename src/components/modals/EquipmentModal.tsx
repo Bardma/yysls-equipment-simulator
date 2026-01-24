@@ -226,7 +226,7 @@ export const EquipmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
         </DialogHeader>
@@ -297,7 +297,7 @@ export const EquipmentModal = ({
             </div>
             <div className="space-y-2">
               <Label>主词条</Label>
-              <div className="grid grid-cols-[1.2fr_0.8fr] gap-2">
+              <div className="grid grid-cols-[180px_1fr] gap-2">
                 <Select
                   value={mainStatType}
                   onValueChange={(value) => {
@@ -345,7 +345,7 @@ export const EquipmentModal = ({
                 {subStats.map((sub, idx) => {
                   const disableValue = isChengyin || sub.type === '生存类词条';
                   return (
-                    <div key={`sub-${idx}`} className="grid grid-cols-[1.2fr_0.8fr] gap-2">
+                    <div key={`sub-${idx}`} className="grid grid-cols-[180px_1fr] gap-2">
                       <Select
                         value={sub.type}
                         onValueChange={(value) => {
@@ -408,7 +408,7 @@ export const EquipmentModal = ({
             </div>
             <div className="space-y-2">
               <Label>定音词条</Label>
-              <div className="grid grid-cols-[1.2fr_0.8fr] gap-2">
+              <div className="grid grid-cols-[180px_1fr] gap-2">
                 <Select value={dingyinType} onValueChange={setDingyinType}>
                   <SelectTrigger>
                     <SelectValue placeholder="选择定音词条" />
