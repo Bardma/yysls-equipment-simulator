@@ -280,10 +280,10 @@ export const ConvertTab = ({
         {convertTarget.subStats.map((sub, idx) => (
           <button
             key={`${sub.type}-${idx}`}
-            className={`rounded-md border px-3 py-1 text-sm ${
+            className={`rounded-md border px-3 py-1.5 text-sm transition-all ${
               idx === selectedSubIndex
-                ? 'border-primary text-primary'
-                : 'border-border/60 text-muted-foreground'
+                ? 'border-primary bg-primary/20 text-primary font-medium'
+                : 'border-border/40 bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:border-border'
             }`}
             onClick={() => onSubIndexChange(idx)}
           >
@@ -292,13 +292,13 @@ export const ConvertTab = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {analysisByArmory.map((armory) => (
-          <div key={armory.armoryName} className="border-border/60 bg-card rounded-lg border p-3">
-            <div className="flex items-center justify-between">
-              <div className="font-medium">{armory.armoryName}</div>
+          <div key={armory.armoryName} className="border-border/60 bg-card rounded-lg border p-2">
+            <div className="flex items-center justify-between gap-1">
+              <div className="text-sm font-medium truncate">{armory.armoryName}</div>
               <div
-                className={`text-sm ${
+                className={`text-xs shrink-0 ${
                   armory.expected > 0
                     ? 'text-red-400'
                     : armory.expected < 0
@@ -306,18 +306,18 @@ export const ConvertTab = ({
                       : 'text-muted-foreground'
                 }`}
               >
-                期望 {armory.expected > 0 ? '+' : ''}
+                <span className="hidden sm:inline">期望 </span>{armory.expected > 0 ? '+' : ''}
                 {armory.expected.toFixed(2)}%
               </div>
             </div>
-            <div className="text-muted-foreground mt-2 space-y-1 text-xs">
+            <div className="text-muted-foreground mt-1.5 space-y-0.5 text-xs">
               {armory.outcomes.map((outcome) => (
                 <div key={outcome.name} className="flex items-center justify-between">
-                  <span>{outcome.name}</span>
+                  <span className="truncate">{outcome.name}</span>
                   <span
-                    className={
+                    className={`shrink-0 ml-1 ${
                       outcome.diff > 0 ? 'text-red-400' : outcome.diff < 0 ? 'text-green-400' : ''
-                    }
+                    }`}
                   >
                     {outcome.diff > 0 ? '+' : ''}
                     {outcome.diff.toFixed(2)}%

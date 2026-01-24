@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react';
 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 import { Calculator } from '@/lib/calculator';
 import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
@@ -16,6 +18,7 @@ import {
   EquipSlotSelector,
   StatPriorityTab,
 } from '../graduation';
+import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { EquipPickerModal } from './EquipPickerModal';
@@ -69,6 +72,8 @@ export const GraduationModal = ({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerSlotId, setPickerSlotId] = useState('1');
   const [pickerWeaponType, setPickerWeaponType] = useState<string | null>(null);
+  // 装备详情面板：如果默认选中的装备存在，则自动展开
+  const [detailPanelOpen, setDetailPanelOpen] = useState(() => !!equippedItems.weapon1);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
@@ -135,39 +140,130 @@ export const GraduationModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-6xl">
-        <DialogHeader>
-          <DialogTitle>毕业率分析</DialogTitle>
+      <DialogContent className={`transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] flex flex-col ${detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'}`}>
+        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+          <DialogTitle className="text-base sm:text-lg">毕业率分析</DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-[260px_1fr] gap-4 max-h-[70vh]">
+        <div className="flex-1 overflow-y-auto py-3 flex flex-col lg:flex-row gap-3 lg:gap-4">
+          {/* 可伸缩的装备详情面板 - 移动端隐藏 */}
+          <div className={`hidden lg:block relative transition-all duration-300 ${detailPanelOpen ? 'w-56' : 'w-0'} overflow-hidden shrink-0`}>
+            {detailPanelOpen && equippedItems[selectedSlotKey] && (
+              <div className="border-border/60 bg-card rounded-lg border p-3 space-y-2 w-56">
+                <div className="text-xs font-medium text-center border-b border-border/40 pb-2">
+                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
+                </div>
+                {/* 主词条 */}
+                {equippedItems[selectedSlotKey]?.mainStat && (
+                  <div className="space-y-1">
+                    <div className="text-muted-foreground text-xs">主词条</div>
+                    <div className="text-xs flex justify-between">
+                      <span>{equippedItems[selectedSlotKey]?.mainStat.type}</span>
+                      <span className="text-yellow-300">
+                        {equippedItems[selectedSlotKey]?.mainStat.value}
+                        {equippedItems[selectedSlotKey]?.mainStat.isPercent ? '%' : ''}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {/* 副词条 */}
+                {equippedItems[selectedSlotKey]?.subStats && equippedItems[selectedSlotKey]!.subStats.length > 0 && (
+                  <div className="space-y-1">
+                    <div className="text-muted-foreground text-xs">副词条</div>
+                    {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
+                      <div key={idx} className="text-xs flex justify-between">
+                        <span>{sub.type}</span>
+                        <span className="text-yellow-300">
+                          {sub.value}
+                          {sub.isPercent ? '%' : ''}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {/* 定音词条 */}
+                {equippedItems[selectedSlotKey]?.dingyinStat && (
+                  <div className="space-y-1">
+                    <div className="text-muted-foreground text-xs">定音词条</div>
+                    <div className="text-xs flex justify-between">
+                      <span>{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
+                      <span className="text-yellow-300">
+                        {equippedItems[selectedSlotKey]?.dingyinStat?.value}
+                        {equippedItems[selectedSlotKey]?.dingyinStat?.isPercent ? '%' : ''}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {/* 标签 */}
+                <div className="flex gap-2 pt-1 flex-wrap">
+                  {equippedItems[selectedSlotKey]?.isConvertible && (
+                    <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">可转律</span>
+                  )}
+                  {equippedItems[selectedSlotKey]?.isChengyin && (
+                    <span className="text-xs bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">承音</span>
+                  )}
+                  {equippedItems[selectedSlotKey]?.isPurple && (
+                    <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">紫装</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Left sidebar - Slot selector */}
-          <div className="space-y-3 overflow-y-auto">
-            <div className="border-border/60 bg-card rounded-lg border p-3 text-center">
-              <div className="text-muted-foreground text-xs">当前毕业率</div>
-              <div className="text-xl font-semibold text-yellow-300">
+          <div className="w-full lg:w-[260px] shrink-0 space-y-2 lg:space-y-3 overflow-y-auto">
+            <div className="border-border/60 bg-card rounded-lg border p-2 lg:p-3 text-center">
+              <div className="text-muted-foreground text-[10px] lg:text-xs">当前毕业率</div>
+              <div className="text-lg lg:text-xl font-semibold text-yellow-300">
                 {accResult.graduationRate}
               </div>
-              <div className="text-muted-foreground text-xs">
+              <div className="text-muted-foreground text-[10px] lg:text-xs">
                 excel表格显示：{excelResult.graduationRate}
               </div>
             </div>
             <EquipSlotSelector
               equippedItems={equippedItems}
               selectedSlot={selectedSlotKey}
-              onSlotSelect={handleSlotSelect}
+              onSlotSelect={(slot) => {
+                handleSlotSelect(slot);
+                // 选择装备时自动展开详情面板
+                if (equippedItems[slot]) {
+                  setDetailPanelOpen(true);
+                }
+              }}
             />
+            {/* 展开/收起详情面板按钮 - 仅桌面端显示 */}
+            {equippedItems[selectedSlotKey] && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden lg:flex w-full text-xs"
+                onClick={() => setDetailPanelOpen(!detailPanelOpen)}
+              >
+                {detailPanelOpen ? (
+                  <>
+                    <ChevronLeft className="h-3 w-3 mr-1" />
+                    收起装备详情
+                  </>
+                ) : (
+                  <>
+                    <ChevronRight className="h-3 w-3 mr-1" />
+                    查看装备详情
+                  </>
+                )}
+              </Button>
+            )}
           </div>
 
           {/* Right content - Tabs */}
-          <div className="min-w-0 flex flex-col overflow-hidden">
-            <Tabs defaultValue="compare" className="w-full flex flex-col flex-1 overflow-hidden">
-              <TabsList className="w-full justify-start">
-                <TabsTrigger value="compare">单件装备对比</TabsTrigger>
-                <TabsTrigger value="convert">转律建议</TabsTrigger>
-                <TabsTrigger value="best-build">最佳配装</TabsTrigger>
-                <TabsTrigger value="stat-priority">词条优先级</TabsTrigger>
-                <TabsTrigger value="cultivation">培养方向</TabsTrigger>
+          <div className="flex-1 min-w-0 flex flex-col">
+            <Tabs defaultValue="compare" className="w-full flex flex-col flex-1">
+              <TabsList className="w-full justify-start shrink-0 overflow-x-auto flex-nowrap">
+                <TabsTrigger value="compare" className="text-xs lg:text-sm whitespace-nowrap">单件对比</TabsTrigger>
+                <TabsTrigger value="convert" className="text-xs lg:text-sm whitespace-nowrap">转律建议</TabsTrigger>
+                <TabsTrigger value="best-build" className="text-xs lg:text-sm whitespace-nowrap">最佳配装</TabsTrigger>
+                <TabsTrigger value="stat-priority" className="text-xs lg:text-sm whitespace-nowrap">词条优先级</TabsTrigger>
+                <TabsTrigger value="cultivation" className="text-xs lg:text-sm whitespace-nowrap">培养方向</TabsTrigger>
               </TabsList>
 
               <TabsContent value="compare" className="space-y-4 pt-4 flex-1 overflow-y-auto">
@@ -188,7 +284,7 @@ export const GraduationModal = ({
                 />
               </TabsContent>
 
-              <TabsContent value="convert" className="pt-4 flex-1 overflow-y-auto">
+              <TabsContent value="convert" className="pt-4 flex-1 overflow-auto">
                 <ConvertTab
                   convertTarget={convertTarget}
                   selectedSubIndex={selectedSubIndex}

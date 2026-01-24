@@ -40,31 +40,31 @@ export const EquipSlotSelector = ({
   onSlotSelect,
 }: EquipSlotSelectorProps) => {
   return (
-    <div className="space-y-2">
+    <div className="grid grid-cols-4 gap-1.5 lg:grid-cols-1 lg:space-y-2 lg:gap-0">
       {SLOT_KEYS.map((key) => {
         const item = equippedItems[key];
         return (
           <button
             key={key}
             className={cn(
-              'flex w-full items-center gap-2 rounded-lg border p-2 text-left',
-              selectedSlot === key ? 'border-primary' : 'border-border/60'
+              'flex flex-col lg:flex-row w-full items-center gap-1 lg:gap-2 rounded-lg border p-1.5 lg:p-2 text-left',
+              selectedSlot === key ? 'border-primary bg-primary/5' : 'border-border/60'
             )}
             onClick={() => onSlotSelect(key)}
           >
             <Image
               src={`/${item?.icon || 'icon/icon1.jpg'}`}
               alt={item?.name || '未穿戴'}
-              width={40}
-              height={40}
-              className="rounded-md border"
+              width={32}
+              height={32}
+              className="rounded-md border lg:w-10 lg:h-10"
             />
-            <div className="flex-1">
-              <div className="text-sm font-medium">{item?.name || '未穿戴'}</div>
-              <div className="text-muted-foreground text-xs">{SLOT_NAME_MAP[key]}</div>
+            <div className="flex-1 text-center lg:text-left">
+              <div className="text-[10px] lg:text-sm font-medium truncate max-w-full">{item?.name || '未穿戴'}</div>
+              <div className="text-muted-foreground text-[9px] lg:text-xs hidden lg:block">{SLOT_NAME_MAP[key]}</div>
             </div>
             {item && (
-              <span className="text-muted-foreground text-xs">{getEquipScore(item)}</span>
+              <span className="text-muted-foreground text-[9px] lg:text-xs hidden lg:inline">{getEquipScore(item)}</span>
             )}
           </button>
         );

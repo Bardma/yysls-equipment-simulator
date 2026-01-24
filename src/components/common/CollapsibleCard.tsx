@@ -58,7 +58,7 @@ export const CollapsibleCard = ({
   return (
     <Card
       className={cn(
-        'p-4 gap-2',
+        'p-3 sm:p-4 gap-2',
         theme.border,
         theme.bg,
         expanded ? 'flex-1 overflow-y-auto' : 'overflow-hidden',
@@ -68,7 +68,7 @@ export const CollapsibleCard = ({
       <div
         role="button"
         tabIndex={0}
-        className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1 text-left"
+        className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-1.5 sm:px-2 py-1 text-left"
         onClick={onToggle}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
@@ -77,10 +77,10 @@ export const CollapsibleCard = ({
           }
         }}
       >
-        <h3 className="font-semibold flex items-center gap-2">
+        <h3 className="font-semibold flex items-center gap-2 text-sm sm:text-base">
           <span
             className={cn(
-              'inline-flex items-center justify-center w-6 h-6 rounded-md text-xs',
+              'inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-md text-xs',
               theme.iconBg,
               theme.iconText
             )}
@@ -95,7 +95,7 @@ export const CollapsibleCard = ({
           <ChevronDown className="text-muted-foreground h-4 w-4" />
         )}
       </div>
-      {expanded ? <div className="mt-3">{children}</div> : null}
+      {expanded ? <div className="mt-2 sm:mt-3">{children}</div> : null}
     </Card>
   );
 };

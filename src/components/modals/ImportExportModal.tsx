@@ -96,47 +96,48 @@ export const ImportExportModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>导出/导入数据</DialogTitle>
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+          <DialogTitle className="text-base sm:text-lg">导出/导入数据</DialogTitle>
         </DialogHeader>
-        <div className="space-y-3">
+        <div className="flex-1 overflow-y-auto py-3 space-y-3">
           <div className="flex flex-wrap gap-2">
-            <Button onClick={handleExport} disabled={!accountName}>
+            <Button size="sm" onClick={handleExport} disabled={!accountName} className="text-xs sm:text-sm">
               导出数据
             </Button>
-            <Button variant="secondary" onClick={handleDownload} disabled={!text.trim()}>
+            <Button size="sm" variant="secondary" onClick={handleDownload} disabled={!text.trim()} className="text-xs sm:text-sm">
               下载为文件
             </Button>
-            <Button variant="outline" onClick={handleCheckImport} disabled={!text.trim()}>
+            <Button size="sm" variant="outline" onClick={handleCheckImport} disabled={!text.trim()} className="text-xs sm:text-sm">
               粘贴导入
             </Button>
           </div>
           <Textarea
-            rows={8}
+            rows={6}
             value={text}
             onChange={(event) => setText(event.target.value)}
             placeholder="导出数据或粘贴导入数据"
+            className="text-xs sm:text-sm"
           />
           {warningVisible && (
-            <div className="border-destructive/50 bg-destructive/10 rounded-lg border p-3 text-sm">
+            <div className="border-destructive/50 bg-destructive/10 rounded-lg border p-2 sm:p-3 text-xs sm:text-sm">
               <div className="text-destructive font-medium">⚠️ 警告</div>
               <div className="text-muted-foreground mt-1">
                 导入数据将完全覆盖当前角色（{accountName || '当前角色'}）的所有装备数据！
               </div>
-              <div className="mt-3 flex gap-2">
-                <Button variant="destructive" onClick={handleConfirmImport}>
+              <div className="mt-2 sm:mt-3 flex gap-2">
+                <Button size="sm" variant="destructive" onClick={handleConfirmImport} className="text-xs sm:text-sm">
                   确认导入
                 </Button>
-                <Button variant="secondary" onClick={() => setWarningVisible(false)}>
+                <Button size="sm" variant="secondary" onClick={() => setWarningVisible(false)} className="text-xs sm:text-sm">
                   取消
                 </Button>
               </div>
             </div>
           )}
         </div>
-        <DialogFooter>
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
+        <DialogFooter className="shrink-0 border-t border-border/40 pt-3">
+          <Button size="sm" variant="secondary" onClick={() => onOpenChange(false)} className="text-xs sm:text-sm">
             关闭
           </Button>
         </DialogFooter>

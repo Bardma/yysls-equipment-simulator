@@ -71,8 +71,8 @@ export const SimulationPanel = ({
           onSetChange={onSetChange}
         />
 
-        <div className="flex justify-between gap-6">
-          <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-4">
+          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2 sm:gap-3">
             {LEFT_SLOTS.map((slotKey) => (
               <EquipmentSlot
                 key={slotKey}
@@ -82,7 +82,7 @@ export const SimulationPanel = ({
               />
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2 sm:gap-3">
             {RIGHT_SLOTS.map((slotKey) => (
               <EquipmentSlot
                 key={slotKey}
@@ -96,7 +96,7 @@ export const SimulationPanel = ({
 
         <div className="space-y-2">
           <div className="text-sky-300/80 text-xs font-medium">心法配置</div>
-          <div className="flex justify-between ">
+          <div className="grid grid-cols-4 gap-2 sm:flex sm:justify-between">
             {Array.from({ length: 4 }).map((_, idx) => {
               const name = xinfaLoadout[idx] || '';
               const isLocked = !!name && lockedList.includes(name);

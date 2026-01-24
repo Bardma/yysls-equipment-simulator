@@ -373,33 +373,33 @@ export const EquipmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}>
-        <DialogHeader>
-          <DialogTitle>{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
+      <DialogContent className={`max-h-[90vh] flex flex-col ${ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}`}>
+        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+          <DialogTitle className="text-base sm:text-lg">{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
         </DialogHeader>
-        <div className={ocrPreviewImage ? 'flex gap-4' : ''}>
+        <div className={`flex-1 overflow-y-auto py-3 ${ocrPreviewImage ? 'flex flex-col sm:flex-row gap-4' : ''}`}>
         {/* 主表单区域 */}
-        <div className={`space-y-5 ${ocrPreviewImage ? 'flex-1' : ''}`}>
+        <div className={`space-y-4 sm:space-y-5 ${ocrPreviewImage ? 'flex-1' : ''}`}>
           {/* 顶部区域：装备预览 + 基本信息 */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* 装备预览 */}
-            <div className="flex shrink-0 flex-col items-center gap-1">
+            <div className="flex shrink-0 flex-row sm:flex-col items-center gap-2 sm:gap-1">
               <Image
                 src={iconPath}
                 alt="预览"
-                width={72}
-                height={72}
-                className="rounded-md border"
+                width={56}
+                height={56}
+                className="rounded-md border sm:w-[72px] sm:h-[72px]"
               />
               <span className="text-muted-foreground text-xs">预览</span>
             </div>
             {/* 基本信息 */}
-            <div className="flex-1 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="flex-1 space-y-2 sm:space-y-3">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">装备位置</Label>
                   <Select value={slotId} onValueChange={handleSlotChange}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-8 sm:h-9 text-xs sm:text-sm">
                       <SelectValue placeholder="选择位置" />
                     </SelectTrigger>
                     <SelectContent>
@@ -418,7 +418,7 @@ export const EquipmentModal = ({
                     onValueChange={handleWeaponChange}
                     disabled={slotId !== '1'}
                   >
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-8 sm:h-9 text-xs sm:text-sm">
                       <SelectValue placeholder="选择种类" />
                     </SelectTrigger>
                     <SelectContent>
@@ -431,7 +431,7 @@ export const EquipmentModal = ({
                   </Select>
                 </div>
               </div>
-              <div className="flex items-end gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                 <div className="flex-1 space-y-1">
                   <Label className="text-xs">装备名称</Label>
                   <Input
@@ -440,25 +440,27 @@ export const EquipmentModal = ({
                       setNameEdited(true);
                       setName(event.target.value);
                     }}
-                    className="h-9"
+                    className="h-8 sm:h-9 text-xs sm:text-sm"
                   />
                 </div>
-                <div className="flex shrink-0 gap-3 pb-1">
-                  <label className="flex items-center gap-1.5 text-xs">
+                <div className="flex shrink-0 gap-2 sm:gap-3 pb-0 sm:pb-1 flex-wrap">
+                  <label className="flex items-center gap-1 sm:gap-1.5 text-xs">
                     <Checkbox
                       checked={isChengyin}
                       onCheckedChange={(v) => setIsChengyin(Boolean(v))}
+                      className="h-4 w-4"
                     />
                     承音
                   </label>
-                  <label className="flex items-center gap-1.5 text-xs">
-                    <Checkbox checked={isPurple} onCheckedChange={(v) => setIsPurple(Boolean(v))} />
+                  <label className="flex items-center gap-1 sm:gap-1.5 text-xs">
+                    <Checkbox checked={isPurple} onCheckedChange={(v) => setIsPurple(Boolean(v))} className="h-4 w-4" />
                     紫装
                   </label>
-                  <label className="flex items-center gap-1.5 text-xs">
+                  <label className="flex items-center gap-1 sm:gap-1.5 text-xs">
                     <Checkbox
                       checked={isConvertible}
                       onCheckedChange={(v) => setIsConvertible(Boolean(v))}
+                      className="h-4 w-4"
                     />
                     可转律
                   </label>
@@ -471,11 +473,11 @@ export const EquipmentModal = ({
           <div className="border-border border-t" />
 
           {/* 词条区域 */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {/* 主词条 */}
             <div className="space-y-1.5">
               <Label className="text-xs">主词条</Label>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                 <Select
                   value={mainStatType}
                   onValueChange={(value) => {
@@ -484,7 +486,7 @@ export const EquipmentModal = ({
                     applyChengyin(subStats, value, dingyinType);
                   }}
                 >
-                  <SelectTrigger className="h-9 w-[140px] shrink-0">
+                  <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
                     <SelectValue placeholder="选择主词条" />
                   </SelectTrigger>
                   <SelectContent>
@@ -495,39 +497,41 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="relative min-w-[100px] flex-1">
-                  <Input
-                    type="number"
-                    value={mainStatValue}
-                    onChange={(event) => setMainStatValue(event.target.value)}
-                    disabled={disableMainInput}
-                    placeholder="数值"
-                    className="h-9 pr-8"
-                    aria-invalid={mainStatError}
-                  />
-                  <button
-                    type="button"
-                    disabled={disableMainInput || !mainStatType}
-                    onClick={() => {
-                      const max = CommonData.MAX_VALUES[mainStatType];
-                      if (max) setMainStatValue(max.toString());
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    ↑
-                  </button>
-                </div>
-                <div className="text-muted-foreground w-[100px] shrink-0 text-right text-xs">
-                  {mainStatType && mainStatType !== '生存类词条' && (
-                    <>
-                      <span>{getRangeHint(mainStatType)}</span>
-                      {getCompletionPercent(mainStatType, mainStatValue) !== null && (
-                        <span className="text-primary ml-1">
-                          ({getCompletionPercent(mainStatType, mainStatValue)}%)
-                        </span>
-                      )}
-                    </>
-                  )}
+                <div className="flex items-center gap-2">
+                  <div className="relative min-w-[80px] sm:min-w-[100px] flex-1">
+                    <Input
+                      type="number"
+                      value={mainStatValue}
+                      onChange={(event) => setMainStatValue(event.target.value)}
+                      disabled={disableMainInput}
+                      placeholder="数值"
+                      className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
+                      aria-invalid={mainStatError}
+                    />
+                    <button
+                      type="button"
+                      disabled={disableMainInput || !mainStatType}
+                      onClick={() => {
+                        const max = CommonData.MAX_VALUES[mainStatType];
+                        if (max) setMainStatValue(max.toString());
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+                    >
+                      ↑
+                    </button>
+                  </div>
+                  <div className="text-muted-foreground w-[70px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
+                    {mainStatType && mainStatType !== '生存类词条' && (
+                      <>
+                        <span className="hidden sm:inline">{getRangeHint(mainStatType)}</span>
+                        {getCompletionPercent(mainStatType, mainStatValue) !== null && (
+                          <span className="text-primary sm:ml-1">
+                            {getCompletionPercent(mainStatType, mainStatValue)}%
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -535,11 +539,11 @@ export const EquipmentModal = ({
             {/* 副词条 */}
             <div className="space-y-1.5">
               <Label className="text-xs">副词条（4条）</Label>
-              <div className="space-y-2">
+              <div className="space-y-1.5 sm:space-y-2">
                 {subStats.map((sub, idx) => {
                   const disableValue = isChengyin || sub.type === '生存类词条';
                   return (
-                    <div key={`sub-${idx}`} className="flex items-center gap-2">
+                    <div key={`sub-${idx}`} className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                       <Select
                         value={sub.type}
                         onValueChange={(value) => {
@@ -549,7 +553,7 @@ export const EquipmentModal = ({
                           applyChengyin(next, mainStatType, dingyinType);
                         }}
                       >
-                        <SelectTrigger className="h-9 w-[140px] shrink-0">
+                        <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
                           <SelectValue placeholder="选择词条" />
                         </SelectTrigger>
                         <SelectContent>
@@ -567,47 +571,49 @@ export const EquipmentModal = ({
                           ))}
                         </SelectContent>
                       </Select>
-                      <div className="relative min-w-[60px] flex-1">
-                        <Input
-                          type="number"
-                          value={sub.value}
-                          onChange={(event) => {
-                            const next = [...subStats];
-                            next[idx] = { ...next[idx], value: event.target.value };
-                            setSubStats(next);
-                          }}
-                          disabled={disableValue}
-                          placeholder="数值"
-                          className="h-9 pr-8"
-                          aria-invalid={subStatErrors[idx]}
-                        />
-                        <button
-                          type="button"
-                          disabled={disableValue || !sub.type}
-                          onClick={() => {
-                            const max = CommonData.MAX_VALUES[sub.type];
-                            if (max) {
+                      <div className="flex items-center gap-2">
+                        <div className="relative min-w-[60px] flex-1">
+                          <Input
+                            type="number"
+                            value={sub.value}
+                            onChange={(event) => {
                               const next = [...subStats];
-                              next[idx] = { ...sub, value: max.toString() };
+                              next[idx] = { ...next[idx], value: event.target.value };
                               setSubStats(next);
-                            }
-                          }}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-                        >
-                          ↑
-                        </button>
-                      </div>
-                      <div className="text-muted-foreground w-[100px] shrink-0 text-right text-xs">
-                        {sub.type && sub.type !== '生存类词条' && (
-                          <>
-                            <span>{getRangeHint(sub.type)}</span>
-                            {getCompletionPercent(sub.type, sub.value) !== null && (
-                              <span className="text-primary ml-1">
-                                ({getCompletionPercent(sub.type, sub.value)}%)
-                              </span>
-                            )}
-                          </>
-                        )}
+                            }}
+                            disabled={disableValue}
+                            placeholder="数值"
+                            className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
+                            aria-invalid={subStatErrors[idx]}
+                          />
+                          <button
+                            type="button"
+                            disabled={disableValue || !sub.type}
+                            onClick={() => {
+                              const max = CommonData.MAX_VALUES[sub.type];
+                              if (max) {
+                                const next = [...subStats];
+                                next[idx] = { ...sub, value: max.toString() };
+                                setSubStats(next);
+                              }
+                            }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+                          >
+                            ↑
+                          </button>
+                        </div>
+                        <div className="text-muted-foreground w-[60px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
+                          {sub.type && sub.type !== '生存类词条' && (
+                            <>
+                              <span className="hidden sm:inline">{getRangeHint(sub.type)}</span>
+                              {getCompletionPercent(sub.type, sub.value) !== null && (
+                                <span className="text-primary sm:ml-1">
+                                  {getCompletionPercent(sub.type, sub.value)}%
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -618,9 +624,9 @@ export const EquipmentModal = ({
             {/* 定音词条 */}
             <div className="space-y-1.5">
               <Label className="text-xs">定音词条</Label>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                 <Select value={dingyinType} onValueChange={setDingyinType}>
-                  <SelectTrigger className="h-9 w-[140px] shrink-0">
+                  <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
                     <SelectValue placeholder="选择定音词条" />
                   </SelectTrigger>
                   <SelectContent>
@@ -631,39 +637,41 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="relative min-w-[100px] flex-1">
-                  <Input
-                    type="number"
-                    value={dingyinValue}
-                    onChange={(event) => setDingyinValue(event.target.value)}
-                    disabled={dingyinType === '无'}
-                    placeholder="数值"
-                    className="h-9 pr-8"
-                    aria-invalid={dingyinError}
-                  />
-                  <button
-                    type="button"
-                    disabled={dingyinType === '无'}
-                    onClick={() => {
-                      const max = CommonData.MAX_VALUES[dingyinType];
-                      if (max) setDingyinValue(max.toString());
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    ↑
-                  </button>
-                </div>
-                <div className="text-muted-foreground w-[100px] shrink-0 text-right text-xs">
-                  {dingyinType && dingyinType !== '无' && (
-                    <>
-                      <span>{getRangeHint(dingyinType)}</span>
-                      {getCompletionPercent(dingyinType, dingyinValue) !== null && (
-                        <span className="text-primary ml-1">
-                          ({getCompletionPercent(dingyinType, dingyinValue)}%)
-                        </span>
-                      )}
-                    </>
-                  )}
+                <div className="flex items-center gap-2">
+                  <div className="relative min-w-[80px] sm:min-w-[100px] flex-1">
+                    <Input
+                      type="number"
+                      value={dingyinValue}
+                      onChange={(event) => setDingyinValue(event.target.value)}
+                      disabled={dingyinType === '无'}
+                      placeholder="数值"
+                      className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
+                      aria-invalid={dingyinError}
+                    />
+                    <button
+                      type="button"
+                      disabled={dingyinType === '无'}
+                      onClick={() => {
+                        const max = CommonData.MAX_VALUES[dingyinType];
+                        if (max) setDingyinValue(max.toString());
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+                    >
+                      ↑
+                    </button>
+                  </div>
+                  <div className="text-muted-foreground w-[60px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
+                    {dingyinType && dingyinType !== '无' && (
+                      <>
+                        <span className="hidden sm:inline">{getRangeHint(dingyinType)}</span>
+                        {getCompletionPercent(dingyinType, dingyinValue) !== null && (
+                          <span className="text-primary sm:ml-1">
+                            {getCompletionPercent(dingyinType, dingyinValue)}%
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -671,36 +679,36 @@ export const EquipmentModal = ({
         </div>
         {/* OCR 预览图区域 */}
         {ocrPreviewImage && (
-          <div className="w-64 shrink-0 space-y-2">
+          <div className="w-full sm:w-64 shrink-0 space-y-2">
             <Label className="text-xs">识别原图（供校验）</Label>
             <div className="rounded-md border bg-black/20 p-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={ocrPreviewImage}
                 alt="OCR原图"
-                className="max-h-96 w-full rounded object-contain"
+                className="max-h-48 sm:max-h-96 w-full rounded object-contain"
               />
             </div>
           </div>
         )}
         </div>
-        <DialogFooter className="flex-row justify-between sm:justify-between">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={handleOcrClick}
-              disabled={!canUseOcr}
-              title={!canUseOcr ? '请先选择武器种类' : 'OCR识别装备词条'}
-            >
-              <ScanLine className="mr-1.5 h-4 w-4" />
-              OCR识别
-            </Button>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="secondary" onClick={() => onOpenChange(false)}>
+        <DialogFooter className="shrink-0 flex-row flex-wrap gap-2 justify-between sm:justify-between border-t border-border/40 pt-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleOcrClick}
+            disabled={!canUseOcr}
+            title={!canUseOcr ? '请先选择武器种类' : 'OCR识别装备词条'}
+            className="text-xs sm:text-sm order-3 sm:order-1 flex-1 sm:flex-none"
+          >
+            <ScanLine className="mr-1 sm:mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            OCR识别
+          </Button>
+          <div className="flex gap-2 order-1 sm:order-2 w-full sm:w-auto justify-end">
+            <Button variant="secondary" size="sm" onClick={() => onOpenChange(false)} className="text-xs sm:text-sm flex-1 sm:flex-none">
               取消
             </Button>
-            <Button onClick={handleSave} disabled={hasValidationError || missingWeaponType}>
+            <Button size="sm" onClick={handleSave} disabled={hasValidationError || missingWeaponType} className="text-xs sm:text-sm flex-1 sm:flex-none">
               保存装备
             </Button>
           </div>

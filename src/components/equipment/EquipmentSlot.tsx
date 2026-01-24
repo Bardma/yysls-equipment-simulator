@@ -36,10 +36,10 @@ export const EquipmentSlot = ({ slotKey, item, onClick, onUnequip }: EquipmentSl
 
   return (
     <Card
-      className="p-0 w-fit border-sky-500/20 hover:border-sky-500/30 transition-colors cursor-pointer overflow-hidden"
+      className="p-0 w-full sm:w-fit border-sky-500/20 hover:border-sky-500/30 transition-colors cursor-pointer overflow-hidden"
       onClick={handleClick}
     >
-      <div className="bg-sky-950/20 relative flex h-20 w-20 items-center justify-center overflow-hidden">
+      <div className="bg-sky-950/20 relative flex h-16 w-full sm:h-20 sm:w-20 items-center justify-center overflow-hidden aspect-square">
         {item ? (
           <>
             <Image
@@ -48,14 +48,14 @@ export const EquipmentSlot = ({ slotKey, item, onClick, onUnequip }: EquipmentSl
               fill
               className="object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center bg-black/70 py-1">
-              <span className="text-xs font-medium text-white px-1 text-center leading-tight truncate">
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center bg-black/70 py-0.5 sm:py-1">
+              <span className="text-[10px] sm:text-xs font-medium text-white px-0.5 sm:px-1 text-center leading-tight truncate">
                 {item.name}
               </span>
             </div>
           </>
         ) : (
-          <span className="text-muted-foreground text-xs">{label}</span>
+          <span className="text-muted-foreground text-[10px] sm:text-xs">{label}</span>
         )}
       </div>
     </Card>

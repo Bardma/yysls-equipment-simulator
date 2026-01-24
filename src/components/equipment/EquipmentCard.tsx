@@ -56,7 +56,7 @@ export const EquipmentCard = ({
   return (
     <Card
       className={cn(
-        'relative cursor-pointer p-3 transition-all border-slate-500/20 bg-slate-800/30 hover:bg-slate-800/50',
+        'relative cursor-pointer p-2.5 sm:p-3 transition-all border-slate-500/20 bg-slate-800/30 hover:bg-slate-800/50',
         isEquipped
           ? 'border-amber-400 ring-1 ring-amber-400/40 shadow-md shadow-amber-500/10'
           : 'hover:border-slate-400/40'
@@ -65,17 +65,17 @@ export const EquipmentCard = ({
     >
       {/* 选中标记 */}
       {isEquipped && (
-        <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 shadow-md shadow-amber-500/30">
-          <Check className="h-3 w-3 text-slate-900" strokeWidth={3} />
+        <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-amber-500 shadow-md shadow-amber-500/30">
+          <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-slate-900" strokeWidth={3} />
         </div>
       )}
 
-      <div className="flex justify-end gap-1">
+      <div className="flex justify-end gap-0.5 sm:gap-1">
         {onEdit && (
           <Button
             size="icon"
             variant="ghost"
-            className="h-6 w-6 text-slate-400 hover:text-slate-300 hover:bg-slate-500/20"
+            className="h-5 w-5 sm:h-6 sm:w-6 text-slate-400 hover:text-slate-300 hover:bg-slate-500/20 text-xs sm:text-sm"
             onClick={(event) => {
               event.stopPropagation();
               onEdit();
@@ -88,7 +88,7 @@ export const EquipmentCard = ({
           <Button
             size="icon"
             variant="ghost"
-            className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 h-6 w-6"
+            className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 h-5 w-5 sm:h-6 sm:w-6 text-xs sm:text-sm"
             onClick={(event) => {
               event.stopPropagation();
               onDelete();
@@ -101,15 +101,15 @@ export const EquipmentCard = ({
       <div className="flex items-center gap-2">
         <EquipmentImage src={equip.icon} name={equip.name} size="sm" />
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-slate-100 truncate">{equip.name}</div>
-          <div className="flex items-center gap-1.5 text-xs">
+          <div className="font-medium text-slate-100 truncate text-sm sm:text-base">{equip.name}</div>
+          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs flex-wrap">
             <span className="text-slate-400">
               {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
             </span>
             {/* 完整度标签 */}
             <span
               className={cn(
-                'px-1.5 py-0.5 rounded text-[10px] font-medium border',
+                'px-1 sm:px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium border',
                 getCompletenessColor(getEquipCompleteness(equip))
               )}
             >
@@ -119,14 +119,14 @@ export const EquipmentCard = ({
         </div>
       </div>
       {/* 词条组 */}
-      <div className="mt-1.5 text-xs">
+      <div className="mt-1.5 text-[11px] sm:text-xs">
         <StatDisplay
           type={equip.mainStat.type}
           value={equip.mainStat.value}
           isPercent={equip.mainStat.isPercent}
         />
         <Separator className="my-1 bg-slate-600/40" />
-        <div className="space-y-1">
+        <div className="space-y-0.5 sm:space-y-1">
           {equip.subStats.map((sub, idx) => (
             <StatDisplay
               key={`${equip.id}-sub-${idx}`}

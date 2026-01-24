@@ -38,32 +38,34 @@ export const XinfaModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>选择心法</DialogTitle>
+      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+          <DialogTitle className="text-base sm:text-lg">选择心法</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          {options.map((name) => (
-            <button
-              key={name}
-              className="border-border/60 bg-card hover:border-primary/50 rounded-lg border p-3 text-left transition"
-              onClick={() => {
-                onSelect(name);
-                onOpenChange(false);
-              }}
-            >
-              <div className="flex flex-col items-center gap-2">
-                <Image
-                  src={`/icon/${name}.jpg`}
-                  alt={name}
-                  width={64}
-                  height={64}
-                  className="border-border/60 rounded-md border"
-                />
-                <span className="text-sm">{name}</span>
-              </div>
-            </button>
-          ))}
+        <div className="flex-1 overflow-y-auto py-3">
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
+            {options.map((name) => (
+              <button
+                key={name}
+                className="border-border/60 bg-card hover:border-primary/50 rounded-lg border p-2 sm:p-3 text-left transition"
+                onClick={() => {
+                  onSelect(name);
+                  onOpenChange(false);
+                }}
+              >
+                <div className="flex flex-col items-center gap-1 sm:gap-2">
+                  <Image
+                    src={`/icon/${name}.jpg`}
+                    alt={name}
+                    width={48}
+                    height={48}
+                    className="border-border/60 rounded-md border sm:w-16 sm:h-16"
+                  />
+                  <span className="text-xs sm:text-sm text-center">{name}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -286,11 +286,11 @@ export default function Home() {
         onImportExport={() => setImportExportOpen(true)}
       />
 
-      <main className="container mx-auto max-w-screen-2xl flex-1 p-4">
+      <main className="container mx-auto max-w-screen-2xl flex-1 p-2 sm:p-4">
         {!currentAccount ? (
           <WelcomeCard />
         ) : (
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.1fr_0.4fr]">
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.1fr_0.4fr] lg:items-start lg:gap-6">
             {/* Left: Equipment Library */}
             <EquipmentLibrary
               db={db}
@@ -309,8 +309,8 @@ export default function Home() {
               onEquipItem={equipItemById}
             />
 
-            {/* Right: Simulation, Graduation, Stats panels */}
-            <section className="flex flex-col gap-3">
+            {/* Right: Simulation, Graduation, Stats panels - 在移动端显示在装备库前面 */}
+            <section className="flex flex-col gap-3 order-first lg:order-none">
               <SimulationPanel
                 expanded={rightPanels.simulation}
                 onToggle={() => toggleRightPanel('simulation')}
