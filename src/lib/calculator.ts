@@ -1,5 +1,7 @@
 import { Equipment, Affix, AffixType, SimulationSlot } from '@/types';
 import { AFFIX_MAX_VALUES, AFFIX_WEIGHTS, SLOT_MAPPING } from './constants';
+import { coreCalculator } from './coreCalculator';
+import { convertEquipmentsToCalculatorFormat } from './calculatorAdapter';
 
 /**
  * 计算单个词条的毕业率
@@ -99,7 +101,7 @@ export function calculateTotalGraduation(
 }
 
 /**
- * 计算期望秒伤（简化版）
+ * 计算期望秒伤（使用核心计算器）
  */
 export function calculateExpectedDPS(
   equipments: Equipment[],
@@ -108,58 +110,45 @@ export function calculateExpectedDPS(
   gongJue: string,
   neiGong: string
 ): number {
+  // 使用核心计算器计算面板属性
+  const calculatorEquipments = convertEquipmentsToCalculatorFormat(equipments, equippedIds);
+  
+  // 将弓诀转换为计算器格式
+  const bowTypeMap: Record<string, string> = {
+    '精准弓': 'precision',
+    '会心弓': 'crit',
+    '会意弓': 'intent',
+  };
+  const bowType = bowTypeMap[gongJue] || 'precision';
+
+  // 心法列表（可能需要从配置中获取多个心法）
+  const xinfaList = [xinfa]; // 简化处理，实际可能需要多个心法
+
+  // 计算总面板属性
+  const totalStats = coreCalculator.calculateTotal(
+    calculatorEquipments,
+    xinfa,
+    bowType,
+    xinfaList,
+    neiGong,
+    false, // debug
+    null, // statModifier
+    false // earlySeasonBonus
+  );
+
+  // 基于面板属性计算简化的DPS
+  // 注意：完整的毕业率计算需要使用 calculateGraduationRate，这里提供简化版本
+  const minAtk = totalStats['最小外功攻击'] || 0;
+  const maxAtk = totalStats['最大外功攻击'] || 0;
+  const avgAtk = (minAtk + maxAtk) / 2;
+  const critRate = totalStats['实际会心率'] || 0;
+  const critDmg = (totalStats['会心伤害加成'] || 0) / 100;
+  const pen = (totalStats['外功穿透'] || 0) / 200;
+
   // 简化的DPS计算
-  let baseDPS = 1000;
-
-  // 收集所有已装备装备的词条
-  const allAffixes: Affix[] = [];
-  Object.values(equippedIds).forEach((equipmentId) => {
-    if (equipmentId) {
-      const equipment = equipments.find(e => e.id === equipmentId);
-      if (equipment) {
-        allAffixes.push(equipment.mainAffix);
-        allAffixes.push(...equipment.subAffixes);
-        allAffixes.push(equipment.dingyin);
-      }
-    }
-  });
-
-  // 根据词条计算加成
-  let attackBonus = 0;
-  let critRate = 0;
-  let critDamage = 150; // 基础暴伤150%
-  let penRate = 0;
-
-  allAffixes.forEach((affix) => {
-    if (!affix.type || affix.value <= 0) return;
-
-    switch (affix.type) {
-      case '攻击':
-      case '内功攻击':
-      case '外功攻击':
-        attackBonus += affix.value;
-        break;
-      case '攻击百分比':
-        attackBonus += baseDPS * (affix.value / 100);
-        break;
-      case '会心':
-        critRate += affix.value;
-        break;
-      case '会心伤害':
-        critDamage += affix.value;
-        break;
-      case '破防':
-        penRate += affix.value;
-        break;
-    }
-  });
-
-  // 计算最终DPS
-  const effectiveAttack = baseDPS + attackBonus;
-  const critMultiplier = 1 + (critRate / 100) * (critDamage / 100 - 1);
-  const penMultiplier = 1 + penRate / 100 * 0.5;
-
-  return Math.round(effectiveAttack * critMultiplier * penMultiplier);
+  const baseDPS = avgAtk * (1 + pen) * (1 + critRate / 100 * critDmg);
+  
+  return Math.round(baseDPS);
 }
 
 /**
@@ -243,4 +232,63 @@ export function getCultivationAdvice(
   }
 
   return advice;
+}
+
+/**
+ * 使用核心计算器计算毕业率（完整版）
+ * 需要提供技能数据库和技能循环
+ */
+export function calculateGraduationRateWithCore(
+  equipments: Equipment[],
+  equippedIds: Record<string, string | undefined>,
+  xinfa: string,
+  gongJue: string,
+  neiGong: string,
+  skillDb: Record<string, any>,
+  rotation: any[],
+  baseline: number = 4244078.34,
+  useNextSeason: boolean = false
+): { totalDamage: number; graduationRate: string; debugInfo: any } {
+  // 转换装备格式
+  const calculatorEquipments = convertEquipmentsToCalculatorFormat(equipments, equippedIds);
+  
+  // 将弓诀转换为计算器格式
+  const bowTypeMap: Record<string, string> = {
+    '精准弓': 'precision',
+    '会心弓': 'crit',
+    '会意弓': 'intent',
+  };
+  const bowType = bowTypeMap[gongJue] || 'precision';
+
+  // 心法列表
+  const xinfaList = [xinfa];
+
+  // 计算总面板属性
+  const totalStats = coreCalculator.calculateTotal(
+    calculatorEquipments,
+    xinfa,
+    bowType,
+    xinfaList,
+    neiGong,
+    false,
+    null,
+    useNextSeason
+  );
+
+  // 准备参数
+  const params: Record<string, number | string | string[]> = {
+    ...totalStats,
+    '当前流派': xinfa,
+    '心法': xinfaList,
+    '套装': neiGong,
+  };
+
+  // 计算毕业率
+  return coreCalculator.calculateGraduationRate(
+    params,
+    skillDb,
+    rotation,
+    baseline,
+    false
+  );
 }

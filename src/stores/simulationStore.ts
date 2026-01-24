@@ -1,6 +1,13 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { SimulationConfig, SimulationSlot } from '@/types';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { SimulationConfig, SimulationSlot, XinfaLoadout } from "@/types";
+import {
+  CLASSES,
+  DEFAULT_SETS,
+  XINFA_LOCKED,
+  XINFA_RULES,
+} from "@/lib/classConfig";
+import { GENERIC_XINFA } from "@/lib/commonData";
 
 interface SimulationState {
   // 每个角色的配置，key 是 characterId
@@ -8,25 +15,63 @@ interface SimulationState {
 
   // Actions
   getConfig: (characterId: string) => SimulationConfig;
-  setXinfa: (characterId: string, xinfa: string) => void;
-  setGongJue: (characterId: string, gongJue: string) => void;
-  setNeiGong: (characterId: string, neiGong: string) => void;
-  setEquippedId: (characterId: string, slot: SimulationSlot, equipmentId: string | undefined) => void;
-  setUseNextSeason: (characterId: string, value: boolean) => void;
+  setClassName: (characterId: string, className: string) => void;
+  setSetName: (characterId: string, setName: string) => void;
+  setXinfaSlot: (
+    characterId: string,
+    slotIndex: 1 | 2 | 3 | 4,
+    xinfaName: string
+  ) => void;
+  setXinfaLoadout: (characterId: string, loadout: XinfaLoadout) => void;
+  setEquippedId: (
+    characterId: string,
+    slot: SimulationSlot,
+    equipmentId: string | undefined
+  ) => void;
+  setUseEarlySeason: (characterId: string, value: boolean) => void;
   setFreezeDingyin: (characterId: string, value: boolean) => void;
   setAssumeFullChengyin: (characterId: string, value: boolean) => void;
   clearSlot: (characterId: string, slot: SimulationSlot) => void;
   resetConfig: (characterId: string) => void;
   deleteConfig: (characterId: string) => void;
   importConfig: (characterId: string, config: SimulationConfig) => void;
+
+  // 获取当前流派的推荐心法
+  getRecommendedXinfa: (className: string) => {
+    locked: string[];
+    default: string[];
+    extra: string[];
+    generic: string[];
+  };
+
+  // 根据流派自动设置默认配置
+  applyClassDefaults: (characterId: string, className: string) => void;
 }
 
+// 创建默认心法配置
+function createDefaultXinfaLoadout(className: string): XinfaLoadout {
+  const locked = XINFA_LOCKED[className] || [];
+  const rules = XINFA_RULES[className];
+  const defaultXinfa = rules?.default || [];
+  const extra = rules?.extra || [];
+
+  // 锁定的心法放在前面的槽位
+  const slot1 = locked[0] || defaultXinfa[0] || "";
+  const slot2 = locked[1] || defaultXinfa[1] || (locked.length < 2 ? defaultXinfa[0] : "");
+  const slot3 = extra[0] || GENERIC_XINFA[0] || "";
+  const slot4 = extra[1] || GENERIC_XINFA[1] || "";
+
+  return { slot1, slot2, slot3, slot4 };
+}
+
+const defaultClassName = CLASSES[0] || "破竹尘";
+
 const defaultConfig: SimulationConfig = {
-  xinfa: '鸣金虹',
-  gongJue: '精准弓',
-  neiGong: '玉斗',
+  className: defaultClassName,
+  xinfaLoadout: createDefaultXinfaLoadout(defaultClassName),
+  setName: DEFAULT_SETS[defaultClassName] || "连星",
   equippedIds: {},
-  useNextSeason: false,
+  useEarlySeason: false,
   freezeDingyin: false,
   assumeFullChengyin: false,
 };
@@ -37,46 +82,97 @@ export const useSimulationStore = create<SimulationState>()(
       configs: {},
 
       getConfig: (characterId: string) => {
-        return get().configs[characterId] || { ...defaultConfig };
+        const config = get().configs[characterId];
+        if (config) {
+          // 迁移旧数据格式
+          if (!config.className && (config as any).xinfa) {
+            return {
+              ...defaultConfig,
+              className: (config as any).xinfa,
+              setName: (config as any).neiGong || defaultConfig.setName,
+              xinfaLoadout: createDefaultXinfaLoadout(
+                (config as any).xinfa || defaultClassName
+              ),
+              equippedIds: config.equippedIds || {},
+              useEarlySeason: (config as any).useNextSeason || false,
+              freezeDingyin: config.freezeDingyin || false,
+              assumeFullChengyin: config.assumeFullChengyin || false,
+            };
+          }
+          return config;
+        }
+        return { ...defaultConfig };
       },
 
-      setXinfa: (characterId: string, xinfa: string) => {
+      setClassName: (characterId: string, className: string) => {
+        set((state) => {
+          const currentConfig = state.configs[characterId] || defaultConfig;
+          // 切换流派时自动更新默认套装和心法
+          return {
+            configs: {
+              ...state.configs,
+              [characterId]: {
+                ...currentConfig,
+                className,
+                setName: DEFAULT_SETS[className] || currentConfig.setName,
+                xinfaLoadout: createDefaultXinfaLoadout(className),
+              },
+            },
+          };
+        });
+      },
+
+      setSetName: (characterId: string, setName: string) => {
         set((state) => ({
           configs: {
             ...state.configs,
             [characterId]: {
               ...(state.configs[characterId] || defaultConfig),
-              xinfa,
+              setName,
             },
           },
         }));
       },
 
-      setGongJue: (characterId: string, gongJue: string) => {
+      setXinfaSlot: (
+        characterId: string,
+        slotIndex: 1 | 2 | 3 | 4,
+        xinfaName: string
+      ) => {
+        set((state) => {
+          const currentConfig = state.configs[characterId] || defaultConfig;
+          const newLoadout = { ...currentConfig.xinfaLoadout };
+          const slotKey = `slot${slotIndex}` as keyof XinfaLoadout;
+          newLoadout[slotKey] = xinfaName;
+          return {
+            configs: {
+              ...state.configs,
+              [characterId]: {
+                ...currentConfig,
+                xinfaLoadout: newLoadout,
+              },
+            },
+          };
+        });
+      },
+
+      setXinfaLoadout: (characterId: string, loadout: XinfaLoadout) => {
         set((state) => ({
           configs: {
             ...state.configs,
             [characterId]: {
               ...(state.configs[characterId] || defaultConfig),
-              gongJue,
+              xinfaLoadout: loadout,
             },
           },
         }));
       },
 
-      setNeiGong: (characterId: string, neiGong: string) => {
-        set((state) => ({
-          configs: {
-            ...state.configs,
-            [characterId]: {
-              ...(state.configs[characterId] || defaultConfig),
-              neiGong,
-            },
-          },
-        }));
-      },
-
-      setEquippedId: (characterId: string, slot: SimulationSlot, equipmentId: string | undefined) => {
+      setEquippedId: (
+        characterId: string,
+        slot: SimulationSlot,
+        equipmentId: string | undefined
+      ) => {
         set((state) => {
           const currentConfig = state.configs[characterId] || defaultConfig;
           const newEquippedIds = { ...currentConfig.equippedIds };
@@ -97,13 +193,13 @@ export const useSimulationStore = create<SimulationState>()(
         });
       },
 
-      setUseNextSeason: (characterId: string, value: boolean) => {
+      setUseEarlySeason: (characterId: string, value: boolean) => {
         set((state) => ({
           configs: {
             ...state.configs,
             [characterId]: {
               ...(state.configs[characterId] || defaultConfig),
-              useNextSeason: value,
+              useEarlySeason: value,
             },
           },
         }));
@@ -175,9 +271,37 @@ export const useSimulationStore = create<SimulationState>()(
           },
         }));
       },
+
+      getRecommendedXinfa: (className: string) => {
+        const locked = XINFA_LOCKED[className] || [];
+        const rules = XINFA_RULES[className] || { default: [], extra: [] };
+        return {
+          locked,
+          default: rules.default,
+          extra: rules.extra,
+          generic: GENERIC_XINFA,
+        };
+      },
+
+      applyClassDefaults: (characterId: string, className: string) => {
+        set((state) => {
+          const currentConfig = state.configs[characterId] || defaultConfig;
+          return {
+            configs: {
+              ...state.configs,
+              [characterId]: {
+                ...currentConfig,
+                className,
+                setName: DEFAULT_SETS[className] || "连星",
+                xinfaLoadout: createDefaultXinfaLoadout(className),
+              },
+            },
+          };
+        });
+      },
     }),
     {
-      name: 'yysls-simulation',
+      name: "yysls-simulation",
     }
   )
 );

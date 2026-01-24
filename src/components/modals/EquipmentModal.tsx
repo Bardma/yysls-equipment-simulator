@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useCharacterStore } from '@/stores/characterStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
 import { Equipment, EquipmentSlot, WeaponType, Affix, AffixType } from '@/types';
-import { EQUIPMENT_SLOTS, WEAPON_TYPES, AFFIX_TYPES } from '@/lib/constants';
+import { EQUIPMENT_SLOTS, WEAPON_TYPES, STAT_TYPES } from '@/lib/constants';
 import {
   Dialog,
   DialogContent,
@@ -315,7 +315,7 @@ function AffixInput({ affix, onTypeChange, onValueChange }: AffixInputProps) {
           <SelectValue placeholder="选择词条" />
         </SelectTrigger>
         <SelectContent>
-          {AFFIX_TYPES.map((t) => (
+          {STAT_TYPES.map((t: string) => (
             <SelectItem key={t} value={t}>{t}</SelectItem>
           ))}
         </SelectContent>

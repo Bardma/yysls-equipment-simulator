@@ -29,12 +29,20 @@ export function GraduationDisplay() {
     config.assumeFullChengyin
   );
 
+  // 将心法槽位转换为数组
+  const xinfaList = [
+    config.xinfaLoadout.slot1,
+    config.xinfaLoadout.slot2,
+    config.xinfaLoadout.slot3,
+    config.xinfaLoadout.slot4,
+  ].filter(Boolean);
+
   const dps = calculateExpectedDPS(
     equipments,
     config.equippedIds,
-    config.xinfa,
-    config.gongJue,
-    config.neiGong
+    config.className,
+    'precision', // 默认弓诀类型
+    config.setName
   );
 
   // 获取Excel表格对应等级

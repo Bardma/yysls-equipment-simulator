@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Equipment, Affix, EquipmentSlot, AffixType } from '@/types';
-import { AFFIX_TYPES, EQUIPMENT_SLOTS } from '@/lib/constants';
+import { STAT_TYPES, EQUIPMENT_SLOTS } from '@/lib/constants';
 import {
   Dialog,
   DialogContent,
@@ -125,8 +125,8 @@ export function OCRModal({ open, onOpenChange, onResult }: OCRModalProps) {
     }
 
     // 尝试识别词条
-    const affixPatterns: { type: AffixType; patterns: RegExp[] }[] = AFFIX_TYPES.map(type => ({
-      type,
+    const affixPatterns: { type: AffixType; patterns: RegExp[] }[] = STAT_TYPES.map((type: string) => ({
+      type: type as AffixType,
       patterns: [
         new RegExp(`${type}[:\\s]*[+]?([\\d.]+)%?`, 'i'),
         new RegExp(`([\\d.]+)%?[\\s]*${type}`, 'i'),
