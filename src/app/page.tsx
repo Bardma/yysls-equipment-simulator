@@ -291,8 +291,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <header className="shrink-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="container max-w-screen-2xl mx-auto flex items-center justify-between h-14 px-4">
           <div className="font-semibold tracking-tight">燕云十六声装备毕业率管理器</div>
           <div className="flex items-center gap-2">
@@ -330,7 +330,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 container max-w-screen-2xl mx-auto p-4 min-h-[calc(100vh-56px)] h-[calc(100vh-56px)]">
+      <main className="flex-1 container max-w-screen-2xl mx-auto p-4 overflow-hidden min-h-0">
         {!currentAccount ? (
           <Card className="p-10 flex flex-col items-center justify-center min-h-[60vh] text-center">
             <h2 className="text-xl font-semibold mb-2">欢迎使用燕云十六声装备毕业率管理器</h2>
@@ -339,8 +339,8 @@ export default function Home() {
             </p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch h-full">
-            <section className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 h-full overflow-hidden min-h-0">
+            <section className="space-y-4 h-full overflow-y-auto pr-2 min-h-0">
               <Card className="p-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">装备库</h3>
@@ -463,7 +463,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section className="flex flex-col gap-2 h-full overflow-hidden">
+            <section className="flex flex-col gap-2 overflow-hidden self-start">
               <Card className="p-3">
                 <div
                   role="button"
