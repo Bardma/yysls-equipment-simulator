@@ -171,3 +171,89 @@
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* react-image-crop 优化 */
+.ReactCrop {
+  touch-action: none;
+  overflow: hidden;
+}
+
+/* 裁剪选区样式 */
+.ReactCrop__crop-selection {
+  border: 2px solid white !important;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 裁剪手柄样式 - 圆形设计 */
+.ReactCrop__drag-handle {
+  width: 18px !important;
+  height: 18px !important;
+  background-color: white !important;
+  border: 2px solid oklch(0.55 0.2 280) !important;
+  border-radius: 50% !important;
+  opacity: 1 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 四个角的手柄位置调整 - 向内偏移 */
+.ReactCrop__drag-handle.ord-nw {
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+}
+
+.ReactCrop__drag-handle.ord-ne {
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+}
+
+.ReactCrop__drag-handle.ord-sw {
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+}
+
+.ReactCrop__drag-handle.ord-se {
+  margin-bottom: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* 边缘手柄（隐藏，只保留四角） */
+.ReactCrop__drag-handle.ord-n,
+.ReactCrop__drag-handle.ord-s,
+.ReactCrop__drag-handle.ord-e,
+.ReactCrop__drag-handle.ord-w {
+  display: none !important;
+}
+
+/* 手柄悬停效果 */
+.ReactCrop__drag-handle:hover {
+  background-color: oklch(0.95 0.02 280) !important;
+  border-color: oklch(0.45 0.25 280) !important;
+  transform: scale(1.15);
+}
+
+@media (max-width: 640px) {
+  .ReactCrop__drag-handle {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  
+  .ReactCrop__drag-handle.ord-nw {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .ReactCrop__drag-handle.ord-ne {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .ReactCrop__drag-handle.ord-sw {
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .ReactCrop__drag-handle.ord-se {
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+  }
+}
