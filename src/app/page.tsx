@@ -7,6 +7,7 @@ import { AppHeader, GraduationRatePanel, WelcomeCard } from '@/components/layout
 import { EquipmentModal } from '@/components/modals/EquipmentModal';
 import { GraduationModal } from '@/components/modals/GraduationModal';
 import { ImportExportModal } from '@/components/modals/ImportExportModal';
+import { ReportModal } from '@/components/modals/ReportModal';
 import { XinfaModal } from '@/components/modals/XinfaModal';
 import { SimulationPanel } from '@/components/simulation';
 import { StatsPanel } from '@/components/stats';
@@ -51,6 +52,7 @@ export default function Home() {
   const [xinfaIndex, setXinfaIndex] = useState(0);
   const [gradModalOpen, setGradModalOpen] = useState(false);
   const [importExportOpen, setImportExportOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const [rightPanels, setRightPanels] = useState({
     simulation: true,
     graduation: true,
@@ -284,6 +286,7 @@ export default function Home() {
         onCreateAccount={handleCreateAccount}
         onDeleteAccount={handleDeleteAccount}
         onImportExport={() => setImportExportOpen(true)}
+        onGenerateReport={() => setReportOpen(true)}
       />
 
       <main className="container mx-auto max-w-screen-2xl flex-1 p-2 sm:p-4">
@@ -396,6 +399,19 @@ export default function Home() {
           hydrateForAccount(currentAccount, items);
           setImportExportOpen(false);
         }}
+      />
+
+      <ReportModal
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+        accountName={currentAccount}
+        currentClass={currentClass}
+        setType={setType}
+        xinfaLoadout={xinfaLoadout}
+        graduationInfo={graduationInfo}
+        statDisplay={statDisplay}
+        earlySeasonBonus={earlySeasonBonus}
+        loanDingyin={loanDingyin}
       />
     </div>
   );

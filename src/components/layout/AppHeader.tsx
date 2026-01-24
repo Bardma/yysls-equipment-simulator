@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu, X } from 'lucide-react';
+import { FileImage, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,7 @@ interface AppHeaderProps {
   onCreateAccount: () => void;
   onDeleteAccount: () => void;
   onImportExport: () => void;
+  onGenerateReport: () => void;
 }
 
 export const AppHeader = ({
@@ -32,6 +33,7 @@ export const AppHeader = ({
   onCreateAccount,
   onDeleteAccount,
   onImportExport,
+  onGenerateReport,
 }: AppHeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -117,6 +119,15 @@ export const AppHeader = ({
             >
               导入/导出
             </Button>
+            <Button
+              size="sm"
+              className="cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
+              onClick={onGenerateReport}
+              disabled={!currentAccount}
+            >
+              <FileImage className="w-4 h-4 mr-1" />
+              生成报告
+            </Button>
           </div>
         </div>
       </div>
@@ -171,30 +182,44 @@ export const AppHeader = ({
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="flex-1 cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
+                onClick={() => {
+                  onDeleteAccount();
+                  setMobileMenuOpen(false);
+                }}
+                disabled={!currentAccount}
+              >
+                删除角色
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex-1 cursor-pointer border-slate-600/50 text-slate-300 hover:bg-slate-700/30 hover:text-slate-200"
+                onClick={() => {
+                  onImportExport();
+                  setMobileMenuOpen(false);
+                }}
+                disabled={!currentAccount}
+              >
+                导入/导出
+              </Button>
+            </div>
             <Button
               size="sm"
-              variant="ghost"
-              className="flex-1 cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
+              className="w-full cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
               onClick={() => {
-                onDeleteAccount();
+                onGenerateReport();
                 setMobileMenuOpen(false);
               }}
               disabled={!currentAccount}
             >
-              删除角色
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="flex-1 cursor-pointer border-slate-600/50 text-slate-300 hover:bg-slate-700/30 hover:text-slate-200"
-              onClick={() => {
-                onImportExport();
-                setMobileMenuOpen(false);
-              }}
-              disabled={!currentAccount}
-            >
-              导入/导出
+              <FileImage className="w-4 h-4 mr-1" />
+              生成报告
             </Button>
           </div>
         </div>
