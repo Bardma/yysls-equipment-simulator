@@ -1,7 +1,11 @@
 'use client';
 
+import { Search } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useJiebaSearch } from '@/lib/hooks';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 
 import { EquipmentCard } from './EquipmentCard';
@@ -28,7 +32,13 @@ export const EquipmentLibrary = ({
   onDeleteEquip,
   onEquipItem,
 }: EquipmentLibraryProps) => {
-  const filteredDb = db.filter((item) => (filter === 'all' ? true : item.slotId === filter));
+  // 使用 jieba 分词搜索
+  const { searchQuery, setSearchQuery, filteredItems: searchedItems } = useJiebaSearch(db);
+
+  // 先按部位筛选，再按搜索关键词过滤
+  const filteredDb = searchedItems.filter((item) =>
+    filter === 'all' ? true : item.slotId === filter
+  );
 
   return (
     <section className="space-y-4">
@@ -48,6 +58,19 @@ export const EquipmentLibrary = ({
             + 录入装备
           </Button>
         </div>
+
+        {/* 搜索框 */}
+        <div className="mt-4 relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            type="text"
+            placeholder="搜索装备名称..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 bg-slate-800/50 border-slate-600/50 placeholder:text-slate-500 focus:border-slate-500"
+          />
+        </div>
+
         <div className="mt-4">
           <EquipmentFilter filter={filter} onFilterChange={onFilterChange} />
         </div>
@@ -59,7 +82,9 @@ export const EquipmentLibrary = ({
             <div className="text-slate-400">
               {db.length === 0
                 ? '当前数据库无装备，请点击上方录入装备按钮。'
-                : '当前筛选条件下无装备。'}
+                : searchQuery
+                  ? '未找到匹配的装备。'
+                  : '当前筛选条件下无装备。'}
             </div>
           </Card>
         ) : (

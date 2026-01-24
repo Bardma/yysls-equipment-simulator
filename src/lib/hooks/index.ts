@@ -1,0 +1,1 @@
+export { useJiebaSearch } from './useJiebaSearch';
