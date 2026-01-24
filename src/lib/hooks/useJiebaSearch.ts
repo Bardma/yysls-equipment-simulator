@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { pinyin } from 'pinyin-pro';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { EquipItem } from '@/lib/types';
 
@@ -10,8 +11,38 @@ type JiebaModule = {
   cut_for_search: (text: string, hmm?: boolean) => string[];
 };
 
+// 拼音缓存，避免重复计算
+const pinyinCache = new Map<string, { full: string; initials: string }>();
+
+/**
+ * 获取文本的拼音（全拼和首字母）
+ */
+function getPinyin(text: string): { full: string; initials: string } {
+  if (!text) return { full: '', initials: '' };
+
+  const cached = pinyinCache.get(text);
+  if (cached) return cached;
+
+  // 全拼（无声调，无空格）
+  const full = pinyin(text, { toneType: 'none', type: 'array' }).join('').toLowerCase();
+  // 首字母
+  const initials = pinyin(text, { pattern: 'first', type: 'array' }).join('').toLowerCase();
+
+  const result = { full, initials };
+  pinyinCache.set(text, result);
+  return result;
+}
+
+/**
+ * 检查是否为拼音字符（只包含英文字母）
+ */
+function isPinyinQuery(query: string): boolean {
+  return /^[a-zA-Z]+$/.test(query);
+}
+
 /**
  * 使用 jieba-wasm 进行中文分词搜索的 hook
+ * 支持中文搜索和拼音搜索（全拼/首字母）
  */
 export function useJiebaSearch(items: EquipItem[]) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,6 +80,14 @@ export function useJiebaSearch(items: EquipItem[]) {
     };
   }, []);
 
+  // 预计算所有装备名称的拼音
+  const itemsWithPinyin = useMemo(() => {
+    return items.map((item) => ({
+      ...item,
+      pinyin: getPinyin(item.name),
+    }));
+  }, [items]);
+
   // 对文本进行分词
   const tokenize = useCallback((text: string): string[] => {
     if (!text) return [];
@@ -67,20 +106,44 @@ export function useJiebaSearch(items: EquipItem[]) {
     return text.split('');
   }, []);
 
-  // 检查是否匹配
+  // 检查是否匹配（支持中文和拼音）
   const isMatch = useCallback(
-    (itemName: string, query: string): boolean => {
+    (
+      itemName: string,
+      itemPinyin: { full: string; initials: string },
+      query: string
+    ): boolean => {
       if (!query.trim()) return true;
 
       const normalizedQuery = query.toLowerCase().trim();
       const normalizedName = itemName.toLowerCase();
 
-      // 直接包含匹配（优先）
+      // 1. 直接包含匹配（优先）
       if (normalizedName.includes(normalizedQuery)) {
         return true;
       }
 
-      // 分词匹配
+      // 2. 拼音匹配（如果查询是纯英文字母）
+      if (isPinyinQuery(normalizedQuery)) {
+        // 全拼匹配
+        if (itemPinyin.full.includes(normalizedQuery)) {
+          return true;
+        }
+        // 首字母匹配
+        if (itemPinyin.initials.includes(normalizedQuery)) {
+          return true;
+        }
+        // 全拼开头匹配
+        if (itemPinyin.full.startsWith(normalizedQuery)) {
+          return true;
+        }
+        // 首字母开头匹配
+        if (itemPinyin.initials.startsWith(normalizedQuery)) {
+          return true;
+        }
+      }
+
+      // 3. 分词匹配
       const queryTokens = tokenize(normalizedQuery);
       const nameTokens = tokenize(normalizedName);
 
@@ -97,7 +160,9 @@ export function useJiebaSearch(items: EquipItem[]) {
   );
 
   // 过滤结果
-  const filteredItems = items.filter((item) => isMatch(item.name, searchQuery));
+  const filteredItems = useMemo(() => {
+    return itemsWithPinyin.filter((item) => isMatch(item.name, item.pinyin, searchQuery));
+  }, [itemsWithPinyin, isMatch, searchQuery]);
 
   return {
     searchQuery,

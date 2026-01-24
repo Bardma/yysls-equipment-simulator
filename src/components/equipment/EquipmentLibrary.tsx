@@ -64,7 +64,7 @@ export const EquipmentLibrary = ({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             type="text"
-            placeholder="搜索装备名称..."
+            placeholder="搜索装备名称（支持拼音/首字母）..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 bg-slate-800/50 border-slate-600/50 placeholder:text-slate-500 focus:border-slate-500"

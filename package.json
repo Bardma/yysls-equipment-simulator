@@ -27,6 +27,7 @@
     "jieba-wasm": "^2.4.0",
     "lucide-react": "^0.563.0",
     "next": "16.1.4",
+    "pinyin-pro": "^3.28.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0",
