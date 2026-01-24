@@ -360,6 +360,10 @@ export const Calculator = {
     delete total['劲'];
     delete total['敏'];
     delete total['势'];
+    // 保留白值供显示使用
+    total['精准率白值'] = total['精准率'];
+    total['会心率白值'] = total['会心率'];
+    total['会意率白值'] = total['会意率'];
     delete total['精准率'];
     delete total['会心率'];
     delete total['会意率'];

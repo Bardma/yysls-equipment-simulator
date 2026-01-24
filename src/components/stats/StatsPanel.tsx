@@ -3,7 +3,7 @@
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 
 interface StatsPanelProps {
-  statDisplay: Array<{ label: string; value: string }>;
+  statDisplay: Array<{ label: string; value: string; highlight?: string; suffix?: string }>;
   expanded: boolean;
   onToggle: () => void;
 }
@@ -28,7 +28,11 @@ export const StatsPanel = ({ statDisplay, expanded, onToggle }: StatsPanelProps)
               className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-emerald-500/5 transition-colors"
             >
               <span className="text-emerald-300/70">{item.label}</span>
-              <span className="font-medium text-emerald-100/90">{item.value}</span>
+              <span className="font-medium text-emerald-100/90">
+                {item.value}
+                {item.highlight && <span className="text-amber-400">{item.highlight}</span>}
+                {item.suffix && <span className="text-emerald-400/60 text-xs">{item.suffix}</span>}
+              </span>
             </div>
           ))}
         </div>
