@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Checkbox } from "../components/ui/checkbox";
@@ -462,31 +463,26 @@ export default function Home() {
               </div>
             </section>
 
-            <section className="flex flex-col gap-2 h-full min-h-[calc(100vh-120px)] overflow-hidden">
+            <section className="flex flex-col gap-2 h-full overflow-hidden">
               <Card className="p-3">
-                <div className="flex items-center justify-between">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1 text-left cursor-pointer"
+                  onClick={() => toggleRightPanel("simulation")}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      toggleRightPanel("simulation");
+                    }
+                  }}
+                >
                   <h3 className="font-semibold">穿戴模拟</h3>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      className="cursor-pointer"
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setXinfaIndex(0);
-                        setXinfaModalOpen(true);
-                      }}
-                    >
-                      更换心法
-                    </Button>
-                    <Button
-                      className="cursor-pointer"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleRightPanel("simulation")}
-                    >
-                      {rightPanels.simulation ? "折叠" : "展开"}
-                    </Button>
-                  </div>
+                  {rightPanels.simulation ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )}
                 </div>
                 {rightPanels.simulation ? (
                   <div className="space-y-3 mt-3">
@@ -606,16 +602,24 @@ export default function Home() {
               </Card>
 
               <Card className="p-3">
-                <div className="flex items-center justify-between">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1 text-left cursor-pointer"
+                  onClick={() => toggleRightPanel("graduation")}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      toggleRightPanel("graduation");
+                    }
+                  }}
+                >
                   <h3 className="font-semibold">当前毕业率</h3>
-                  <Button
-                    className="cursor-pointer"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleRightPanel("graduation")}
-                  >
-                    {rightPanels.graduation ? "折叠" : "展开"}
-                  </Button>
+                  {rightPanels.graduation ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )}
                 </div>
                 {rightPanels.graduation ? (
                   <div className="space-y-2 mt-3">
@@ -651,16 +655,24 @@ export default function Home() {
               <Card
                 className={`p-3 ${rightPanels.stats ? "flex-1 overflow-y-auto" : "overflow-hidden"}`}
               >
-                <div className="flex items-center justify-between">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1 text-left cursor-pointer"
+                  onClick={() => toggleRightPanel("stats")}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      toggleRightPanel("stats");
+                    }
+                  }}
+                >
                   <h3 className="font-semibold">面板属性</h3>
-                  <Button
-                    className="cursor-pointer"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleRightPanel("stats")}
-                  >
-                    {rightPanels.stats ? "折叠" : "展开"}
-                  </Button>
+                  {rightPanels.stats ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )}
                 </div>
                 {rightPanels.stats ? (
                   <div className="space-y-2 mt-3">
