@@ -282,7 +282,7 @@ export default function Home() {
         {!currentAccount ? (
           <WelcomeCard />
         ) : (
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.1fr_0.4fr]">
             {/* Left: Equipment Library */}
             <EquipmentLibrary
               db={db}

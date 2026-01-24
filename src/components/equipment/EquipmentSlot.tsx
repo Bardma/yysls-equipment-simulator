@@ -27,17 +27,16 @@ export const EquipmentSlot = ({ slotKey, item, onClick }: EquipmentSlotProps) =>
 
   return (
     <Card
-      className="p-2 border-sky-500/10 hover:border-sky-500/30 transition-colors cursor-pointer"
+      className="p-0 w-fit border-sky-500/20 hover:border-sky-500/30 transition-colors cursor-pointer overflow-hidden"
       onClick={onClick}
     >
-      <div className="border-sky-500/20 bg-sky-950/20 relative flex h-16 w-full items-center justify-center overflow-hidden rounded-md border">
+      <div className="bg-sky-950/20 relative flex h-20 w-20 items-center justify-center overflow-hidden">
         {item ? (
           <>
             <Image
               src={`/${item.icon}`}
               alt={item.name}
-              width={64}
-              height={64}
+              fill
               className="object-cover"
             />
             <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center bg-black/70 py-1">

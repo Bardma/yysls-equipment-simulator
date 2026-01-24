@@ -34,11 +34,11 @@ export const ClassSelector = ({
   onSetChange,
 }: ClassSelectorProps) => {
   return (
-    <div className="grid grid-cols-3 gap-3">
-      <div className="space-y-2">
+    <div className="flex justify-between gap-4">
+      <div className="flex flex-col gap-1">
         <label className="text-sky-300/80 text-xs font-medium">流派</label>
         <Select value={currentClass} onValueChange={onClassChange}>
-          <SelectTrigger className="cursor-pointer">
+          <SelectTrigger className="cursor-pointer w-28 h-8 text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -51,10 +51,10 @@ export const ClassSelector = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
+      <div className="flex flex-col gap-1">
         <label className="text-sky-300/80 text-xs font-medium">弓诀</label>
         <Select value={bowType} onValueChange={onBowChange}>
-          <SelectTrigger className="cursor-pointer">
+          <SelectTrigger className="cursor-pointer w-28 h-8 text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -67,10 +67,10 @@ export const ClassSelector = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
+      <div className="flex flex-col gap-1">
         <label className="text-sky-300/80 text-xs font-medium">套装</label>
         <Select value={setType} onValueChange={onSetChange}>
-          <SelectTrigger className="cursor-pointer">
+          <SelectTrigger className="cursor-pointer w-28 h-8 text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

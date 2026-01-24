@@ -22,13 +22,16 @@ interface SimulationPanelProps {
   onXinfaClick: (index: number) => void;
 }
 
-const SLOT_ORDER: Array<keyof EquippedItems> = [
+const LEFT_SLOTS: Array<keyof EquippedItems> = [
   'weapon1',
   'weapon2',
-  'head',
-  'chest',
   'ring',
   'pendant',
+];
+
+const RIGHT_SLOTS: Array<keyof EquippedItems> = [
+  'head',
+  'chest',
   'legs',
   'hands',
 ];
@@ -66,19 +69,30 @@ export const SimulationPanel = ({
           onSetChange={onSetChange}
         />
 
-        <div className="grid grid-cols-4 gap-2">
-          {SLOT_ORDER.map((slotKey) => (
-            <EquipmentSlot
-              key={slotKey}
-              slotKey={slotKey}
-              item={equippedItems[slotKey]}
-            />
-          ))}
+        <div className="flex justify-between gap-6">
+          <div className="grid grid-cols-2 gap-5">
+            {LEFT_SLOTS.map((slotKey) => (
+              <EquipmentSlot
+                key={slotKey}
+                slotKey={slotKey}
+                item={equippedItems[slotKey]}
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-5">
+            {RIGHT_SLOTS.map((slotKey) => (
+              <EquipmentSlot
+                key={slotKey}
+                slotKey={slotKey}
+                item={equippedItems[slotKey]}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="space-y-2">
           <div className="text-sky-300/80 text-xs font-medium">心法配置</div>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex justify-between ">
             {Array.from({ length: 4 }).map((_, idx) => {
               const name = xinfaLoadout[idx] || '';
               const isLocked = !!name && lockedList.includes(name);
