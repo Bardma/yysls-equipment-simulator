@@ -150,6 +150,9 @@ export const EquipmentModal = ({
   // 检查是否有任何校验错误
   const hasValidationError = mainStatError || subStatErrors.some(Boolean) || dingyinError;
 
+  // 检查是否选择了武器但未选择武器种类
+  const missingWeaponType = slotId === '1' && !weaponTypeId;
+
   // 计算完成度百分比
   const getCompletionPercent = (type: string, value: string): number | null => {
     if (!type || type === '生存类词条' || !value) return null;
@@ -204,6 +207,7 @@ export const EquipmentModal = ({
 
   const handleSlotChange = (value: string) => {
     setSlotId(value);
+    const newWeaponTypeId = value !== '1' ? '' : weaponTypeId;
     if (value !== '1') setWeaponTypeId('');
     // 重置主词条、副词条和定音词条，因为不同装备位置的可选项不同
     setMainStatType('');
@@ -211,11 +215,15 @@ export const EquipmentModal = ({
     setSubStats(emptySubStats());
     setDingyinType('无');
     setDingyinValue('');
-    handleAutoName(value, weaponTypeId);
+    // 切换装备位置时重置 nameEdited，允许自动命名
+    setNameEdited(false);
+    handleAutoName(value, newWeaponTypeId);
   };
 
   const handleWeaponChange = (value: string) => {
     setWeaponTypeId(value);
+    // 切换武器种类时重置 nameEdited，允许自动命名
+    setNameEdited(false);
     handleAutoName(slotId, value);
   };
 
@@ -575,7 +583,7 @@ export const EquipmentModal = ({
           <Button variant="secondary" onClick={() => onOpenChange(false)}>
             取消
           </Button>
-          <Button onClick={handleSave} disabled={hasValidationError}>
+          <Button onClick={handleSave} disabled={hasValidationError || missingWeaponType}>
             保存装备
           </Button>
         </DialogFooter>
