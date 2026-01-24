@@ -3,7 +3,7 @@
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface GraduationRatePanelProps {
   graduationInfo: {
@@ -101,13 +101,13 @@ export const GraduationRatePanel = ({
           <span className="text-muted-foreground text-[10px] sm:text-xs leading-tight">
             提前获得下半赛季属性（毕业率将虚高）
           </span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="inline-flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-amber-500/20 text-amber-400 text-[9px] sm:text-[10px] cursor-help shrink-0">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="inline-flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-amber-500/20 text-amber-400 text-[9px] sm:text-[10px] cursor-help shrink-0 hover:bg-amber-500/30 transition-colors">
                 ?
-              </span>
-            </TooltipTrigger>
-            <TooltipContent className="bg-zinc-900 border border-zinc-700 p-2" hideArrow>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="bg-zinc-900 border border-zinc-700 p-2 w-auto" side="top" align="center">
               <div className="text-xs space-y-1">
                 <div className="text-amber-400 font-medium mb-1">增加属性</div>
                 <div className="text-zinc-300">精准率：+1.4%</div>
@@ -117,8 +117,8 @@ export const GraduationRatePanel = ({
                 <div className="text-zinc-500 pl-2">体：+14</div>
                 <div className="text-zinc-500 pl-2">御：+14</div>
               </div>
-            </TooltipContent>
-          </Tooltip>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2 px-0.5 sm:px-1">

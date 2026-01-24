@@ -96,11 +96,11 @@ export const ImportExportModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
-        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+      <DialogContent className="!flex !flex-col gap-0 p-0 max-w-2xl max-h-[90vh]">
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
           <DialogTitle className="text-base sm:text-lg">导出/导入数据</DialogTitle>
         </DialogHeader>
-        <div className="flex-1 overflow-y-auto py-3 space-y-3">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-3">
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={handleExport} disabled={!accountName} className="text-xs sm:text-sm">
               导出数据
@@ -136,7 +136,7 @@ export const ImportExportModal = ({
             </div>
           )}
         </div>
-        <DialogFooter className="shrink-0 border-t border-border/40 pt-3">
+        <DialogFooter className="shrink-0 border-t border-border/40 px-4 sm:px-6 py-4">
           <Button size="sm" variant="secondary" onClick={() => onOpenChange(false)} className="text-xs sm:text-sm">
             关闭
           </Button>

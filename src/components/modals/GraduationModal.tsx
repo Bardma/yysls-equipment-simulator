@@ -140,12 +140,12 @@ export const GraduationModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] flex flex-col ${detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'}`}>
-        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+      <DialogContent className={`!flex !flex-col gap-0 p-0 transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] ${detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'}`}>
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
           <DialogTitle className="text-base sm:text-lg">毕业率分析</DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto py-3 flex flex-col lg:flex-row gap-3 lg:gap-4">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* 可伸缩的装备详情面板 - 移动端隐藏 */}
           <div className={`hidden lg:block relative transition-all duration-300 ${detailPanelOpen ? 'w-56' : 'w-0'} overflow-hidden shrink-0`}>
             {detailPanelOpen && equippedItems[selectedSlotKey] && (
@@ -258,13 +258,16 @@ export const GraduationModal = ({
           {/* Right content - Tabs */}
           <div className="flex-1 min-w-0 flex flex-col">
             <Tabs defaultValue="compare" className="w-full flex flex-col flex-1">
-              <TabsList className="w-full justify-start shrink-0 overflow-x-auto flex-nowrap">
-                <TabsTrigger value="compare" className="text-xs lg:text-sm whitespace-nowrap">单件对比</TabsTrigger>
-                <TabsTrigger value="convert" className="text-xs lg:text-sm whitespace-nowrap">转律建议</TabsTrigger>
-                <TabsTrigger value="best-build" className="text-xs lg:text-sm whitespace-nowrap">最佳配装</TabsTrigger>
-                <TabsTrigger value="stat-priority" className="text-xs lg:text-sm whitespace-nowrap">词条优先级</TabsTrigger>
-                <TabsTrigger value="cultivation" className="text-xs lg:text-sm whitespace-nowrap">培养方向</TabsTrigger>
-              </TabsList>
+              {/* 移动端可滚动的 Tab 容器 */}
+              <div className="shrink-0 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto scrollbar-none">
+                <TabsList className="w-max sm:w-full justify-start">
+                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">对比</TabsTrigger>
+                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">转律</TabsTrigger>
+                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">配装</TabsTrigger>
+                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">词条</TabsTrigger>
+                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">培养</TabsTrigger>
+                </TabsList>
+              </div>
 
               <TabsContent value="compare" className="space-y-4 pt-4 flex-1 overflow-y-auto">
                 <CompareTab

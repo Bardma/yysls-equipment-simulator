@@ -56,11 +56,11 @@ export const EquipPickerModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>选择装备</DialogTitle>
+      <DialogContent className="!flex !flex-col gap-0 p-0 max-w-2xl max-h-[90vh]">
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
+          <DialogTitle className="text-base sm:text-lg">选择装备</DialogTitle>
         </DialogHeader>
-        <div className="max-h-[70vh] space-y-3 overflow-y-auto pr-2">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-2 sm:space-y-3">
           {candidates.length === 0 ? (
             <div className="text-muted-foreground py-10 text-center">没有找到符合条件的装备。</div>
           ) : (

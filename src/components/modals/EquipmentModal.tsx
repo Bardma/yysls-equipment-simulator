@@ -373,11 +373,11 @@ export const EquipmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`max-h-[90vh] flex flex-col ${ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}`}>
-        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+      <DialogContent className={`!flex !flex-col gap-0 p-0 max-h-[90vh] ${ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}`}>
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
           <DialogTitle className="text-base sm:text-lg">{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
         </DialogHeader>
-        <div className={`flex-1 overflow-y-auto py-3 ${ocrPreviewImage ? 'flex flex-col sm:flex-row gap-4' : ''}`}>
+        <div className={`flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 ${ocrPreviewImage ? 'flex flex-col sm:flex-row gap-4' : ''}`}>
         {/* 主表单区域 */}
         <div className={`space-y-4 sm:space-y-5 ${ocrPreviewImage ? 'flex-1' : ''}`}>
           {/* 顶部区域：装备预览 + 基本信息 */}
@@ -692,7 +692,7 @@ export const EquipmentModal = ({
           </div>
         )}
         </div>
-        <DialogFooter className="shrink-0 flex-row flex-wrap gap-2 justify-between sm:justify-between border-t border-border/40 pt-3">
+        <DialogFooter className="shrink-0 flex-row flex-wrap gap-2 justify-between sm:justify-between border-t border-border/40 px-4 sm:px-6 py-4">
           <Button
             variant="outline"
             size="sm"

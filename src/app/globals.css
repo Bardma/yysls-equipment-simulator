@@ -162,3 +162,12 @@
   background: oklch(0.5 0.15 280);
   color: white;
 }
+
+/* 隐藏滚动条 */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

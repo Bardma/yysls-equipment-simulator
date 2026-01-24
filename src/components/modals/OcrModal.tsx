@@ -122,12 +122,12 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>OCR识别装备词条</DialogTitle>
+      <DialogContent className="!flex !flex-col gap-0 p-0 sm:max-w-md max-h-[90vh]">
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
+          <DialogTitle className="text-base sm:text-lg">OCR识别装备词条</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-4">
           {/* 示例图区域 */}
           <div className="space-y-2">
             <p className="text-muted-foreground text-sm">请上传类似下方格式的装备词条截图：</p>
@@ -192,11 +192,11 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
           </div>
         </div>
 
-        <DialogFooter>
-          <Button variant="secondary" onClick={() => onOpenChange(false)} disabled={isLoading}>
+        <DialogFooter className="shrink-0 border-t border-border/40 px-4 sm:px-6 py-4">
+          <Button size="sm" variant="secondary" onClick={() => onOpenChange(false)} disabled={isLoading} className="text-xs sm:text-sm">
             取消
           </Button>
-          <Button onClick={handleConfirm} disabled={!selectedImage || isLoading}>
+          <Button size="sm" onClick={handleConfirm} disabled={!selectedImage || isLoading} className="text-xs sm:text-sm">
             {isLoading ? (
               <>
                 <Upload className="mr-1.5 h-4 w-4 animate-pulse" />

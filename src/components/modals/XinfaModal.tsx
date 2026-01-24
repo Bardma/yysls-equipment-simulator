@@ -38,11 +38,11 @@ export const XinfaModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
-        <DialogHeader className="shrink-0 border-b border-border/40 pb-3">
+      <DialogContent className="!flex !flex-col gap-0 p-0 max-w-3xl max-h-[90vh]">
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
           <DialogTitle className="text-base sm:text-lg">选择心法</DialogTitle>
         </DialogHeader>
-        <div className="flex-1 overflow-y-auto py-3">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4">
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
             {options.map((name) => (
               <button
