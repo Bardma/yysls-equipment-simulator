@@ -123,6 +123,51 @@ export const EquipmentModal = ({
     return `/${icon}`;
   }, [slotId, weaponTypeId, isPurple]);
 
+  // 校验函数：检查值是否在有效范围内
+  const validateStatValue = (type: string, value: string): boolean => {
+    if (!type || type === '生存类词条' || !value) return true;
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return true;
+    const max = CommonData.MAX_VALUES[type];
+    if (numValue < 0) return false;
+    if (max && numValue > max) return false;
+    return true;
+  };
+
+  // 计算各输入框的错误状态
+  const mainStatError = useMemo(() => {
+    return !validateStatValue(mainStatType, mainStatValue);
+  }, [mainStatType, mainStatValue]);
+
+  const subStatErrors = useMemo(() => {
+    return subStats.map((sub) => !validateStatValue(sub.type, sub.value));
+  }, [subStats]);
+
+  const dingyinError = useMemo(() => {
+    return !validateStatValue(dingyinType, dingyinValue);
+  }, [dingyinType, dingyinValue]);
+
+  // 检查是否有任何校验错误
+  const hasValidationError = mainStatError || subStatErrors.some(Boolean) || dingyinError;
+
+  // 计算完成度百分比
+  const getCompletionPercent = (type: string, value: string): number | null => {
+    if (!type || type === '生存类词条' || !value) return null;
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return null;
+    const max = CommonData.MAX_VALUES[type];
+    if (!max) return null;
+    return Math.min(100, Math.round((numValue / max) * 100));
+  };
+
+  // 获取范围提示文本
+  const getRangeHint = (type: string): string => {
+    if (!type || type === '生存类词条') return '';
+    const max = CommonData.MAX_VALUES[type];
+    if (!max) return '';
+    return `0 ~ ${max}`;
+  };
+
   const handleAutoName = (slotValue: string, weaponValue: string) => {
     if (nameEdited) return;
     if (slotValue === '1') {
@@ -303,7 +348,7 @@ export const EquipmentModal = ({
             </div>
             <div className="space-y-2">
               <Label>主词条</Label>
-              <div className="grid grid-cols-[180px_1fr] gap-2">
+              <div className="flex items-center gap-2">
                 <Select
                   value={mainStatType}
                   onValueChange={(value) => {
@@ -312,7 +357,7 @@ export const EquipmentModal = ({
                     applyChengyin(subStats, value, dingyinType);
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-[140px] shrink-0">
                     <SelectValue placeholder="选择主词条" />
                   </SelectTrigger>
                   <SelectContent>
@@ -323,7 +368,7 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="relative">
+                <div className="relative min-w-[100px] flex-1">
                   <Input
                     type="number"
                     value={mainStatValue}
@@ -331,6 +376,7 @@ export const EquipmentModal = ({
                     disabled={disableMainInput}
                     placeholder="数值"
                     className="h-10 pr-9"
+                    aria-invalid={mainStatError}
                   />
                   <button
                     type="button"
@@ -344,6 +390,18 @@ export const EquipmentModal = ({
                     ↑
                   </button>
                 </div>
+                <div className="text-muted-foreground w-[120px] shrink-0 text-right text-xs">
+                  {mainStatType && mainStatType !== '生存类词条' && (
+                    <>
+                      <span>{getRangeHint(mainStatType)}</span>
+                      {getCompletionPercent(mainStatType, mainStatValue) !== null && (
+                        <span className="ml-1 text-primary">
+                          ({getCompletionPercent(mainStatType, mainStatValue)}%)
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
             <div className="space-y-2">
@@ -352,7 +410,7 @@ export const EquipmentModal = ({
                 {subStats.map((sub, idx) => {
                   const disableValue = isChengyin || sub.type === '生存类词条';
                   return (
-                    <div key={`sub-${idx}`} className="grid grid-cols-[180px_1fr] gap-2">
+                    <div key={`sub-${idx}`} className="flex items-center gap-2">
                       <Select
                         value={sub.type}
                         onValueChange={(value) => {
@@ -362,7 +420,7 @@ export const EquipmentModal = ({
                           applyChengyin(next, mainStatType, dingyinType);
                         }}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger className="w-[140px] shrink-0">
                           <SelectValue placeholder="选择词条" />
                         </SelectTrigger>
                         <SelectContent>
@@ -380,7 +438,7 @@ export const EquipmentModal = ({
                           ))}
                         </SelectContent>
                       </Select>
-                      <div className="relative">
+                      <div className="relative min-w-[100px] flex-1">
                         <Input
                           type="number"
                           value={sub.value}
@@ -392,6 +450,7 @@ export const EquipmentModal = ({
                           disabled={disableValue}
                           placeholder="数值"
                           className="h-10 pr-9"
+                          aria-invalid={subStatErrors[idx]}
                         />
                         <button
                           type="button"
@@ -409,6 +468,18 @@ export const EquipmentModal = ({
                           ↑
                         </button>
                       </div>
+                      <div className="text-muted-foreground w-[120px] shrink-0 text-right text-xs">
+                        {sub.type && sub.type !== '生存类词条' && (
+                          <>
+                            <span>{getRangeHint(sub.type)}</span>
+                            {getCompletionPercent(sub.type, sub.value) !== null && (
+                              <span className="ml-1 text-primary">
+                                ({getCompletionPercent(sub.type, sub.value)}%)
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
@@ -416,9 +487,9 @@ export const EquipmentModal = ({
             </div>
             <div className="space-y-2">
               <Label>定音词条</Label>
-              <div className="grid grid-cols-[180px_1fr] gap-2">
+              <div className="flex items-center gap-2">
                 <Select value={dingyinType} onValueChange={setDingyinType}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-[140px] shrink-0">
                     <SelectValue placeholder="选择定音词条" />
                   </SelectTrigger>
                   <SelectContent>
@@ -429,7 +500,7 @@ export const EquipmentModal = ({
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="relative">
+                <div className="relative min-w-[100px] flex-1">
                   <Input
                     type="number"
                     value={dingyinValue}
@@ -437,6 +508,7 @@ export const EquipmentModal = ({
                     disabled={dingyinType === '无'}
                     placeholder="数值"
                     className="h-10 pr-9"
+                    aria-invalid={dingyinError}
                   />
                   <button
                     type="button"
@@ -449,6 +521,18 @@ export const EquipmentModal = ({
                   >
                     ↑
                   </button>
+                </div>
+                <div className="text-muted-foreground w-[120px] shrink-0 text-right text-xs">
+                  {dingyinType && dingyinType !== '无' && (
+                    <>
+                      <span>{getRangeHint(dingyinType)}</span>
+                      {getCompletionPercent(dingyinType, dingyinValue) !== null && (
+                        <span className="ml-1 text-primary">
+                          ({getCompletionPercent(dingyinType, dingyinValue)}%)
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -471,7 +555,7 @@ export const EquipmentModal = ({
           <Button variant="secondary" onClick={() => onOpenChange(false)}>
             取消
           </Button>
-          <Button onClick={handleSave}>保存装备</Button>
+          <Button onClick={handleSave} disabled={hasValidationError}>保存装备</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
