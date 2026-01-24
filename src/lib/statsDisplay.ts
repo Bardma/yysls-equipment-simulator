@@ -1,0 +1,129 @@
+import { CommonData } from "./data/commonData";
+
+export interface StatDisplayItem {
+  label: string;
+  value: string;
+}
+
+const shouldPercent = (key: string) =>
+  CommonData.PERCENT_STATS.includes(key) ||
+  key.includes("率") ||
+  key.includes("加成") ||
+  key.includes("增效") ||
+  key.includes("增伤");
+
+export const buildStatsDisplay = (
+  rawTotals: Record<string, number>,
+  currentClass: string,
+  setType: string
+): StatDisplayItem[] => {
+  const totals = { ...rawTotals };
+  const items: StatDisplayItem[] = [];
+
+  const overflowData = {
+    precision: totals["精准率溢出"] || 0,
+    crit: totals["会心率溢出"] || 0,
+    intent: totals["会意率溢出"] || 0,
+  };
+
+  const attackPairs = [
+    { label: "外功攻击", min: "最小外功攻击", max: "最大外功攻击" },
+    { label: "鸣金攻击", min: "最小鸣金攻击", max: "最大鸣金攻击" },
+    { label: "裂石攻击", min: "最小裂石攻击", max: "最大裂石攻击" },
+    { label: "牵丝攻击", min: "最小牵丝攻击", max: "最大牵丝攻击" },
+    { label: "破竹攻击", min: "最小破竹攻击", max: "最大破竹攻击" },
+    { label: "无相攻击", min: "最小无相攻击", max: "最大无相攻击" },
+  ];
+
+  attackPairs.forEach((pair) => {
+    const min = totals[pair.min] || 0;
+    const max = totals[pair.max] || 0;
+    if (min > 0 || max > 0) {
+      items.push({ label: pair.label, value: `${min} - ${max}` });
+      delete totals[pair.min];
+      delete totals[pair.max];
+    }
+  });
+
+  const skillNameMap: Record<string, string> = {
+    鸣金影: "积矩九剑·流血增伤",
+    鸣金虹: "无名剑法·蓄力技增伤",
+    破竹尘: "醉梦游春·武学技增伤",
+    破竹风: "栗子游尘·鼠鼠增伤",
+    "裂石钧（纯唐）": "斩雪刀法·轻重击派生技增伤",
+    "裂石钧（双切）": "十方破阵·蓄力技增伤",
+    牵丝玉: "九重春色·特殊技增伤",
+    裂石威: "嗟夫刀法·蓄力技增伤",
+    破竹鸢: "天志垂象·蓄力技增伤",
+  };
+
+  if (
+    totals["指定武学技能增伤"] > 0 &&
+    currentClass !== "牵丝霖" &&
+    skillNameMap[currentClass]
+  ) {
+    totals[skillNameMap[currentClass]] = totals["指定武学技能增伤"];
+    delete totals["指定武学技能增伤"];
+  }
+
+  const order = [
+    "实际精准率",
+    "实际会心率",
+    "实际会意率",
+    "直接会心率",
+    "直接会意率",
+    "会心伤害加成",
+    "会意伤害加成",
+    "外功穿透",
+    "外功伤害加成",
+    "属攻穿透",
+    "鸣金伤害加成",
+    "裂石伤害加成",
+    "牵丝伤害加成",
+    "破竹伤害加成",
+    "全武学增效",
+    "对首领单位增伤",
+    "单体类奇术增伤",
+    "群体类奇术增伤",
+  ];
+
+  const renderItem = (key: string, val: number) => {
+    const label = key.replace("实际", "");
+    let overflowText = "";
+    if (key === "实际精准率" && overflowData.precision > 0) {
+      overflowText = `（溢出${overflowData.precision.toFixed(1)}%白值）`;
+    } else if (key === "实际会心率" && overflowData.crit > 0) {
+      let overflowReason = "";
+      overflowReason += currentClass === "裂石威" ? "陌刀" : "";
+      overflowReason += setType === "浣花" ? "浣花" : "";
+      overflowText = `（${overflowReason}溢出${overflowData.crit.toFixed(1)}%白值）`;
+    } else if (key === "实际会意率" && overflowData.intent > 0) {
+      overflowText = `（溢出${overflowData.intent.toFixed(1)}%白值）`;
+    }
+    const isPercent = shouldPercent(key);
+    items.push({
+      label,
+      value: `${val}${isPercent ? "%" : ""}${overflowText}`,
+    });
+  };
+
+  order.forEach((key) => {
+    if (totals[key] !== undefined && totals[key] !== 0) {
+      renderItem(key, totals[key]);
+      delete totals[key];
+    }
+  });
+
+  Object.entries(totals).forEach(([key, val]) => {
+    if (
+      val > 0 &&
+      key !== "精准率溢出" &&
+      key !== "会心率溢出" &&
+      key !== "会意率溢出"
+    ) {
+      renderItem(key, val);
+    }
+  });
+
+  return items;
+};
