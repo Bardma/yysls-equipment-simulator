@@ -244,50 +244,200 @@ export const CultivationTab = ({
       )}
 
       {status.result && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {status.result.bestImprovementEquip && (
-            <div className="border-border/60 bg-card rounded-lg border p-3">
-              <div className="font-medium">提升空间最大部位</div>
-              <div className="text-muted-foreground text-sm">
-                {status.result.bestImprovementEquip.slotName} -{' '}
-                {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
+            <div className="border-yellow-500/40 bg-card rounded-lg border p-4 space-y-4">
+              {/* 装备头部信息 */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden">
+                  {status.result.bestImprovementEquip.equip?.icon ? (
+                    <img
+                      src={status.result.bestImprovementEquip.equip.icon}
+                      alt={status.result.bestImprovementEquip.slotName}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-2xl text-muted-foreground">
+                      {status.result.bestImprovementEquip.slotName.charAt(0)}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="text-lg font-semibold text-yellow-300">
+                    {status.result.bestImprovementEquip.slotName}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {status.result.bestImprovementEquip.equip?.name || '未命名装备'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">提升空间最大</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-2xl font-bold text-green-400">
+                    {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
+                  </div>
+                </div>
               </div>
-              {status.result.bestImprovementEquip.bestMainStat && (
-                <div className="text-muted-foreground mt-2 text-xs">
-                  推荐主词条：{status.result.bestImprovementEquip.bestMainStat.stat}
+
+              {/* 分析结果说明 */}
+              <div className="border-l-2 border-yellow-500/60 bg-yellow-500/10 px-3 py-2 text-sm">
+                <span className="font-semibold text-yellow-300">分析结果：</span>
+                该部位当前装备的贡献率（所有主副词条加起来提高的毕业率）为{' '}
+                <span className="font-semibold text-yellow-300">
+                  {status.result.bestImprovementEquip.originalContribution.toFixed(2)}%
+                </span>
+                ，最优词条配置的贡献率上限为{' '}
+                <span className="font-semibold text-yellow-300">
+                  {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%
+                </span>
+                ，提升空间为{' '}
+                <span className="font-semibold text-green-400">
+                  {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
+                </span>
+                ，是所有部位中提升空间最大的一个。基于此，建议优先培养或更换此部位的装备。
+              </div>
+
+              {/* 推荐词条配置 */}
+              <div className="border-border/60 bg-background/40 rounded-lg border p-4 space-y-3">
+                <div className="flex items-center gap-2 text-yellow-300 font-medium">
+                  <span>💡</span>
+                  <span>推荐词条配置</span>
                 </div>
-              )}
-              {status.result.bestImprovementEquip.bestSubStats?.length > 0 && (
-                <div className="text-muted-foreground mt-1 text-xs">
-                  推荐副词条：
-                  {status.result.bestImprovementEquip.bestSubStats
-                    .map((stat: any) => stat.stat)
-                    .join('、')}
+                <div className="text-xs text-muted-foreground">
+                  以下词条配置可以最大化该部位对毕业率的贡献（
+                  {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）：
                 </div>
-              )}
+
+                {/* 主词条 */}
+                {status.result.bestImprovementEquip.bestMainStat && (
+                  <div className="space-y-2">
+                    <div className="text-xs text-muted-foreground">主词条</div>
+                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2">
+                      <div className="font-medium">
+                        {status.result.bestImprovementEquip.bestMainStat.stat}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        满值：{CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
+                        {CommonData.PERCENT_STATS.includes(status.result.bestImprovementEquip.bestMainStat.stat) ? '%' : ''}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 副词条 */}
+                {status.result.bestImprovementEquip.bestSubStats?.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="text-xs text-muted-foreground">
+                      副词条（推荐{status.result.bestImprovementEquip.bestSubStats.length}条）
+                    </div>
+                    <div className="space-y-2">
+                      {status.result.bestImprovementEquip.bestSubStats.map((stat: any, idx: number) => (
+                        <div
+                          key={stat.stat}
+                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2"
+                        >
+                          <div className="font-medium">
+                            {idx + 1}. {stat.stat}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {status.result.secondBestWeapon && (
-            <div className="border-border/60 bg-card rounded-lg border p-3">
-              <div className="font-medium">武器提升空间更大者</div>
-              <div className="text-muted-foreground text-sm">
-                {status.result.secondBestWeapon.slotName} -{' '}
-                {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
+            <div className="border-border/60 bg-card rounded-lg border p-4 space-y-4">
+              {/* 装备头部信息 */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden">
+                  {status.result.secondBestWeapon.equip?.icon ? (
+                    <img
+                      src={status.result.secondBestWeapon.equip.icon}
+                      alt={status.result.secondBestWeapon.slotName}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-2xl text-muted-foreground">
+                      {status.result.secondBestWeapon.slotName.charAt(0)}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="text-lg font-semibold">
+                    {status.result.secondBestWeapon.slotName}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {status.result.secondBestWeapon.equip?.name || '未命名装备'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">武器提升空间更大者</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-2xl font-bold text-green-400">
+                    {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
+                  </div>
+                </div>
               </div>
-              {status.result.secondBestWeapon.bestMainStat && (
-                <div className="text-muted-foreground mt-2 text-xs">
-                  推荐主词条：{status.result.secondBestWeapon.bestMainStat.stat}
+
+              {/* 推荐词条配置 */}
+              <div className="border-border/60 bg-background/40 rounded-lg border p-4 space-y-3">
+                <div className="flex items-center gap-2 text-yellow-300 font-medium">
+                  <span>💡</span>
+                  <span>推荐词条配置</span>
                 </div>
-              )}
-              {status.result.secondBestWeapon.bestSubStats?.length > 0 && (
-                <div className="text-muted-foreground mt-1 text-xs">
-                  推荐副词条：
-                  {status.result.secondBestWeapon.bestSubStats
-                    .map((stat: any) => stat.stat)
-                    .join('、')}
+                <div className="text-xs text-muted-foreground">
+                  以下词条配置可以最大化该部位对毕业率的贡献（
+                  {status.result.secondBestWeapon.maxContribution.toFixed(2)}%）：
                 </div>
-              )}
+
+                {/* 主词条 */}
+                {status.result.secondBestWeapon.bestMainStat && (
+                  <div className="space-y-2">
+                    <div className="text-xs text-muted-foreground">主词条</div>
+                    <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2">
+                      <div className="font-medium">
+                        {status.result.secondBestWeapon.bestMainStat.stat}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        满值：{CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
+                        {CommonData.PERCENT_STATS.includes(status.result.secondBestWeapon.bestMainStat.stat) ? '%' : ''}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 副词条 */}
+                {status.result.secondBestWeapon.bestSubStats?.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="text-xs text-muted-foreground">
+                      副词条（推荐{status.result.secondBestWeapon.bestSubStats.length}条）
+                    </div>
+                    <div className="space-y-2">
+                      {status.result.secondBestWeapon.bestSubStats.map((stat: any, idx: number) => (
+                        <div
+                          key={stat.stat}
+                          className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-3 py-2"
+                        >
+                          <div className="font-medium">
+                            {idx + 1}. {stat.stat}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

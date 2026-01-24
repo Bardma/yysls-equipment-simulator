@@ -118,30 +118,52 @@ export const StatPriorityTab = ({
       <Button onClick={calculate}>计算词条优先级</Button>
 
       {result ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <div className="text-sm font-medium">新增词条收益</div>
-            {result.gains.slice(0, 30).map((item) => (
-              <div key={item.stat} className="flex justify-between text-sm">
-                <span>{item.stat}</span>
-                <span className={item.diff > 0 ? 'text-red-400' : 'text-green-400'}>
-                  {item.diff > 0 ? '+' : ''}
-                  {item.diff.toFixed(2)}%
-                </span>
-              </div>
-            ))}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* 左侧 - 倒金字塔 */}
+          <div className="space-y-1">
+            <div className="text-sm font-medium mb-2">新增词条收益</div>
+            {result.gains.slice(0, 30).map((item, index, arr) => {
+              // 倒金字塔：第一行100%，最后一行最短
+              const widthPercent = 100 - (index / (arr.length - 1 || 1)) * 60;
+              return (
+                <div key={item.stat} className="relative">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-red-500/20 rounded-sm"
+                    style={{ width: `${widthPercent}%` }}
+                  />
+                  <div className="relative flex justify-between text-sm px-2 py-0.5">
+                    <span>{item.stat}</span>
+                    <span className={item.diff > 0 ? 'text-red-400' : 'text-green-400'}>
+                      {item.diff > 0 ? '+' : ''}
+                      {item.diff.toFixed(2)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="space-y-2">
-            <div className="text-sm font-medium">扣除词条损失</div>
-            {result.losses.slice(0, 30).map((item) => (
-              <div key={item.stat} className="flex justify-between text-sm">
-                <span>{item.stat}</span>
-                <span className={item.diff > 0 ? 'text-green-400' : 'text-red-400'}>
-                  {item.diff > 0 ? '-' : '+'}
-                  {Math.abs(item.diff).toFixed(2)}%
-                </span>
-              </div>
-            ))}
+          {/* 右侧 - 正金字塔 */}
+          <div className="space-y-1">
+            <div className="text-sm font-medium mb-2 text-right">扣除词条损失</div>
+            {result.losses.slice(0, 30).map((item, index, arr) => {
+              // 正金字塔：第一行最短，最后一行100%
+              const widthPercent = 40 + (index / (arr.length - 1 || 1)) * 60;
+              return (
+                <div key={item.stat} className="relative">
+                  <div
+                    className="absolute inset-y-0 right-0 bg-green-500/20 rounded-sm"
+                    style={{ width: `${widthPercent}%` }}
+                  />
+                  <div className="relative flex justify-between text-sm px-2 py-0.5">
+                    <span>{item.stat}</span>
+                    <span className={item.diff > 0 ? 'text-green-400' : 'text-red-400'}>
+                      {item.diff > 0 ? '-' : '+'}
+                      {Math.abs(item.diff).toFixed(2)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       ) : (

@@ -140,9 +140,9 @@ export const GraduationModal = ({
           <DialogTitle>毕业率分析</DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-[260px_1fr] gap-4">
+        <div className="grid grid-cols-[260px_1fr] gap-4 max-h-[70vh]">
           {/* Left sidebar - Slot selector */}
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-auto">
             <div className="border-border/60 bg-card rounded-lg border p-3 text-center">
               <div className="text-muted-foreground text-xs">当前毕业率</div>
               <div className="text-xl font-semibold text-yellow-300">
@@ -160,8 +160,8 @@ export const GraduationModal = ({
           </div>
 
           {/* Right content - Tabs */}
-          <div className="min-w-0">
-            <Tabs defaultValue="compare" className="w-full">
+          <div className="min-w-0 flex flex-col overflow-hidden">
+            <Tabs defaultValue="compare" className="w-full flex flex-col flex-1 overflow-hidden">
               <TabsList className="w-full justify-start">
                 <TabsTrigger value="compare">单件装备对比</TabsTrigger>
                 <TabsTrigger value="convert">转律建议</TabsTrigger>
@@ -170,7 +170,7 @@ export const GraduationModal = ({
                 <TabsTrigger value="cultivation">培养方向</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="compare" className="space-y-4 pt-4">
+              <TabsContent value="compare" className="space-y-4 pt-4 flex-1 overflow-y-auto">
                 <CompareTab
                   db={db}
                   equippedItems={equippedItems}
@@ -188,7 +188,7 @@ export const GraduationModal = ({
                 />
               </TabsContent>
 
-              <TabsContent value="convert" className="pt-4">
+              <TabsContent value="convert" className="pt-4 flex-1 overflow-y-auto">
                 <ConvertTab
                   convertTarget={convertTarget}
                   selectedSubIndex={selectedSubIndex}
@@ -205,7 +205,7 @@ export const GraduationModal = ({
                 />
               </TabsContent>
 
-              <TabsContent value="best-build" className="pt-4">
+              <TabsContent value="best-build" className="pt-4 flex-1 overflow-y-auto">
                 <BestBuildTab
                   db={db}
                   currentClass={currentClass}
@@ -217,7 +217,7 @@ export const GraduationModal = ({
                 />
               </TabsContent>
 
-              <TabsContent value="stat-priority" className="pt-4">
+              <TabsContent value="stat-priority" className="pt-4 flex-1 overflow-y-auto">
                 <StatPriorityTab
                   equippedItems={equippedItems}
                   currentClass={currentClass}
@@ -229,7 +229,7 @@ export const GraduationModal = ({
                 />
               </TabsContent>
 
-              <TabsContent value="cultivation" className="pt-4">
+              <TabsContent value="cultivation" className="pt-4 flex-1 overflow-y-auto">
                 <CultivationTab
                   equippedItems={equippedItems}
                   currentClass={currentClass}

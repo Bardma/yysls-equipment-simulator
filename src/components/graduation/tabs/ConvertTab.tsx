@@ -111,14 +111,169 @@ export const ConvertTab = ({
     return { armoryName, expected, outcomes };
   });
 
+  const baselineEquip = equippedItems[selectedSlotKey];
+
+  const bestRecommendation = (() => {
+    let best = {
+      expectedDiff: -999,
+      subIndex: -1,
+      armories: [] as string[],
+      stat: '',
+      originalStat: '',
+      maxDiff: -999,
+      hasPositiveCase: false,
+      positiveCases: [] as Array<{
+        subIndex: number;
+        armory: string;
+        stat: string;
+        originalStat: string;
+        maxDiff: number;
+        expectedDiff: number;
+      }>,
+    };
+
+    for (let subIndex = 0; subIndex < convertTarget.subStats.length; subIndex++) {
+      let totalElementalCount = 0;
+      convertTarget.subStats.forEach((sub) => {
+        if (isElemental(normalize(sub.type))) totalElementalCount++;
+      });
+
+      const existingStats = new Set<string>();
+      convertTarget.subStats.forEach((sub, idx) => {
+        if (idx !== subIndex) existingStats.add(normalize(sub.type));
+      });
+
+      const currentTargetStat = normalize(convertTarget.subStats[subIndex].type);
+
+      for (const [armoryName, pool] of Object.entries(armories)) {
+        let totalDiff = 0;
+        let validCount = 0;
+        let maxDiff = -999;
+        let bestStat = '';
+
+        pool.forEach((statName) => {
+          const finalStatName = normalize(statName);
+          if (isElemental(finalStatName) && totalElementalCount >= 2) return;
+          if (existingStats.has(finalStatName)) return;
+          if (finalStatName === currentTargetStat) return;
+
+          const maxVal = CommonData.MAX_VALUES[finalStatName];
+          if (!maxVal) return;
+
+          const testEquip = JSON.parse(JSON.stringify(convertTarget)) as EquipItem;
+          testEquip.subStats[subIndex] = {
+            type: finalStatName,
+            value: maxVal,
+            isPercent: CommonData.PERCENT_STATS.includes(finalStatName),
+          };
+
+          const testLoadout = { ...equippedItems, [selectedSlotKey]: testEquip };
+          const res = calcRate(
+            testLoadout,
+            currentClass,
+            bowType,
+            xinfaLoadout,
+            setType,
+            earlySeasonBonus
+          );
+          const newRate = parseFloat(res.graduationRate);
+          const diff = newRate - currentRate;
+
+          totalDiff += diff;
+          validCount++;
+          if (diff > maxDiff) {
+            maxDiff = diff;
+            bestStat = finalStatName;
+          }
+        });
+
+        if (validCount > 0) {
+          const expectedDiff = totalDiff / validCount;
+          const hasPositive = maxDiff > 0.0001;
+
+          if (hasPositive && expectedDiff <= 0.0001) {
+            if (!best.hasPositiveCase || expectedDiff > best.expectedDiff) {
+              best.hasPositiveCase = true;
+              best.positiveCases = [
+                {
+                  subIndex,
+                  armory: armoryName,
+                  stat: bestStat,
+                  originalStat: convertTarget.subStats[subIndex].type,
+                  maxDiff,
+                  expectedDiff,
+                },
+              ];
+            } else if (Math.abs(expectedDiff - best.expectedDiff) < 0.0001) {
+              const exists = best.positiveCases.some(
+                (c) => c.subIndex === subIndex && c.armory === armoryName
+              );
+              if (!exists) {
+                best.positiveCases.push({
+                  subIndex,
+                  armory: armoryName,
+                  stat: bestStat,
+                  originalStat: convertTarget.subStats[subIndex].type,
+                  maxDiff,
+                  expectedDiff,
+                });
+              }
+            }
+          }
+
+          if (
+            expectedDiff > best.expectedDiff ||
+            (Math.abs(expectedDiff - best.expectedDiff) < 0.0001 && maxDiff > best.maxDiff)
+          ) {
+            if (expectedDiff > 0.0001) {
+              best.hasPositiveCase = false;
+              best.positiveCases = [];
+            }
+            best.expectedDiff = expectedDiff;
+            best.subIndex = subIndex;
+            best.armories = [armoryName];
+            best.stat = bestStat;
+            best.originalStat = convertTarget.subStats[subIndex].type;
+            best.maxDiff = maxDiff;
+          } else if (
+            Math.abs(expectedDiff - best.expectedDiff) < 0.0001 &&
+            Math.abs(maxDiff - best.maxDiff) < 0.0001 &&
+            subIndex === best.subIndex
+          ) {
+            if (!best.armories.includes(armoryName)) {
+              best.armories.push(armoryName);
+            }
+          }
+        }
+      }
+    }
+
+    if (best.expectedDiff > -999) return best;
+    if (best.hasPositiveCase && best.positiveCases.length > 0) return best;
+    return null;
+  })();
+
   return (
     <div className="space-y-4">
-      <div className="border-border/60 bg-card flex items-center justify-between rounded-lg border p-3">
-        <div className="text-muted-foreground text-sm">分析对象</div>
-        <div className="font-medium">{convertTarget.name}</div>
-        <Button size="sm" variant="secondary" onClick={onPickEquip}>
-          更换分析对象
-        </Button>
+      <div className="border-border/60 bg-card space-y-2 rounded-lg border p-3">
+        <div className="text-muted-foreground text-xs">基准（当前身上穿的）</div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <div className="font-medium">
+              {baselineEquip?.name || '未穿戴'}
+            </div>
+            {baselineEquip?.isChengyin ? (
+              <span className="text-[10px] text-muted-foreground">(承音)</span>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-muted-foreground text-xs">分析对象</div>
+            <div className="font-medium">{convertTarget.name}</div>
+            <Button size="sm" variant="secondary" onClick={onPickEquip}>
+              更换分析对象
+            </Button>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -137,7 +292,7 @@ export const ConvertTab = ({
         ))}
       </div>
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-4 gap-3">
         {analysisByArmory.map((armory) => (
           <div key={armory.armoryName} className="border-border/60 bg-card rounded-lg border p-3">
             <div className="flex items-center justify-between">
@@ -173,6 +328,90 @@ export const ConvertTab = ({
           </div>
         ))}
       </div>
+
+      {bestRecommendation ? (
+        bestRecommendation.expectedDiff > 0.0001 ? (
+          <div className="border-green-500/40 bg-green-500/10 rounded-lg border px-4 py-3 text-sm text-green-200">
+            <div className="font-semibold mb-1">✅ 建议转律</div>
+            <div>
+              建议对第{bestRecommendation.subIndex + 1}条词条
+              <span className="mx-1 font-semibold">{bestRecommendation.originalStat}</span>
+              转律为
+              <span className="mx-1 font-semibold">{bestRecommendation.stat}</span>
+              ，使用
+              <span className="mx-1 font-semibold">
+                {bestRecommendation.armories.length > 1
+                  ? bestRecommendation.armories.join('、')
+                  : bestRecommendation.armories[0]}
+              </span>
+              ，期望收益
+              <span className="mx-1 font-semibold">
+                +{bestRecommendation.expectedDiff.toFixed(2)}%
+              </span>
+              ，最高收益
+              <span className="mx-1 font-semibold">
+                +{bestRecommendation.maxDiff.toFixed(2)}%
+              </span>
+              （超过当前穿戴的装备）。
+            </div>
+          </div>
+        ) : bestRecommendation.hasPositiveCase && bestRecommendation.positiveCases.length > 0 ? (
+          <div className="border-yellow-500/40 bg-yellow-500/10 rounded-lg border px-4 py-3 text-sm text-yellow-200">
+            <div className="font-semibold mb-1">⚠️ 谨慎转律</div>
+            <div>
+              虽然所有武库的转律期望收益为负，但存在可以让毕业率上升的情况：
+            </div>
+            <div className="mt-1">
+              {Array.from(
+                new Map(
+                  bestRecommendation.positiveCases.map((c) => [
+                    `${c.subIndex}_${c.stat}`,
+                    {
+                      subIndex: c.subIndex,
+                      stat: c.stat,
+                      originalStat: c.originalStat,
+                      armories: [] as string[],
+                    },
+                  ])
+                ).values()
+              ).map((group) => {
+                bestRecommendation.positiveCases.forEach((c) => {
+                  if (c.subIndex === group.subIndex && c.stat === group.stat) {
+                    if (!group.armories.includes(c.armory)) group.armories.push(c.armory);
+                  }
+                });
+                return (
+                  <div key={`${group.subIndex}-${group.stat}`}>
+                    将第{group.subIndex + 1}条词条 {group.originalStat} 转律为 {group.stat}，
+                    使用{group.armories.length > 1 ? group.armories.join('/') : group.armories[0]}武库
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-2">
+              最高可提升
+              <span className="mx-1 font-semibold">
+                +{bestRecommendation.positiveCases[0].maxDiff.toFixed(2)}%
+              </span>
+              ，但期望收益仅为
+              <span className="mx-1 font-semibold">
+                {bestRecommendation.positiveCases[0].expectedDiff.toFixed(2)}%
+              </span>
+              ，请谨慎考虑。
+            </div>
+          </div>
+        ) : (
+          <div className="border-red-500/40 bg-red-500/10 rounded-lg border px-4 py-3 text-sm text-red-200">
+            <div className="font-semibold mb-1">⛔ 不建议转律</div>
+            <div>
+              经过分析，无论对哪个副词条进行转律，毕业率都无法超过当前穿戴的装备。
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">
+              （最大期望收益仅为 {bestRecommendation.expectedDiff.toFixed(2)}% 或为负）
+            </div>
+          </div>
+        )
+      ) : null}
     </div>
   );
 };
