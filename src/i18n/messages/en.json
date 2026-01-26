@@ -1,0 +1,111 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "header": {
+    "title": "Where Winds Meet",
+    "subtitle": "Equipment Graduation Manager",
+    "currentCharacter": "Character",
+    "selectCharacter": "Select Character",
+    "newCharacter": "New Character",
+    "characterName": "Character Name",
+    "newCharacterPlaceholder": "New character name",
+    "create": "+ Create",
+    "deleteCharacter": "Delete Character",
+    "delete": "Delete",
+    "importExport": "Import/Export",
+    "generateReport": "Report"
+  },
+  "welcome": {
+    "title": "Welcome to Where Winds Meet Equipment Graduation Manager",
+    "description": "Please create or select a character from the menu to start adding equipment and simulations"
+  },
+  "equipment": {
+    "library": "Equipment Library",
+    "addEquipment": "Add Equipment",
+    "editEquipment": "Edit Equipment",
+    "deleteEquipment": "Delete Equipment",
+    "equipItem": "Equip",
+    "unequipItem": "Unequip",
+    "slot": "Slot",
+    "weapon": "Weapon",
+    "ring": "Ring",
+    "pendant": "Pendant",
+    "head": "Head",
+    "chest": "Chest",
+    "legs": "Legs",
+    "hands": "Hands",
+    "name": "Name",
+    "stats": "Stats",
+    "score": "Score",
+    "deleteConfirm": "This cannot be undone. Are you sure?",
+    "cannotEquipWeapon": "This weapon type cannot be equipped by current class",
+    "filterAll": "All",
+    "noEquipment": "No equipment"
+  },
+  "simulation": {
+    "title": "Equipment Simulation",
+    "class": "Class",
+    "bowType": "Bow Type",
+    "setBonus": "Set Bonus",
+    "xinfa": "Xinfa",
+    "equippedItems": "Equipped"
+  },
+  "graduation": {
+    "title": "Graduation Rate",
+    "rate": "Rate",
+    "dps": "DPS",
+    "accurate": "Accurate",
+    "excel": "Excel",
+    "analyze": "Analyze",
+    "earlySeasonBonus": "Early Season Bonus",
+    "loanDingyin": "Loan Dingyin",
+    "noRotation": "No rotation configured",
+    "loaned": "(Loaned)"
+  },
+  "stats": {
+    "title": "Stats Panel",
+    "total": "Total"
+  },
+  "modal": {
+    "equipmentTitle": "Equipment Info",
+    "xinfaTitle": "Select Xinfa",
+    "graduationTitle": "Graduation Analysis",
+    "importExportTitle": "Import/Export",
+    "reportTitle": "Generate Report"
+  },
+  "importExport": {
+    "import": "Import",
+    "export": "Export",
+    "importData": "Import Data",
+    "exportData": "Export Data",
+    "copySuccess": "Copied successfully",
+    "importSuccess": "Import successful",
+    "importError": "Import failed"
+  },
+  "report": {
+    "generate": "Generate",
+    "download": "Download Report",
+    "generating": "Generating..."
+  },
+  "language": {
+    "switch": "Switch Language",
+    "chinese": "中文",
+    "english": "English"
+  },
+  "deleteConfirm": {
+    "character": "Are you sure you want to delete this character?"
+  }
+}

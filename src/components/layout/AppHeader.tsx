@@ -1,8 +1,10 @@
 'use client';
 
 import { FileImage, Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { LocaleSwitcher } from '@/components/common';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -36,6 +38,7 @@ export const AppHeader = ({
   onGenerateReport,
 }: AppHeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = useTranslations('header');
 
   return (
     <header className="relative z-50 w-full shrink-0 border-b border-slate-700/50 bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-md">
@@ -48,9 +51,9 @@ export const AppHeader = ({
           </div>
           <div>
             <div className="font-bold tracking-tight text-base md:text-lg bg-linear-to-r from-slate-200 via-white to-slate-200 bg-clip-text text-transparent">
-              燕云十六声
+              {t('title')}
             </div>
-            <div className="text-[10px] md:text-xs text-slate-400 -mt-0.5 hidden sm:block">装备毕业率管理器</div>
+            <div className="text-[10px] md:text-xs text-slate-400 -mt-0.5 hidden sm:block">{t('subtitle')}</div>
           </div>
         </div>
 
@@ -66,13 +69,13 @@ export const AppHeader = ({
         <div className="hidden md:flex items-center gap-3">
           {/* Account selector */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-700/30 border border-slate-600/30">
-            <span className="text-slate-400 text-xs">当前角色</span>
+            <span className="text-slate-400 text-xs">{t('currentCharacter')}</span>
             <Select
               value={currentAccount ?? ''}
               onValueChange={(value) => onAccountChange(value || null)}
             >
               <SelectTrigger className="w-[120px] lg:w-[160px] cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
-                <SelectValue placeholder="请选择角色" />
+                <SelectValue placeholder={t('selectCharacter')} />
               </SelectTrigger>
               <SelectContent>
                 {accounts.map((account) => (
@@ -90,7 +93,7 @@ export const AppHeader = ({
           <div className="flex items-center gap-2">
             <input
               className="h-9 w-28 lg:w-36 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
-              placeholder="新建角色名称"
+              placeholder={t('newCharacterPlaceholder')}
               value={createName}
               onChange={(event) => onCreateNameChange(event.target.value)}
             />
@@ -99,7 +102,7 @@ export const AppHeader = ({
               className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/30"
               onClick={onCreateAccount}
             >
-              + 新建
+              {t('create')}
             </Button>
             <Button
               size="sm"
@@ -108,7 +111,7 @@ export const AppHeader = ({
               onClick={onDeleteAccount}
               disabled={!currentAccount}
             >
-              删除
+              {t('delete')}
             </Button>
             <Button
               size="sm"
@@ -117,7 +120,7 @@ export const AppHeader = ({
               onClick={onImportExport}
               disabled={!currentAccount}
             >
-              导入/导出
+              {t('importExport')}
             </Button>
             <Button
               size="sm"
@@ -126,8 +129,9 @@ export const AppHeader = ({
               disabled={!currentAccount}
             >
               <FileImage className="w-4 h-4 mr-1" />
-              生成报告
+              {t('generateReport')}
             </Button>
+            <LocaleSwitcher />
           </div>
         </div>
       </div>
@@ -135,9 +139,14 @@ export const AppHeader = ({
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-slate-900/98 backdrop-blur-md border-b border-slate-700/50 p-4 space-y-4 z-50">
+          {/* Language Switcher */}
+          <div className="flex justify-end">
+            <LocaleSwitcher />
+          </div>
+
           {/* Account selector */}
           <div className="space-y-2">
-            <span className="text-slate-400 text-xs">当前角色</span>
+            <span className="text-slate-400 text-xs">{t('currentCharacter')}</span>
             <Select
               value={currentAccount ?? ''}
               onValueChange={(value) => {
@@ -146,7 +155,7 @@ export const AppHeader = ({
               }}
             >
               <SelectTrigger className="w-full cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
-                <SelectValue placeholder="请选择角色" />
+                <SelectValue placeholder={t('selectCharacter')} />
               </SelectTrigger>
               <SelectContent>
                 {accounts.map((account) => (
@@ -160,11 +169,11 @@ export const AppHeader = ({
 
           {/* Create account */}
           <div className="space-y-2">
-            <span className="text-slate-400 text-xs">新建角色</span>
+            <span className="text-slate-400 text-xs">{t('newCharacter')}</span>
             <div className="flex gap-2">
               <input
                 className="flex-1 h-9 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
-                placeholder="角色名称"
+                placeholder={t('characterName')}
                 value={createName}
                 onChange={(event) => onCreateNameChange(event.target.value)}
               />
@@ -176,7 +185,7 @@ export const AppHeader = ({
                   setMobileMenuOpen(false);
                 }}
               >
-                + 新建
+                {t('create')}
               </Button>
             </div>
           </div>
@@ -194,7 +203,7 @@ export const AppHeader = ({
                 }}
                 disabled={!currentAccount}
               >
-                删除角色
+                {t('deleteCharacter')}
               </Button>
               <Button
                 size="sm"
@@ -206,7 +215,7 @@ export const AppHeader = ({
                 }}
                 disabled={!currentAccount}
               >
-                导入/导出
+                {t('importExport')}
               </Button>
             </div>
             <Button
@@ -219,7 +228,7 @@ export const AppHeader = ({
               disabled={!currentAccount}
             >
               <FileImage className="w-4 h-4 mr-1" />
-              生成报告
+              {t('generateReport')}
             </Button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-# Yanyun Equipment Graduation Rate Simulator
+# Where Winds Meet Equipment Graduation Rate Simulator
 
 <div align="center">
 
@@ -14,7 +14,7 @@ This project optimizes UI/UX and extends functionality based on the original wor
 
 </div>
 
-A modern web application for managing equipment and calculating graduation rates for the game "燕云十六声" (Yan Yun Shi Liu Sheng), built with Next.js 16.
+A modern web application for managing equipment and calculating graduation rates for the game "燕云十六声" (Where Winds Meet), built with Next.js 16.
 
 ## Relationship with the Original Project
 
@@ -205,7 +205,7 @@ Graduation rate calculations are based on rotation data provided by:
 
 - Thanks to the creator of the [original project](http://spongem.com/yysls/)
 - Thanks to all the rotation data contributors
-- Thanks to the 燕云十六声 game community
+- Thanks to the Where Winds Meet game community
 
 ## License
 
@@ -213,4 +213,4 @@ MIT License
 
 ## Disclaimer
 
-This is an unofficial fan project and is not affiliated with the official 燕云十六声 game. All game content and data copyrights belong to the game developers.
+This is an unofficial fan project and is not affiliated with the official Where Winds Meet game. All game content and data copyrights belong to the game developers.

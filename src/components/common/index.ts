@@ -4,3 +4,4 @@ export { ScoreBadge, getEquipScore } from './ScoreBadge';
 export { CollapsibleCard } from './CollapsibleCard';
 export { StatInputRow } from './StatInputRow';
 export { ImageCropper } from './ImageCropper';
+export { LocaleSwitcher } from './LocaleSwitcher';

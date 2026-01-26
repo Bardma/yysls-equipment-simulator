@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 
 import { EquipmentLibrary } from '@/components/equipment';
@@ -58,6 +59,8 @@ export default function Home() {
     graduation: true,
     stats: true,
   });
+
+  const t = useTranslations();
 
   const {
     accounts,
@@ -167,7 +170,7 @@ export default function Home() {
 
   const handleDeleteAccount = () => {
     if (!currentAccount) return;
-    if (!window.confirm('确定删除当前角色？')) return;
+    if (!window.confirm(t('deleteConfirm.character'))) return;
     clearAccountData(currentAccount);
     deleteAccount(currentAccount);
   };
@@ -196,7 +199,7 @@ export default function Home() {
 
   const handleDeleteEquip = (equipId: number | string) => {
     if (!currentAccount) return;
-    if (!window.confirm('删除后无法恢复，确定？')) return;
+    if (!window.confirm(t('equipment.deleteConfirm'))) return;
     deleteEquip(currentAccount, equipId);
     (Object.keys(equippedItems) as Array<keyof EquippedItems>).forEach((slotKey) => {
       const item = equippedItems[slotKey];
@@ -230,7 +233,7 @@ export default function Home() {
     if (item.slotId === '1') {
       const allowed = ClassConfig.WEAPON_RULES[currentClass] || [];
       if (!allowed.includes(item.weaponTypeId || '')) {
-        alert('当前流派无法装备此类型的武器');
+        alert(t('equipment.cannotEquipWeapon'));
         return;
       }
       const w1 = equippedItems.weapon1;
@@ -268,7 +271,7 @@ export default function Home() {
         <div className="border-border/40 bg-background/95 sticky top-0 z-50 h-14 w-full border-b backdrop-blur" />
         <main className="container mx-auto max-w-screen-2xl flex-1 p-4">
           <div className="flex h-[60vh] items-center justify-center">
-            <div className="text-muted-foreground">加载中...</div>
+            <div className="text-muted-foreground">{t('common.loading')}</div>
           </div>
         </main>
       </div>

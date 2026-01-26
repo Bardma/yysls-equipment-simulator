@@ -1,0 +1,111 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "confirm": "确定",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "search": "搜索",
+    "filter": "筛选",
+    "reset": "重置",
+    "close": "关闭",
+    "yes": "是",
+    "no": "否"
+  },
+  "header": {
+    "title": "燕云十六声",
+    "subtitle": "装备毕业率管理器",
+    "currentCharacter": "当前角色",
+    "selectCharacter": "请选择角色",
+    "newCharacter": "新建角色",
+    "characterName": "角色名称",
+    "newCharacterPlaceholder": "新建角色名称",
+    "create": "+ 新建",
+    "deleteCharacter": "删除角色",
+    "delete": "删除",
+    "importExport": "导入/导出",
+    "generateReport": "生成报告"
+  },
+  "welcome": {
+    "title": "欢迎使用燕云十六声装备毕业率管理器",
+    "description": "请点击右上角菜单创建或选择角色后开始录入装备与模拟"
+  },
+  "equipment": {
+    "library": "装备库",
+    "addEquipment": "添加装备",
+    "editEquipment": "编辑装备",
+    "deleteEquipment": "删除装备",
+    "equipItem": "装备",
+    "unequipItem": "卸下",
+    "slot": "部位",
+    "weapon": "武器",
+    "ring": "戒指",
+    "pendant": "项链",
+    "head": "头部",
+    "chest": "衣服",
+    "legs": "下装",
+    "hands": "护手",
+    "name": "名称",
+    "stats": "属性",
+    "score": "评分",
+    "deleteConfirm": "删除后无法恢复，确定？",
+    "cannotEquipWeapon": "当前流派无法装备此类型的武器",
+    "filterAll": "全部",
+    "noEquipment": "暂无装备"
+  },
+  "simulation": {
+    "title": "穿戴模拟",
+    "class": "流派",
+    "bowType": "弓型",
+    "setBonus": "套装",
+    "xinfa": "心法",
+    "equippedItems": "已装备"
+  },
+  "graduation": {
+    "title": "毕业率",
+    "rate": "毕业率",
+    "dps": "DPS",
+    "accurate": "精确值",
+    "excel": "Excel值",
+    "analyze": "分析",
+    "earlySeasonBonus": "早季加成",
+    "loanDingyin": "借用定音",
+    "noRotation": "暂无轮转配置",
+    "loaned": "（借用）"
+  },
+  "stats": {
+    "title": "属性面板",
+    "total": "总计"
+  },
+  "modal": {
+    "equipmentTitle": "装备信息",
+    "xinfaTitle": "选择心法",
+    "graduationTitle": "毕业率分析",
+    "importExportTitle": "导入/导出",
+    "reportTitle": "生成报告"
+  },
+  "importExport": {
+    "import": "导入",
+    "export": "导出",
+    "importData": "导入数据",
+    "exportData": "导出数据",
+    "copySuccess": "复制成功",
+    "importSuccess": "导入成功",
+    "importError": "导入失败"
+  },
+  "report": {
+    "generate": "生成",
+    "download": "下载报告",
+    "generating": "生成中..."
+  },
+  "language": {
+    "switch": "切换语言",
+    "chinese": "中文",
+    "english": "English"
+  },
+  "deleteConfirm": {
+    "character": "确定删除当前角色？"
+  }
+}
