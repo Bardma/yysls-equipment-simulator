@@ -1,6 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { EquipmentImage } from '@/components/common/EquipmentImage';
 import { StatDisplay } from '@/components/common/StatDisplay';
@@ -53,6 +54,8 @@ export const EquipmentCard = ({
   onEdit,
   onDelete,
 }: EquipmentCardProps) => {
+  const t = useTranslations('equipment');
+
   return (
     <Card
       className={cn(
@@ -104,7 +107,7 @@ export const EquipmentCard = ({
           <div className="font-medium text-slate-100 truncate text-sm sm:text-base">{equip.name}</div>
           <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs flex-wrap">
             <span className="text-slate-400">
-              {equip.slotName} {equip.isChengyin ? '(承音)' : ''}
+              {equip.slotName} {equip.isChengyin ? t('chengyin') : ''}
             </span>
             {/* 完整度标签 */}
             <span

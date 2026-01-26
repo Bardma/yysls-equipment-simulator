@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import { ClassConfig } from '../../lib/data/classConfig';
 import { CommonData } from '../../lib/data/commonData';
@@ -23,6 +24,7 @@ export const XinfaModal = ({
   slotIndex,
   onSelect,
 }: XinfaModalProps) => {
+  const t = useTranslations('modal');
   const rules = ClassConfig.XINFA_RULES[currentClass];
   const pool = new Set([
     ...(rules?.default || []),
@@ -40,7 +42,7 @@ export const XinfaModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="!flex !flex-col gap-0 p-0 max-w-3xl max-h-[90vh]">
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">选择心法</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">{t('xinfaTitle')}</DialogTitle>
         </DialogHeader>
         <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4">
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">

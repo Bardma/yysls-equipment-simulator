@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 
 interface StatsPanelProps {
@@ -9,9 +11,11 @@ interface StatsPanelProps {
 }
 
 export const StatsPanel = ({ statDisplay, expanded, onToggle }: StatsPanelProps) => {
+  const t = useTranslations('stats');
+
   return (
     <CollapsibleCard
-      title="面板属性"
+      title={t('title')}
       icon="📊"
       expanded={expanded}
       onToggle={onToggle}
@@ -19,7 +23,7 @@ export const StatsPanel = ({ statDisplay, expanded, onToggle }: StatsPanelProps)
       className={expanded ? 'flex-1 overflow-y-auto' : ''}
     >
       {statDisplay.length === 0 ? (
-        <div className="text-muted-foreground text-xs sm:text-sm">暂无面板属性</div>
+        <div className="text-muted-foreground text-xs sm:text-sm">{t('noStats')}</div>
       ) : (
         <div className="space-y-1 sm:space-y-1.5 text-xs sm:text-sm">
           {statDisplay.map((item) => {

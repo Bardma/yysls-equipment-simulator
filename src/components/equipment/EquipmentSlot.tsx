@@ -1,20 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import { Card } from '@/components/ui/card';
 import type { EquipItem, EquippedItems } from '@/lib/types';
-
-const SLOT_LABELS: Record<keyof EquippedItems, string> = {
-  weapon1: '武器1',
-  weapon2: '武器2',
-  head: '冠胄',
-  chest: '胸甲',
-  ring: '环',
-  pendant: '佩',
-  legs: '胫甲',
-  hands: '腕甲',
-};
 
 interface EquipmentSlotProps {
   slotKey: keyof EquippedItems;
@@ -24,6 +14,19 @@ interface EquipmentSlotProps {
 }
 
 export const EquipmentSlot = ({ slotKey, item, onClick, onUnequip }: EquipmentSlotProps) => {
+  const t = useTranslations('equipment');
+  
+  const SLOT_LABELS: Record<keyof EquippedItems, string> = {
+    weapon1: t('weapon1'),
+    weapon2: t('weapon2'),
+    head: t('head'),
+    chest: t('chest'),
+    ring: t('ring'),
+    pendant: t('pendant'),
+    legs: t('legs'),
+    hands: t('hands'),
+  };
+
   const label = SLOT_LABELS[slotKey];
 
   const handleClick = () => {
@@ -61,5 +64,3 @@ export const EquipmentSlot = ({ slotKey, item, onClick, onUnequip }: EquipmentSl
     </Card>
   );
 };
-
-export { SLOT_LABELS };

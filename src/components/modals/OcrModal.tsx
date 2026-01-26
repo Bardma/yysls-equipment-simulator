@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Crop, ImagePlus, Upload } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { ImageCropper } from '../common/ImageCropper';
 import { Button } from '../ui/button';
@@ -18,6 +19,8 @@ interface OcrModalProps {
 }
 
 export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: OcrModalProps) => {
+  const t = useTranslations('ocrModal');
+  const tCommon = useTranslations('common');
   const [step, setStep] = useState<ModalStep>('upload');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -64,7 +67,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
   // 处理图片选择
   const handleImageSelect = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) {
-      alert('请选择图片文件');
+      alert(t('selectImageFile'));
       return;
     }
 
@@ -73,7 +76,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     setCroppedPreviewUrl(null);
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-  }, []);
+  }, [t]);
 
   // 文件选择处理
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,18 +182,18 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
         {step === 'upload' ? (
           <>
             <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-              <DialogTitle className="text-base sm:text-lg">OCR识别装备词条</DialogTitle>
+              <DialogTitle className="text-base sm:text-lg">{t('title')}</DialogTitle>
             </DialogHeader>
 
             <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-4">
               {/* 示例图区域 */}
               <div className="space-y-2">
-                <p className="text-muted-foreground text-sm">请上传类似下方格式的装备词条截图：</p>
+                <p className="text-muted-foreground text-sm">{t('uploadHint')}</p>
                 <div className="flex justify-center rounded-md border p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/ocr-example.png"
-                    alt="示例截图"
+                    alt={t('exampleImage')}
                     className="max-h-[160px] rounded object-contain"
                   />
                 </div>
@@ -199,8 +202,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
               {/* 图片选择/预览区域 */}
               <div className="space-y-2">
                 <p className="text-muted-foreground text-sm">
-                  点击下方区域选择图片，或使用 <kbd className="bg-muted rounded px-1.5 py-0.5 text-xs">Ctrl+V</kbd>{' '}
-                  粘贴截图：
+                  {t('selectOrPaste')} <kbd className="bg-muted rounded px-1.5 py-0.5 text-xs">Ctrl+V</kbd>
                 </p>
                 <input
                   ref={fileInputRef}
@@ -225,7 +227,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={displayPreviewUrl}
-                        alt="预览"
+                        alt={t('preview')}
                         className="max-h-[240px] max-w-full rounded object-contain"
                       />
                     </div>
@@ -235,19 +237,19 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
                         <ImagePlus className="text-muted-foreground h-6 w-6" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium">点击选择或拖放图片</p>
-                        <p className="text-muted-foreground text-xs">支持 JPG、PNG、WebP 等格式</p>
+                        <p className="text-sm font-medium">{t('clickOrDrop')}</p>
+                        <p className="text-muted-foreground text-xs">{t('supportedFormats')}</p>
                       </div>
                     </div>
                   )}
                 </div>
                 {displayPreviewUrl && (
                   <div className="flex flex-col items-center gap-1.5">
-                    <p className="text-muted-foreground text-center text-xs">点击可重新选择图片</p>
+                    <p className="text-muted-foreground text-center text-xs">{t('clickToReselect')}</p>
                     {croppedImage && (
                       <span className="inline-flex items-center gap-1 text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
                         <Crop className="h-3 w-3" />
-                        已裁剪
+                        {t('cropped')}
                       </span>
                     )}
                   </div>
@@ -265,20 +267,20 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
                   className="text-xs sm:text-sm"
                 >
                   <Crop className="mr-1.5 h-4 w-4" />
-                  裁剪图片
+                  {t('cropImage')}
                 </Button>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="secondary" onClick={() => onOpenChange(false)} disabled={isLoading} className="text-xs sm:text-sm">
-                    取消
+                    {tCommon('cancel')}
                   </Button>
                   <Button size="sm" onClick={handleConfirm} disabled={!selectedImage || isLoading} className="text-xs sm:text-sm">
                     {isLoading ? (
                       <>
                         <Upload className="mr-1.5 h-4 w-4 animate-pulse" />
-                        识别中...
+                        {t('recognizing')}
                       </>
                     ) : (
-                      '开始识别'
+                      t('startRecognition')
                     )}
                   </Button>
                 </div>
@@ -288,7 +290,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
         ) : (
           <>
             <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-              <DialogTitle className="text-base sm:text-lg">裁剪图片</DialogTitle>
+              <DialogTitle className="text-base sm:text-lg">{t('cropTitle')}</DialogTitle>
             </DialogHeader>
             <div className="flex-1 min-h-0">
               {previewUrl && (

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { Button } from '@/components/ui/button';
 import { CommonData } from '@/lib/data/commonData';
 import { cn } from '@/lib/utils';
@@ -10,6 +12,8 @@ interface EquipmentFilterProps {
 }
 
 export const EquipmentFilter = ({ filter, onFilterChange }: EquipmentFilterProps) => {
+  const t = useTranslations('equipment');
+
   return (
     <div className="flex flex-wrap gap-1.5 sm:gap-2">
       <Button
@@ -23,7 +27,7 @@ export const EquipmentFilter = ({ filter, onFilterChange }: EquipmentFilterProps
         variant={filter === 'all' ? 'default' : 'outline'}
         onClick={() => onFilterChange('all')}
       >
-        全部
+        {t('filterAll')}
       </Button>
       {CommonData.SLOTS.map((slot) => (
         <Button

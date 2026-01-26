@@ -1,11 +1,16 @@
 'use client';
 
-import { FileImage, Menu, X } from 'lucide-react';
+import { ChevronDown, FileImage, Plus, Trash2, Upload, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { LocaleSwitcher } from '@/components/common';
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -37,8 +42,23 @@ export const AppHeader = ({
   onImportExport,
   onGenerateReport,
 }: AppHeaderProps) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [characterMenuOpen, setCharacterMenuOpen] = useState(false);
   const t = useTranslations('header');
+
+  const handleCreateAccount = () => {
+    onCreateAccount();
+    // 创建成功后清空输入框（假设父组件会处理）
+  };
+
+  const handleDeleteAccount = () => {
+    onDeleteAccount();
+    setCharacterMenuOpen(false);
+  };
+
+  const handleImportExport = () => {
+    onImportExport();
+    setCharacterMenuOpen(false);
+  };
 
   return (
     <header className="relative z-50 w-full shrink-0 border-b border-slate-700/50 bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-md">
@@ -57,182 +77,127 @@ export const AppHeader = ({
           </div>
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700/30 border border-slate-600/30 text-slate-300"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Right side actions */}
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Character Management Popover */}
+          <Popover open={characterMenuOpen} onOpenChange={setCharacterMenuOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50 hover:text-white gap-1.5 px-2.5 md:px-3"
+              >
+                <User className="w-4 h-4 text-slate-400" />
+                <span className="max-w-[80px] md:max-w-[120px] truncate">
+                  {currentAccount || t('noCharacter')}
+                </span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent 
+              className="w-[calc(100vw-24px)] max-w-[320px] p-0 border-slate-600/50 bg-slate-900/98 backdrop-blur-md"
+              align="end"
+              sideOffset={8}
+            >
+              <div className="p-3 space-y-3">
+                {/* Switch Character Section */}
+                {accounts.length > 0 && (
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-slate-400 font-medium">{t('switchCharacter')}</label>
+                    <Select
+                      value={currentAccount ?? ''}
+                      onValueChange={(value) => {
+                        onAccountChange(value || null);
+                        setCharacterMenuOpen(false);
+                      }}
+                    >
+                      <SelectTrigger className="w-full cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
+                        <SelectValue placeholder={t('selectCharacter')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {accounts.map((account) => (
+                          <SelectItem key={account} value={account}>
+                            {account}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
-        {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-3">
-          {/* Account selector */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-700/30 border border-slate-600/30">
-            <span className="text-slate-400 text-xs">{t('currentCharacter')}</span>
-            <Select
-              value={currentAccount ?? ''}
-              onValueChange={(value) => onAccountChange(value || null)}
-            >
-              <SelectTrigger className="w-[120px] lg:w-[160px] cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
-                <SelectValue placeholder={t('selectCharacter')} />
-              </SelectTrigger>
-              <SelectContent>
-                {accounts.map((account) => (
-                  <SelectItem key={account} value={account}>
-                    {account}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                {/* Create Character Section */}
+                <div className="space-y-1.5">
+                  <label className="text-xs text-slate-400 font-medium">{t('newCharacter')}</label>
+                  <div className="flex gap-2">
+                    <input
+                      className="flex-1 h-9 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
+                      placeholder={t('newCharacterPlaceholder')}
+                      value={createName}
+                      onChange={(event) => onCreateNameChange(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' && createName.trim()) {
+                          handleCreateAccount();
+                        }
+                      }}
+                    />
+                    <Button
+                      size="sm"
+                      className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/30 px-3"
+                      onClick={handleCreateAccount}
+                      disabled={!createName.trim()}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
 
-          <div className="h-6 w-px bg-slate-600/40" />
+                {/* Divider */}
+                {currentAccount && (
+                  <>
+                    <div className="h-px bg-slate-700/50" />
 
-          {/* Create account */}
-          <div className="flex items-center gap-2">
-            <input
-              className="h-9 w-28 lg:w-36 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
-              placeholder={t('newCharacterPlaceholder')}
-              value={createName}
-              onChange={(event) => onCreateNameChange(event.target.value)}
-            />
-            <Button
-              size="sm"
-              className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/30"
-              onClick={onCreateAccount}
-            >
-              {t('create')}
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
-              onClick={onDeleteAccount}
-              disabled={!currentAccount}
-            >
-              {t('delete')}
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="cursor-pointer border-slate-600/50 text-slate-300 hover:bg-slate-700/30 hover:text-slate-200"
-              onClick={onImportExport}
-              disabled={!currentAccount}
-            >
-              {t('importExport')}
-            </Button>
-            <Button
-              size="sm"
-              className="cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
-              onClick={onGenerateReport}
-              disabled={!currentAccount}
-            >
-              <FileImage className="w-4 h-4 mr-1" />
-              {t('generateReport')}
-            </Button>
-            <LocaleSwitcher />
-          </div>
+                    {/* Character Actions */}
+                    <div className="space-y-1.5">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-full justify-start cursor-pointer text-slate-300 hover:text-slate-100 hover:bg-slate-700/30 gap-2"
+                        onClick={handleImportExport}
+                      >
+                        <Upload className="w-4 h-4" />
+                        {t('importExport')}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-full justify-start cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 gap-2"
+                        onClick={handleDeleteAccount}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        {t('deleteCharacter')}
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          {/* Generate Report Button */}
+          <Button
+            size="sm"
+            className="cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20 px-2.5 md:px-3"
+            onClick={onGenerateReport}
+            disabled={!currentAccount}
+          >
+            <FileImage className="w-4 h-4 md:mr-1.5" />
+            <span className="hidden md:inline">{t('generateReport')}</span>
+          </Button>
+
+          {/* Language Switcher */}
+          <LocaleSwitcher />
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-slate-900/98 backdrop-blur-md border-b border-slate-700/50 p-4 space-y-4 z-50">
-          {/* Language Switcher */}
-          <div className="flex justify-end">
-            <LocaleSwitcher />
-          </div>
-
-          {/* Account selector */}
-          <div className="space-y-2">
-            <span className="text-slate-400 text-xs">{t('currentCharacter')}</span>
-            <Select
-              value={currentAccount ?? ''}
-              onValueChange={(value) => {
-                onAccountChange(value || null);
-                setMobileMenuOpen(false);
-              }}
-            >
-              <SelectTrigger className="w-full cursor-pointer border-slate-600/50 bg-slate-800/50 text-slate-100 hover:bg-slate-700/50">
-                <SelectValue placeholder={t('selectCharacter')} />
-              </SelectTrigger>
-              <SelectContent>
-                {accounts.map((account) => (
-                  <SelectItem key={account} value={account}>
-                    {account}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Create account */}
-          <div className="space-y-2">
-            <span className="text-slate-400 text-xs">{t('newCharacter')}</span>
-            <div className="flex gap-2">
-              <input
-                className="flex-1 h-9 rounded-md border border-slate-600/50 bg-slate-800/50 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30"
-                placeholder={t('characterName')}
-                value={createName}
-                onChange={(event) => onCreateNameChange(event.target.value)}
-              />
-              <Button
-                size="sm"
-                className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/30"
-                onClick={() => {
-                  onCreateAccount();
-                  setMobileMenuOpen(false);
-                }}
-              >
-                {t('create')}
-              </Button>
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="flex-1 cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
-                onClick={() => {
-                  onDeleteAccount();
-                  setMobileMenuOpen(false);
-                }}
-                disabled={!currentAccount}
-              >
-                {t('deleteCharacter')}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="flex-1 cursor-pointer border-slate-600/50 text-slate-300 hover:bg-slate-700/30 hover:text-slate-200"
-                onClick={() => {
-                  onImportExport();
-                  setMobileMenuOpen(false);
-                }}
-                disabled={!currentAccount}
-              >
-                {t('importExport')}
-              </Button>
-            </div>
-            <Button
-              size="sm"
-              className="w-full cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
-              onClick={() => {
-                onGenerateReport();
-                setMobileMenuOpen(false);
-              }}
-              disabled={!currentAccount}
-            >
-              <FileImage className="w-4 h-4 mr-1" />
-              {t('generateReport')}
-            </Button>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

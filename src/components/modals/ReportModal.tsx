@@ -2,6 +2,7 @@
 
 import html2canvas from 'html2canvas-pro';
 import { Download } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -73,6 +74,11 @@ export const ReportModal = ({
   earlySeasonBonus,
   loanDingyin,
 }: ReportModalProps) => {
+  const t = useTranslations('report');
+  const tHeader = useTranslations('header');
+  const tGraduation = useTranslations('graduation');
+  const tSimulation = useTranslations('simulation');
+  const tStats = useTranslations('stats');
   const reportRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -89,11 +95,11 @@ export const ReportModal = ({
       });
 
       const link = document.createElement('a');
-      link.download = `${accountName || '角色'}_${currentClass}_报告.png`;
+      link.download = `${accountName || t('character')}_${currentClass}_${t('reportFile')}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (error) {
-      console.error('生成报告失败:', error);
+      console.error('Generate report failed:', error);
     } finally {
       setIsGenerating(false);
     }
@@ -111,7 +117,7 @@ export const ReportModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex flex-col w-[800px] max-w-[95vw] max-h-[90vh] p-0 bg-slate-900 border-slate-700 overflow-hidden">
         <DialogHeader className="shrink-0 px-6 pt-6 pb-4 border-b border-slate-700/50">
-          <DialogTitle className="text-xl font-bold text-slate-100">角色报告预览</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-slate-100">{t('preview')}</DialogTitle>
         </DialogHeader>
 
         {/* Scrollable Report Content */}
@@ -137,11 +143,11 @@ export const ReportModal = ({
                 color: colors.accent.amber,
                 margin: 0,
               }}>
-                燕云十六声
+                {tHeader('title')}
               </h1>
             </div>
             <div style={{ color: colors.text.muted, fontSize: '14px' }}>
-              装备毕业率管理器 · 角色报告
+              {tHeader('subtitle')} · {t('characterReport')}
             </div>
           </div>
 
@@ -169,7 +175,7 @@ export const ReportModal = ({
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
               <span style={{ fontSize: '22px' }}>👤</span>
               <span style={{ fontSize: '22px', fontWeight: 'bold', color: '#fcd34d', letterSpacing: '-0.5px' }}>
-                {accountName || '未命名角色'}
+                {accountName || t('unnamedCharacter')}
               </span>
             </div>
           </div>
@@ -208,7 +214,7 @@ export const ReportModal = ({
                     color: '#38bdf8',
                     fontSize: '10px',
                   }}>⚔</span>
-                  <span style={{ color: 'rgba(56, 189, 248, 0.8)', fontSize: '11px' }}>当前流派</span>
+                  <span style={{ color: 'rgba(56, 189, 248, 0.8)', fontSize: '11px' }}>{t('currentClass')}</span>
                 </div>
                 <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentClass}</div>
               </div>
@@ -245,9 +251,9 @@ export const ReportModal = ({
                     color: '#a78bfa',
                     fontSize: '10px',
                   }}>🎽</span>
-                  <span style={{ color: 'rgba(167, 139, 250, 0.8)', fontSize: '11px' }}>套装选择</span>
+                  <span style={{ color: 'rgba(167, 139, 250, 0.8)', fontSize: '11px' }}>{t('setSelection')}</span>
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{setType || '无'}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{setType || t('none')}</div>
               </div>
             </div>
           </div>
@@ -286,7 +292,7 @@ export const ReportModal = ({
                   color: '#34d399',
                   fontSize: '11px',
                 }}>📖</span>
-                <span style={{ color: 'rgba(52, 211, 153, 0.8)', fontSize: '12px', fontWeight: '500' }}>心法配置</span>
+                <span style={{ color: 'rgba(52, 211, 153, 0.8)', fontSize: '12px', fontWeight: '500' }}>{tSimulation('xinfaConfig')}</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
                 {xinfaLoadout.map((xinfa, idx) => (
@@ -300,9 +306,9 @@ export const ReportModal = ({
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ fontSize: '10px', color: colors.text.muted, marginBottom: '4px' }}>槽位 {idx + 1}</div>
+                    <div style={{ fontSize: '10px', color: colors.text.muted, marginBottom: '4px' }}>{t('slot')} {idx + 1}</div>
                     <div style={{ fontSize: '13px', fontWeight: '600', color: '#6ee7b7', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {xinfa || '空'}
+                      {xinfa || t('empty')}
                     </div>
                   </div>
                 ))}
@@ -351,13 +357,13 @@ export const ReportModal = ({
                   {loanDingyin && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#d8b4fe' }}>
                       <span>💰</span>
-                      <span>贷款满定音</span>
+                      <span>{tGraduation('loanDingyinLabel')}</span>
                     </div>
                   )}
                   {earlySeasonBonus && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#67e8f9' }}>
                       <span>⏩</span>
-                      <span>下赛季属性</span>
+                      <span>{tGraduation('earlySeasonLabel')}</span>
                     </div>
                   )}
                 </div>
@@ -397,7 +403,7 @@ export const ReportModal = ({
                         fontSize: '11px',
                         fontWeight: '500',
                       }}>E</span>
-                      <span style={{ color: colors.text.muted }}>表格显示</span>
+                      <span style={{ color: colors.text.muted }}>{tGraduation('excel')}</span>
                       <span style={{ marginLeft: 'auto', fontWeight: '500', color: '#fef08a' }}>{graduationInfo.excel}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -413,13 +419,13 @@ export const ReportModal = ({
                         fontSize: '11px',
                         fontWeight: '500',
                       }}>D</span>
-                      <span style={{ color: colors.text.muted }}>轴期望秒伤</span>
+                      <span style={{ color: colors.text.muted }}>{tGraduation('dps')}</span>
                       <span style={{ marginLeft: 'auto', fontWeight: '500', color: '#fed7aa' }}>{graduationInfo.dps.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>毕业率未配置</div>
+                <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>{tGraduation('noRotation')}</div>
               )}
             </div>
           </div>
@@ -457,10 +463,10 @@ export const ReportModal = ({
                   color: '#22c55e',
                   fontSize: '11px',
                 }}>📊</span>
-                <span style={{ color: 'rgba(34, 197, 94, 0.8)', fontSize: '12px', fontWeight: '500' }}>面板属性</span>
+                <span style={{ color: 'rgba(34, 197, 94, 0.8)', fontSize: '12px', fontWeight: '500' }}>{tStats('title')}</span>
               </div>
               {statDisplay.length === 0 ? (
-                <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>暂无面板属性</div>
+                <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>{tStats('noStats')}</div>
               ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '6px 24px' }}>
                   {statDisplay.map((item) => {
@@ -548,7 +554,7 @@ export const ReportModal = ({
           {/* Footer */}
           <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(71, 85, 105, 0.5)', textAlign: 'center' }}>
             <div style={{ color: colors.text.muted, fontSize: '12px' }}>
-              生成时间：{new Date().toLocaleString('zh-CN')}
+              {t('generatedAt')}: {new Date().toLocaleString()}
             </div>
           </div>
           </div>
@@ -562,7 +568,7 @@ export const ReportModal = ({
             className="cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
           >
             <Download className="w-4 h-4 mr-2" />
-            {isGenerating ? '生成中...' : '下载报告'}
+            {isGenerating ? t('generating') : t('download')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -32,9 +34,11 @@ export const GraduationRatePanel = ({
   expanded,
   onToggle,
 }: GraduationRatePanelProps) => {
+  const t = useTranslations('graduation');
+
   return (
     <CollapsibleCard
-      title="当前毕业率"
+      title={t('title')}
       icon="🎓"
       expanded={expanded}
       onToggle={onToggle}
@@ -43,7 +47,7 @@ export const GraduationRatePanel = ({
       <div className="space-y-3">
         {!hasRotation || !graduationInfo ? (
           <div className="text-muted-foreground text-xs sm:text-sm">
-            毕业率表格未配置，请等待更新
+            {t('noRotation')}
           </div>
         ) : (
           <div className={`relative rounded-lg sm:rounded-xl p-2.5 sm:p-3 border ${
@@ -70,13 +74,13 @@ export const GraduationRatePanel = ({
                   {loanDingyin && (
                     <div className="flex items-center gap-1.5 text-purple-300">
                       <span>💰</span>
-                      <span>贷款满定音</span>
+                      <span>{t('loanDingyinLabel')}</span>
                     </div>
                   )}
                   {earlySeasonBonus && (
                     <div className="flex items-center gap-1.5 text-cyan-300">
                       <span>⏩</span>
-                      <span>下赛季属性</span>
+                      <span>{t('earlySeasonLabel')}</span>
                     </div>
                   )}
                 </div>
@@ -97,7 +101,7 @@ export const GraduationRatePanel = ({
                   <span className="inline-flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 rounded bg-yellow-500/20 text-yellow-400 text-[10px] sm:text-xs font-medium">
                     E
                   </span>
-                  <span className="text-muted-foreground">表格显示</span>
+                  <span className="text-muted-foreground">{t('excel')}</span>
                   <span className="ml-auto font-medium text-yellow-200/90">
                     {graduationInfo.excel}
                   </span>
@@ -106,7 +110,7 @@ export const GraduationRatePanel = ({
                   <span className="inline-flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 rounded bg-orange-500/20 text-orange-400 text-[10px] sm:text-xs font-medium">
                     D
                   </span>
-                  <span className="text-muted-foreground">轴期望秒伤</span>
+                  <span className="text-muted-foreground">{t('dps')}</span>
                   <span className="ml-auto font-medium text-orange-200/90">
                     {graduationInfo.dps.toLocaleString()}
                   </span>
@@ -123,7 +127,7 @@ export const GraduationRatePanel = ({
             className="h-4 w-4"
           />
           <span className="text-muted-foreground text-[10px] sm:text-xs leading-tight">
-            提前获得下半赛季属性（毕业率将虚高）
+            {t('earlySeasonBonus')}
           </span>
           <Popover>
             <PopoverTrigger asChild>
@@ -133,8 +137,8 @@ export const GraduationRatePanel = ({
             </PopoverTrigger>
             <PopoverContent className="bg-zinc-900 border border-zinc-700 p-2 w-auto" side="top" align="center">
               <div className="text-xs space-y-1">
-                <div className="text-amber-400 font-medium mb-1">增加属性</div>
-                <div className="text-zinc-300">精准率：+1.4%</div>
+                <div className="text-amber-400 font-medium mb-1">{t('bonusStats')}</div>
+                <div className="text-zinc-300">{t('precision')}：+1.4%</div>
                 <div className="text-zinc-500 pl-2">劲：+14</div>
                 <div className="text-zinc-500 pl-2">敏：+14</div>
                 <div className="text-zinc-500 pl-2">势：+14</div>
@@ -152,7 +156,7 @@ export const GraduationRatePanel = ({
             className="h-4 w-4"
           />
           <span className="text-muted-foreground text-[10px] sm:text-xs">
-            贷款本赛季满定音
+            {t('loanDingyin')}
           </span>
         </div>
 
@@ -161,7 +165,7 @@ export const GraduationRatePanel = ({
           className="w-full cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20 text-xs sm:text-sm h-8 sm:h-9"
           onClick={onAnalyze}
         >
-          毕业率分析
+          {t('analyze')}
         </Button>
       </div>
     </CollapsibleCard>

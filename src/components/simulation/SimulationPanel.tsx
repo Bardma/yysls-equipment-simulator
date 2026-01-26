@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
 import { EquipmentSlot } from '@/components/equipment/EquipmentSlot';
 import { ClassConfig } from '@/lib/data/classConfig';
@@ -51,11 +53,12 @@ export const SimulationPanel = ({
   onXinfaClick,
   onUnequip,
 }: SimulationPanelProps) => {
+  const t = useTranslations('simulation');
   const lockedList = ClassConfig.XINFA_LOCKED[currentClass] || [];
 
   return (
     <CollapsibleCard
-      title="穿戴模拟"
+      title={t('title')}
       icon="⚔"
       expanded={expanded}
       onToggle={onToggle}
@@ -95,7 +98,7 @@ export const SimulationPanel = ({
         </div>
 
         <div className="space-y-2">
-          <div className="text-sky-300/80 text-xs font-medium">心法配置</div>
+          <div className="text-sky-300/80 text-xs font-medium">{t('xinfaConfig')}</div>
           <div className="grid grid-cols-4 gap-2 sm:flex sm:justify-between">
             {Array.from({ length: 4 }).map((_, idx) => {
               const name = xinfaLoadout[idx] || '';

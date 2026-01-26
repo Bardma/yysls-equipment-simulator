@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import {
   Select,
   SelectContent,
@@ -11,9 +13,9 @@ import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
 
 const BOW_OPTIONS = [
-  { value: 'precision', label: '精准弓' },
-  { value: 'crit', label: '会心弓' },
-  { value: 'intent', label: '会意弓' },
+  { value: 'precision', labelKey: 'precisionBow' },
+  { value: 'crit', labelKey: 'critBow' },
+  { value: 'intent', labelKey: 'intentBow' },
 ];
 
 interface ClassSelectorProps {
@@ -33,10 +35,12 @@ export const ClassSelector = ({
   onBowChange,
   onSetChange,
 }: ClassSelectorProps) => {
+  const t = useTranslations('simulation');
+
   return (
     <div className="grid grid-cols-3 gap-2 sm:flex sm:justify-between sm:gap-4">
       <div className="flex flex-col gap-1">
-        <label className="text-sky-300/80 text-xs font-medium">流派</label>
+        <label className="text-sky-300/80 text-xs font-medium">{t('class')}</label>
         <Select value={currentClass} onValueChange={onClassChange}>
           <SelectTrigger className="cursor-pointer w-full sm:w-28 h-8 text-xs">
             <SelectValue />
@@ -52,7 +56,7 @@ export const ClassSelector = ({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sky-300/80 text-xs font-medium">弓诀</label>
+        <label className="text-sky-300/80 text-xs font-medium">{t('bowType')}</label>
         <Select value={bowType} onValueChange={onBowChange}>
           <SelectTrigger className="cursor-pointer w-full sm:w-28 h-8 text-xs">
             <SelectValue />
@@ -60,7 +64,7 @@ export const ClassSelector = ({
           <SelectContent>
             {BOW_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
-                {option.label}
+                {t(option.labelKey)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -68,7 +72,7 @@ export const ClassSelector = ({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sky-300/80 text-xs font-medium">套装</label>
+        <label className="text-sky-300/80 text-xs font-medium">{t('setBonus')}</label>
         <Select value={setType} onValueChange={onSetChange}>
           <SelectTrigger className="cursor-pointer w-full sm:w-28 h-8 text-xs">
             <SelectValue />

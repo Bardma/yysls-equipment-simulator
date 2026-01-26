@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { ScanLine } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import { CommonData } from '../../lib/data/commonData';
 import { ocrEquipmentStats } from '../../lib/ocrParser';
@@ -31,6 +32,8 @@ export const EquipmentModal = ({
   initialEquip,
   onSave,
 }: EquipmentModalProps) => {
+  const t = useTranslations('equipmentModal');
+  const tCommon = useTranslations('common');
   const [slotId, setSlotId] = useState('1');
   const [weaponTypeId, setWeaponTypeId] = useState('');
   const [name, setName] = useState('');
@@ -235,7 +238,7 @@ export const EquipmentModal = ({
       setIsOcrModalOpen(false);
     } catch (error) {
       console.error('[OCR] Recognition failed:', error);
-      alert('OCR识别失败，请重试或手动输入');
+      alert(t('ocrError'));
     } finally {
       setIsOcrLoading(false);
     }
@@ -375,7 +378,7 @@ export const EquipmentModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`!flex !flex-col gap-0 p-0 max-h-[90vh] ${ocrPreviewImage ? 'max-w-4xl sm:max-w-4xl' : 'max-w-2xl sm:max-w-2xl'}`}>
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">{initialEquip ? '修改装备' : '录入装备'}</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">{initialEquip ? t('editTitle') : t('addTitle')}</DialogTitle>
         </DialogHeader>
         <div className={`flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 ${ocrPreviewImage ? 'flex flex-col sm:flex-row gap-4' : ''}`}>
         {/* 主表单区域 */}
@@ -386,21 +389,21 @@ export const EquipmentModal = ({
             <div className="flex shrink-0 flex-row sm:flex-col items-center gap-2 sm:gap-1">
               <Image
                 src={iconPath}
-                alt="预览"
+                alt={t('preview')}
                 width={56}
                 height={56}
                 className="rounded-md border sm:w-[72px] sm:h-[72px]"
               />
-              <span className="text-muted-foreground text-xs">预览</span>
+              <span className="text-muted-foreground text-xs">{t('preview')}</span>
             </div>
             {/* 基本信息 */}
             <div className="flex-1 space-y-2 sm:space-y-3">
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <div className="space-y-1">
-                  <Label className="text-xs">装备位置</Label>
+                  <Label className="text-xs">{t('equipmentSlot')}</Label>
                   <Select value={slotId} onValueChange={handleSlotChange}>
                     <SelectTrigger className="h-8 sm:h-9 text-xs sm:text-sm">
-                      <SelectValue placeholder="选择位置" />
+                      <SelectValue placeholder={t('selectSlot')} />
                     </SelectTrigger>
                     <SelectContent>
                       {slotOptions.map((slot) => (
@@ -412,14 +415,14 @@ export const EquipmentModal = ({
                   </Select>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">武器种类</Label>
+                  <Label className="text-xs">{t('weaponType')}</Label>
                   <Select
                     value={weaponTypeId}
                     onValueChange={handleWeaponChange}
                     disabled={slotId !== '1'}
                   >
                     <SelectTrigger className="h-8 sm:h-9 text-xs sm:text-sm">
-                      <SelectValue placeholder="选择种类" />
+                      <SelectValue placeholder={t('selectType')} />
                     </SelectTrigger>
                     <SelectContent>
                       {weaponOptions.map((weapon) => (
@@ -433,7 +436,7 @@ export const EquipmentModal = ({
               </div>
               <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                 <div className="flex-1 space-y-1">
-                  <Label className="text-xs">装备名称</Label>
+                  <Label className="text-xs">{t('equipmentName')}</Label>
                   <Input
                     value={name}
                     onChange={(event) => {
@@ -450,11 +453,11 @@ export const EquipmentModal = ({
                       onCheckedChange={(v) => setIsChengyin(Boolean(v))}
                       className="h-4 w-4"
                     />
-                    承音
+                    {t('chengyin')}
                   </label>
                   <label className="flex items-center gap-1 sm:gap-1.5 text-xs">
                     <Checkbox checked={isPurple} onCheckedChange={(v) => setIsPurple(Boolean(v))} className="h-4 w-4" />
-                    紫装
+                    {t('purple')}
                   </label>
                   <label className="flex items-center gap-1 sm:gap-1.5 text-xs">
                     <Checkbox
@@ -462,7 +465,7 @@ export const EquipmentModal = ({
                       onCheckedChange={(v) => setIsConvertible(Boolean(v))}
                       className="h-4 w-4"
                     />
-                    可转律
+                    {t('convertible')}
                   </label>
                 </div>
               </div>
@@ -476,7 +479,7 @@ export const EquipmentModal = ({
           <div className="space-y-3 sm:space-y-4">
             {/* 主词条 */}
             <div className="space-y-1.5">
-              <Label className="text-xs">主词条</Label>
+              <Label className="text-xs">{t('mainStat')}</Label>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                 <Select
                   value={mainStatType}
@@ -487,7 +490,7 @@ export const EquipmentModal = ({
                   }}
                 >
                   <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
-                    <SelectValue placeholder="选择主词条" />
+                    <SelectValue placeholder={t('selectMainStat')} />
                   </SelectTrigger>
                   <SelectContent>
                     {mainStatOptions.map((stat) => (
@@ -538,7 +541,7 @@ export const EquipmentModal = ({
 
             {/* 副词条 */}
             <div className="space-y-1.5">
-              <Label className="text-xs">副词条（4条）</Label>
+              <Label className="text-xs">{t('subStats')}</Label>
               <div className="space-y-1.5 sm:space-y-2">
                 {subStats.map((sub, idx) => {
                   const disableValue = isChengyin || sub.type === '生存类词条';
@@ -554,7 +557,7 @@ export const EquipmentModal = ({
                         }}
                       >
                         <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
-                          <SelectValue placeholder="选择词条" />
+                          <SelectValue placeholder={t('selectStat')} />
                         </SelectTrigger>
                         <SelectContent>
                           {subStatOptions.map((stat) => (
@@ -623,11 +626,11 @@ export const EquipmentModal = ({
 
             {/* 定音词条 */}
             <div className="space-y-1.5">
-              <Label className="text-xs">定音词条</Label>
+              <Label className="text-xs">{t('dingyinStat')}</Label>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                 <Select value={dingyinType} onValueChange={setDingyinType}>
                   <SelectTrigger className="h-8 sm:h-9 w-full sm:w-[140px] shrink-0 text-xs sm:text-sm">
-                    <SelectValue placeholder="选择定音词条" />
+                    <SelectValue placeholder={t('selectDingyin')} />
                   </SelectTrigger>
                   <SelectContent>
                     {dingyinOptions.map((stat) => (
@@ -680,12 +683,12 @@ export const EquipmentModal = ({
         {/* OCR 预览图区域 */}
         {ocrPreviewImage && (
           <div className="w-full sm:w-64 shrink-0 space-y-2">
-            <Label className="text-xs">识别原图（供校验）</Label>
+            <Label className="text-xs">{t('ocrPreview')}</Label>
             <div className="rounded-md border bg-black/20 p-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={ocrPreviewImage}
-                alt="OCR原图"
+                alt={t('ocrImage')}
                 className="max-h-48 sm:max-h-96 w-full rounded object-contain"
               />
             </div>
@@ -698,18 +701,18 @@ export const EquipmentModal = ({
             size="sm"
             onClick={handleOcrClick}
             disabled={!canUseOcr}
-            title={!canUseOcr ? '请先选择武器种类' : 'OCR识别装备词条'}
+            title={!canUseOcr ? t('selectWeaponFirst') : t('ocrTooltip')}
             className="text-xs sm:text-sm order-3 sm:order-1 flex-1 sm:flex-none"
           >
             <ScanLine className="mr-1 sm:mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            OCR识别
+            {t('ocr')}
           </Button>
           <div className="flex gap-2 order-1 sm:order-2 w-full sm:w-auto justify-end">
             <Button variant="secondary" size="sm" onClick={() => onOpenChange(false)} className="text-xs sm:text-sm flex-1 sm:flex-none">
-              取消
+              {tCommon('cancel')}
             </Button>
             <Button size="sm" onClick={handleSave} disabled={hasValidationError || missingWeaponType} className="text-xs sm:text-sm flex-1 sm:flex-none">
-              保存装备
+              {t('save')}
             </Button>
           </div>
         </DialogFooter>

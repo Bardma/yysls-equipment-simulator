@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import {
@@ -29,6 +30,8 @@ export const ImportExportModal = ({
   equipData,
   onImport,
 }: ImportExportModalProps) => {
+  const t = useTranslations('importExport');
+  const tCommon = useTranslations('common');
   const [text, setText] = useState('');
   const [warningVisible, setWarningVisible] = useState(false);
 
@@ -42,7 +45,7 @@ export const ImportExportModal = ({
     };
     const encrypted = encryptData(exportData);
     if (!encrypted) {
-      alert('导出数据失败，请重试');
+      alert(t('exportError'));
       return;
     }
     setText(encrypted);
@@ -64,12 +67,12 @@ export const ImportExportModal = ({
 
   const handleCheckImport = () => {
     if (!text.trim()) {
-      alert('请输入或粘贴要导入的数据');
+      alert(t('noDataError'));
       return;
     }
     const decrypted = decryptData(text.trim());
     if (!decrypted || !decrypted.accountName) {
-      alert('数据格式错误，请确认这是正确的导出数据');
+      alert(t('formatError'));
       return;
     }
     setWarningVisible(true);
@@ -79,7 +82,7 @@ export const ImportExportModal = ({
     if (!text.trim()) return;
     const decrypted = decryptData(text.trim());
     if (!decrypted || !decrypted.equipData) {
-      alert('数据格式错误，导入失败');
+      alert(t('importError'));
       return;
     }
     let data: EquipItem[] = decrypted.equipData;
@@ -98,39 +101,39 @@ export const ImportExportModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="!flex !flex-col gap-0 p-0 max-w-2xl max-h-[90vh]">
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">导出/导入数据</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">{t('title')}</DialogTitle>
         </DialogHeader>
         <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-3">
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={handleExport} disabled={!accountName} className="text-xs sm:text-sm">
-              导出数据
+              {t('exportData')}
             </Button>
             <Button size="sm" variant="secondary" onClick={handleDownload} disabled={!text.trim()} className="text-xs sm:text-sm">
-              下载为文件
+              {t('downloadFile')}
             </Button>
             <Button size="sm" variant="outline" onClick={handleCheckImport} disabled={!text.trim()} className="text-xs sm:text-sm">
-              粘贴导入
+              {t('pasteImport')}
             </Button>
           </div>
           <Textarea
             rows={6}
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder="导出数据或粘贴导入数据"
+            placeholder={t('placeholder')}
             className="text-xs sm:text-sm"
           />
           {warningVisible && (
             <div className="border-destructive/50 bg-destructive/10 rounded-lg border p-2 sm:p-3 text-xs sm:text-sm">
-              <div className="text-destructive font-medium">⚠️ 警告</div>
+              <div className="text-destructive font-medium">⚠️ {t('warning')}</div>
               <div className="text-muted-foreground mt-1">
-                导入数据将完全覆盖当前角色（{accountName || '当前角色'}）的所有装备数据！
+                {t('overwriteWarning', { account: accountName || t('currentCharacter') })}
               </div>
               <div className="mt-2 sm:mt-3 flex gap-2">
                 <Button size="sm" variant="destructive" onClick={handleConfirmImport} className="text-xs sm:text-sm">
-                  确认导入
+                  {t('confirmImport')}
                 </Button>
                 <Button size="sm" variant="secondary" onClick={() => setWarningVisible(false)} className="text-xs sm:text-sm">
-                  取消
+                  {tCommon('cancel')}
                 </Button>
               </div>
             </div>
@@ -138,7 +141,7 @@ export const ImportExportModal = ({
         </div>
         <DialogFooter className="shrink-0 border-t border-border/40 px-4 sm:px-6 py-4">
           <Button size="sm" variant="secondary" onClick={() => onOpenChange(false)} className="text-xs sm:text-sm">
-            关闭
+            {tCommon('close')}
           </Button>
         </DialogFooter>
       </DialogContent>

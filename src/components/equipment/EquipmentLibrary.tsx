@@ -1,6 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -32,6 +33,7 @@ export const EquipmentLibrary = ({
   onDeleteEquip,
   onEquipItem,
 }: EquipmentLibraryProps) => {
+  const t = useTranslations('equipment');
   // 使用 jieba 分词搜索
   const { searchQuery, setSearchQuery, filteredItems: searchedItems } = useJiebaSearch(db);
 
@@ -48,14 +50,14 @@ export const EquipmentLibrary = ({
             <span className="inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-slate-500/20 text-slate-300 text-xs">
               📦
             </span>
-            装备库
+            {t('library')}
           </h3>
           <Button
             size="sm"
             className="cursor-pointer bg-linear-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-md shadow-slate-900/20 text-xs sm:text-sm"
             onClick={onAddEquip}
           >
-            + 录入装备
+            {t('addEquipment')}
           </Button>
         </div>
 
@@ -64,7 +66,7 @@ export const EquipmentLibrary = ({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             type="text"
-            placeholder="搜索装备名称（支持拼音/首字母）..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 bg-slate-800/50 border-slate-600/50 placeholder:text-slate-500 focus:border-slate-500 text-sm"
@@ -81,10 +83,10 @@ export const EquipmentLibrary = ({
           <Card className="col-span-full p-8 text-center border-slate-500/20 bg-slate-500/5">
             <div className="text-slate-400">
               {db.length === 0
-                ? '当前数据库无装备，请点击上方录入装备按钮。'
+                ? t('emptyLibrary')
                 : searchQuery
-                  ? '未找到匹配的装备。'
-                  : '当前筛选条件下无装备。'}
+                  ? t('noSearchResults')
+                  : t('noFilterResults')}
             </div>
           </Card>
         ) : (
