@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { CollapsibleCard } from '@/components/common/CollapsibleCard';
+import { statLabel } from '@/lib/statName';
 
 interface StatsPanelProps {
   statDisplay: Array<{ label: string; value: string; highlight?: string; suffix?: string; isLoaned?: boolean; isEarlySeason?: boolean }>;
@@ -53,7 +54,7 @@ export const StatsPanel = ({ statDisplay, expanded, onToggle }: StatsPanelProps)
 
             return (
               <div
-                key={item.label}
+                key={statLabel(item.label)}
                 className={`flex items-center justify-between py-0.5 sm:py-1 px-1.5 sm:px-2 rounded-md transition-colors ${getBgClass()}`}
               >
                 <span className={getLabelClass()}>
@@ -63,7 +64,7 @@ export const StatsPanel = ({ statDisplay, expanded, onToggle }: StatsPanelProps)
                       {item.isEarlySeason && <span className="text-cyan-400">⏩</span>}
                     </span>
                   )}
-                  {item.label}
+                  {statLabel(item.label)}
                 </span>
                 <span className={`font-medium ${getValueClass()}`}>
                   {item.value}
