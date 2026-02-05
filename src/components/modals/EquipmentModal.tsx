@@ -268,7 +268,6 @@ export const EquipmentModal = ({
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponValue);
     } else {
       const slot = CommonData.SLOTS.find((s) => s.id === slotValue);
-      if (slot) setName(`我的${slotLabel(slot.name)}`);
     }
   };
 
