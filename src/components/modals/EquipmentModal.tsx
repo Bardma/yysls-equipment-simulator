@@ -16,7 +16,11 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { OcrModal } from './OcrModal';
+const weaponLabel = (name: string) => name; // placeholder (later you can map CN->EN)
 
+...
+
+if (weapon) setName(`My ${weaponLabel(weapon.name)}`);
 const emptySubStats = () => Array.from({ length: 4 }).map(() => ({ type: '', value: '' }));
 
 interface EquipmentModalProps {
