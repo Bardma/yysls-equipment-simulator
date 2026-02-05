@@ -208,7 +208,7 @@ const uniq = (arr: Array<string | null | undefined>) =>
       {/* Le reste de ton panel (xinfa, equipped, unequip) reste inchangé */}
       {/* IMPORTANT: garde ton code existant ci-dessous si tu en avais */}
       <div className="space-y-2">
-        <div className="text-xs text-muted-foreground">Xinfa</div>
+        <div className="text-xs text-muted-foreground">Innerway</div>
         <div className="grid grid-cols-2 gap-2">
           {xinfaLoadout.map((x, idx) => (
             <Button key={`${x}-${idx}`} variant="outline" onClick={() => onXinfaClick(idx)}>

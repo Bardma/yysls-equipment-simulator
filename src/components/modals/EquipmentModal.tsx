@@ -52,8 +52,16 @@ export const EquipmentModal = ({
   const [isOcrLoading, setIsOcrLoading] = useState(false);
   const [ocrPreviewImage, setOcrPreviewImage] = useState<string | null>(null); // 识别后的预览图
 
+  const clearOcrPreview = () => {
+    if (ocrPreviewImage) URL.revokeObjectURL(ocrPreviewImage);
+    setOcrPreviewImage(null);
+  };
+
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      clearOcrPreview();
+      return;
+    }
     if (initialEquip) {
       setSlotId(initialEquip.slotId);
       setWeaponTypeId(initialEquip.weaponTypeId || '');
@@ -681,7 +689,12 @@ export const EquipmentModal = ({
         {/* OCR 预览图区域 */}
         {ocrPreviewImage && (
           <div className="w-full sm:w-64 shrink-0 space-y-2">
-            <Label className="text-xs">{t('ocrPreview')}</Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-xs">{t('ocrPreview')}</Label>
+              <Button type="button" variant="outline" size="sm" className="h-6 px-2 text-[10px]" onClick={clearOcrPreview}>
+                Remove
+              </Button>
+            </div>
             <div className="rounded-md border bg-black/20 p-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

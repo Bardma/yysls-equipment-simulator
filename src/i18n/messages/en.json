@@ -70,8 +70,8 @@
     "class": "Class",
     "bowType": "Bow Type",
     "setBonus": "Set Bonus",
-    "xinfa": "Xinfa",
-    "xinfaConfig": "Xinfa Configuration",
+    "xinfa": "Innerway",
+    "xinfaConfig": "Innerway Configuration",
     "equippedItems": "Equipped",
     "precisionBow": "Precision Bow",
     "critBow": "Crit Bow",
@@ -101,7 +101,7 @@
   },
   "modal": {
     "equipmentTitle": "Equipment Info",
-    "xinfaTitle": "Select Xinfa",
+    "xinfaTitle": "Select Innerway",
     "graduationTitle": "Graduation Analysis",
     "importExportTitle": "Import/Export",
     "reportTitle": "Generate Report"

@@ -3,7 +3,7 @@
 const STAT_LABELS: Record<string, string> = {
   // Stats panel (noms CN -> EN in-game)
   '外功攻击': 'Physical Attack',
-  '鸣金攻击': 'Attribute Attack',
+  '鸣金攻击': 'Bellstrike Attack',
   '无相攻击': 'Formless Attribute',
   '破竹攻击': 'Bamboocut Attack',
   '牵丝攻击': 'Silkbind Attack',
@@ -18,7 +18,7 @@ const STAT_LABELS: Record<string, string> = {
   '属攻穿透': 'Attribute Attack Penetration',
   '属攻': 'Attribute Attack',
   '属疗': 'Attribute Healing',
-  '鸣金伤害加成': 'Attribute DMG Bonus',
+  '鸣金伤害加成': 'Bellstrike DMG Bonus',
   '牵丝伤害加成': 'Silkbind DMG Bonus',
   '破竹伤害加成': 'Bamboocut DMG Bonus',
   '裂石伤害加成': 'Stonesplit DMG Bonus',
@@ -41,9 +41,24 @@ const STAT_LABELS: Record<string, string> = {
   '外功伤害加成': 'Physical DMG Bonus',
   '属攻伤害加成': 'Attribute Attack DMG Bonus',
   '属疗加成': 'Attribute Attack Healing Bonus',
+  '鸣金穿透': 'Bellstrike Penetration',
+  '裂石穿透': 'Stonesplit Penetration',
+  '牵丝穿透': 'Silkbind Penetration',
+  '破竹穿透': 'Bamboocut Penetration',
   '生存类词条': 'Survivability',
   '生存向': 'Survivability',
   '无': 'None',
+};
+
+
+const ATTUNEMENT_TEXT_LABELS: Record<string, string> = {
+  'Stonesplit Pentration': 'Stonesplit Penetration',
+  "Deal bonus Qi damage when breaking a target's defense with a Defense Break skill": "Deal bonus Qi damage when breaking a target's defense with a Defense Break skill",
+  'Gain Tenacity for a short period after damaging a target with a Counterattack skill': 'Gain Tenacity for a short period after damaging a target with a Counterattack skill',
+  'Recover Endurance after casting an Execution skill': 'Recover Endurance after casting an Execution skill',
+  "Increase the target's damage taken after breaking their defense with a Defense Break skill": "Increase the target's damage taken after breaking their defense with a Defense Break skill",
+  'Deal bonus Qi damage when hitting a non-defending enemy with a Counterattack skill': 'Deal bonus Qi damage when hitting a non-defending enemy with a Counterattack skill',
+  'Recover Vitality after casting an Execution skill': 'Recover Vitality after casting an Execution skill',
 };
 
 const XINFA_LABELS: Record<string, string> = {
@@ -159,6 +174,7 @@ export function statLabel(key: string): string {
 
   // mapping direct prioritaire
   if (STAT_LABELS[key]) return STAT_LABELS[key];
+  if (ATTUNEMENT_TEXT_LABELS[key]) return ATTUNEMENT_TEXT_LABELS[key];
 
   // patterns min/max
   if (key.startsWith('最小') && key.endsWith('攻击')) {
