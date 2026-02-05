@@ -1,6 +1,33 @@
 // src/lib/statName.ts
 
-// Labels "slot" (CommonData.SLOTS.name -> EN)
+const STAT_LABELS: Record<string, string> = {
+  // Stats panel (noms CN -> EN in-game)
+  '外功攻击': 'Physical Attack',
+  '鸣金攻击': 'Mingjin Attack',
+  '无相攻击': 'Phase-free Attack',
+  '精准率': 'Accuracy Rate',
+  '会心率': 'Critical Rate',
+  '会意率': 'Affinity Rate',
+  '直接会心率': 'Direct Critical Rate',
+  '直接会意率': 'Direct Affinity Rate',
+  '会心伤害加成': 'Critical DMG Bonus',
+  '会意伤害加成': 'Affinity DMG Bonus',
+  '属攻穿透': 'Attribute Attack Penetration',
+  '属攻': 'Attribute Attack',
+  '属疗': 'Attribute Healing',
+  '鸣金伤害加成': 'Mingjin DMG Bonus',
+  '牵丝伤害加成': 'Silkbind DMG Bonus',
+  '破竹伤害加成': 'Bamboosplit DMG Bonus',
+  '裂石伤害加成': 'Stonesplit DMG Bonus',
+
+  // Base attributes (si présents)
+  '体': 'Body',
+  '劲': 'Power',
+  '御': 'Defense',
+  '敏': 'Agility',
+  '势': 'Momentum',
+};
+
 const SLOT_LABELS: Record<string, string> = {
   '武器': 'Weapon',
   '环': 'Ring',
@@ -11,7 +38,6 @@ const SLOT_LABELS: Record<string, string> = {
   '腕甲': 'Hands',
 };
 
-// Labels "weapon type" (CommonData.WEAPON_TYPES.name -> EN)
 const WEAPON_LABELS: Record<string, string> = {
   '剑': 'Sword',
   '枪': 'Spear',
@@ -19,43 +45,71 @@ const WEAPON_LABELS: Record<string, string> = {
   '扇': 'Fan',
   '绳标': 'Rope Dart',
   '双刀': 'Dual Blades',
-  '陌刀': 'Mo Dao',
-  '横刀': 'Heng Dao',
-  '拳甲': 'Fist',
+  '陌刀': 'Long Sabre',
+  '横刀': 'Horizontal Sabre',
+  '拳甲': 'Gauntlets',
 };
 
-// Labels stats (keys venant du jeu/calculator -> EN)
-const STAT_LABELS: Record<string, string> = {
-  '外功攻击': 'Physical Attack',
-  '鸣金攻击': 'Silkbind Attack',
-  '无相攻击': 'Attribute Attack',
-  '精准率': 'Precision Rate',
-  '会心率': 'Critical Rate',
-  '会意率': 'Affinity Rate',
-  '直接会心率': 'Direct Critical Rate',
-  '会心伤害加成': 'Critical DMG Bonus',
-  '会意伤害加成': 'Affinity DMG Bonus',
-  '会心伤害加成%': 'Critical DMG Bonus',
-  '会意伤害加成%': 'Affinity DMG Bonus',
-  '属攻穿透': 'Attribute Attack Penetration',
-  '物攻穿透': 'Physical Penetration',
-  '物理增伤': 'Physical DMG Bonus',
-  '物理减伤': 'Physical DMG Reduction',
-  // ajoute ici ce que ton calculator renvoie réellement
+// Classes (couvre ce que tu as listé)
+const CLASS_LABELS: Record<string, string> = {
+  鸣金虹: 'Bellstrike - Umbra',
+  鸣金影: 'Bellstrike - Splendor',
+  牵丝玉: 'Skillbind - Jade',
+  牵丝霖: 'Skillbind - Deluge',
+  破竹风: 'Bamboocut - Wind',
+  裂石威: 'Stonesplit - Might',
 };
 
-export function slotLabel(input: unknown): string {
-  if (typeof input !== 'string') return String(input ?? '');
-  return SLOT_LABELS[input] ?? input;
+// Sets (au moins celui vu + tes noms EN)
+const SET_LABELS: Record<string, string> = {
+  玉斗: 'Jadeware Set',
+  飞隼: 'Hawkwing Set', 
+  时雨: 'Rainwhisper Set',
+  断岳: 'Formbend Set',
+  烟柳: 'Veil of the Willow Set',
+  浣花: 'Ivorybloom Set',
+  燕归: 'Swallowcall Set',
+  连星: 'Eaglerise Set',
+  // Ajoute ici toutes les corrélations CN -> EN quand tu les as (la structure est prête).
+};
+
+export function slotLabel(cn: string): string {
+  return SLOT_LABELS[cn] ?? cn;
 }
 
-export function weaponLabel(input: unknown): string {
-  if (typeof input !== 'string') return String(input ?? '');
-  return WEAPON_LABELS[input] ?? input;
+export function classLabel(name: string): string {
+  return CLASS_LABELS[name] ?? name;
 }
 
-// ✅ UNE SEULE définition
-export function statLabel(input: unknown): string {
-  if (typeof input !== 'string') return String(input ?? '');
-  return STAT_LABELS[input] ?? input;
+export function weaponLabel(cn: string): string {
+  return WEAPON_LABELS[cn] ?? cn;
+}
+
+export function setLabel(name: string): string {
+  return SET_LABELS[name] ?? name;
+}
+
+// IMPORTANT: une seule fonction statLabel
+export function statLabel(key: string): string {
+  if (!key) return key;
+
+  // mapping direct prioritaire
+  if (STAT_LABELS[key]) return STAT_LABELS[key];
+
+  // patterns min/max
+  if (key.startsWith('最小') && key.endsWith('攻击')) {
+    const core = key.replace(/^最小/, '').replace(/攻击$/, '');
+    return `Min ${STAT_LABELS[core + '攻击'] ?? core} ATK`;
+  }
+  if (key.startsWith('最大') && key.endsWith('攻击')) {
+    const core = key.replace(/^最大/, '').replace(/攻击$/, '');
+    return `Max ${STAT_LABELS[core + '攻击'] ?? core} ATK`;
+  }
+
+  // fallback “rate/bonus/penetration”
+  if (key.endsWith('率')) return (STAT_LABELS[key] ?? key.replace(/率$/, ' Rate'));
+  if (key.endsWith('伤害加成')) return (STAT_LABELS[key] ?? key.replace(/伤害加成$/, ' Damage Bonus'));
+  if (key.endsWith('穿透')) return (STAT_LABELS[key] ?? key.replace(/穿透$/, ' Penetration'));
+
+  return key;
 }
