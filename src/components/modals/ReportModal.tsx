@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { classLabel, setLabel, xinfaLabel } from '@/lib/statName';
 
 type DengLevelKey = NonNullable<
   Parameters<typeof import('@/lib/calculator').Calculator.calculateTotal>[8]
@@ -86,7 +87,7 @@ export const ReportModal = ({
       });
 
       const link = document.createElement('a');
-      link.download = `${accountName || t('character')}_${currentClass}_${t('reportFile')}.png`;
+      link.download = `${accountName || t('character')}_${classLabel(currentClass)}_${t('reportFile')}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (error) {
@@ -178,7 +179,7 @@ export const ReportModal = ({
                 <div style={{ color: 'rgba(56, 189, 248, 0.85)', fontSize: '12px', marginBottom: '6px' }}>
                   {t('currentClass')}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc' }}>{currentClass}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc' }}>{classLabel(currentClass)}</div>
               </div>
 
               <div
@@ -193,7 +194,7 @@ export const ReportModal = ({
                 <div style={{ color: 'rgba(167, 139, 250, 0.85)', fontSize: '12px', marginBottom: '6px' }}>
                   {t('setSelection')}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd' }}>{setType || t('none')}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd' }}>{setType ? setLabel(setType) : t('none')}</div>
               </div>
             </div>
 
@@ -226,7 +227,7 @@ export const ReportModal = ({
                       {t('slot')} {idx + 1}
                     </div>
                     <div style={{ fontSize: '13px', fontWeight: 700, color: '#6ee7b7', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {xinfa || t('empty')}
+                      {xinfa ? xinfaLabel(xinfa) : t('empty')}
                     </div>
                   </div>
                 ))}

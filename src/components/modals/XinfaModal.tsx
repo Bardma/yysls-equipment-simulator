@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { ClassConfig } from '../../lib/data/classConfig';
 import { CommonData } from '../../lib/data/commonData';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { xinfaLabel } from '@/lib/statName';
 
 interface XinfaModalProps {
   open: boolean;
@@ -58,12 +59,12 @@ export const XinfaModal = ({
                 <div className="flex flex-col items-center gap-1 sm:gap-2">
                   <Image
                     src={`/icon/${name}.jpg`}
-                    alt={name}
+                    alt={xinfaLabel(name)}
                     width={48}
                     height={48}
                     className="border-border/60 rounded-md border sm:w-16 sm:h-16"
                   />
-                  <span className="text-xs sm:text-sm text-center">{name}</span>
+                  <span className="text-xs sm:text-sm text-center">{xinfaLabel(name)}</span>
                 </div>
               </button>
             ))}

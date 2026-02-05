@@ -3,18 +3,19 @@
 import Image from 'next/image';
 
 import { getEquipScore } from '@/lib/graduation';
+import { slotLabel } from '@/lib/statName';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 const SLOT_NAME_MAP: Record<keyof EquippedItems, string> = {
-  weapon1: '武器1',
-  weapon2: '武器2',
-  head: '冠胄',
-  chest: '胸甲',
-  ring: '环',
-  pendant: '佩',
-  legs: '胫甲',
-  hands: '腕甲',
+  weapon1: 'Weapon 1',
+  weapon2: 'Weapon 2',
+  head: 'Head',
+  chest: 'Chest',
+  ring: 'Ring',
+  pendant: 'Pendant',
+  legs: 'Legs',
+  hands: 'Hands',
 };
 
 const SLOT_KEYS: Array<keyof EquippedItems> = [
@@ -54,14 +55,14 @@ export const EquipSlotSelector = ({
           >
             <Image
               src={`/${item?.icon || 'icon/icon1.jpg'}`}
-              alt={item?.name || '未穿戴'}
+              alt={item?.name || 'Unequipped'}
               width={32}
               height={32}
               className="rounded-md border lg:w-10 lg:h-10"
             />
             <div className="flex-1 text-center lg:text-left">
-              <div className="text-[10px] lg:text-sm font-medium truncate max-w-full">{item?.name || '未穿戴'}</div>
-              <div className="text-muted-foreground text-[9px] lg:text-xs hidden lg:block">{SLOT_NAME_MAP[key]}</div>
+              <div className="text-[10px] lg:text-sm font-medium truncate max-w-full">{item?.name || 'Unequipped'}</div>
+              <div className="text-muted-foreground text-[9px] lg:text-xs hidden lg:block">{slotLabel(SLOT_NAME_MAP[key])}</div>
             </div>
             {item && (
               <span className="text-muted-foreground text-[9px] lg:text-xs hidden lg:inline">{getEquipScore(item)}</span>
