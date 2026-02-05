@@ -1,21 +1,21 @@
 import { create } from 'zustand';
 
 import { Calculator } from '@/lib/calculator';
-import { ClassConfig } from '@/lib/data/classConfig';
-import { loadSimState, saveSimState, type SimLoadoutIds } from '@/lib/storage';
-import type { EquipItem, EquippedItems } from '@/lib/types';
+import { ClassConfig } from '../lib/data/classConfig';
+import { SimLoadoutIds, loadSimState, saveSimState } from '../lib/storage';
+import type { EquipItem, EquippedItems } from '../lib/types';
 
 export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
 
-// Default level: cast “safe” (avoids TS break if the union differs)
-const DEFAULT_LEVEL = ('100' as unknown) as DengLevelKey;
+// Default (adjust if your Calculator expects another valid key)
+const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
 
 const levelStorageKey = (account: string) => `yysls_level_${account}`;
 
 const loadLevel = (account: string | null): DengLevelKey => {
   if (typeof window === 'undefined' || !account) return DEFAULT_LEVEL;
   const raw = window.localStorage.getItem(levelStorageKey(account));
-  return ((raw ?? '') as unknown as DengLevelKey) || DEFAULT_LEVEL;
+  return (raw as unknown as DengLevelKey) || DEFAULT_LEVEL;
 };
 
 const saveLevel = (account: string | null, level: DengLevelKey) => {
@@ -34,20 +34,19 @@ const emptyEquippedItems = (): EquippedItems => ({
   hands: null,
 });
 
-export interface SimulationState {
-  // NEW
-  level: DengLevelKey;
-  setLevel: (account: string | null, level: DengLevelKey) => void;
-
+interface SimulationState {
   currentClass: string;
   bowType: string;
   setType: string;
   xinfaLoadout: string[];
   earlySeasonBonus: boolean;
   loanDingyin: boolean;
-
   equippedItems: EquippedItems;
   allClassLoadouts: Record<string, SimLoadoutIds>;
+
+  // NEW
+  level: DengLevelKey;
+  setLevel: (account: string | null, level: DengLevelKey) => void;
 
   hydrateForAccount: (account: string | null, db: EquipItem[]) => void;
   setCurrentClass: (account: string | null, name: string, db: EquipItem[]) => void;
@@ -59,7 +58,6 @@ export interface SimulationState {
 
   equipSlot: (account: string | null, slotKey: keyof EquippedItems, equip: EquipItem | null) => void;
   updateEquipsById: (equips: EquipItem[]) => void;
-
   syncCurrentLoadoutIds: (account: string | null) => void;
 }
 
@@ -110,13 +108,6 @@ const applyLoadout = (loadout: SimLoadoutIds | undefined, db: EquipItem[]): Equi
 };
 
 export const useSimulationStore = create<SimulationState>((set, get) => ({
-  // NEW
-  level: DEFAULT_LEVEL,
-  setLevel: (account, nextLevel) => {
-    set({ level: nextLevel });
-    saveLevel(account, nextLevel);
-  },
-
   currentClass: defaultClass,
   bowType: 'precision',
   setType: ClassConfig.DEFAULT_SETS[defaultClass] || '',
@@ -125,6 +116,13 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
   loanDingyin: false,
   equippedItems: emptyEquippedItems(),
   allClassLoadouts: {},
+
+  // NEW
+  level: DEFAULT_LEVEL,
+  setLevel: (account, level) => {
+    set({ level });
+    saveLevel(account, level);
+  },
 
   hydrateForAccount: (account, db) => {
     const saved = loadSimState(account);
@@ -137,11 +135,11 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(currentClass);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
     const loanDingyin = loadout?.loanDingyin ?? false;
-
     const equippedItems = applyLoadout(loadout, db);
 
+    const level = loadLevel(account);
+
     set({
-      level: loadLevel(account),
       currentClass,
       allClassLoadouts,
       setType,
@@ -150,6 +148,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       earlySeasonBonus,
       loanDingyin,
       equippedItems,
+      level,
     });
   },
 
@@ -162,7 +161,6 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(name);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
     const loanDingyin = loadout?.loanDingyin ?? false;
-
     const equippedItems = applyLoadout(loadout, db);
 
     set({

@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -8,91 +7,105 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  // Add this near the top of StatInputRow.tsx (before the component)
-const statLabel = (stat: unknown): string => {
-  if (typeof stat === 'string') return stat;
-  if (stat && typeof stat === 'object') {
-    const s = stat as any;
-    return String(s.label ?? s.name ?? s.type ?? s.value ?? '');
-  }
-  return String(stat ?? '');
-};
 } from '@/components/ui/select';
-const statLabel = (stat: unknown): string => {
+
+type StatOption =
+  | string
+  | {
+      label?: string;
+      name?: string;
+      type?: string;
+      value?: string;
+      key?: string;
+      id?: string | number;
+    };
+
+// Helper: always return a stable string label for a stat option
+const statLabel = (stat: StatOption): string => {
   if (typeof stat === 'string') return stat;
-  if (typeof stat === 'number') return String(stat);
 
-  if (stat && typeof stat === 'object') {
-    const s = stat as Record<string, unknown>;
-    if (typeof s.label === 'string') return s.label;
-    if (typeof s.value === 'string') return s.value;
-    if (typeof s.type === 'string') return s.type;
-    if (typeof s.key === 'string') return s.key;
-  }
+  // try common fields in order of likelihood
+  const candidate =
+    stat.label ??
+    stat.name ??
+    stat.type ??
+    stat.value ??
+    stat.key ??
+    (stat.id !== undefined ? String(stat.id) : '');
 
-  return '';
+  return candidate || '';
 };
 
 interface StatInputRowProps {
-  type: string;
-  value: string;
-  options: string[];
-  disabledOptions?: string[];
-  disabled?: boolean;
-  placeholder?: string;
-  onTypeChange: (type: string) => void;
+  label?: string;
+
+  // current selected stat key/label
+  stat: string;
+  onStatChange: (value: string) => void;
+
+  // numeric input value
+  value: string | number;
   onValueChange: (value: string) => void;
-  onMaxClick: () => void;
-  maxDisabled?: boolean;
+
+  options: StatOption[];
+
+  // optional disabling
+  disabled?: boolean;
+  disabledOptions?: StatOption[];
+
+  // optional UI hints
+  placeholder?: string;
+  valuePlaceholder?: string;
 }
 
-export const StatInputRow = ({
-  type,
+export function StatInputRow({
+  label,
+  stat,
+  onStatChange,
   value,
-  options,
-  disabledOptions = [],
-  disabled = false,
-  placeholder = '选择词条',
-  onTypeChange,
   onValueChange,
-  onMaxClick,
-  maxDisabled = false,
-}: StatInputRowProps) => {
+  options,
+  disabled = false,
+  disabledOptions = [],
+  placeholder = '—',
+  valuePlaceholder = '',
+}: StatInputRowProps) {
+  const disabledLabels = new Set(disabledOptions.map((s) => statLabel(s)));
+
   return (
-    <div className="grid grid-cols-[1.2fr_0.8fr] gap-2">
-      <Select value={type} onValueChange={onTypeChange}>
-        <SelectTrigger>
+    <div className="flex items-center gap-2">
+      {label ? <div className="text-sm text-muted-foreground w-24">{label}</div> : null}
+
+      <Select value={stat} onValueChange={onStatChange} disabled={disabled}>
+        <SelectTrigger className="w-[220px]">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
+
         <SelectContent>
-          {options.map((stat) => (
-  <SelectItem
-    key={String(stat)}
-    value={String(stat)}
-    disabled={disabledOptions.includes(stat)}
-  >
-    {String(stat)}
-  </SelectItem>
-))}
+          {options.map((opt) => {
+            const label = statLabel(opt);
+            if (!label) return null;
+
+            return (
+              <SelectItem
+                key={label}
+                value={label}
+                disabled={disabledLabels.has(label)}
+              >
+                {label}
+              </SelectItem>
+            );
+          })}
         </SelectContent>
       </Select>
-      <div className="flex gap-2">
-        <Input
-          type="number"
-          value={value}
-          onChange={(event) => onValueChange(event.target.value)}
-          disabled={disabled}
-          placeholder="数值"
-        />
-        <Button
-          variant="outline"
-          type="button"
-          disabled={maxDisabled}
-          onClick={onMaxClick}
-        >
-          ↑
-        </Button>
-      </div>
+
+      <Input
+        className="w-[120px]"
+        value={value}
+        placeholder={valuePlaceholder}
+        onChange={(e) => onValueChange(e.target.value)}
+        disabled={disabled}
+      />
     </div>
   );
-};
+}
