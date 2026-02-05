@@ -105,7 +105,7 @@ export default function Home() {
   } = useSimulationStore();
 
   // Level store
-  const { hydrateLevels, getLevel } = useLevelStore();
+  const { hydrateLevels, getLevel, setLevel } = useLevelStore();
 
   // Hydration effects
   useEffect(() => {
@@ -373,23 +373,27 @@ export default function Home() {
             {/* Right: Simulation, Graduation, Stats panels */}
             <section className="flex flex-col gap-3 order-first lg:order-none">
               <SimulationPanel
-                expanded={rightPanels.simulation}
-                onToggle={() => toggleRightPanel('simulation')}
-                currentClass={currentClass}
-                bowType={bowType}
-                setType={setType}
-                level={level}
-                equippedItems={equippedItems}
-                xinfaLoadout={xinfaLoadout}
-                onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
-                onBowChange={(value) => setBowType(currentAccount, value)}
-                onSetChange={(value) => setSetType(currentAccount, value)}
-                onXinfaClick={(idx) => {
-                  setXinfaIndex(idx);
-                  setXinfaModalOpen(true);
-                }}
-                onUnequip={(slotKey) => equipSlot(currentAccount, slotKey, null)}
-              />
+				expanded={rightPanels.simulation}
+				onToggle={() => toggleRightPanel('simulation')}
+				currentClass={currentClass}
+				bowType={bowType}
+				setType={setType}
+				level={level}
+				equippedItems={equippedItems}
+				xinfaLoadout={xinfaLoadout}
+				onLevelChange={(nextLevel) => {
+				if (!currentAccount) return;
+				setLevel(currentAccount, nextLevel);
+				}}
+				onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
+				onBowChange={(value) => setBowType(currentAccount, value)}
+				onSetChange={(value) => setSetType(currentAccount, value)}
+				onXinfaClick={(idx) => {
+					setXinfaIndex(idx);
+					setXinfaModalOpen(true);
+				}}
+				onUnequip={(slotKey) => equipSlot(currentAccount, slotKey, null)}
+/>
 
               <GraduationRatePanel
                 graduationInfo={graduationInfo}
