@@ -105,11 +105,14 @@ export function SimulationPanel(props: SimulationPanelProps) {
 
   const classOptions = getClassOptions(currentClass);
   const bowOptions = getBowOptions(bowType);
-const setOptions = useMemo(() => {
-  const fromCfg = getSetOptionsForClass(currentClass, setType); // <-- 2 args
-  const fromCommon = Object.keys(CommonData.SET_DATA ?? {});
-  return uniq([setType, ...fromCfg, ...fromCommon]);
-}, [currentClass, setType]);
+  const setOptions = useMemo(() => {
+    const fromCfg = getSetOptionsForClass(currentClass, setType);
+    const fromCommon = Object.keys(CommonData.SET_DATA ?? {});
+
+    return Array.from(
+      new Set([setType, ...fromCfg, ...fromCommon].filter((x): x is string => Boolean(x)))
+    );
+  }, [currentClass, setType]);
 
 const uniq = (arr: Array<string | null | undefined>) =>
   Array.from(new Set(arr.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)));
