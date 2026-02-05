@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { classLabel, setLabel, xinfaLabel } from '@/lib/statName';
+import { statLabel, xinfaLabel } from '@/lib/statName';
 
 type DengLevelKey = NonNullable<
   Parameters<typeof import('@/lib/calculator').Calculator.calculateTotal>[8]
@@ -296,7 +296,7 @@ export const ReportModal = ({
                         color: colors.text.secondary,
                       }}
                     >
-                      <span style={{ whiteSpace: 'nowrap' }}>{item.label}</span>
+                      <span style={{ whiteSpace: 'nowrap' }}>{statLabel(item.label)}</span>
                       <span style={{ whiteSpace: 'nowrap', fontWeight: 800, color: colors.text.primary }}>
                         {item.value}
                         {item.highlight ? <span style={{ marginLeft: 4, color: colors.accent.amber }}>{item.highlight}</span> : null}

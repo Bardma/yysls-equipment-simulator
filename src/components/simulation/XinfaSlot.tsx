@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { xinfaLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
+import { xinfaLabel } from '@/lib/statName';
 
 interface XinfaSlotProps {
   index: number;

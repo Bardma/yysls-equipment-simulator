@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { CommonData } from '@/lib/data/commonData';
 import { slotLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
+import { slotLabel } from '@/lib/statName';
 
 interface EquipmentFilterProps {
   filter: string;
