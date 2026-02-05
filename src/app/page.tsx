@@ -34,11 +34,11 @@ const formatDisplayTotals = (totals: Record<string, number>) => {
     const val = Number(displayTotals[key]) || 0;
     const isPercent =
       CommonData.PERCENT_STATS.includes(key) ||
-      key.includes('L') ||
-      key.includes(' Effectiveness') ||
-      key.includes('JiaCheng') ||
-      key.includes(' Damage Bonus') ||
-      key.includes(' Penetration');
+      key.includes('率') ||
+      key.includes('增效') ||
+      key.includes('加成') ||
+      key.includes('增伤') ||
+      key.includes('穿透');
     displayTotals[key] = isPercent ? parseFloat(val.toFixed(1)) : Math.round(val);
   }
   return displayTotals;
@@ -147,59 +147,15 @@ export default function Home() {
   const skillDb = rotationConfig?.skillDatabase || {};
 
   const graduationInfo = useMemo(() => {
-  if (!totals || rotation.length === 0) return null;
-
-  const accParams = {
-    ...totals,
-    Set: setType,
-    "Inner Way": xinfaLoadout,
-    DangQianLiuPai: currentClass,
-  };
-
-  const accResult = Calculator.calculateGraduationRate(
-    accParams,
-    skillDb,
-    rotation,
-    baseline,
-    false
-  );
-
-  const displayTotals = formatDisplayTotals(totals);
-
-  const excelParams = {
-    ...displayTotals,
-    Set: setType,
-    "Inner Way": xinfaLoadout,
-    DangQianLiuPai: currentClass,
-  };
-
-  const excelResult = Calculator.calculateGraduationRate(
-    excelParams,
-    skillDb,
-    rotation,
-    baseline,
-    false
-  );
-
-  const dps = Math.round(accResult.totalDamage / useTime);
-
-  return {
-    accurate: accResult.graduationRate,
-    excel: excelResult.graduationRate,
-    dps,
-    isLoaned: loanDingyin,
-  };
-}, [
-  totals,
-  rotation,
-  setType,
-  xinfaLoadout,
-  currentClass,
-  skillDb,
-  baseline,
-  useTime,
-  loanDingyin,
-]);
+    if (!totals || rotation.length === 0) return null;
+    const accParams = { ...totals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+    const accResult = Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false);
+    const displayTotals = formatDisplayTotals(totals);
+    const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+    const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
+    const dps = Math.round(accResult.totalDamage / useTime);
+    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
+  }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
@@ -359,7 +315,7 @@ export default function Home() {
               onEquipItem={equipItemById}
             />
 
-            {/* Right: Simulation, Graduation, Stats panels - ZaiYiDongDuanXianShiZaiEquipment LibraryQianMian */}
+            {/* Right: Simulation, Graduation, Stats panels - 在移动端显示在装备库前面 */}
             <section className="flex flex-col gap-3 order-first lg:order-none">
               <SimulationPanel
                 expanded={rightPanels.simulation}

@@ -12,14 +12,14 @@ import { CommonData } from '@/lib/data/commonData';
 import type { EquipItem, StatValue } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-// JiSuanDanGeAffixDeWanZhengDu
+// 计算单个词条的完整度
 const getStatCompleteness = (stat: StatValue): number => {
   const maxValue = CommonData.MAX_VALUES[stat.type] || 0;
   if (maxValue <= 0) return 0;
   return Math.min(stat.value / maxValue, 1);
 };
 
-// JiSuanEquipmentZongWanZhengDu（Primary Affix + Secondary AffixDePingJunZhi）
+// 计算装备总完整度（主词条 + 副词条的平均值）
 const getEquipCompleteness = (equip: EquipItem): number => {
   const allStats = [equip.mainStat, ...equip.subStats];
   if (allStats.length === 0) return 0;
@@ -31,7 +31,7 @@ const getEquipCompleteness = (equip: EquipItem): number => {
   return (totalCompleteness / allStats.length) * 100;
 };
 
-// GenJuWanZhengDuFanHuiYanSeYangShi
+// 根据完整度返回颜色样式
 const getCompletenessColor = (completeness: number): string => {
   if (completeness >= 90) return 'text-amber-400 bg-amber-500/20 border-amber-500/30';
   if (completeness >= 80) return 'text-purple-400 bg-purple-500/20 border-purple-500/30';
@@ -66,7 +66,7 @@ export const EquipmentCard = ({
       )}
       onClick={onClick}
     >
-      {/* XuanZhongBiaoJi */}
+      {/* 选中标记 */}
       {isEquipped && (
         <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-amber-500 shadow-md shadow-amber-500/30">
           <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-slate-900" strokeWidth={3} />
@@ -109,7 +109,7 @@ export const EquipmentCard = ({
             <span className="text-slate-400">
               {equip.slotName} {equip.isChengyin ? t('chengyin') : ''}
             </span>
-            {/* WanZhengDuBiaoQian */}
+            {/* 完整度标签 */}
             <span
               className={cn(
                 'px-1 sm:px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium border',
@@ -121,7 +121,7 @@ export const EquipmentCard = ({
           </div>
         </div>
       </div>
-      {/* AffixZu */}
+      {/* 词条组 */}
       <div className="mt-1.5 text-[11px] sm:text-xs">
         <StatDisplay
           type={equip.mainStat.type}
@@ -139,8 +139,8 @@ export const EquipmentCard = ({
             />
           ))}
         </div>
-        {/* Dingyin Affix */}
-        {equip.dingyinStat && equip.dingyinStat.type !== 'None' && (
+        {/* 定音词条 */}
+        {equip.dingyinStat && equip.dingyinStat.type !== '无' && (
           <>
             <Separator className="my-1 bg-cyan-600/40" />
             <StatDisplay

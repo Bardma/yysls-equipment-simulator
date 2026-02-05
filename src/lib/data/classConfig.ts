@@ -3,94 +3,94 @@ import { SkillData } from './skillData';
 
 export const ClassConfig: ClassConfigData = {
   CLASSES: [
-    'MingJinHong',
-    'MingJinYing',
-    'PoZhuChen',
-    'PoZhuFeng',
-    'PoZhuYuan',
-    'LieShiWei',
-    'LieShiJun（ShuangQie）',
-    'LieShiJun（ChunTang）',
-    'QianSiLin',
-    'QianSiYu',
+    '鸣金虹',
+    '鸣金影',
+    '破竹尘',
+    '破竹风',
+    '破竹鸢',
+    '裂石威',
+    '裂石钧（双切）',
+    '裂石钧（纯唐）',
+    '牵丝霖',
+    '牵丝玉',
   ],
 
-  // GeLiuPaiYunXuDeWuQiLeiXing (ID)
+  // 各流派允许的武器类型 (ID)
   WEAPON_RULES: {
-    MingJinHong: ['1', '2'],
-    MingJinYing: ['1', '2'],
-    PoZhuChen: ['3', '5'],
-    PoZhuFeng: ['6', '5'],
-    PoZhuYuan: ['9', '5'],
-    LieShiWei: ['7', '2'],
-    'LieShiJun（ShuangQie）': ['8', '7'],
-    'LieShiJun（ChunTang）': ['8', '7'],
-    QianSiLin: ['3', '4'],
-    QianSiYu: ['3', '4'],
+    鸣金虹: ['1', '2'],
+    鸣金影: ['1', '2'],
+    破竹尘: ['3', '5'],
+    破竹风: ['6', '5'],
+    破竹鸢: ['9', '5'],
+    裂石威: ['7', '2'],
+    '裂石钧（双切）': ['8', '7'],
+    '裂石钧（纯唐）': ['8', '7'],
+    牵丝霖: ['3', '4'],
+    牵丝玉: ['3', '4'],
   },
 
-  // GeLiuPaiMoRenSet
+  // 各流派默认套装
   DEFAULT_SETS: {
-    MingJinHong: 'YuDou',
-    MingJinYing: 'FeiSun',
-    PoZhuFeng: 'FeiSun',
-    QianSiYu: 'FeiSun',
-    QianSiLin: 'ShiYu',
-    LieShiWei: 'ShiYu',
-    'LieShiJun（ShuangQie）': 'ShiYu',
-    'LieShiJun（ChunTang）': 'DuanYue',
-    PoZhuChen: 'LianXing',
-    PoZhuYuan: 'HanTian',
+    鸣金虹: '玉斗',
+    鸣金影: '飞隼',
+    破竹风: '飞隼',
+    牵丝玉: '飞隼',
+    牵丝霖: '时雨',
+    裂石威: '时雨',
+    '裂石钧（双切）': '时雨',
+    '裂石钧（纯唐）': '断岳',
+    破竹尘: '连星',
+    破竹鸢: '撼天',
   },
 
-  // Inner WayTuiJianGuiZe
+  // 心法推荐规则
   XINFA_RULES: {
-    MingJinYing: {
-      default: ['YiShuiGe', 'JianQiZongHeng', 'ZhuLangXinJing', 'NingShenZhang'],
-      extra: ['YiJingYiWu', 'DuanShiZhiGou'],
+    鸣金影: {
+      default: ['易水歌', '剑气纵横', '逐狼心经', '凝神章'],
+      extra: ['移经易武', '断石之构'],
     },
-    MingJinHong: { default: ['YiShuiGe', 'NoneMingInner Way', 'WeiMengGe', 'QianShanFa'], extra: ['DuanShiZhiGou'] },
-    LieShiWei: {
-      default: ['YiShuiGe', 'ShanHeJueYun', 'ChuanHouJue', 'YiJingYiWu'],
-      extra: ['DuanShiZhiGou', 'KangZaoDaFa', 'WeiMengGe'],
+    鸣金虹: { default: ['易水歌', '无名心法', '威猛歌', '千山法'], extra: ['断石之构'] },
+    裂石威: {
+      default: ['易水歌', '山河绝韵', '穿喉决', '移经易武'],
+      extra: ['断石之构', '抗造大法', '威猛歌'],
     },
-    'LieShiJun（ChunTang）': { default: ['YiShuiGe', 'ShuangTianBaiYe', 'ChuanHouJue', 'ZhengRenGui'], extra: ['DuanShiZhiGou'] },
-    'LieShiJun（ShuangQie）': {
-      default: ['YiShuiGe', 'ShuangTianBaiYe', 'GuZhongBuCi', 'ChuanHouJue'],
-      extra: ['DuanShiZhiGou'],
+    '裂石钧（纯唐）': { default: ['易水歌', '霜天白夜', '穿喉决', '征人归'], extra: ['断石之构'] },
+    '裂石钧（双切）': {
+      default: ['易水歌', '霜天白夜', '孤忠不辞', '穿喉决'],
+      extra: ['断石之构'],
     },
-    PoZhuFeng: { default: ['WangChuanJueXiang', 'XinMiNiYu', 'JiLeQiXue', 'YiShuiGe'], extra: ['DuanShiZhiGou'] },
-    PoZhuChen: {
-      default: ['YiShuiGe', 'QianYingYiHu', 'ShengZhouXingMu', 'SuoHenNianNian'],
-      extra: ['DaTangGe', 'DuanShiZhiGou', 'DengErLiang'],
+    破竹风: { default: ['忘川绝响', '心弥泥鱼', '极乐泣血', '易水歌'], extra: ['断石之构'] },
+    破竹尘: {
+      default: ['易水歌', '千营一呼', '绳舟行木', '所恨年年'],
+      extra: ['大唐歌', '断石之构', '灯儿亮'],
     },
-    PoZhuYuan: { default: ['YiShuiGe', 'FuYaoZhiShang', 'QinTianShi', 'DuanShiZhiGou'], extra: ['SanQiongZhiZhi'] },
-    QianSiLin: {
-      default: ['YiShuiGe', 'JunChenYao', 'NuZhanMa', 'ZhengRenGui'],
-      extra: ['DuanShiZhiGou', 'XingHuaBuJian', 'QianSiGu'],
+    破竹鸢: { default: ['易水歌', '扶摇直上', '擒天势', '断石之构'], extra: ['三穷致知'] },
+    牵丝霖: {
+      default: ['易水歌', '君臣药', '怒斩马', '征人归'],
+      extra: ['断石之构', '杏花不见', '千丝蛊'],
     },
-    QianSiYu: { default: ['YiShuiGe', 'HuaShangYueLing', 'ZongDiZhaiXing', 'DuanShiZhiGou'], extra: ['ChunLeiPian'] },
+    牵丝玉: { default: ['易水歌', '花上月令', '纵地摘星', '断石之构'], extra: ['春雷篇'] },
   },
 
-  // GeLiuPaiSuoDingDeInner Way（AnShunXuSuoDingQianNGeGeZi）
+  // 各流派锁定的心法（按顺序锁定前N个格子）
   XINFA_LOCKED: {
-    MingJinYing: ['YiShuiGe', 'JianQiZongHeng', 'ZhuLangXinJing'],
-    MingJinHong: ['YiShuiGe', 'NoneMingInner Way', 'WeiMengGe', 'QianShanFa'],
-    LieShiWei: ['YiShuiGe', 'ShanHeJueYun'],
-    'LieShiJun（ChunTang）': ['YiShuiGe', 'ShuangTianBaiYe', 'ChuanHouJue'],
-    'LieShiJun（ShuangQie）': ['YiShuiGe', 'ShuangTianBaiYe', 'GuZhongBuCi'],
-    PoZhuFeng: ['WangChuanJueXiang', 'XinMiNiYu', 'JiLeQiXue', 'YiShuiGe'],
-    PoZhuChen: ['YiShuiGe', 'QianYingYiHu', 'ShengZhouXingMu'],
-    PoZhuYuan: ['YiShuiGe', 'FuYaoZhiShang', 'QinTianShi'],
-    QianSiLin: ['YiShuiGe', 'JunChenYao', 'NuZhanMa'],
-    QianSiYu: ['YiShuiGe', 'HuaShangYueLing', 'ZongDiZhaiXing', 'DuanShiZhiGou'],
+    鸣金影: ['易水歌', '剑气纵横', '逐狼心经'],
+    鸣金虹: ['易水歌', '无名心法', '威猛歌', '千山法'],
+    裂石威: ['易水歌', '山河绝韵'],
+    '裂石钧（纯唐）': ['易水歌', '霜天白夜', '穿喉决'],
+    '裂石钧（双切）': ['易水歌', '霜天白夜', '孤忠不辞'],
+    破竹风: ['忘川绝响', '心弥泥鱼', '极乐泣血', '易水歌'],
+    破竹尘: ['易水歌', '千营一呼', '绳舟行木'],
+    破竹鸢: ['易水歌', '扶摇直上', '擒天势'],
+    牵丝霖: ['易水歌', '君臣药', '怒斩马'],
+    牵丝玉: ['易水歌', '花上月令', '纵地摘星', '断石之构'],
   },
 
   ROTATIONS: {
-    PoZhuChen: {
+    破竹尘: {
       rotation: [
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -98,7 +98,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 0,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -106,7 +106,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.445,
@@ -114,7 +114,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.455,
@@ -122,7 +122,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -130,7 +130,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiaoR1-3(ShengZhou3)',
+          name: '尘绳标R1-3(绳舟3)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.285,
@@ -138,7 +138,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiaoR45(ShengZhou3)',
+          name: '尘绳标R45(绳舟3)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -146,7 +146,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+0HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+0幻鸣+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.375,
@@ -154,7 +154,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+2HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+2幻鸣+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.385,
@@ -162,7 +162,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+4HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+4幻鸣+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.385,
@@ -170,7 +170,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.595,
@@ -178,7 +178,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.395,
@@ -186,7 +186,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.405,
@@ -194,7 +194,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.605,
@@ -202,7 +202,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+15%远程笛)',
           count: 4,
           isDingyin: true,
           generalBonus: 0.415,
@@ -210,7 +210,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 2,
           isDingyin: true,
           generalBonus: 0.815,
@@ -218,7 +218,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+0HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+0幻鸣+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.575,
@@ -226,7 +226,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+2HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+2幻鸣+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.585,
@@ -234,7 +234,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+4HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+4幻鸣+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.585,
@@ -242,7 +242,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.795,
@@ -250,7 +250,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.595,
@@ -258,7 +258,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.605,
@@ -266,7 +266,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.805,
@@ -274,7 +274,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+15%远程笛)',
           count: 8,
           isDingyin: false,
           generalBonus: 0.615,
@@ -282,7 +282,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+15%YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+15%远程笛)',
           count: 3,
           isDingyin: false,
           generalBonus: 1.015,
@@ -290,7 +290,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(ShiHun+5HuanMing)',
+          name: '骑龙回马打满(失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -298,7 +298,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueYiDuan(ShiHun+5HuanMing)',
+          name: '金蟾腾跃一段(失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -306,7 +306,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueZhenTui(ShiHun+5HuanMing)',
+          name: '金蟾腾跃震退(失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -314,7 +314,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiao～(ShengZhou6+ShiHun+5HuanMing)',
+          name: '尘绳标～(绳舟6+失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -322,7 +322,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(ShiHun)',
+          name: '金蟾腾跃次级毒(失魂)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -330,7 +330,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(ShiHun+5HuanMing+XuRuo)',
+          name: '金蟾腾跃次级毒(失魂+5幻鸣+虚弱)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -338,7 +338,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiaoQ(ShiHun+5HuanMing)',
+          name: '尘绳标Q(失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -346,7 +346,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+0HuanMing)+JinZhan',
+          name: '尘伞完美Q(失魂+0幻鸣)+近战',
           count: 1,
           isDingyin: true,
           generalBonus: 0.465,
@@ -354,7 +354,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+2HuanMing)+JinZhan',
+          name: '尘伞完美Q(失魂+2幻鸣)+近战',
           count: 1,
           isDingyin: true,
           generalBonus: 0.465,
@@ -362,7 +362,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+4HuanMing)+JinZhan',
+          name: '尘伞完美Q(失魂+4幻鸣)+近战',
           count: 1,
           isDingyin: true,
           generalBonus: 0.465,
@@ -370,7 +370,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe)+XuRuo',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌)+虚弱',
           count: 3,
           isDingyin: true,
           generalBonus: 1.015,
@@ -378,7 +378,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing)+XuRuo',
+          name: '尘伞完美Q(失魂+5幻鸣)+虚弱',
           count: 6,
           isDingyin: true,
           generalBonus: 0.815,
@@ -386,7 +386,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.665,
@@ -394,7 +394,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+0HuanMing)',
+          name: '尘伞共鸣(失魂+0幻鸣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.665,
@@ -402,7 +402,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+2HuanMing)',
+          name: '尘伞共鸣(失魂+2幻鸣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.665,
@@ -410,7 +410,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+4HuanMing)',
+          name: '尘伞共鸣(失魂+4幻鸣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.665,
@@ -418,7 +418,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe)+XuRuo',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌)+虚弱',
           count: 6,
           isDingyin: false,
           generalBonus: 1.215,
@@ -426,7 +426,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing)+XuRuo',
+          name: '尘伞共鸣(失魂+5幻鸣)+虚弱',
           count: 12,
           isDingyin: false,
           generalBonus: 1.015,
@@ -434,7 +434,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.865,
@@ -442,7 +442,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiao～(ShengZhou6+ShiHun+5HuanMing)',
+          name: '尘绳标～(绳舟6+失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -450,7 +450,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(ShiHun+5HuanMing)',
+          name: '骑龙回马打满(失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -458,7 +458,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueYiDuan(ShiHun+5HuanMing+QiJie)',
+          name: '金蟾腾跃一段(失魂+5幻鸣+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -466,7 +466,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueZhenTui(ShiHun+5HuanMing+QiJie)',
+          name: '金蟾腾跃震退(失魂+5幻鸣+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -474,7 +474,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(ShiHun+QiJie)',
+          name: '金蟾腾跃次级毒(失魂+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -482,7 +482,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(ShiHun+5HuanMing+DuanShi)',
+          name: '金蟾腾跃次级毒(失魂+5幻鸣+断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -490,7 +490,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(ShouLunLiuXing+ShiHun+QiJie)',
+          name: '萧呤千浪(首轮流星+失魂+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -498,7 +498,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(AOE+ShiHun+QiJie)',
+          name: '萧呤千浪(AOE+失魂+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -506,7 +506,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+5HuanMing+YuanChengDi+QiJie)',
+          name: '萧呤千浪(单次后续流星+失魂+5幻鸣+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.765,
@@ -514,7 +514,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+5HuanMing+YuanChengDi+DuanShi)',
+          name: '萧呤千浪(单次后续流星+失魂+5幻鸣+远程笛+断石)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.665,
@@ -522,7 +522,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiHouXuLiuXing+ShiHun+5HuanMing+YuanChengDi)',
+          name: '萧呤千浪(单次后续流星+失魂+5幻鸣+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.665,
@@ -530,7 +530,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+0HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞完美Q(失魂+0幻鸣+远程笛+气竭)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.765,
@@ -538,7 +538,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+2HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞完美Q(失魂+2幻鸣+远程笛+气竭)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.765,
@@ -546,7 +546,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+4HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞完美Q(失魂+4幻鸣+远程笛+气竭)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.765,
@@ -554,7 +554,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+YuanChengDi+QiJie)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+远程笛+气竭)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.965,
@@ -562,7 +562,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞完美Q(失魂+5幻鸣+远程笛+气竭)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.765,
@@ -570,7 +570,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+YuanChengDi+DuanShi)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+远程笛+断石)',
           count: 2,
           isDingyin: true,
           generalBonus: 0.865,
@@ -578,7 +578,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+YuanChengDi+DuanShi)',
+          name: '尘伞完美Q(失魂+5幻鸣+远程笛+断石)',
           count: 3,
           isDingyin: true,
           generalBonus: 0.665,
@@ -586,7 +586,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+FangGe+YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+芳歌+远程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.865,
@@ -594,7 +594,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanWanMeiQ(ShiHun+5HuanMing+YuanChengDi)',
+          name: '尘伞完美Q(失魂+5幻鸣+远程笛)',
           count: 2,
           isDingyin: true,
           generalBonus: 0.665,
@@ -602,7 +602,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+0HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞共鸣(失魂+0幻鸣+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.965,
@@ -610,7 +610,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+2HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞共鸣(失魂+2幻鸣+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.965,
@@ -618,7 +618,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+4HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞共鸣(失魂+4幻鸣+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.965,
@@ -626,7 +626,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+YuanChengDi+QiJie)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 1.165,
@@ -634,7 +634,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+YuanChengDi+QiJie)',
+          name: '尘伞共鸣(失魂+5幻鸣+远程笛+气竭)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.965,
@@ -642,7 +642,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+YuanChengDi+DuanShi)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+远程笛+断石)',
           count: 4,
           isDingyin: false,
           generalBonus: 1.065,
@@ -650,7 +650,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+YuanChengDi+DuanShi)',
+          name: '尘伞共鸣(失魂+5幻鸣+远程笛+断石)',
           count: 6,
           isDingyin: false,
           generalBonus: 0.865,
@@ -658,7 +658,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+FangGe+YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+芳歌+远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -666,7 +666,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenSanGongMing(ShiHun+5HuanMing+YuanChengDi)',
+          name: '尘伞共鸣(失魂+5幻鸣+远程笛)',
           count: 4,
           isDingyin: false,
           generalBonus: 0.865,
@@ -674,7 +674,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ChenShengBiao～(ShengZhou6+ShiHun+5HuanMing)',
+          name: '尘绳标～(绳舟6+失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -682,7 +682,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YuanChengDi+ShiHun+5HuanMing)',
+          name: '易水歌6重(远程笛+失魂+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -690,7 +690,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(ShiHun)',
+          name: '易水歌6重(失魂)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.465,
@@ -698,7 +698,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(ShiHun+XuRuo+5HuanMing)',
+          name: '易水歌6重(失魂+虚弱+5幻鸣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -706,7 +706,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(ShiHun+QiJie)',
+          name: '易水歌6重(失魂+气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -714,7 +714,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YuanChengDi+ShiHun+5HuanMing+DuanShi)',
+          name: '易水歌6重(远程笛+失魂+5幻鸣+断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.665,
@@ -723,16 +723,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 4244078.11,
-      updateTime: '2026Nian1Yue22Ri',
-      version: '100JiJingSuJiSuanQi2.3',
+      updateTime: '2026年1月22日',
+      version: '100级竞速计算器2.3',
       author: 'Violetta',
-      skillDatabase: SkillData.PoZhuChen,
+      skillDatabase: SkillData.破竹尘,
       useTime: 55.5,
     },
-    MingJinHong: {
+    鸣金虹: {
       rotation: [
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing)+ChangFeng',
+          name: '箫吟千浪(单次后续流星)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -740,7 +740,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 0,
         },
         {
-          name: 'KaiJuDuoDaoJianQi1(EWai20Nai+Di)+2%WeiMeng+ChangFeng',
+          name: '开局多道剑气1(额外20耐+笛)+2%威猛+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 0.595,
@@ -748,7 +748,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'KaiJuDuoDaoJianQi2(EWai20Nai+Di)+2%WeiMeng+ChangFeng',
+          name: '开局多道剑气2(额外20耐+笛)+2%威猛+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 0.845,
@@ -756,7 +756,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'KaiJuDuoDaoJianQi3(EWai20Nai+Di)+2%WeiMeng+ChangFeng',
+          name: '开局多道剑气3(额外20耐+笛)+2%威猛+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 0.895,
@@ -764,7 +764,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+2%WeiMeng+ChangFeng',
+          name: '多道剑气(额外20耐+笛)+2%威猛+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 0.945,
@@ -772,7 +772,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing)+ChangFeng',
+          name: '箫吟千浪(单次后续流星)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.385,
@@ -780,7 +780,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+5%WeiMeng+ChangFeng',
+          name: '多道剑气(额外20耐+笛)+5%威猛+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 1.025,
@@ -788,7 +788,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)',
+          name: '箫吟千浪(单次后续流星+60耐)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -796,7 +796,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+10%WeiMeng+60%Nai+ChangFeng',
+          name: '多道剑气(额外20耐+笛)+10%威猛+60%耐+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 1.045,
@@ -804,7 +804,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)',
+          name: '箫吟千浪(单次后续流星+60耐)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.405,
@@ -812,7 +812,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+10%WeiMeng+60%Nai',
+          name: '多道剑气(额外20耐+笛)+10%威猛+60%耐',
           count: 1,
           isDingyin: true,
           generalBonus: 1.055,
@@ -820,7 +820,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)+ChangFeng',
+          name: '箫吟千浪(单次后续流星+60耐)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -828,7 +828,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+15%Di)+10%WeiMeng+60%Nai+ChangFeng',
+          name: '多道剑气(额外20耐+15%笛)+10%威猛+60%耐+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 1.015,
@@ -836,7 +836,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风',
           count: 2,
           isDingyin: true,
           generalBonus: 1.065,
@@ -844,7 +844,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan+60%Nai+ChangFeng+ShiYuan',
+          name: '骑龙回马打满+60%耐+长风+蚀渊',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -852,7 +852,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 1.065,
@@ -860,7 +860,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi+10%WeiMeng+60%Nai+40%ZhenQi',
+          name: '多道剑气+10%威猛+60%耐+40%真气',
           count: 1,
           isDingyin: true,
           generalBonus: 0.865,
@@ -868,7 +868,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiangQ(60%Nai)+ShiYuan',
+          name: '枪Q(60%耐)+蚀渊',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -876,7 +876,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng+XuRuo',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风+虚弱',
           count: 1,
           isDingyin: true,
           generalBonus: 1.415,
@@ -884,7 +884,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng+XuRuo',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风+虚弱',
           count: 1,
           isDingyin: true,
           generalBonus: 1.415,
@@ -892,7 +892,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan+60%Nai+ChangFeng+ShiYuan+XuRuo',
+          name: '骑龙回马打满+60%耐+长风+蚀渊+虚弱',
           count: 1,
           isDingyin: false,
           generalBonus: 0.765,
@@ -900,7 +900,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng+XuRuo',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风+虚弱',
           count: 2,
           isDingyin: true,
           generalBonus: 1.415,
@@ -908,7 +908,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng',
+          name: '多道剑气+10%威猛+60%耐+40%真气+长风',
           count: 1,
           isDingyin: true,
           generalBonus: 0.865,
@@ -916,7 +916,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiangQ(60%Nai)+ShiYuan',
+          name: '枪Q(60%耐)+蚀渊',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -924,7 +924,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng+QiJie',
+          name: '多道剑气(额外20耐)+10%威猛+60%耐+40%真气+长风+气竭',
           count: 2,
           isDingyin: true,
           generalBonus: 1.165,
@@ -932,7 +932,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(AOE)+60Nai+ShiYuan+ChangFeng+QiJie',
+          name: '箫吟千浪(AOE)+60耐+蚀渊+长风+气竭',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -940,7 +940,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(ShouLunLiuXing)+60Nai+ShiYuan+ChangFeng+QiJie',
+          name: '箫吟千浪(首轮流星)+60耐+蚀渊+长风+气竭',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -948,7 +948,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+10%WeiMeng+60%Nai+40%ZhenQi+ChangFeng+QiJie',
+          name: '多道剑气(额外20耐+笛)+10%威猛+60%耐+40%真气+长风+气竭',
           count: 1,
           isDingyin: true,
           generalBonus: 1.365,
@@ -956,7 +956,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+10%WeiMeng+60%Nai',
+          name: '多道剑气(额外20耐+笛)+10%威猛+60%耐',
           count: 1,
           isDingyin: true,
           generalBonus: 1.265,
@@ -964,7 +964,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)+ChangFeng',
+          name: '箫吟千浪(单次后续流星+60耐)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -972,7 +972,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DuoDaoJianQi(EWai20Nai+Di)+10%WeiMeng+60%Nai+ChangFeng',
+          name: '多道剑气(额外20耐+笛)+10%威猛+60%耐+长风',
           count: 3,
           isDingyin: true,
           generalBonus: 1.265,
@@ -980,7 +980,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)',
+          name: '箫吟千浪(单次后续流星+60耐)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -988,7 +988,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+60Nai)+ChangFeng',
+          name: '箫吟千浪(单次后续流星+60耐)+长风',
           count: 3,
           isDingyin: false,
           generalBonus: 0.615,
@@ -996,7 +996,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaManYiDuan+60%Nai+ChangFeng',
+          name: '骑龙回马打满一段+60%耐+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -1004,7 +1004,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(Di+60Nai)+ChangFeng',
+          name: '易水歌6重(笛+60耐)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -1012,7 +1012,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(60Nai)+ShiYuan',
+          name: '易水歌6重(60耐)+蚀渊',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -1020,7 +1020,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(60Nai)+ChangFeng+ShiYuan+XuRuo',
+          name: '易水歌6重(60耐)+长风+蚀渊+虚弱',
           count: 1,
           isDingyin: false,
           generalBonus: 0.765,
@@ -1028,7 +1028,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(60Nai)+ChangFeng+ShiYuan+QiJie',
+          name: '易水歌6重(60耐)+长风+蚀渊+气竭',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -1036,7 +1036,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(Di+60Nai)+ChangFeng',
+          name: '易水歌6重(笛+60耐)+长风',
           count: 1,
           isDingyin: false,
           generalBonus: 0.615,
@@ -1045,16 +1045,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 4033171.88,
-      updateTime: '2026Nian1Yue6Ri',
-      version: '100JiJingSuJiSuanQi2.0（ZaoQiBanBen，JinGongCanKao）',
+      updateTime: '2026年1月6日',
+      version: '100级竞速计算器2.0（早期版本，仅供参考）',
       author: 'Violetta',
-      skillDatabase: SkillData.MingJinHong,
+      skillDatabase: SkillData.鸣金虹,
       useTime: 55,
     },
-    MingJinYing: {
+    鸣金影: {
       rotation: [
         {
-          name: 'JiuQiangRXuKuaiQiang(DiShui)',
+          name: '九枪R蓄快枪(滴水)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.275,
@@ -1063,7 +1063,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuan(DiShui)',
+          name: '神龙吐火两段(滴水)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.275,
@@ -1072,7 +1072,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuanEWai(DiShui)',
+          name: '神龙吐火两段额外(滴水)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.275,
@@ -1081,7 +1081,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao(DiShui)',
+          name: '神龙吐火爆燃每跳(滴水)',
           count: 4,
           isDingyin: false,
           generalBonus: 0.975,
@@ -1090,7 +1090,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao(DiShui)',
+          name: '神龙吐火爆燃每跳(滴水)',
           count: 4,
           isDingyin: false,
           generalBonus: 0.985,
@@ -1099,7 +1099,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao(DiShui)',
+          name: '神龙吐火爆燃每跳(滴水)',
           count: 4,
           isDingyin: false,
           generalBonus: 0.995,
@@ -1108,7 +1108,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 2,
           isDingyin: false,
           generalBonus: 1.205,
@@ -1117,7 +1117,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 2,
           isDingyin: false,
           generalBonus: 1.205,
@@ -1126,7 +1126,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJianQ（DiShui）',
+          name: '九剑Q（滴水）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.285,
@@ -1135,7 +1135,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiangQLaMan(DiShui)',
+          name: '九枪Q拉满(滴水)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.285,
@@ -1144,7 +1144,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 0.495,
@@ -1153,7 +1153,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.145,
@@ -1162,7 +1162,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 1,
           isDingyin: false,
           generalBonus: 0.495,
@@ -1171,7 +1171,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiang～DiYiDuan',
+          name: '九枪～第一段',
           count: 1,
           isDingyin: false,
           generalBonus: 0.505,
@@ -1180,7 +1180,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 1,
           isDingyin: true,
           generalBonus: 1.155,
@@ -1189,7 +1189,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 0.505,
@@ -1198,7 +1198,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.165,
@@ -1207,7 +1207,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -1216,7 +1216,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'QiLongHuiMaDaMan(CengBengJie)',
+          name: '骑龙回马打满(蹭崩解)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -1225,7 +1225,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～（CengBengJie）',
+          name: '九剑～（蹭崩解）',
           count: 2,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1234,70 +1234,43 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'XueBao(CengBengJie)',
-          count: 2,
-          isDingyin: true,
-          generalBonus: 1.365,
-          included: false,
-          yishui: 10,
-          yongquan: 'TRUE',
-        },
-        {
-          name: 'JiuJian～ZongHengJian（CengBengJie）',
-          count: 2,
-          isDingyin: false,
-          generalBonus: 0.715,
-          included: false,
-          yishui: 10,
-          yongquan: 'TRUE',
-        },
-        {
-          name: 'ShenLongTuHuoLiangDuan',
-          count: 1,
-          isDingyin: false,
-          generalBonus: 0.715,
-          included: false,
-          yishui: 10,
-          yongquan: 'TRUE',
-        },
-        {
-          name: 'ShenLongTuHuoLiangDuanEWai',
-          count: 1,
-          isDingyin: false,
-          generalBonus: 0.715,
-          included: false,
-          yishui: 10,
-          yongquan: 'TRUE',
-        },
-        {
-          name: 'JiuQiangQLaMan',
-          count: 1,
-          isDingyin: false,
-          generalBonus: 0.715,
-          included: false,
-          yishui: 10,
-          yongquan: 'FALSE',
-        },
-        {
-          name: 'JiuJian～',
-          count: 1,
-          isDingyin: false,
-          generalBonus: 0.715,
-          included: false,
-          yishui: 10,
-          yongquan: 'FALSE',
-        },
-        {
-          name: 'XueBao',
+          name: '血爆(蹭崩解)',
           count: 2,
           isDingyin: true,
           generalBonus: 1.365,
           included: false,
           yishui: 10,
-          yongquan: 'FALSE',
+          yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑（蹭崩解）',
+          count: 2,
+          isDingyin: false,
+          generalBonus: 0.715,
+          included: false,
+          yishui: 10,
+          yongquan: 'TRUE',
+        },
+        {
+          name: '神龙吐火两段',
+          count: 1,
+          isDingyin: false,
+          generalBonus: 0.715,
+          included: false,
+          yishui: 10,
+          yongquan: 'TRUE',
+        },
+        {
+          name: '神龙吐火两段额外',
+          count: 1,
+          isDingyin: false,
+          generalBonus: 0.715,
+          included: false,
+          yishui: 10,
+          yongquan: 'TRUE',
+        },
+        {
+          name: '九枪Q拉满',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1306,7 +1279,34 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'QiLongHuiMaDaMan',
+          name: '九剑～',
+          count: 1,
+          isDingyin: false,
+          generalBonus: 0.715,
+          included: false,
+          yishui: 10,
+          yongquan: 'FALSE',
+        },
+        {
+          name: '血爆',
+          count: 2,
+          isDingyin: true,
+          generalBonus: 1.365,
+          included: false,
+          yishui: 10,
+          yongquan: 'FALSE',
+        },
+        {
+          name: '九剑～纵横剑',
+          count: 1,
+          isDingyin: false,
+          generalBonus: 0.715,
+          included: false,
+          yishui: 10,
+          yongquan: 'FALSE',
+        },
+        {
+          name: '骑龙回马打满',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1315,7 +1315,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiang～DiYiDuan',
+          name: '九枪～第一段',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1324,7 +1324,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 1,
           isDingyin: true,
           generalBonus: 1.715,
@@ -1333,7 +1333,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuan',
+          name: '神龙吐火两段',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1342,7 +1342,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuanEWai',
+          name: '神龙吐火两段额外',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1351,7 +1351,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1360,7 +1360,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.715,
@@ -1369,7 +1369,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1378,7 +1378,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJianQ',
+          name: '九剑Q',
           count: 0.4,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1387,7 +1387,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuQiangQLaMan',
+          name: '九枪Q拉满',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1396,7 +1396,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1405,7 +1405,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.365,
@@ -1414,7 +1414,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJianRSanDuan',
+          name: '九剑R三段',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1423,7 +1423,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1432,7 +1432,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.365,
@@ -1441,7 +1441,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1450,7 +1450,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiang～DiYiDuan',
+          name: '九枪～第一段',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1459,7 +1459,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 1,
           isDingyin: true,
           generalBonus: 1.365,
@@ -1468,7 +1468,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJianQ（NoneJiaCheng）',
+          name: '九剑Q（无加成）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.765,
@@ -1477,7 +1477,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiangRXuShuaXin(NoneJiaCheng)',
+          name: '九枪R蓄刷新(无加成)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.765,
@@ -1486,7 +1486,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiangQLaMan(NoneJiaCheng)',
+          name: '九枪Q拉满(无加成)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.765,
@@ -1495,7 +1495,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuan',
+          name: '神龙吐火两段',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1504,7 +1504,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoLiangDuanEWai',
+          name: '神龙吐火两段额外',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1513,7 +1513,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1522,7 +1522,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 2,
           isDingyin: true,
           generalBonus: 1.715,
@@ -1531,7 +1531,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1540,7 +1540,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'JiuQiang～DiYiDuan',
+          name: '九枪～第一段',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1549,7 +1549,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 1,
           isDingyin: true,
           generalBonus: 1.715,
@@ -1558,7 +1558,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～',
+          name: '九剑～',
           count: 2,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1567,7 +1567,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'XueBao',
+          name: '血爆',
           count: 4,
           isDingyin: true,
           generalBonus: 1.715,
@@ -1576,7 +1576,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJian～ZongHengJian',
+          name: '九剑～纵横剑',
           count: 2,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1585,7 +1585,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'JiuJianQ',
+          name: '九剑Q',
           count: 0.4,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1594,7 +1594,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'YiShuiGe6Zhong',
+          name: '易水歌6重',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -1603,7 +1603,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'YiShuiGe6Zhong',
+          name: '易水歌6重',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1612,7 +1612,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'YiShuiGe6Zhong',
+          name: '易水歌6重',
           count: 2,
           isDingyin: false,
           generalBonus: 1.065,
@@ -1621,7 +1621,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'YiShuiGe6Zhong(NoneJiaCheng)',
+          name: '易水歌6重(无加成)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -1630,7 +1630,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '5CengLiuXue(DiShui)',
+          name: '5层流血(滴水)',
           count: 3,
           isDingyin: true,
           generalBonus: 1.015,
@@ -1639,7 +1639,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '5CengLiuXue',
+          name: '5层流血',
           count: 1,
           isDingyin: true,
           generalBonus: 1.215,
@@ -1648,7 +1648,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 2,
           isDingyin: true,
           generalBonus: 1.215,
@@ -1657,7 +1657,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '5CengLiuXue',
+          name: '5层流血',
           count: 1,
           isDingyin: true,
           generalBonus: 1.215,
@@ -1666,7 +1666,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 3,
           isDingyin: true,
           generalBonus: 1.215,
@@ -1675,7 +1675,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 1,
           isDingyin: true,
           generalBonus: 1.415,
@@ -1684,7 +1684,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '4CengLiuXue',
+          name: '4层流血',
           count: 2,
           isDingyin: true,
           generalBonus: 1.415,
@@ -1693,7 +1693,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 4,
           isDingyin: true,
           generalBonus: 1.415,
@@ -1702,7 +1702,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '4CengLiuXue',
+          name: '4层流血',
           count: 3,
           isDingyin: true,
           generalBonus: 1.415,
@@ -1711,7 +1711,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '5CengLiuXue',
+          name: '5层流血',
           count: 6,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1720,7 +1720,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 4,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1729,7 +1729,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '4CengLiuXue',
+          name: '4层流血',
           count: 2,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1738,7 +1738,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 2,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1747,7 +1747,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '5CengLiuXue(NoneJiaCheng)',
+          name: '5层流血(无加成)',
           count: 3,
           isDingyin: true,
           generalBonus: 1.465,
@@ -1756,7 +1756,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: '2CengLiuXue',
+          name: '2层流血',
           count: 4,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1765,7 +1765,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: '4CengLiuXue',
+          name: '4层流血',
           count: 1,
           isDingyin: true,
           generalBonus: 1.765,
@@ -1774,7 +1774,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 6,
           isDingyin: false,
           generalBonus: 1.215,
@@ -1783,7 +1783,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 15,
           isDingyin: false,
           generalBonus: 1.415,
@@ -1792,7 +1792,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'TRUE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 12,
           isDingyin: false,
           generalBonus: 1.415,
@@ -1801,7 +1801,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 11,
           isDingyin: false,
           generalBonus: 1.765,
@@ -1810,7 +1810,7 @@ export const ClassConfig: ClassConfigData = {
           yongquan: 'FALSE',
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 25,
           isDingyin: false,
           generalBonus: 1.765,
@@ -1820,16 +1820,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 4022744.67,
-      updateTime: '2026Nian1Yue16Ri',
-      version: 'MingJinYingQuanFuBenBiYeDuBiao5.4',
-      author: 'DouShaBao',
-      skillDatabase: SkillData.MingJinYing,
+      updateTime: '2026年1月16日',
+      version: '鸣金影全副本毕业度表5.4',
+      author: '豆沙包',
+      skillDatabase: SkillData.鸣金影,
       useTime: 51.5,
     },
-    PoZhuFeng: {
+    破竹风: {
       rotation: [
         {
-          name: 'XiaoLingQianLang(DanCiLiuXingHongRen)',
+          name: '萧呤千浪(单次流星红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1837,7 +1837,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiLiuXingHongRen)',
+          name: '萧呤千浪(单次流星红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1845,7 +1845,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiLiuXingHongRen)',
+          name: '萧呤千浪(单次流星红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1853,7 +1853,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiLiuXingHongRen)',
+          name: '萧呤千浪(单次流星红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1861,7 +1861,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(DanCiLiuXingHongRen)',
+          name: '萧呤千浪(单次流星红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1869,7 +1869,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiaoQ(LunHui)',
+          name: '绳标Q(轮回)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1877,7 +1877,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong1LunHui',
+          name: '双刀普攻1轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1885,7 +1885,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong2LunHui',
+          name: '双刀普攻2轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1893,7 +1893,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong3LunHui',
+          name: '双刀普攻3轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1901,7 +1901,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong4LunHui',
+          name: '双刀普攻4轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1909,7 +1909,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuShuNiYu6(PuTongJieDuanLunHui)',
+          name: '鼠鼠泥鱼6(普通阶段轮回)',
           count: 10,
           isDingyin: true,
           generalBonus: 1.115,
@@ -1917,7 +1917,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JiLeQiXue(LunHui)',
+          name: '极乐泣血(轮回)',
           count: 0.77,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1925,7 +1925,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong1LunHui',
+          name: '双刀普攻1轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1933,7 +1933,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong2LunHui',
+          name: '双刀普攻2轮回',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1941,7 +1941,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoPuGong3LunHui',
+          name: '双刀普攻3轮回',
           count: 0,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1949,7 +1949,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuShuNiYu6(PuTongJieDuanLunHui)',
+          name: '鼠鼠泥鱼6(普通阶段轮回)',
           count: 5,
           isDingyin: true,
           generalBonus: 1.115,
@@ -1957,7 +1957,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JiLeQiXue(LunHui)',
+          name: '极乐泣血(轮回)',
           count: 0.34,
           isDingyin: false,
           generalBonus: 0.315,
@@ -1965,7 +1965,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong1Di',
+          name: '双刀红人普攻1笛',
           count: 3,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1973,7 +1973,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong2Di',
+          name: '双刀红人普攻2笛',
           count: 3,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1981,7 +1981,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong3Di',
+          name: '双刀红人普攻3笛',
           count: 2.625,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1989,7 +1989,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoQHongRenDi',
+          name: '双刀Q红人笛',
           count: 3,
           isDingyin: false,
           generalBonus: 0.335,
@@ -1997,7 +1997,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuShuNiYu6(HongRenDi)',
+          name: '鼠鼠泥鱼6(红人笛)',
           count: 20,
           isDingyin: true,
           generalBonus: 1.135,
@@ -2005,7 +2005,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JiLeQiXue(HongRenDi)',
+          name: '极乐泣血(红人笛)',
           count: 2.91,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2013,7 +2013,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong1Di',
+          name: '双刀红人普攻1笛',
           count: 2,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2021,7 +2021,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong2Di',
+          name: '双刀红人普攻2笛',
           count: 2,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2029,7 +2029,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuangDaoHongRenPuGong3Di',
+          name: '双刀红人普攻3笛',
           count: 1.75,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2037,7 +2037,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShuShuNiYu6(HongRenDi)',
+          name: '鼠鼠泥鱼6(红人笛)',
           count: 13,
           isDingyin: true,
           generalBonus: 1.135,
@@ -2045,7 +2045,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JiLeQiXue(HongRenDi)',
+          name: '极乐泣血(红人笛)',
           count: 1.41,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2053,7 +2053,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(JinZhanDi+HongRen)',
+          name: '易水歌6重(近战笛+红人)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.335,
@@ -2061,7 +2061,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(LunHui)',
+          name: '易水歌6重(轮回)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2070,16 +2070,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 1328262.84,
-      updateTime: '2025Nian12Yue31Ri',
-      version: '100JiJingSuJiSuanQi1.2（ZaoQiBanBen，JinGongCanKao）',
+      updateTime: '2025年12月31日',
+      version: '100级竞速计算器1.2（早期版本，仅供参考）',
       author: 'Violetta',
-      skillDatabase: SkillData.PoZhuFeng,
+      skillDatabase: SkillData.破竹风,
       useTime: 20.8,
     },
-    PoZhuYuan: {
+    破竹鸢: {
       rotation: [
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi)',
+          name: '箫吟千浪(单次后续流星+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.185,
@@ -2087,7 +2087,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 0,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi)',
+          name: '箫吟千浪(单次后续流星+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.205,
@@ -2095,7 +2095,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi)',
+          name: '箫吟千浪(单次后续流星+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2103,7 +2103,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi)',
+          name: '箫吟千浪(单次后续流星+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.225,
@@ -2111,7 +2111,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi)',
+          name: '箫吟千浪(单次后续流星+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.235,
@@ -2119,7 +2119,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiaoQXie(YuanChengDi)',
+          name: '绳标Q卸(远程笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.375,
@@ -2127,7 +2127,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'YingSunZhuiJi(ShengBiao+JinZhanDi)',
+          name: '鹰隼追击(绳标+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.495,
@@ -2135,7 +2135,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'ShengBiao～(JinZhanDi)',
+          name: '绳标～(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.195,
@@ -2143,7 +2143,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'YingSunZhuiJi(ShengTeShuJi+JinZhanDi)',
+          name: '鹰隼追击(绳特殊技+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.495,
@@ -2151,7 +2151,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'QuanJiaQYiDuan(JinZhanDi)',
+          name: '拳甲Q一段(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.205,
@@ -2159,7 +2159,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'QuanJiaQErDuan(JinZhanDi)',
+          name: '拳甲Q二段(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.505,
@@ -2167,7 +2167,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'QuanJiaPuGong56(JinZhanDi)',
+          name: '拳甲普攻56(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2175,7 +2175,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia+JinZhanDi)',
+          name: '鹰隼追击(拳甲+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2183,7 +2183,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'QuanJia～(JinZhanDi)',
+          name: '拳甲～(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2191,7 +2191,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'QuanJiaPuGong56(JinZhanDi)',
+          name: '拳甲普攻56(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.225,
@@ -2199,7 +2199,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia+JinZhanDi)',
+          name: '鹰隼追击(拳甲+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.525,
@@ -2207,7 +2207,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'QiLongHuiMaDaMan(DuanShi+JinZhanDi)',
+          name: '骑龙回马打满(断石+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2215,7 +2215,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'QuanJiaRXu4TianZhi(DuanShi+JinZhanDi)',
+          name: '拳甲R蓄4天志(断石+近战笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.535,
@@ -2223,7 +2223,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56',
+          name: '拳甲普攻56',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2231,7 +2231,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia)',
+          name: '鹰隼追击(拳甲)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2239,7 +2239,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueYiDuan',
+          name: '金蟾腾跃一段',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2247,7 +2247,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueZhenTui',
+          name: '金蟾腾跃震退',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2255,7 +2255,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(GuiChe)',
+          name: '金蟾腾跃次级毒(鬼掣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2263,7 +2263,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQYiDuan(GuiChe)',
+          name: '拳甲Q一段(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -2271,7 +2271,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQErDuan(GuiChe)',
+          name: '拳甲Q二段(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.735,
@@ -2279,7 +2279,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(GuiChe)',
+          name: '拳甲普攻56(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2287,7 +2287,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia)+GuiChe',
+          name: '鹰隼追击(拳甲)+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2295,7 +2295,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiaoQXie(GuiChe)',
+          name: '绳标Q卸(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2303,7 +2303,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(ShengBiao)+GuiChe',
+          name: '鹰隼追击(绳标)+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2311,7 +2311,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiao～(GuiChe)',
+          name: '绳标～(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2319,7 +2319,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(ShengTeShuJi)+GuiChe',
+          name: '鹰隼追击(绳特殊技)+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2327,7 +2327,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(GuiChe)',
+          name: '拳甲普攻56(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2335,7 +2335,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia)+GuiChe',
+          name: '鹰隼追击(拳甲)+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2343,7 +2343,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(ShouLunLiuXing+GuiChe)',
+          name: '箫吟千浪(首轮流星+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2351,7 +2351,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(AOE+XuRuo+GuiChe)',
+          name: '箫吟千浪(AOE+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.965,
@@ -2359,7 +2359,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+YuanChengDi+XuRuo+GuiChe)',
+          name: '箫吟千浪(单次后续流星+远程笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.965,
@@ -2367,7 +2367,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi+XuRuo+GuiChe)',
+          name: '箫吟千浪(单次后续流星+近战笛+虚弱+鬼掣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.785,
@@ -2375,7 +2375,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoYinQianLang(DanCiHouXuLiuXing+JinZhanDi+GuiChe)',
+          name: '箫吟千浪(单次后续流星+近战笛+鬼掣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.435,
@@ -2383,7 +2383,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaYiDuan(JinZhanDi+XuRuo+GuiChe)',
+          name: '骑龙回马一段(近战笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.775,
@@ -2391,7 +2391,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaRXu4TianZhi(JinZhanDi+XuRuo+GuiChe)',
+          name: '拳甲R蓄4天志(近战笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.085,
@@ -2399,7 +2399,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJia～(JinZhanDi+XuRuo+GuiChe)',
+          name: '拳甲～(近战笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.785,
@@ -2407,7 +2407,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(JinZhanDi+XuRuo+GuiChe)',
+          name: '拳甲普攻56(近战笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.785,
@@ -2415,7 +2415,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia+JinZhanDi+GuiChe)',
+          name: '鹰隼追击(拳甲+近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.735,
@@ -2423,7 +2423,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQYiDuan(JinZhanDi+GuiChe)',
+          name: '拳甲Q一段(近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -2431,7 +2431,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQErDuan(JinZhanDi+GuiChe)',
+          name: '拳甲Q二段(近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.735,
@@ -2439,7 +2439,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(JinZhanDi+GuiChe)',
+          name: '拳甲普攻56(近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -2447,7 +2447,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia+JinZhanDi+GuiChe+XuRuo)',
+          name: '鹰隼追击(拳甲+近战笛+鬼掣+虚弱)',
           count: 1,
           isDingyin: false,
           generalBonus: 1.085,
@@ -2455,7 +2455,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiaoQ(JinZhanDi+GuiChe)',
+          name: '绳标Q(近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -2463,7 +2463,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(ShengBiao+JinZhanDi+GuiChe)',
+          name: '鹰隼追击(绳标+近战笛+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.735,
@@ -2471,7 +2471,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiao～(QiJie+GuiChe)',
+          name: '绳标～(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2479,7 +2479,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(ShengTeShuJi)+QiJie+GuiChe',
+          name: '鹰隼追击(绳特殊技)+气竭+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -2487,7 +2487,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJia～(QiJie+GuiChe)',
+          name: '拳甲～(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2495,7 +2495,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(QiJie+GuiChe)',
+          name: '拳甲普攻56(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2503,7 +2503,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia)+QiJie+GuiChe',
+          name: '鹰隼追击(拳甲)+气竭+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -2511,7 +2511,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(QiJie+GuiChe)',
+          name: '骑龙回马打满(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2519,7 +2519,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaRXu4TianZhi(QiJie+GuiChe+NoneFanDou)',
+          name: '拳甲R蓄4天志(气竭+鬼掣+无返豆)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.815,
@@ -2527,7 +2527,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJia～(QiJie+GuiChe)',
+          name: '拳甲～(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2535,7 +2535,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(QiJie+GuiChe)',
+          name: '拳甲普攻56(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2543,7 +2543,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQYiDuan(DuanShi+GuiChe)',
+          name: '拳甲Q一段(断石+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2551,7 +2551,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaQErDuan(DuanShi+GuiChe)',
+          name: '拳甲Q二段(断石+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2559,7 +2559,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QuanJiaPuGong56(DuanShi+GuiChe)',
+          name: '拳甲普攻56(断石+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2567,7 +2567,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(QuanJia)+DuanShi+GuiChe',
+          name: '鹰隼追击(拳甲)+断石+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2575,7 +2575,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShengBiaoQ(DuanShi+GuiChe)',
+          name: '绳标Q(断石+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2583,7 +2583,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YingSunZhuiJi(ShengBiao)+DuanShi+GuiChe',
+          name: '鹰隼追击(绳标)+断石+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.715,
@@ -2591,7 +2591,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan',
+          name: '骑龙回马打满',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2599,7 +2599,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(JinZhanDi)',
+          name: '易水歌6重(近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.235,
@@ -2607,7 +2607,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(GuiChe)',
+          name: '易水歌6重(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.415,
@@ -2615,7 +2615,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(JinZhanDi+XuRuo+GuiChe)',
+          name: '易水歌6重(近战笛+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.785,
@@ -2623,7 +2623,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(QiJie+GuiChe)',
+          name: '易水歌6重(气竭+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -2632,16 +2632,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 4485394.69,
-      updateTime: '2026Nian1Yue20Ri',
-      version: '100JiJingSuJiSuanQi2.10',
+      updateTime: '2026年1月20日',
+      version: '100级竞速计算器2.10',
       author: 'Violetta',
-      skillDatabase: SkillData.PoZhuYuan,
+      skillDatabase: SkillData.破竹鸢,
       useTime: 55.5,
     },
-    LieShiWei: {
+    裂石威: {
       rotation: [
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+JinZhanDi+Dun)',
+          name: '萧呤千浪(后续流星+近战笛+盾)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.185,
@@ -2649,7 +2649,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 0,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+YiShang+JinZhanDi+Dun)',
+          name: '萧呤千浪(后续流星+易伤+近战笛+盾)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -2657,7 +2657,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+YiShang+JinZhanDi+Dun+ChuanHou5)',
+          name: '萧呤千浪(后续流星+易伤+近战笛+盾+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.375,
@@ -2665,7 +2665,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+YiShang+JinZhanDi+Dun+ChuanHou5)',
+          name: '萧呤千浪(后续流星+易伤+近战笛+盾+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.385,
@@ -2673,7 +2673,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+YiShang+JinZhanDi+Dun+ChuanHou5)',
+          name: '萧呤千浪(后续流星+易伤+近战笛+盾+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -2681,7 +2681,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+Di)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.615,
@@ -2689,7 +2689,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'BaQiang～(Di+Dun)',
+          name: '八枪～(笛+盾)',
           count: 0.45,
           isDingyin: false,
           generalBonus: 0.195,
@@ -2697,7 +2697,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+YiShang+Di+ChuanHou5)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+易伤+笛+穿喉5)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.785,
@@ -2705,7 +2705,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+Dun+YiShang+Di+ChuanHou5)',
+          name: '陌刀派生(破阵+2战意+盾+易伤+笛+穿喉5)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2713,7 +2713,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+YiShang+Di+ChuanHou5)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+易伤+笛+穿喉5)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.815,
@@ -2721,7 +2721,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+Dun+YiShang+Di+ChuanHou5)',
+          name: '陌刀派生(破阵+2战意+盾+易伤+笛+穿喉5)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.815,
@@ -2729,7 +2729,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2737,7 +2737,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀派生(破阵+2战意+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2745,7 +2745,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'BaQiang～(ChuanHou5+YiShang+GuiChe)',
+          name: '八枪～(穿喉5+易伤+鬼掣)',
           count: 0.45,
           isDingyin: false,
           generalBonus: 0.375,
@@ -2753,7 +2753,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2761,7 +2761,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀派生(破阵+2战意+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2769,7 +2769,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YanJiuShi(ChuanHou5+YiShang+8HIT+GuiChe)',
+          name: '衍九矢(穿喉5+易伤+8HIT+鬼掣)',
           count: 1.9,
           isDingyin: false,
           generalBonus: 0.375,
@@ -2777,7 +2777,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+易伤+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2785,7 +2785,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀派生(破阵+2战意+易伤+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2793,7 +2793,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+易伤+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2801,7 +2801,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+Dun+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀派生(破阵+2战意+盾+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.985,
@@ -2809,7 +2809,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'BaQiang～(ChuanHou5+Dun+GuiChe)',
+          name: '八枪～(穿喉5+盾+鬼掣)',
           count: 0.45,
           isDingyin: false,
           generalBonus: 0.215,
@@ -2817,7 +2817,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2825,7 +2825,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+Dun+YiShang+ChuanHou5+GuiChe)',
+          name: '陌刀派生(破阵+2战意+盾+易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.795,
@@ -2833,7 +2833,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Di+XuRuo+ChuanHou5+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+笛+虚弱+穿喉5+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.005,
@@ -2841,7 +2841,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'BaQiang～(Di+ChuanHou5+Dun+GuiChe+XuRuo)',
+          name: '八枪～(笛+穿喉5+盾+鬼掣+虚弱)',
           count: 0.45,
           isDingyin: false,
           generalBonus: 0.585,
@@ -2849,7 +2849,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoRXu3ZhanYiJiaCheng(PoZhen+ShanHe6+Dun+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀R蓄3战意加成(破阵+山河6+盾+易伤+穿喉5+虚弱+鬼掣)',
           count: 2,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2857,7 +2857,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+Dun+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀派生(破阵+2战意+盾+易伤+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2865,7 +2865,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoPaiSheng(PoZhen+2ZhanYi+YiShang+ChuanHou5+XuRuo+GuiChe)',
+          name: '陌刀派生(破阵+2战意+易伤+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: true,
           generalBonus: 1.145,
@@ -2873,7 +2873,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+JinZhanDi+Dun+ChuanHou5+XuRuo+GuiChe)',
+          name: '萧呤千浪(后续流星+近战笛+盾+穿喉5+虚弱+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.585,
@@ -2881,7 +2881,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YiShang+Di+Dun+ChuanHou5)',
+          name: '易水歌6重(易伤+笛+盾+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -2889,7 +2889,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YiShang+ChuanHou5+GuiChe)',
+          name: '易水歌6重(易伤+穿喉5+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.375,
@@ -2897,7 +2897,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YiShang+Dun+XuRuo+ChuanHou5+GuiChe)',
+          name: '易水歌6重(易伤+盾+虚弱+穿喉5+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.725,
@@ -2905,7 +2905,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YiShang+Dun+XuRuo+ChuanHou5+GuiChe)',
+          name: '易水歌6重(易伤+盾+虚弱+穿喉5+鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.725,
@@ -2914,16 +2914,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 3749816.07,
-      updateTime: '2026Nian1Yue20Ri',
-      version: '100JiJingSuJiSuanQi2.2',
+      updateTime: '2026年1月20日',
+      version: '100级竞速计算器2.2',
       author: 'Violetta',
-      skillDatabase: SkillData.LieShiWei,
+      skillDatabase: SkillData.裂石威,
       useTime: 53.5,
     },
-    'LieShiJun（ShuangQie）': {
+    '裂石钧（双切）': {
       rotation: [
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2931,7 +2931,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2939,7 +2939,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2947,7 +2947,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2955,7 +2955,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2963,7 +2963,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoHuaChan(ChuanHou5)',
+          name: '横刀滑铲(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -2971,7 +2971,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZhongJiPaiSheng(ChuanHou5)',
+          name: '横刀重击派生(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -2979,7 +2979,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun(ChuanHou5)',
+          name: '横刀安西军(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -2987,7 +2987,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDao～(ChuanHou5+JinZhanDi)',
+          name: '横刀～(穿喉5+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -2995,7 +2995,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'BaiRenShaJiangCi(12%DanHan+ChuanHou5+JinZhanDi)',
+          name: '白刃杀将刺(12%胆寒+穿喉5+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -3003,7 +3003,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun(ChuanHou5+JuRen+DanHan+JinZhanDi)',
+          name: '横刀安西军(穿喉5+惧刃+胆寒+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -3011,7 +3011,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JiaSuMoDaoSanXu(KaiShan+DanHan+JuRen+ChuanHou5+ZhongChengDi)',
+          name: '加速陌刀三蓄(开山+胆寒+惧刃+穿喉5+中程笛)',
           count: 4,
           isDingyin: true,
           generalBonus: 0.72,
@@ -3019,7 +3019,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoAnXiJunXiaPi(DanHan+JuRen+ChuanHou5+ZhongChengDi)',
+          name: '陌刀安西军下劈(胆寒+惧刃+穿喉5+中程笛)',
           count: 1,
           isDingyin: true,
           generalBonus: 0.57,
@@ -3027,7 +3027,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoAnXiJunXiaPi(KaiShan+DanHan+JuRen+ChuanHou5+ZhongChengDi)',
+          name: '陌刀安西军下劈(开山+胆寒+惧刃+穿喉5+中程笛)',
           count: 3,
           isDingyin: true,
           generalBonus: 0.72,
@@ -3035,7 +3035,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'MoDaoAnXiJunTiaoPi(KaiShan+DanHan+JuRen+ChuanHou5+ZhongChengDi)',
+          name: '陌刀安西军跳劈(开山+胆寒+惧刃+穿喉5+中程笛)',
           count: 4,
           isDingyin: true,
           generalBonus: 0.72,
@@ -3043,7 +3043,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(DanHan+JuRen+ChuanHou5)',
+          name: '骑龙回马打满(胆寒+惧刃+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.495,
@@ -3051,7 +3051,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoYiWu',
+          name: '横刀易武',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3059,7 +3059,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZhongJiPaiSheng',
+          name: '横刀重击派生',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -3067,7 +3067,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun',
+          name: '横刀安西军',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3075,7 +3075,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZuoXu(ChuanHou5)',
+          name: '横刀左蓄(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3083,7 +3083,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(Di+DanHan+JuRen+ChuanHou5)',
+          name: '易水歌6重(笛+胆寒+惧刃+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -3091,7 +3091,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(ChuanHou5)',
+          name: '易水歌6重(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3100,16 +3100,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 1397732.83,
-      updateTime: '2025Nian12Yue31Ri',
-      version: '100JiJingSuJiSuanQi1.2（ZaoQiBanBen，JinGongCanKao）',
+      updateTime: '2025年12月31日',
+      version: '100级竞速计算器1.2（早期版本，仅供参考）',
       author: 'Violetta',
-      skillDatabase: SkillData.LieShiJunShuangQie,
+      skillDatabase: SkillData.裂石钧双切,
       useTime: 21.5,
     },
-    'LieShiJun（ChunTang）': {
+    '裂石钧（纯唐）': {
       rotation: [
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3117,7 +3117,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3125,7 +3125,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3133,7 +3133,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3141,7 +3141,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang(HouXuLiuXing+ChuanHou5)',
+          name: '萧呤千浪(后续流星+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3149,7 +3149,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoHuaChan(ChuanHou5)',
+          name: '横刀滑铲(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3157,7 +3157,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZhongJiPaiSheng(ChuanHou5)',
+          name: '横刀重击派生(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -3165,7 +3165,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun(ChuanHou5)',
+          name: '横刀安西军(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3173,7 +3173,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZuoXu(ChuanHou5)',
+          name: '横刀左蓄(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3181,7 +3181,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDao～(ChuanHou5+JinZhanDi)',
+          name: '横刀～(穿喉5+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3189,7 +3189,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'BaiRenShaJiangCi(12%DanHan+ChuanHou5+JinZhanDi)',
+          name: '白刃杀将刺(12%胆寒+穿喉5+近战笛)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.435,
@@ -3197,7 +3197,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZhongJiPaiSheng(ChuanHou5)',
+          name: '横刀重击派生(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.695,
@@ -3205,7 +3205,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun(ChuanHou5)',
+          name: '横刀安西军(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3213,7 +3213,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZuoXu(ChuanHou5)',
+          name: '横刀左蓄(穿喉5)',
           count: 3,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3221,7 +3221,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoZhongJiPaiSheng(ChuanHou5)',
+          name: '横刀重击派生(穿喉5)',
           count: 3,
           isDingyin: false,
           generalBonus: 0.695,
@@ -3229,7 +3229,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'HengDaoAnXiJun(ChuanHou5)',
+          name: '横刀安西军(穿喉5)',
           count: 3,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3237,7 +3237,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(Di+DanHan+JuRen+ChuanHou5)',
+          name: '易水歌6重(笛+胆寒+惧刃+穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.515,
@@ -3245,7 +3245,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(ChuanHou5)',
+          name: '易水歌6重(穿喉5)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.295,
@@ -3254,16 +3254,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 816929,
-      updateTime: '2026Nian1Yue22',
-      version: '100JiDuanZhouChunTang（JinGongCanKao）',
-      author: 'QiuXiJun',
-      skillDatabase: SkillData.LieShiJunShuangQie,
+      updateTime: '2026年1月22',
+      version: '100级短轴纯唐（仅供参考）',
+      author: '秋夕君',
+      skillDatabase: SkillData.裂石钧双切,
       useTime: 14,
     },
-    QianSiLin: {
+    牵丝霖: {
       rotation: [
         {
-          name: 'ShenLongTuHuoYiDuan',
+          name: '神龙吐火一段',
           count: 1,
           isDingyin: false,
           generalBonus: 0.02,
@@ -3271,7 +3271,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoLingQianLang（DanCiHouXuLiuXing+SanQ+JinZhanDi）',
+          name: '萧呤千浪（单次后续流星+伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.02,
@@ -3279,7 +3279,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'XiaoLingQianLang（DanCiHouXuLiuXing+SanQ+JinZhanDi）',
+          name: '萧呤千浪（单次后续流星+伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.03,
@@ -3287,7 +3287,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'XiaoLingQianLang（DanCiHouXuLiuXing+SanQ+JinZhanDi）',
+          name: '萧呤千浪（单次后续流星+伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.04,
@@ -3295,7 +3295,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'XiaoLingQianLang（DanCiHouXuLiuXing+SanQ+JinZhanDi）',
+          name: '萧呤千浪（单次后续流星+伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3303,7 +3303,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiaoLingQianLang（DanCiHouXuLiuXing+SanQ+JinZhanDi）',
+          name: '萧呤千浪（单次后续流星+伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3311,7 +3311,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4（SanQ+JinZhanDi）',
+          name: '5重太白醉月1-4（伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.02,
@@ -3319,7 +3319,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4（SanQ+JinZhanDi）',
+          name: '5重太白醉月1-4（伞Q+近战笛）',
           count: 3,
           isDingyin: false,
           generalBonus: 0.03,
@@ -3327,7 +3327,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4（SanQ+JinZhanDi）',
+          name: '5重太白醉月1-4（伞Q+近战笛）',
           count: 3,
           isDingyin: false,
           generalBonus: 0.04,
@@ -3335,7 +3335,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4（SanQ+JinZhanDi）',
+          name: '5重太白醉月1-4（伞Q+近战笛）',
           count: 5,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3343,7 +3343,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue5（SanQ+JinZhanDi）',
+          name: '5重太白醉月5（伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.03,
@@ -3351,7 +3351,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: '5ZhongTaiBaiZuiYue5（SanQ+JinZhanDi）',
+          name: '5重太白醉月5（伞Q+近战笛）',
           count: 2,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3359,7 +3359,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha（SanQ+JinZhanDi）',
+          name: '5重太白醉月爆炸（伞Q+近战笛）',
           count: 1,
           isDingyin: false,
           generalBonus: 0.02,
@@ -3367,7 +3367,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha（SanQ+JinZhanDi）',
+          name: '5重太白醉月爆炸（伞Q+近战笛）',
           count: 4,
           isDingyin: false,
           generalBonus: 0.03,
@@ -3375,7 +3375,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha（SanQ+JinZhanDi）',
+          name: '5重太白醉月爆炸（伞Q+近战笛）',
           count: 3,
           isDingyin: false,
           generalBonus: 0.04,
@@ -3383,7 +3383,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha（SanQ+JinZhanDi）',
+          name: '5重太白醉月爆炸（伞Q+近战笛）',
           count: 7,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3391,7 +3391,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4（JinZhanDi）',
+          name: '5重太白醉月1-4（近战笛）',
           count: 3,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3399,7 +3399,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4',
+          name: '5重太白醉月1-4',
           count: 1,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3407,7 +3407,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue5',
+          name: '5重太白醉月5',
           count: 1,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3415,7 +3415,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha（JinZhanDi）',
+          name: '5重太白醉月爆炸（近战笛）',
           count: 3,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3423,7 +3423,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha',
+          name: '5重太白醉月爆炸',
           count: 2,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3431,7 +3431,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue1-4',
+          name: '5重太白醉月1-4',
           count: 16,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3439,7 +3439,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYue5',
+          name: '5重太白醉月5',
           count: 4,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3447,7 +3447,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: '5ZhongTaiBaiZuiYueBaoZha',
+          name: '5重太白醉月爆炸',
           count: 20,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3455,7 +3455,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan',
+          name: '骑龙回马打满',
           count: 1,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3463,7 +3463,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao（SanQ+JinZhanDi）',
+          name: '神龙吐火爆燃每跳（伞Q+近战笛）',
           count: 22,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3471,7 +3471,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao（JinZhanDi）',
+          name: '神龙吐火爆燃每跳（近战笛）',
           count: 6,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3479,7 +3479,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShenLongTuHuoBaoRanMeiTiao',
+          name: '神龙吐火爆燃每跳',
           count: 29,
           isDingyin: false,
           generalBonus: 0.05,
@@ -3488,16 +3488,16 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 1148134,
-      updateTime: '2026Nian1Yue22Ri',
-      version: '100Ji30MiaoDaZhuangHuoQuanZhou（JinGongCanKao）',
-      author: 'QiuXiJun',
-      skillDatabase: SkillData.QianSiLin,
+      updateTime: '2026年1月22日',
+      version: '100级30秒打桩火拳轴（仅供参考）',
+      author: '秋夕君',
+      skillDatabase: SkillData.牵丝霖,
       useTime: 30,
     },
-    QianSiYu: {
+    牵丝玉: {
       rotation: [
         {
-          name: 'SanQ(FengQiangNoneZongDi)',
+          name: '伞Q(风墙无纵地)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3505,7 +3505,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 0,
         },
         {
-          name: 'SanQ(LianZhongFengQiangNoneZongDi)',
+          name: '伞Q(连中风墙无纵地)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.775,
@@ -3513,7 +3513,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 2,
         },
         {
-          name: 'SanZhongJiPaiSheng(NoneZongDi)',
+          name: '伞重击派生(无纵地)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.185,
@@ -3521,7 +3521,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 4,
         },
         {
-          name: 'DiuSan(NoneZongDi)',
+          name: '丢伞(无纵地)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.195,
@@ -3529,7 +3529,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'San～(LianZhongFengQiangNoneZongDi)',
+          name: '伞～(连中风墙无纵地)',
           count: 0.5,
           isDingyin: true,
           generalBonus: 0.795,
@@ -3537,7 +3537,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'San～(LianZhongFengQiangYinYangDuanShi)',
+          name: '伞～(连中风墙阴阳断石)',
           count: 9.5,
           isDingyin: true,
           generalBonus: 0.955,
@@ -3545,7 +3545,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'QiLongHuiMaDaMan(ZongDiYinYangDuanShi)',
+          name: '骑龙回马打满(纵地阴阳断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.355,
@@ -3553,7 +3553,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 6,
         },
         {
-          name: 'JinChanTengYueYiDuan(YinYangDuanShi)',
+          name: '金蟾腾跃一段(阴阳断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.355,
@@ -3561,7 +3561,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'JinChanTengYueZhenTui(YinYangDuanShi)',
+          name: '金蟾腾跃震退(阴阳断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.355,
@@ -3569,7 +3569,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 8,
         },
         {
-          name: 'JinChanTengYueCiJiDu(YinYangGuiChe)',
+          name: '金蟾腾跃次级毒(阴阳鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3577,7 +3577,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'JinChanTengYueCiJiDu(YinYangGuiChe)',
+          name: '金蟾腾跃次级毒(阴阳鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3585,7 +3585,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiuJianPuGong(YinYangDuanShi)',
+          name: '袖剑普攻(阴阳断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3593,7 +3593,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangYinYang)',
+          name: '伞Q(连中风墙阴阳)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.965,
@@ -3601,7 +3601,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanZhongJiPaiSheng(ZongDiYinYang)',
+          name: '伞重击派生(纵地阴阳)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3609,7 +3609,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DiuSan(ZongDiYinYangGuiChe)',
+          name: '丢伞(纵地阴阳鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3617,7 +3617,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangYinYangGuiChe)',
+          name: '伞～(连中风墙阴阳鬼掣)',
           count: 10,
           isDingyin: true,
           generalBonus: 0.965,
@@ -3625,7 +3625,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanQ(JinJuLiMingZhong)+YinYangGuiChe',
+          name: '扇Q(近距离命中)+阴阳鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3633,7 +3633,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanPuTongZhongJiPaiSheng(FengQiangYinYangDiZhenQiGuiChe)',
+          name: '扇普通重击派生(风墙阴阳低真气鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.545,
@@ -3641,7 +3641,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanZuoXu(FengQiang3JingChunYinYangGuiChe)',
+          name: '扇左蓄(风墙3惊春阴阳鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.885,
@@ -3649,7 +3649,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiuJianPuGong(YinYangGuiChe)',
+          name: '袖剑普攻(阴阳鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3657,7 +3657,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangGuiChe)',
+          name: '伞Q(连中风墙鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -3665,7 +3665,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanZhongJiPaiSheng(ZongDiGuiChe)',
+          name: '伞重击派生(纵地鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3673,7 +3673,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DiuSan(ZongDiGuiChe)',
+          name: '丢伞(纵地鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3681,7 +3681,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'TaiBaiZuiYue1-4(GuiChe)',
+          name: '太白醉月1-4(鬼掣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3689,7 +3689,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'TaiBaiZuiYueBaoZha(GuiChe)',
+          name: '太白醉月爆炸(鬼掣)',
           count: 2,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3697,7 +3697,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangGuiChe)',
+          name: '伞～(连中风墙鬼掣)',
           count: 2,
           isDingyin: true,
           generalBonus: 0.815,
@@ -3705,7 +3705,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangXuRuoGuiChe)',
+          name: '伞～(连中风墙虚弱鬼掣)',
           count: 8,
           isDingyin: true,
           generalBonus: 1.165,
@@ -3713,7 +3713,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(ZongDi+XuRuoGuiChe)',
+          name: '骑龙回马打满(纵地+虚弱鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -3721,7 +3721,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiuJianPuGong(XuRuoGuiChe)',
+          name: '袖剑普攻(虚弱鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -3729,7 +3729,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangGuiChe)',
+          name: '伞Q(连中风墙鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -3737,7 +3737,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanZhongJiPaiSheng(ZongDiGuiChe)',
+          name: '伞重击派生(纵地鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3745,7 +3745,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DiuSan(ZongDiGuiChe)',
+          name: '丢伞(纵地鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3753,7 +3753,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangXuRuoGuiChe)',
+          name: '伞～(连中风墙虚弱鬼掣)',
           count: 3.5,
           isDingyin: true,
           generalBonus: 1.165,
@@ -3761,7 +3761,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangGuiChe)',
+          name: '伞～(连中风墙鬼掣)',
           count: 6.5,
           isDingyin: true,
           generalBonus: 0.815,
@@ -3769,7 +3769,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanQ(JinJuLiMingZhong)+GuiChe',
+          name: '扇Q(近距离命中)+鬼掣',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3777,7 +3777,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanPuTongZhongJiPaiSheng(FengQiangDiZhenQiGuiChe)',
+          name: '扇普通重击派生(风墙低真气鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.395,
@@ -3785,7 +3785,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'ShanZuoXu(FengQiang3JingChunGuiChe)',
+          name: '扇左蓄(风墙3惊春鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.735,
@@ -3793,7 +3793,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'XiuJianPuGong(GuiChe)',
+          name: '袖剑普攻(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3801,7 +3801,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangGuiCheQiJie)',
+          name: '伞Q(连中风墙鬼掣气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.915,
@@ -3809,7 +3809,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangGuiCheQiJie)',
+          name: '伞Q(连中风墙鬼掣气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.915,
@@ -3817,7 +3817,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DiuSan(ZongDiGuiCheQiJie)',
+          name: '丢伞(纵地鬼掣气竭)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3825,7 +3825,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangQiJieGuiChe)',
+          name: '伞～(连中风墙气竭鬼掣)',
           count: 10,
           isDingyin: true,
           generalBonus: 0.915,
@@ -3833,7 +3833,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YeLongXiangShou(QiJieGuiChe50%HP)',
+          name: '叶龙骧首(气竭鬼掣50%HP)',
           count: 1,
           isDingyin: false,
           generalBonus: 1.065,
@@ -3841,7 +3841,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'SanQ(LianZhongFengQiangDuanShi)',
+          name: '伞Q(连中风墙断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.815,
@@ -3849,7 +3849,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'DiuSan(ZongDiDuanShi)',
+          name: '丢伞(纵地断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3857,7 +3857,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'QiLongHuiMaDaMan(ZongDi+DuanShiGuiChe)',
+          name: '骑龙回马打满(纵地+断石鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3865,7 +3865,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'San～(LianZhongFengQiangDuanShi)',
+          name: '伞～(连中风墙断石)',
           count: 4,
           isDingyin: true,
           generalBonus: 0.815,
@@ -3873,7 +3873,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(YinYang)',
+          name: '易水歌6重(阴阳)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.365,
@@ -3881,7 +3881,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(GuiChe)',
+          name: '易水歌6重(鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.215,
@@ -3889,7 +3889,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(XuRuoGuiChe)',
+          name: '易水歌6重(虚弱鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.565,
@@ -3897,7 +3897,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(QiJieGuiChe)',
+          name: '易水歌6重(气竭鬼掣)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3905,7 +3905,7 @@ export const ClassConfig: ClassConfigData = {
           yishui: 10,
         },
         {
-          name: 'YiShuiGe6Zhong(DuanShi)',
+          name: '易水歌6重(断石)',
           count: 1,
           isDingyin: false,
           generalBonus: 0.315,
@@ -3914,10 +3914,10 @@ export const ClassConfig: ClassConfigData = {
         },
       ],
       baseline: 4208540.12,
-      updateTime: '2026Nian1Yue22Ri',
-      version: '100JiJingSuJiSuanQi2.10',
+      updateTime: '2026年1月22日',
+      version: '100级竞速计算器2.10',
       author: 'Violetta',
-      skillDatabase: SkillData.QianSiYu,
+      skillDatabase: SkillData.牵丝玉,
       useTime: 49.5,
     },
   },

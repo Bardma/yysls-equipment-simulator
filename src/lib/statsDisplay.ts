@@ -3,31 +3,31 @@ import { CommonData } from './data/commonData';
 export interface StatDisplayItem {
   label: string;
   value: string;
-  highlight?: string; // KangXingHouDeZhi，YongJuHuangSeXianShi
-  suffix?: string; // YiChuXinXiDengHouZhui
-  isLoaned?: boolean; // ShiFouWeiDaiKuanZhi
-  isEarlySeason?: boolean; // ShiFouWeiTiQianHuoDeXiaSaiJiShuXing
+  highlight?: string; // 抗性后的值，用橘黄色显示
+  suffix?: string; // 溢出信息等后缀
+  isLoaned?: boolean; // 是否为贷款值
+  isEarlySeason?: boolean; // 是否为提前获得下赛季属性
 }
 
 const shouldPercent = (key: string) =>
   CommonData.PERCENT_STATS.includes(key) ||
-  key.includes('L') ||
-  key.includes('JiaCheng') ||
-  key.includes(' Effectiveness') ||
-  key.includes(' Damage Bonus');
+  key.includes('率') ||
+  key.includes('加成') ||
+  key.includes('增效') ||
+  key.includes('增伤');
 
-// DaiKuanHuiYingXiangDeShuXingLieBiao
+// 贷款会影响的属性列表
 const LOANED_STATS = [
-  'Outer Penetration',
-  'Specific Skill Damage Bonus',
+  '外功穿透',
+  '指定武学技能增伤',
 ];
 
-// TiQianHuoDeXiaSaiJiShuXingHuiYingXiangDeShuXingLieBiao
+// 提前获得下赛季属性会影响的属性列表
 const EARLY_SEASON_STATS = [
-  'ShiJiJingZhunL',
-  'ShiJiHuiXinL',
-  'ShiJiHuiYiL',
-  'WaiGongGongJi', // GongJiFanWeiDeTeShuChuLi
+  '实际精准率',
+  '实际会心率',
+  '实际会意率',
+  '外功攻击', // 攻击范围的特殊处理
 ];
 
 export const buildStatsDisplay = (
@@ -41,31 +41,31 @@ export const buildStatsDisplay = (
   const items: StatDisplayItem[] = [];
 
   const overflowData = {
-    precision: totals['JingZhunLYiChu'] || 0,
-    crit: totals['HuiXinLYiChu'] || 0,
-    intent: totals['HuiYiLYiChu'] || 0,
+    precision: totals['精准率溢出'] || 0,
+    crit: totals['会心率溢出'] || 0,
+    intent: totals['会意率溢出'] || 0,
   };
 
   const rawValues = {
-    precision: totals['JingZhunLBaiZhi'] || 0,
-    crit: totals['HuiXinLBaiZhi'] || 0,
-    intent: totals['HuiYiLBaiZhi'] || 0,
+    precision: totals['精准率白值'] || 0,
+    crit: totals['会心率白值'] || 0,
+    intent: totals['会意率白值'] || 0,
   };
 
   const attackPairs = [
-    { label: 'WaiGongGongJi', min: 'Min Outer Attack', max: 'Max Outer Attack' },
-    { label: 'MingJinGongJi', min: 'Min Mingjin Attack', max: 'Max Mingjin Attack' },
-    { label: 'LieShiGongJi', min: 'Min Lie Shi Attack', max: 'Max Lie Shi Attack' },
-    { label: 'QianSiGongJi', min: 'Min Qian Si Attack', max: 'Max Qian Si Attack' },
-    { label: 'PoZhuGongJi', min: 'Min Po Zhu Attack', max: 'Max Po Zhu Attack' },
-    { label: 'NoneXiangGongJi', min: 'ZuiXiaoNoneXiangGongJi', max: 'ZuiDaNoneXiangGongJi' },
+    { label: '外功攻击', min: '最小外功攻击', max: '最大外功攻击' },
+    { label: '鸣金攻击', min: '最小鸣金攻击', max: '最大鸣金攻击' },
+    { label: '裂石攻击', min: '最小裂石攻击', max: '最大裂石攻击' },
+    { label: '牵丝攻击', min: '最小牵丝攻击', max: '最大牵丝攻击' },
+    { label: '破竹攻击', min: '最小破竹攻击', max: '最大破竹攻击' },
+    { label: '无相攻击', min: '最小无相攻击', max: '最大无相攻击' },
   ];
 
   attackPairs.forEach((pair) => {
     const min = totals[pair.min] || 0;
     const max = totals[pair.max] || 0;
     if (min > 0 || max > 0) {
-      // WaiGongGongJiShouXiaSaiJiShuXingYingXiang
+      // 外功攻击受下赛季属性影响
       const isEarlySeason = earlySeasonBonus && EARLY_SEASON_STATS.includes(pair.label);
       items.push({ label: pair.label, value: `${min} - ${max}`, isEarlySeason });
       delete totals[pair.min];
@@ -74,50 +74,50 @@ export const buildStatsDisplay = (
   });
 
   const skillNameMap: Record<string, string> = {
-    MingJinYing: 'JiJuJiuJian·Liu Xue Damage Bonus',
-    MingJinHong: 'NoneMingJianFa·Xu Li Ji Damage Bonus',
-    PoZhuChen: 'ZuiMengYouChun·Wu Xue Ji Damage Bonus',
-    PoZhuFeng: 'LiZiYouChen·Shu Shu Damage Bonus',
-    'LieShiJun（ChunTang）': 'ZhanXueDaoFa·Qing Zhong Ji Pai Sheng Ji Damage Bonus',
-    'LieShiJun（ShuangQie）': 'ShiFangPoZhen·Xu Li Ji Damage Bonus',
-    QianSiYu: 'JiuChongChunSe·Te Shu Ji Damage Bonus',
-    LieShiWei: 'JieFuDaoFa·Xu Li Ji Damage Bonus',
-    PoZhuYuan: 'TianZhiChuiXiang·Xu Li Ji Damage Bonus',
+    鸣金影: '积矩九剑·流血增伤',
+    鸣金虹: '无名剑法·蓄力技增伤',
+    破竹尘: '醉梦游春·武学技增伤',
+    破竹风: '栗子游尘·鼠鼠增伤',
+    '裂石钧（纯唐）': '斩雪刀法·轻重击派生技增伤',
+    '裂石钧（双切）': '十方破阵·蓄力技增伤',
+    牵丝玉: '九重春色·特殊技增伤',
+    裂石威: '嗟夫刀法·蓄力技增伤',
+    破竹鸢: '天志垂象·蓄力技增伤',
   };
 
-  if (totals['Specific Skill Damage Bonus'] > 0 && currentClass !== 'QianSiLin' && skillNameMap[currentClass]) {
-    totals[skillNameMap[currentClass]] = totals['Specific Skill Damage Bonus'];
-    delete totals['Specific Skill Damage Bonus'];
+  if (totals['指定武学技能增伤'] > 0 && currentClass !== '牵丝霖' && skillNameMap[currentClass]) {
+    totals[skillNameMap[currentClass]] = totals['指定武学技能增伤'];
+    delete totals['指定武学技能增伤'];
   }
 
   const order = [
-    'ShiJiJingZhunL',
-    'ShiJiHuiXinL',
-    'ShiJiHuiYiL',
-    'Direct Crit Rate',
-    'Direct Insight Rate',
-    'Crit Damage Bonus',
-    'Insight Damage Bonus',
-    'Outer Penetration',
-    'Outer Damage Bonus',
-    'Elemental Penetration',
-    'Mingjin Damage Bonus',
-    'Lieshi Damage Bonus',
-    'Qiansi Damage Bonus',
-    'Pozhu Damage Bonus',
-    'All Martial Arts Effectiveness',
-    'Boss Damage Bonus',
-    'Singletarget Technique Damage Bonus',
-    'AoE Technique Damage Bonus',
+    '实际精准率',
+    '实际会心率',
+    '实际会意率',
+    '直接会心率',
+    '直接会意率',
+    '会心伤害加成',
+    '会意伤害加成',
+    '外功穿透',
+    '外功伤害加成',
+    '属攻穿透',
+    '鸣金伤害加成',
+    '裂石伤害加成',
+    '牵丝伤害加成',
+    '破竹伤害加成',
+    '全武学增效',
+    '对首领单位增伤',
+    '单体类奇术增伤',
+    '群体类奇术增伤',
   ];
 
-  // Jian Cha Dang Qian Zhi Ye Dui Ying De Ji Neng Shu Xing Ming Damage Bonus
+  // 检查当前职业对应的技能增伤属性名
   const mappedSkillName = skillNameMap[currentClass];
 
   const isLoanedStat = (key: string) => {
     if (!loanDingyin) return false;
     if (LOANED_STATS.includes(key)) return true;
-    // Jian Cha Shi Fou Wei Zhi Ye Dui Ying De Ji Neng Damage Bonus
+    // 检查是否为职业对应的技能增伤
     if (mappedSkillName && key === mappedSkillName) return true;
     return false;
   };
@@ -128,34 +128,34 @@ export const buildStatsDisplay = (
   };
 
   const renderItem = (key: string, val: number) => {
-    const label = key.replace('ShiJi', '');
+    const label = key.replace('实际', '');
     let displayValue = '';
     let highlight: string | undefined;
     let suffix: string | undefined;
     const isLoaned = isLoanedStat(key);
     const isEarlySeason = isEarlySeasonStat(key);
 
-    // Accuracy、Crit Rate、HuiYiLXianShiWei "BaiZhi%（KangXingHouDeZhi%）"
-    if (key === 'ShiJiJingZhunL') {
+    // 精准率、会心率、会意率显示为 "白值%（抗性后的值%）"
+    if (key === '实际精准率') {
       displayValue = `${rawValues.precision.toFixed(1)}%`;
       highlight = `（${val}%）`;
       if (overflowData.precision > 0) {
-        suffix = ` YiChu${overflowData.precision.toFixed(1)}%BaiZhi`;
+        suffix = ` 溢出${overflowData.precision.toFixed(1)}%白值`;
       }
-    } else if (key === 'ShiJiHuiXinL') {
+    } else if (key === '实际会心率') {
       displayValue = `${rawValues.crit.toFixed(1)}%`;
       highlight = `（${val}%）`;
       if (overflowData.crit > 0) {
         let overflowReason = '';
-        overflowReason += currentClass === 'LieShiWei' ? 'MoDao' : '';
-        overflowReason += setType === 'HuanHua' ? 'HuanHua' : '';
-        suffix = ` ${overflowReason}YiChu${overflowData.crit.toFixed(1)}%BaiZhi`;
+        overflowReason += currentClass === '裂石威' ? '陌刀' : '';
+        overflowReason += setType === '浣花' ? '浣花' : '';
+        suffix = ` ${overflowReason}溢出${overflowData.crit.toFixed(1)}%白值`;
       }
-    } else if (key === 'ShiJiHuiYiL') {
+    } else if (key === '实际会意率') {
       displayValue = `${rawValues.intent.toFixed(1)}%`;
       highlight = `（${val}%）`;
       if (overflowData.intent > 0) {
-        suffix = ` YiChu${overflowData.intent.toFixed(1)}%BaiZhi`;
+        suffix = ` 溢出${overflowData.intent.toFixed(1)}%白值`;
       }
     } else {
       const isPercent = shouldPercent(key);
@@ -181,8 +181,8 @@ export const buildStatsDisplay = (
 
   Object.entries(totals).forEach(([key, val]) => {
     const excludeKeys = [
-      'JingZhunLYiChu', 'HuiXinLYiChu', 'HuiYiLYiChu',
-      'JingZhunLBaiZhi', 'HuiXinLBaiZhi', 'HuiYiLBaiZhi',
+      '精准率溢出', '会心率溢出', '会意率溢出',
+      '精准率白值', '会心率白值', '会意率白值',
     ];
     if (val > 0 && !excludeKeys.includes(key)) {
       renderItem(key, val);

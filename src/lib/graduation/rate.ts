@@ -4,7 +4,7 @@ import { CommonData } from '@/lib/data/commonData';
 import type { CalculatorStatModifier, EquippedItems } from '@/lib/types';
 
 /**
- * JiSuanGraduation Rate
+ * 计算毕业率
  */
 export const calcRate = (
   equips: EquippedItems,
@@ -29,15 +29,15 @@ export const calcRate = (
     const val = totals[key];
     const isPercent =
       CommonData.PERCENT_STATS.includes(key) ||
-      key.includes('L') ||
-      key.includes(' Effectiveness') ||
-      key.includes('JiaCheng') ||
-      key.includes(' Damage Bonus');
-    const isPenetration = key.includes(' Penetration');
+      key.includes('率') ||
+      key.includes('增效') ||
+      key.includes('加成') ||
+      key.includes('增伤');
+    const isPenetration = key.includes('穿透');
     totals[key] = isPercent || isPenetration ? parseFloat(val.toFixed(1)) : Math.round(val);
   }
 
-  const calcParams = { ...totals, Set: setType, Inner Way: xinfa, DangQianLiuPai: currentClass };
+  const calcParams = { ...totals, 套装: setType, 心法: xinfa, 当前流派: currentClass };
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const skillDb = rotationConfig?.skillDatabase || {};
   const rotation = rotationConfig?.rotation || [];
@@ -49,7 +49,7 @@ export const calcRate = (
 };
 
 /**
- * DaiShuXingXiuGaiQiDeGraduation RateJiSuan
+ * 带属性修改器的毕业率计算
  */
 export const calcRateWithStatModifier = (
   equips: EquippedItems,
@@ -72,64 +72,64 @@ export const calcRateWithStatModifier = (
   );
 
   return {
-    DangQianLiuPai: currentClass,
-    Min Outer Attack: total['Min Outer Attack'] || 0,
-    Max Outer Attack: total['Max Outer Attack'] || 0,
-    Min Mingjin Attack: total['Min Mingjin Attack'] || 0,
-    Max Mingjin Attack: total['Max Mingjin Attack'] || 0,
-    Min Lie Shi Attack: total['Min Lie Shi Attack'] || 0,
-    Max Lie Shi Attack: total['Max Lie Shi Attack'] || 0,
-    Min Qian Si Attack: total['Min Qian Si Attack'] || 0,
-    Max Qian Si Attack: total['Max Qian Si Attack'] || 0,
-    Min Po Zhu Attack: total['Min Po Zhu Attack'] || 0,
-    Max Po Zhu Attack: total['Max Po Zhu Attack'] || 0,
-    ZuiXiaoNoneXiangGongJi: total['ZuiXiaoNoneXiangGongJi'] || 0,
-    ZuiDaNoneXiangGongJi: total['ZuiDaNoneXiangGongJi'] || 0,
-    Accuracy: total['Accuracy'] || 0,
-    Crit Rate: total['Crit Rate'] || 0,
-    Insight Rate: total['Insight Rate'] || 0,
-    ShiJiJingZhunL: total['ShiJiJingZhunL'] || 0,
-    ShiJiHuiXinL: total['ShiJiHuiXinL'] || 0,
-    ShiJiHuiYiL: total['ShiJiHuiYiL'] || 0,
-    Direct Crit Rate: total['Direct Crit Rate'] || 0,
-    Direct Insight Rate: total['Direct Insight Rate'] || 0,
-    Crit Damage Bonus: total['Crit Damage Bonus'] || 0,
-    Insight Damage Bonus: total['Insight Damage Bonus'] || 0,
-    Outer Damage Bonus: total['Outer Damage Bonus'] || 0,
-    Elemental Damage Bonus: total['Elemental Damage Bonus'] || 0,
-    Outer Penetration: total['Outer Penetration'] || 0,
-    Elemental Penetration: total['Elemental Penetration'] || 0,
-    NoneXiang Penetration: total['NoneXiang Penetration'] || 0,
-    Ming Jin Penetration: total['Ming Jin Penetration'] || 0,
-    Lie Shi Penetration: total['Lie Shi Penetration'] || 0,
-    Qian Si Penetration: total['Qian Si Penetration'] || 0,
-    Po Zhu Penetration: total['Po Zhu Penetration'] || 0,
-    All Martial Arts Effectiveness: total['All Martial Arts Effectiveness'] || 0,
-    Specific Martial Art Effectiveness: total['Specific Martial Art Effectiveness'] || 0,
-    Boss Damage Bonus: total['Boss Damage Bonus'] || 0,
-    Specific Skill Damage Bonus: total['Specific Skill Damage Bonus'] || 0,
-    Singletarget Technique Damage Bonus: total['Singletarget Technique Damage Bonus'] || 0,
-    AoE Technique Damage Bonus: total['AoE Technique Damage Bonus'] || 0,
-    Sword Martial Art Effectiveness: total['Sword Martial Art Effectiveness'] || 0,
-    Spear Martial Art Effectiveness: total['Spear Martial Art Effectiveness'] || 0,
-    Umbrella Martial Art Effectiveness: total['Umbrella Martial Art Effectiveness'] || 0,
-    Fan Martial Art Effectiveness: total['Fan Martial Art Effectiveness'] || 0,
-    Rope Dart Martial Art Effectiveness: total['Rope Dart Martial Art Effectiveness'] || 0,
-    Dual Blades Martial Art Effectiveness: total['Dual Blades Martial Art Effectiveness'] || 0,
-    Great Blade Martial Art Effectiveness: total['Great Blade Martial Art Effectiveness'] || 0,
-    Sabre Martial Art Effectiveness: total['Sabre Martial Art Effectiveness'] || 0,
-    Fist Martial Art Effectiveness: total['Fist Martial Art Effectiveness'] || 0,
-    Mingjin Damage Bonus: total['Mingjin Damage Bonus'] || 0,
-    Lieshi Damage Bonus: total['Lieshi Damage Bonus'] || 0,
-    Qiansi Damage Bonus: total['Qiansi Damage Bonus'] || 0,
-    Pozhu Damage Bonus: total['Pozhu Damage Bonus'] || 0,
-    Inner Way: xinfa,
-    Set: setType,
+    当前流派: currentClass,
+    最小外功攻击: total['最小外功攻击'] || 0,
+    最大外功攻击: total['最大外功攻击'] || 0,
+    最小鸣金攻击: total['最小鸣金攻击'] || 0,
+    最大鸣金攻击: total['最大鸣金攻击'] || 0,
+    最小裂石攻击: total['最小裂石攻击'] || 0,
+    最大裂石攻击: total['最大裂石攻击'] || 0,
+    最小牵丝攻击: total['最小牵丝攻击'] || 0,
+    最大牵丝攻击: total['最大牵丝攻击'] || 0,
+    最小破竹攻击: total['最小破竹攻击'] || 0,
+    最大破竹攻击: total['最大破竹攻击'] || 0,
+    最小无相攻击: total['最小无相攻击'] || 0,
+    最大无相攻击: total['最大无相攻击'] || 0,
+    精准率: total['精准率'] || 0,
+    会心率: total['会心率'] || 0,
+    会意率: total['会意率'] || 0,
+    实际精准率: total['实际精准率'] || 0,
+    实际会心率: total['实际会心率'] || 0,
+    实际会意率: total['实际会意率'] || 0,
+    直接会心率: total['直接会心率'] || 0,
+    直接会意率: total['直接会意率'] || 0,
+    会心伤害加成: total['会心伤害加成'] || 0,
+    会意伤害加成: total['会意伤害加成'] || 0,
+    外功伤害加成: total['外功伤害加成'] || 0,
+    属攻伤害加成: total['属攻伤害加成'] || 0,
+    外功穿透: total['外功穿透'] || 0,
+    属攻穿透: total['属攻穿透'] || 0,
+    无相穿透: total['无相穿透'] || 0,
+    鸣金穿透: total['鸣金穿透'] || 0,
+    裂石穿透: total['裂石穿透'] || 0,
+    牵丝穿透: total['牵丝穿透'] || 0,
+    破竹穿透: total['破竹穿透'] || 0,
+    全武学增效: total['全武学增效'] || 0,
+    指定武学增效: total['指定武学增效'] || 0,
+    对首领单位增伤: total['对首领单位增伤'] || 0,
+    指定武学技能增伤: total['指定武学技能增伤'] || 0,
+    单体类奇术增伤: total['单体类奇术增伤'] || 0,
+    群体类奇术增伤: total['群体类奇术增伤'] || 0,
+    剑武学增效: total['剑武学增效'] || 0,
+    枪武学增效: total['枪武学增效'] || 0,
+    伞武学增效: total['伞武学增效'] || 0,
+    扇武学增效: total['扇武学增效'] || 0,
+    绳标武学增效: total['绳标武学增效'] || 0,
+    双刀武学增效: total['双刀武学增效'] || 0,
+    陌刀武学增效: total['陌刀武学增效'] || 0,
+    横刀武学增效: total['横刀武学增效'] || 0,
+    拳甲武学增效: total['拳甲武学增效'] || 0,
+    鸣金伤害加成: total['鸣金伤害加成'] || 0,
+    裂石伤害加成: total['裂石伤害加成'] || 0,
+    牵丝伤害加成: total['牵丝伤害加成'] || 0,
+    破竹伤害加成: total['破竹伤害加成'] || 0,
+    心法: xinfa,
+    套装: setType,
   };
 };
 
 /**
- * JiSuanPeiZhuangGraduation Rate
+ * 计算配装毕业率
  */
 export const calculateBuildRate = (
   equippedItems: EquippedItems,
@@ -161,7 +161,7 @@ export const calculateBuildRate = (
 
   if (!rotation.length) return { rate: 0, damage: 0 };
 
-  const params = { ...totals, Set: setType, Inner Way: xinfa, DangQianLiuPai: currentClass };
+  const params = { ...totals, 套装: setType, 心法: xinfa, 当前流派: currentClass };
   const result = Calculator.calculateGraduationRate(params, skillDb, rotation, baseline, false);
 
   return {

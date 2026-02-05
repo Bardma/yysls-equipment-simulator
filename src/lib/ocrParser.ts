@@ -4,12 +4,12 @@ import { createWorker, PSM } from 'tesseract.js';
 
 import { CommonData } from './data/commonData';
 
-// Tesseract Worker ShiLi
+// Tesseract Worker 实例
 let worker: Awaited<ReturnType<typeof createWorker>> | null = null;
 let isInitializing = false;
 
 /**
- * HuoQuHuoChuangJian Tesseract Worker
+ * 获取或创建 Tesseract Worker
  */
 async function getWorker() {
   if (worker) return worker;
@@ -35,7 +35,7 @@ async function getWorker() {
       },
     });
 
-    // SheZhiShiBieCanShu
+    // 设置识别参数
     await worker.setParameters({
       tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
     });
@@ -51,7 +51,7 @@ async function getWorker() {
 }
 
 /**
- * ShiYong Tesseract.js JinXing OCR ShiBie（ZhiJieShiYongYuanShiTuPian，BuZuoYuChuLi）
+ * 使用 Tesseract.js 进行 OCR 识别（直接使用原始图片，不做预处理）
  */
 export async function recognizeImage(imageSource: File): Promise<string> {
   console.log('[OCR] Getting worker...');
@@ -70,63 +70,63 @@ export async function recognizeImage(imageSource: File): Promise<string> {
 export interface ParsedStat {
   type: string;
   value: number;
-  isConverted?: boolean; // ShiFouShiZhuanLAffix [Zhuan]
+  isConverted?: boolean; // 是否是转律词条 [转]
 }
 
 export interface OcrParseResult {
   mainStat?: ParsedStat;
   subStats: ParsedStat[];
   dingyinStat?: ParsedStat;
-  convertedStat?: ParsedStat; // ZhuanLHouDeAffix
+  convertedStat?: ParsedStat; // 转律后的词条
 }
 
-// QuanJuGanRaoCiPeiZhi（OCR ChangJianCuoWuShiBie）
+// 全局干扰词配置（OCR 常见错误识别）
 const GLOBAL_ARTIFACTS = [
-  'YiGuo', 'GuoGuo', 'GongQiang', 'XiangGuo', 'KuangHeng', 'KuangQiang', 'YiQiang',
-  'GuoQiang', 'KuangGuo', 'HuiGuo', 'FuQiang', 'YiTan',
-  'Jian', 'I', 'l', '。', '1，', '1,',
+  '医国', '国国', '攻强', '项国', '匡恒', '匡强', '医强',
+  '国强', '匡国', '回国', '福强', '医弹',
+  '荐', 'I', 'l', '。', '1，', '1,',
 ];
 
-// HangShouGanRaoCi
-const START_ARTIFACTS = ['，', ',', '+，', '+,', '.', ':', '1,', 'Xin'];
+// 行首干扰词
+const START_ARTIFACTS = ['，', ',', '+，', '+,', '.', ':', '1,', '心'];
 
-// AffixBieMingYingShe（OCR CuoWu -> ZhengQueMingCheng）
+// 词条别名映射（OCR 错误 -> 正确名称）
 const STAT_ALIASES: Record<string, string> = {
-  'NoneXiang Penetration': 'Elemental Penetration',
-  'WaiGongGongJi': 'Max Outer Attack',
-  'ZuiDaWaiGong': 'Max Outer Attack',
-  'ZuiXiaoWaiGong': 'Min Outer Attack',
-  'JiGuo': 'Strength',
-  'Ji': 'Strength',
-  'Hong': 'Strength',
-  'Guo': 'Strength',
-  'Li': 'Strength',
-  'Fei': 'Strength',
-  'Wei': 'Strength',
-  'WeiGongGuo': 'Max Outer Attack',
-  'Quan Jia Effectiveness': 'Fist Martial Art Effectiveness',
-  'HuiXinJi': 'Crit Rate',
-  'GuoSi': 'QianSi',
+  '无相穿透': '属攻穿透',
+  '外功攻击': '最大外功攻击',
+  '最大外功': '最大外功攻击',
+  '最小外功': '最小外功攻击',
+  '纪国': '劲',
+  '纪': '劲',
+  '红': '劲',
+  '国': '劲',
+  '力': '劲',
+  '妃': '劲',
+  '苇': '劲',
+  '苇功国': '最大外功攻击',
+  '拳甲增效': '拳甲武学增效',
+  '会心计': '会心率',
+  '过丝': '牵丝',
 };
 
-// Dingyin AffixLieBiao
-const DINGYIN_STATS = ['Outer Penetration', 'Elemental Penetration', 'Specific Skill Damage Bonus'];
+// 定音词条列表
+const DINGYIN_STATS = ['外功穿透', '属攻穿透', '指定武学技能增伤'];
 
 /**
- * QingXi OCR WenBen，YiChuGanRaoCi
+ * 清洗 OCR 文本，移除干扰词
  */
 function cleanOcrLine(line: string): string {
   let cleanLine = line.replace(/\s+/g, '');
 
-  // YiChuQuanJuGanRaoCi
+  // 移除全局干扰词
   for (const artifact of GLOBAL_ARTIFACTS) {
     cleanLine = cleanLine.split(artifact).join('');
   }
 
-  // TeShuTiHuan：| -> Strength
-  cleanLine = cleanLine.replace(/\|/g, 'Strength');
+  // 特殊替换：| -> 劲
+  cleanLine = cleanLine.replace(/\|/g, '劲');
 
-  // YiChuHangShouGanRaoCi
+  // 移除行首干扰词
   let hasGarbage = true;
   while (hasGarbage) {
     hasGarbage = false;
@@ -137,7 +137,7 @@ function cleanOcrLine(line: string): string {
         break;
       }
     }
-    // QuChuHangShouShuZi
+    // 去除行首数字
     if (/^\d+[，,]?/.test(cleanLine)) {
       cleanLine = cleanLine.replace(/^\d+[，,]?/, '');
       hasGarbage = true;
@@ -148,110 +148,110 @@ function cleanOcrLine(line: string): string {
 }
 
 /**
- * JiYuGuiZeDeAffixPiPei（CanKao spongem ShiXian）
- * ShiYongJianDanDe includes PanDuan，GengLingHuoDiChuLi OCR CuoWu
+ * 基于规则的词条匹配（参考 spongem 实现）
+ * 使用简单的 includes 判断，更灵活地处理 OCR 错误
  */
 function smartMatchStatName(line: string, isLastLine: boolean = false): string | null {
-  // YouXianPiPeiChangAffix/TeShuAffix
-  if (line.includes('ZhiDing') && line.includes(' Damage Bonus')) return 'Specific Skill Damage Bonus';
-  // Zui Hou Yi Hang Qie Han Damage Bonus/Ji，Dou Di Wei Zhi Ding Wu Xue Ji Neng Damage Bonus
-  if (isLastLine && (line.includes(' Damage Bonus') || line.includes('Ji'))) return 'Specific Skill Damage Bonus';
+  // 优先匹配长词条/特殊词条
+  if (line.includes('指定') && line.includes('增伤')) return '指定武学技能增伤';
+  // 最后一行且含增伤/技，兜底为指定武学技能增伤
+  if (isLastLine && (line.includes('增伤') || line.includes('技'))) return '指定武学技能增伤';
 
-  if (line.includes('Shou') || line.includes('Ling')) return 'Boss Damage Bonus';
+  if (line.includes('首') || line.includes('领')) return '对首领单位增伤';
 
-  // Wu Xue Lei Effectiveness
-  if (line.includes('Quan')) return 'All Martial Arts Effectiveness';
-  if (line.includes('Dan') || (line.includes('Ti') && line.includes('Qi'))) return 'Singletarget Technique Damage Bonus';
-  if (line.includes('Qun')) return 'AoE Technique Damage Bonus';
-  if (line.includes('San')) return 'Umbrella Martial Art Effectiveness';
-  if (line.includes('Jian')) return 'Sword Martial Art Effectiveness';
-  if (line.includes('Qiang')) return 'Spear Martial Art Effectiveness';
-  if (line.includes('Shan')) return 'Fan Martial Art Effectiveness';
-  if (line.includes('Sheng') || line.includes('Biao')) return 'Rope Dart Martial Art Effectiveness';
-  if (line.includes('Mo')) return 'Great Blade Martial Art Effectiveness';
-  if (line.includes('Shuang')) return 'Dual Blades Martial Art Effectiveness';
-  if (line.includes('Heng')) return 'Sabre Martial Art Effectiveness';
-  if (line.includes('Shou') || line.includes('Jia')) return 'Fist Martial Art Effectiveness';
+  // 武学增效类
+  if (line.includes('全')) return '全武学增效';
+  if (line.includes('单') || (line.includes('体') && line.includes('奇'))) return '单体类奇术增伤';
+  if (line.includes('群')) return '群体类奇术增伤';
+  if (line.includes('伞')) return '伞武学增效';
+  if (line.includes('剑')) return '剑武学增效';
+  if (line.includes('枪')) return '枪武学增效';
+  if (line.includes('扇')) return '扇武学增效';
+  if (line.includes('绳') || line.includes('标')) return '绳标武学增效';
+  if (line.includes('陌')) return '陌刀武学增效';
+  if (line.includes('双')) return '双刀武学增效';
+  if (line.includes('横')) return '横刀武学增效';
+  if (line.includes('手') || line.includes('甲')) return '拳甲武学增效';
 
-  // LLei
-  if (line.includes('Jing') || line.includes('Zhun')) return 'Accuracy';
-  if (line.includes('Hui') && (line.includes('Xin') || line.includes('Ji'))) return 'Crit Rate';
-  if (line.includes('Hui') || line.includes('Yi')) return 'Insight Rate';
+  // 率类
+  if (line.includes('精') || line.includes('准')) return '精准率';
+  if (line.includes('会') && (line.includes('心') || line.includes('计'))) return '会心率';
+  if (line.includes('会') || line.includes('意')) return '会意率';
 
-  // DanZiShuXing（JinMinShi）- OCR ChangJianCuoWuBianTi
+  // 单字属性（劲敏势）- OCR 常见错误变体
   if (!isLastLine && (
-    line.includes('Strength') || line.includes('Ji') || line.includes('Wei') ||
-    line.includes('Fei') || line.includes('You') || line.includes('Tan')
-  )) return 'Strength';
-  if (line.includes('Agility') || line.includes('Kao')) return 'Agility';
-  if (line.includes('Momentum')) return 'Momentum';
+    line.includes('劲') || line.includes('纪') || line.includes('苇') ||
+    line.includes('妃') || line.includes('幼') || line.includes('弹')
+  )) return '劲';
+  if (line.includes('敏') || line.includes('考')) return '敏';
+  if (line.includes('势')) return '势';
 
-  // Lei Penetration
-  if ((line.includes('Wai') && line.includes('Chuan')) ||
-      (line.includes('GongChuan') && !line.includes('Shu') && !line.includes('None'))) {
-    return 'Outer Penetration';
+  // 穿透类
+  if ((line.includes('外') && line.includes('穿')) ||
+      (line.includes('攻穿') && !line.includes('属') && !line.includes('无'))) {
+    return '外功穿透';
   }
-  if ((line.includes('Shu') || line.includes('None')) && line.includes('Chuan')) {
-    return 'Elemental Penetration';
+  if ((line.includes('属') || line.includes('无')) && line.includes('穿')) {
+    return '属攻穿透';
   }
 
-  // GongJiLei（DaiDaXiaoQuFen）
-  if (line.includes('XiaoWai')) return 'Min Outer Attack';
-  if (line.includes('DaWai')) return 'Max Outer Attack';
-  if ((line.includes('Ming') && line.includes('Xiao')) || (line.includes('Jin') && line.includes('Xiao'))) return 'Min Mingjin Attack';
-  if ((line.includes('Ming') && line.includes('Da')) || (line.includes('Jin') && line.includes('Da'))) return 'Max Mingjin Attack';
-  if ((line.includes('Lie') && line.includes('Xiao')) || (line.includes('Shi') && line.includes('Xiao'))) return 'Min Lie Shi Attack';
-  if ((line.includes('Lie') && line.includes('Da')) || (line.includes('Shi') && line.includes('Da'))) return 'Max Lie Shi Attack';
-  if ((line.includes('Qian') && line.includes('Xiao')) || (line.includes('Si') && line.includes('Xiao'))) return 'Min Qian Si Attack';
-  if ((line.includes('Qian') && line.includes('Da')) || (line.includes('Si') && line.includes('Da'))) return 'Max Qian Si Attack';
-  if ((line.includes('Guo') && line.includes('Xiao')) || (line.includes('Si') && line.includes('Xiao'))) return 'Min Qian Si Attack'; // OCR: GuoSi
-  if ((line.includes('Guo') && line.includes('Da')) || (line.includes('Si') && line.includes('Da'))) return 'Max Qian Si Attack'; // OCR: GuoSi
-  if ((line.includes('Po') && line.includes('Xiao')) || (line.includes('Zhu') && line.includes('Xiao'))) return 'Min Po Zhu Attack';
-  if ((line.includes('Po') && line.includes('Da')) || (line.includes('Zhu') && line.includes('Da'))) return 'Max Po Zhu Attack';
-  if ((line.includes('None') && line.includes('Xiao')) || (line.includes('Xiang') && line.includes('Xiao'))) return 'ZuiXiaoNoneXiangGongJi';
-  if ((line.includes('None') && line.includes('Da')) || (line.includes('Xiang') && line.includes('Da'))) return 'ZuiDaNoneXiangGongJi';
+  // 攻击类（带大小区分）
+  if (line.includes('小外')) return '最小外功攻击';
+  if (line.includes('大外')) return '最大外功攻击';
+  if ((line.includes('鸣') && line.includes('小')) || (line.includes('金') && line.includes('小'))) return '最小鸣金攻击';
+  if ((line.includes('鸣') && line.includes('大')) || (line.includes('金') && line.includes('大'))) return '最大鸣金攻击';
+  if ((line.includes('裂') && line.includes('小')) || (line.includes('石') && line.includes('小'))) return '最小裂石攻击';
+  if ((line.includes('裂') && line.includes('大')) || (line.includes('石') && line.includes('大'))) return '最大裂石攻击';
+  if ((line.includes('牵') && line.includes('小')) || (line.includes('丝') && line.includes('小'))) return '最小牵丝攻击';
+  if ((line.includes('牵') && line.includes('大')) || (line.includes('丝') && line.includes('大'))) return '最大牵丝攻击';
+  if ((line.includes('过') && line.includes('小')) || (line.includes('丝') && line.includes('小'))) return '最小牵丝攻击'; // OCR: 过丝
+  if ((line.includes('过') && line.includes('大')) || (line.includes('丝') && line.includes('大'))) return '最大牵丝攻击'; // OCR: 过丝
+  if ((line.includes('破') && line.includes('小')) || (line.includes('竹') && line.includes('小'))) return '最小破竹攻击';
+  if ((line.includes('破') && line.includes('大')) || (line.includes('竹') && line.includes('大'))) return '最大破竹攻击';
+  if ((line.includes('无') && line.includes('小')) || (line.includes('相') && line.includes('小'))) return '最小无相攻击';
+  if ((line.includes('无') && line.includes('大')) || (line.includes('相') && line.includes('大'))) return '最大无相攻击';
 
-  // DouDi：JianCeDaoShuGongGuanJianZiMoRenZuiDa
-  if (line.includes('Ming') || line.includes('Jin')) return 'Max Mingjin Attack';
-  if (line.includes('Lie') || line.includes('Shi')) return 'Max Lie Shi Attack';
-  if (line.includes('Qian') || line.includes('Si') || line.includes('Guo')) return 'Max Qian Si Attack';
-  if (line.includes('Po') || line.includes('Zhu')) return 'Max Po Zhu Attack';
-  if (line.includes('None') || line.includes('Xiang')) return 'ZuiDaNoneXiangGongJi';
-  if (line.includes('Wai') || line.includes('Gong')) return 'Max Outer Attack';
+  // 兜底：检测到属攻关键字默认最大
+  if (line.includes('鸣') || line.includes('金')) return '最大鸣金攻击';
+  if (line.includes('裂') || line.includes('石')) return '最大裂石攻击';
+  if (line.includes('牵') || line.includes('丝') || line.includes('过')) return '最大牵丝攻击';
+  if (line.includes('破') || line.includes('竹')) return '最大破竹攻击';
+  if (line.includes('无') || line.includes('相')) return '最大无相攻击';
+  if (line.includes('外') || line.includes('功')) return '最大外功攻击';
 
-  // ShengCunLei
-  if (line.includes('Qi') || line.includes('Xue') || line.includes('Zhi') ||
-      line.includes('Fang') || line.includes('Yu') || line.includes('Ti')) return 'ShengCunLeiAffix';
+  // 生存类
+  if (line.includes('气') || line.includes('血') || line.includes('值') ||
+      line.includes('防') || line.includes('御') || line.includes('体')) return '生存类词条';
 
   return null;
 }
 
 /**
- * JieXiDanHangOCRWenBen，TiQuAffixLeiXingHeShuZhi
+ * 解析单行OCR文本，提取词条类型和数值
  */
 function parseStatLine(line: string, isLastLine: boolean = false): ParsedStat | null {
-  // JianChaShiFouShiZhuanLAffix
+  // 检查是否是转律词条
   const isConverted =
-    line.includes('[Zhuan]') ||
-    line.includes('【Zhuan】') ||
-    line.includes('Zhuan]') ||
-    line.includes('[Zhuan');
+    line.includes('[转]') ||
+    line.includes('【转】') ||
+    line.includes('转]') ||
+    line.includes('[转');
 
-  // QingXiWenBen
+  // 清洗文本
   let cleanLine = cleanOcrLine(line);
 
-  // YiChu [Zhuan] BiaoJi
+  // 移除 [转] 标记
   cleanLine = cleanLine
-    .replace(/\[Zhuan\]/g, '')
-    .replace(/【Zhuan】/g, '')
-    .replace(/\[Zhuan1?\]/g, '')
-    .replace(/Zhuan\]/g, '')
-    .replace(/\[Zhuan/g, '');
+    .replace(/\[转\]/g, '')
+    .replace(/【转】/g, '')
+    .replace(/\[转1?\]/g, '')
+    .replace(/转\]/g, '')
+    .replace(/\[转/g, '');
 
-  // ShiYongZhiNengPiPei
+  // 使用智能匹配
   let matchedStatType = smartMatchStatName(cleanLine, isLastLine);
 
-  // RuGuoPiPeiDaoBieMing，ZhuanHuanWeiBiaoZhunMingCheng
+  // 如果匹配到别名，转换为标准名称
   if (matchedStatType && STAT_ALIASES[matchedStatType]) {
     matchedStatType = STAT_ALIASES[matchedStatType];
   }
@@ -260,7 +260,7 @@ function parseStatLine(line: string, isLastLine: boolean = false): ParsedStat | 
     console.log('[OCR] Failed to match stat name in line:', line, '-> cleaned:', cleanLine);
   }
 
-  // TiQuShuZhi
+  // 提取数值
   const value = extractValue(line, matchedStatType || '');
 
   if (value === null) {
@@ -279,33 +279,33 @@ function parseStatLine(line: string, isLastLine: boolean = false): ParsedStat | 
 }
 
 /**
- * TiQuShuZhi（CanKao spongem ShiXianDeShuZhiChuLiLuoJi）
+ * 提取数值（参考 spongem 实现的数值处理逻辑）
  */
 function extractValue(line: string, statName: string): number | null {
-  // TiQuYuanShiShuZi
+  // 提取原始数字
   const match = line.match(/(\d+(\.\d+)?)/);
   if (!match) return null;
 
   let statVal = match[0];
   const pureDigits = statVal.replace(/\./g, '');
 
-  // ShuZiTaiDuan，KeNengShiZaoSheng
+  // 数字太短，可能是噪声
   if (pureDigits.length < 2) return null;
 
-  // PanDuanShiFouShiBaiFenBiLeiXing
-  const isPercentType = ['L', ' Damage Bonus', ' Effectiveness', 'JiaCheng', ' Penetration'].some((k) => statName.includes(k));
+  // 判断是否是百分比类型
+  const isPercentType = ['率', '增伤', '增效', '加成', '穿透'].some((k) => statName.includes(k));
 
   if (isPercentType) {
-    // BaiFenBiLeiXingChuLi
+    // 百分比类型处理
     const d1 = pureDigits[0];
     const d2 = pureDigits[1];
     statVal = `${d1}.${d2}`;
-    // TeShuChuLi：RuGuoShi 113 -> 11.3（Zhen Dui Deng Ke Neng Chao Guo Penetration10DeShuZhi）
+    // 特殊处理：如果是 113 -> 11.3（针对穿透等可能超过10的数值）
     if (pureDigits.length >= 3 && d1 === '1') {
       statVal = `${pureDigits.slice(0, 2)}.${pureDigits.slice(2)}`;
     }
   } else {
-    // ShuZhiLei（GongJiLi、JinMinShi）
+    // 数值类（攻击力、劲敏势）
     if (pureDigits.length >= 3) {
       statVal = `${pureDigits.slice(0, 2)}.${pureDigits.slice(2, 3)}`;
     } else {
@@ -318,27 +318,27 @@ function extractValue(line: string, statName: string): number | null {
 
   const result = parseFloat(statVal);
 
-  // GongJiLiShuZhiTaiXiao，KeNengShiBieCuoWu
-  if (statName.includes('GongJi') && result < 1.0) return null;
+  // 攻击力数值太小，可能识别错误
+  if (statName.includes('攻击') && result < 1.0) return null;
 
   return result;
 }
 
 /**
- * MoHuPiPeiAffixMingCheng（ChuLiOCRShiBieCuoWu）
+ * 模糊匹配词条名称（处理OCR识别错误）
  */
 function fuzzyMatchStatName(text: string): string | null {
-  // ChangJianDeGuanJianCiPiPei
+  // 常见的关键词匹配
   const keywordMappings: Record<string, string> = {
-    'WaiGongGongJi': 'Max Outer Attack',
-    'NoneXiangGongJi': 'ZuiDaNoneXiangGongJi',
-    'MingJinGongJi': 'Max Mingjin Attack',
-    'LieShiGongJi': 'Max Lie Shi Attack',
-    'QianSiGongJi': 'Max Qian Si Attack',
-    'PoZhuGongJi': 'Max Po Zhu Attack',
-    'Wu Xue Effectiveness': 'All Martial Arts Effectiveness',
-    'Wu Xue Damage Bonus': 'All Martial Arts Effectiveness',
-    'ShouLing': 'Boss Damage Bonus',
+    '外功攻击': '最大外功攻击',
+    '无相攻击': '最大无相攻击',
+    '鸣金攻击': '最大鸣金攻击',
+    '裂石攻击': '最大裂石攻击',
+    '牵丝攻击': '最大牵丝攻击',
+    '破竹攻击': '最大破竹攻击',
+    '武学增效': '全武学增效',
+    '武学增伤': '全武学增效',
+    '首领': '对首领单位增伤',
   };
 
   for (const [keyword, statName] of Object.entries(keywordMappings)) {
@@ -347,17 +347,17 @@ function fuzzyMatchStatName(text: string): string | null {
     }
   }
 
-  // DanZiFuAffixPiPei
-  if (/^Strength\s*\d/.test(text) || text === 'Strength') return 'Strength';
-  if (/^Agility\s*\d/.test(text) || text === 'Agility') return 'Agility';
-  if (/^Momentum\s*\d/.test(text) || text === 'Momentum') return 'Momentum';
+  // 单字符词条匹配
+  if (/^劲\s*\d/.test(text) || text === '劲') return '劲';
+  if (/^敏\s*\d/.test(text) || text === '敏') return '敏';
+  if (/^势\s*\d/.test(text) || text === '势') return '势';
 
   return null;
 }
 
 
 /**
- * JieXiOCRShiBieDeWenBen，TiQuEquipmentAffix
+ * 解析OCR识别的文本，提取装备词条
  */
 export function parseOcrText(text: string, slotId: string, weaponTypeId?: string): OcrParseResult {
   const lines = text.split('\n').filter((line) => line.trim().length > 0);
@@ -371,7 +371,7 @@ export function parseOcrText(text: string, slotId: string, weaponTypeId?: string
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const isLastLine = i === 5; // Di6Xing（SuoYin5）ShiDingyin Affix
+    const isLastLine = i === 5; // 第6行（索引5）是定音词条
     const stat = parseStatLine(line, isLastLine);
     if (stat) {
       parsedStats.push(stat);
@@ -380,44 +380,44 @@ export function parseOcrText(text: string, slotId: string, weaponTypeId?: string
 
   console.log('[OCR] Parsed stats:', parsedStats);
 
-  // HuoQuDangQianEquipmentWeiZhiDeKeYongAffix
+  // 获取当前装备位置的可用词条
   const mainStatOptions = CommonData.MAIN_STAT_RULES[slotId] || [];
-  const dingyinOptions = CommonData.DINGYIN_RULES[slotId] || ['None'];
+  const dingyinOptions = CommonData.DINGYIN_RULES[slotId] || ['无'];
 
-  // HuoQuKeYongDeSecondary AffixLieBiao
+  // 获取可用的副词条列表
   let subStatOptions = [...CommonData.BASE_SUB_STATS];
   if (slotId === '1' && weaponTypeId) {
     const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponTypeId);
     if (weapon) subStatOptions.push(weapon.stat);
   }
-  if (['3', '4'].includes(slotId)) subStatOptions.push('All Martial Arts Effectiveness');
+  if (['3', '4'].includes(slotId)) subStatOptions.push('全武学增效');
   if (['5', '6'].includes(slotId)) {
-    subStatOptions.push('Singletarget Technique Damage Bonus');
-    subStatOptions.push('AoE Technique Damage Bonus');
+    subStatOptions.push('单体类奇术增伤');
+    subStatOptions.push('群体类奇术增伤');
   }
-  if (['7', '8'].includes(slotId)) subStatOptions.push('Boss Damage Bonus');
-  subStatOptions.push('ShengCunLeiAffix');
+  if (['7', '8'].includes(slotId)) subStatOptions.push('对首领单位增伤');
+  subStatOptions.push('生存类词条');
 
-  // AnWeiZhiFenPeiAffix：
-  // - Di1Tiao = Primary Affix
-  // - Di2-5Tiao = Secondary Affix（4Tiao）
-  // - Di6Tiao = Dingyin Affix（RuGuoYou6TiaoDeHua）
+  // 按位置分配词条：
+  // - 第1条 = 主词条
+  // - 第2-5条 = 副词条（4条）
+  // - 第6条 = 定音词条（如果有6条的话）
   for (let i = 0; i < parsedStats.length; i++) {
     const stat = parsedStats[i];
 
-    // JiLuDiYiGeZhuanLAffix（YongYuPanDuanShiFouYouZhuanL）
+    // 记录第一个转律词条（用于判断是否有转律）
     if (stat.isConverted && !result.convertedStat) {
       result.convertedStat = stat;
     }
 
     if (i === 0) {
-      // Di1Tiao = Primary Affix
+      // 第1条 = 主词条
       result.mainStat = stat;
     } else if (i >= 1 && i <= 4) {
-      // Di2-5Tiao = Secondary Affix
+      // 第2-5条 = 副词条
       result.subStats.push(stat);
     } else if (i === 5) {
-      // Di6Tiao = Dingyin Affix
+      // 第6条 = 定音词条
       result.dingyinStat = stat;
     }
   }
@@ -428,7 +428,7 @@ export function parseOcrText(text: string, slotId: string, weaponTypeId?: string
 }
 
 /**
- * WanZhengDeOCRShiBieLiuCheng
+ * 完整的OCR识别流程
  */
 export async function ocrEquipmentStats(
   imageSource: File,

@@ -128,7 +128,7 @@
   }
 }
 
-/* ShenSeMoShiXiaDeJianBianBeiJing */
+/* 深色模式下的渐变背景 */
 .dark body {
   background: 
     radial-gradient(ellipse 80% 50% at 20% 40%, oklch(0.2 0.05 280 / 30%) 0%, transparent 50%),
@@ -138,7 +138,7 @@
   background-attachment: fixed;
 }
 
-/* ZiDingYiGunDongTiaoYangShi */
+/* 自定义滚动条样式 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -157,13 +157,13 @@
   background: oklch(0.45 0.05 280);
 }
 
-/* XuanZhongWenZiYangShi */
+/* 选中文字样式 */
 ::selection {
   background: oklch(0.5 0.15 280);
   color: white;
 }
 
-/* YinCangGunDongTiao */
+/* 隐藏滚动条 */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -172,19 +172,19 @@
   display: none;
 }
 
-/* react-image-crop YouHua */
+/* react-image-crop 优化 */
 .ReactCrop {
   touch-action: none;
   overflow: hidden;
 }
 
-/* CaiJianXuanQuYangShi */
+/* 裁剪选区样式 */
 .ReactCrop__crop-selection {
   border: 2px solid white !important;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* CaiJianShouBingYangShi - YuanXingSheJi */
+/* 裁剪手柄样式 - 圆形设计 */
 .ReactCrop__drag-handle {
   width: 18px !important;
   height: 18px !important;
@@ -195,7 +195,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* SiGeJiaoDeShouBingWeiZhiTiaoZheng - XiangNeiPianYi */
+/* 四个角的手柄位置调整 - 向内偏移 */
 .ReactCrop__drag-handle.ord-nw {
   margin-top: 0 !important;
   margin-left: 0 !important;
@@ -216,7 +216,7 @@
   margin-right: 0 !important;
 }
 
-/* BianYuanShouBing（YinCang，ZhiBaoLiuSiJiao） */
+/* 边缘手柄（隐藏，只保留四角） */
 .ReactCrop__drag-handle.ord-n,
 .ReactCrop__drag-handle.ord-s,
 .ReactCrop__drag-handle.ord-e,
@@ -224,7 +224,7 @@
   display: none !important;
 }
 
-/* ShouBingXuanTingXiaoGuo */
+/* 手柄悬停效果 */
 .ReactCrop__drag-handle:hover {
   background-color: oklch(0.95 0.02 280) !important;
   border-color: oklch(0.45 0.25 280) !important;

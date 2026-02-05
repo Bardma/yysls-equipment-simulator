@@ -5,26 +5,26 @@ import type { EquipItem, EquippedItems } from '@/lib/types';
 import { calcRateWithStatModifier } from './rate';
 
 /**
- * HuoQuSuoYouKeNengDeAffix
+ * 获取所有可能的词条
  */
 export const getAllPossibleStats = (equippedItems: EquippedItems): string[] => {
   const excludedStats = [
-    'Specific Martial Art Effectiveness',
-    'Sword Martial Art Effectiveness',
-    'Spear Martial Art Effectiveness',
-    'Umbrella Martial Art Effectiveness',
-    'Fan Martial Art Effectiveness',
-    'Rope Dart Martial Art Effectiveness',
-    'Dual Blades Martial Art Effectiveness',
-    'Great Blade Martial Art Effectiveness',
-    'Sabre Martial Art Effectiveness',
-    'Fist Martial Art Effectiveness',
-    'Specific Skill Damage Bonus',
-    'Outer Penetration',
-    'Elemental Penetration',
-    'NoneXiang Penetration',
-    'ZuiDaNoneXiangGongJi',
-    'ZuiXiaoNoneXiangGongJi',
+    '指定武学增效',
+    '剑武学增效',
+    '枪武学增效',
+    '伞武学增效',
+    '扇武学增效',
+    '绳标武学增效',
+    '双刀武学增效',
+    '陌刀武学增效',
+    '横刀武学增效',
+    '拳甲武学增效',
+    '指定武学技能增伤',
+    '外功穿透',
+    '属攻穿透',
+    '无相穿透',
+    '最大无相攻击',
+    '最小无相攻击',
   ];
 
   const allStats = Object.keys(CommonData.MAX_VALUES).filter(
@@ -62,7 +62,7 @@ interface BestStatsResult {
 }
 
 /**
- * YiBuChaZhaoCaoWeiDeZuiJiaAffix
+ * 异步查找槽位的最佳词条
  */
 export const findBestStatsForSlotAsync = async (
   slotKey: keyof EquippedItems,
@@ -81,7 +81,7 @@ export const findBestStatsForSlotAsync = async (
 ): Promise<BestStatsResult> => {
   const slotId = equip.slotId;
   const mainStatRules = (CommonData.MAIN_STAT_RULES[slotId] || []).filter(
-    (stat) => stat !== 'ShengCunLeiAffix' && stat !== 'ShengCunXiang'
+    (stat) => stat !== '生存类词条' && stat !== '生存向'
   );
 
   const blankEquip = {
@@ -100,7 +100,7 @@ export const findBestStatsForSlotAsync = async (
   } as unknown as EquipItem;
 
   let validSubStatCandidates = [...CommonData.BASE_SUB_STATS].filter(
-    (stat) => stat !== 'ShengCunLeiAffix' && stat !== 'ShengCunXiang'
+    (stat) => stat !== '生存类词条' && stat !== '生存向'
   );
 
   if (slotId === '1' && equip.weaponTypeId) {
@@ -108,41 +108,41 @@ export const findBestStatsForSlotAsync = async (
     if (weaponTypeData?.stat) validSubStatCandidates.push(weaponTypeData.stat);
   }
 
-  if (['3', '4'].includes(slotId)) validSubStatCandidates.push('All Martial Arts Effectiveness');
+  if (['3', '4'].includes(slotId)) validSubStatCandidates.push('全武学增效');
   if (['5', '6'].includes(slotId)) {
-    validSubStatCandidates.push('Singletarget Technique Damage Bonus');
-    validSubStatCandidates.push('AoE Technique Damage Bonus');
+    validSubStatCandidates.push('单体类奇术增伤');
+    validSubStatCandidates.push('群体类奇术增伤');
   }
-  if (['7', '8'].includes(slotId)) validSubStatCandidates.push('Boss Damage Bonus');
+  if (['7', '8'].includes(slotId)) validSubStatCandidates.push('对首领单位增伤');
 
   validSubStatCandidates = [...new Set(validSubStatCandidates)].filter(
-    (stat) => stat !== 'ShengCunLeiAffix' && stat !== 'ShengCunXiang'
+    (stat) => stat !== '生存类词条' && stat !== '生存向'
   );
 
   validSubStatCandidates = validSubStatCandidates.filter(
     (stat) =>
-      !stat.includes('MingJin') &&
-      !stat.includes('LieShi') &&
-      !stat.includes('QianSi') &&
-      !stat.includes('PoZhu') &&
-      !stat.includes('ZuiXiaoNoneXiang')
+      !stat.includes('鸣金') &&
+      !stat.includes('裂石') &&
+      !stat.includes('牵丝') &&
+      !stat.includes('破竹') &&
+      !stat.includes('最小无相')
   );
 
-  if (currentClass.includes('MingJin')) {
-    validSubStatCandidates.push('Max Mingjin Attack');
-    validSubStatCandidates.push('Min Lie Shi Attack');
+  if (currentClass.includes('鸣金')) {
+    validSubStatCandidates.push('最大鸣金攻击');
+    validSubStatCandidates.push('最小裂石攻击');
   }
-  if (currentClass.includes('LieShi')) {
-    validSubStatCandidates.push('Max Lie Shi Attack');
-    validSubStatCandidates.push('Min Mingjin Attack');
+  if (currentClass.includes('裂石')) {
+    validSubStatCandidates.push('最大裂石攻击');
+    validSubStatCandidates.push('最小鸣金攻击');
   }
-  if (currentClass.includes('QianSi')) {
-    validSubStatCandidates.push('Max Qian Si Attack');
-    validSubStatCandidates.push('Min Mingjin Attack');
+  if (currentClass.includes('牵丝')) {
+    validSubStatCandidates.push('最大牵丝攻击');
+    validSubStatCandidates.push('最小鸣金攻击');
   }
-  if (currentClass.includes('PoZhu')) {
-    validSubStatCandidates.push('Max Po Zhu Attack');
-    validSubStatCandidates.push('Min Mingjin Attack');
+  if (currentClass.includes('破竹')) {
+    validSubStatCandidates.push('最大破竹攻击');
+    validSubStatCandidates.push('最小鸣金攻击');
   }
 
   let bestMainStat: BestStatsResult['bestMainStat'] = null;
@@ -202,7 +202,7 @@ export const findBestStatsForSlotAsync = async (
     const mainMaxValue = CommonData.MAX_VALUES[mainStatType];
     if (!mainMaxValue) continue;
 
-    progressCallback?.(`BianLiPrimary Affix ${mainIdx + 1}/${mainStatRules.length}: ${mainStatType}`);
+    progressCallback?.(`遍历主词条 ${mainIdx + 1}/${mainStatRules.length}: ${mainStatType}`);
 
     const mainOnlyRate = calcRateForEquip(buildEquip(mainStatType, []));
     const subCandidates = effectiveSubCandidates;
@@ -259,7 +259,7 @@ export const findBestStatsForSlotAsync = async (
                 if (totalCombinations > 0) {
                   const progress = Math.min(100, (checkedCombinations / totalCombinations) * 100);
                   progressCallback?.(
-                    `MeiJuZuHeZhong... ${checkedCombinations}/${totalCombinations} (${progress.toFixed(1)}%)`
+                    `枚举组合中... ${checkedCombinations}/${totalCombinations} (${progress.toFixed(1)}%)`
                   );
                 }
                 await new Promise((resolve) => setTimeout(resolve, 0));

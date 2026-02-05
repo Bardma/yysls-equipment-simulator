@@ -42,11 +42,11 @@ const formatDisplayTotals = (totals: Record<string, number>) => {
     const val = Number(displayTotals[key]) || 0;
     const isPercent =
       CommonData.PERCENT_STATS.includes(key) ||
-      key.includes('L') ||
-      key.includes(' Effectiveness') ||
-      key.includes('JiaCheng') ||
-      key.includes(' Damage Bonus') ||
-      key.includes(' Penetration');
+      key.includes('率') ||
+      key.includes('增效') ||
+      key.includes('加成') ||
+      key.includes('增伤') ||
+      key.includes('穿透');
     displayTotals[key] = isPercent ? parseFloat(val.toFixed(1)) : Math.round(val);
   }
   return displayTotals;
@@ -72,7 +72,7 @@ export const GraduationModal = ({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerSlotId, setPickerSlotId] = useState('1');
   const [pickerWeaponType, setPickerWeaponType] = useState<string | null>(null);
-  // EquipmentXiangQingMianBan：RuGuoMoRenXuanZhongDeEquipmentCunZai，ZeZiDongZhanKai
+  // 装备详情面板：如果默认选中的装备存在，则自动展开
   const [detailPanelOpen, setDetailPanelOpen] = useState(() => !!equippedItems.weapon1);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
@@ -91,7 +91,7 @@ export const GraduationModal = ({
     null,
     earlySeasonBonus
   );
-  const accParams = { ...accTotals, Set: setType, Inner Way: xinfaLoadout, DangQianLiuPai: currentClass };
+  const accParams = { ...accTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
   const accResult = rotation.length
     ? Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false)
     : { graduationRate: '0.00%', totalDamage: 0 };
@@ -101,9 +101,9 @@ export const GraduationModal = ({
   const displayTotals = formatDisplayTotals(accTotals);
   const excelParams = {
     ...displayTotals,
-    Set: setType,
-    Inner Way: xinfaLoadout,
-    DangQianLiuPai: currentClass,
+    套装: setType,
+    心法: xinfaLoadout,
+    当前流派: currentClass,
   };
   const excelResult = rotation.length
     ? Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false)
@@ -142,21 +142,21 @@ export const GraduationModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`!flex !flex-col gap-0 p-0 transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] ${detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'}`}>
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">Graduation Rate Analysis</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">毕业率分析</DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row gap-3 lg:gap-4">
-          {/* KeShenSuoDeEquipmentXiangQingMianBan - YiDongDuanYinCang */}
+          {/* 可伸缩的装备详情面板 - 移动端隐藏 */}
           <div className={`hidden lg:block relative transition-all duration-300 ${detailPanelOpen ? 'w-56' : 'w-0'} overflow-hidden shrink-0`}>
             {detailPanelOpen && equippedItems[selectedSlotKey] && (
               <div className="border-border/60 bg-card rounded-lg border p-3 space-y-2 w-56">
                 <div className="text-xs font-medium text-center border-b border-border/40 pb-2">
-                  {equippedItems[selectedSlotKey]?.name || 'EquipmentXiangQing'}
+                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
                 </div>
-                {/* Primary Affix */}
+                {/* 主词条 */}
                 {equippedItems[selectedSlotKey]?.mainStat && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">Primary Affix</div>
+                    <div className="text-muted-foreground text-xs">主词条</div>
                     <div className="text-xs flex justify-between">
                       <span>{equippedItems[selectedSlotKey]?.mainStat.type}</span>
                       <span className="text-yellow-300">
@@ -166,10 +166,10 @@ export const GraduationModal = ({
                     </div>
                   </div>
                 )}
-                {/* Secondary Affix */}
+                {/* 副词条 */}
                 {equippedItems[selectedSlotKey]?.subStats && equippedItems[selectedSlotKey]!.subStats.length > 0 && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">Secondary Affix</div>
+                    <div className="text-muted-foreground text-xs">副词条</div>
                     {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
                       <div key={idx} className="text-xs flex justify-between">
                         <span>{sub.type}</span>
@@ -181,10 +181,10 @@ export const GraduationModal = ({
                     ))}
                   </div>
                 )}
-                {/* Dingyin Affix */}
+                {/* 定音词条 */}
                 {equippedItems[selectedSlotKey]?.dingyinStat && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">Dingyin Affix</div>
+                    <div className="text-muted-foreground text-xs">定音词条</div>
                     <div className="text-xs flex justify-between">
                       <span>{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
                       <span className="text-yellow-300">
@@ -194,16 +194,16 @@ export const GraduationModal = ({
                     </div>
                   </div>
                 )}
-                {/* BiaoQian */}
+                {/* 标签 */}
                 <div className="flex gap-2 pt-1 flex-wrap">
                   {equippedItems[selectedSlotKey]?.isConvertible && (
-                    <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">KeZhuanL</span>
+                    <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">可转律</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isChengyin && (
-                    <span className="text-xs bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">ChengYin</span>
+                    <span className="text-xs bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">承音</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isPurple && (
-                    <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">ZiZhuang</span>
+                    <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">紫装</span>
                   )}
                 </div>
               </div>
@@ -213,12 +213,12 @@ export const GraduationModal = ({
           {/* Left sidebar - Slot selector */}
           <div className="w-full lg:w-[260px] shrink-0 space-y-2 lg:space-y-3 overflow-y-auto">
             <div className="border-border/60 bg-card rounded-lg border p-2 lg:p-3 text-center">
-              <div className="text-muted-foreground text-[10px] lg:text-xs">DangQianGraduation Rate</div>
+              <div className="text-muted-foreground text-[10px] lg:text-xs">当前毕业率</div>
               <div className="text-lg lg:text-xl font-semibold text-yellow-300">
                 {accResult.graduationRate}
               </div>
               <div className="text-muted-foreground text-[10px] lg:text-xs">
-                excelBiaoGeXianShi：{excelResult.graduationRate}
+                excel表格显示：{excelResult.graduationRate}
               </div>
             </div>
             <EquipSlotSelector
@@ -226,13 +226,13 @@ export const GraduationModal = ({
               selectedSlot={selectedSlotKey}
               onSlotSelect={(slot) => {
                 handleSlotSelect(slot);
-                // XuanZeEquipmentShiZiDongZhanKaiXiangQingMianBan
+                // 选择装备时自动展开详情面板
                 if (equippedItems[slot]) {
                   setDetailPanelOpen(true);
                 }
               }}
             />
-            {/* ZhanKai/ShouQiXiangQingMianBanAnNiu */}
+            {/* 展开/收起详情面板按钮 */}
             {equippedItems[selectedSlotKey] && (
               <Button
                 variant="outline"
@@ -243,31 +243,31 @@ export const GraduationModal = ({
                 {detailPanelOpen ? (
                   <>
                     <ChevronLeft className="h-3 w-3 mr-1 hidden lg:inline" />
-                    <span className="lg:hidden">ShouQiXiangQing</span>
-                    <span className="hidden lg:inline">ShouQiEquipmentXiangQing</span>
+                    <span className="lg:hidden">收起详情</span>
+                    <span className="hidden lg:inline">收起装备详情</span>
                   </>
                 ) : (
                   <>
                     <ChevronRight className="h-3 w-3 mr-1 hidden lg:inline" />
-                    <span className="lg:hidden">ChaKanXiangQing</span>
-                    <span className="hidden lg:inline">ChaKanEquipmentXiangQing</span>
+                    <span className="lg:hidden">查看详情</span>
+                    <span className="hidden lg:inline">查看装备详情</span>
                   </>
                 )}
               </Button>
             )}
 
-            {/* YiDongDuanEquipmentXiangQingMianBan */}
+            {/* 移动端装备详情面板 */}
             {detailPanelOpen && equippedItems[selectedSlotKey] && (
               <div className="lg:hidden border-border/60 bg-card rounded-lg border p-2 space-y-1.5">
                 <div className="text-[10px] font-medium text-center border-b border-border/40 pb-1.5">
-                  {equippedItems[selectedSlotKey]?.name || 'EquipmentXiangQing'}
+                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[10px]">
-                  {/* ZuoLie：Primary Affix + Dingyin */}
+                  {/* 左列：主词条 + 定音 */}
                   <div className="space-y-1">
                     {equippedItems[selectedSlotKey]?.mainStat && (
                       <div>
-                        <div className="text-muted-foreground">Primary Affix</div>
+                        <div className="text-muted-foreground">主词条</div>
                         <div className="flex justify-between">
                           <span className="truncate">{equippedItems[selectedSlotKey]?.mainStat.type}</span>
                           <span className="text-yellow-300 shrink-0 ml-1">
@@ -279,7 +279,7 @@ export const GraduationModal = ({
                     )}
                     {equippedItems[selectedSlotKey]?.dingyinStat && (
                       <div>
-                        <div className="text-muted-foreground">Dingyin</div>
+                        <div className="text-muted-foreground">定音</div>
                         <div className="flex justify-between">
                           <span className="truncate">{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
                           <span className="text-yellow-300 shrink-0 ml-1">
@@ -290,9 +290,9 @@ export const GraduationModal = ({
                       </div>
                     )}
                   </div>
-                  {/* YouLie：Secondary Affix */}
+                  {/* 右列：副词条 */}
                   <div className="space-y-0.5">
-                    <div className="text-muted-foreground">Secondary Affix</div>
+                    <div className="text-muted-foreground">副词条</div>
                     {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
                       <div key={idx} className="flex justify-between">
                         <span className="truncate">{sub.type}</span>
@@ -303,16 +303,16 @@ export const GraduationModal = ({
                     ))}
                   </div>
                 </div>
-                {/* BiaoQian */}
+                {/* 标签 */}
                 <div className="flex gap-1.5 pt-1 flex-wrap justify-center">
                   {equippedItems[selectedSlotKey]?.isConvertible && (
-                    <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">KeZhuanL</span>
+                    <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">可转律</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isChengyin && (
-                    <span className="text-[9px] bg-yellow-500/20 text-yellow-300 px-1 py-0.5 rounded">ChengYin</span>
+                    <span className="text-[9px] bg-yellow-500/20 text-yellow-300 px-1 py-0.5 rounded">承音</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isPurple && (
-                    <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1 py-0.5 rounded">ZiZhuang</span>
+                    <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1 py-0.5 rounded">紫装</span>
                   )}
                 </div>
               </div>
@@ -322,14 +322,14 @@ export const GraduationModal = ({
           {/* Right content - Tabs */}
           <div className="flex-1 min-w-0 flex flex-col">
             <Tabs defaultValue="compare" className="w-full flex flex-col flex-1">
-              {/* YiDongDuanKeGunDongDe Tab RongQi */}
+              {/* 移动端可滚动的 Tab 容器 */}
               <div className="shrink-0 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto scrollbar-none">
                 <TabsList className="w-max sm:w-full justify-start">
-                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">DuiBi</TabsTrigger>
-                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">ZhuanL</TabsTrigger>
-                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">PeiZhuang</TabsTrigger>
-                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Affix</TabsTrigger>
-                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">PeiYang</TabsTrigger>
+                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">对比</TabsTrigger>
+                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">转律</TabsTrigger>
+                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">配装</TabsTrigger>
+                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">词条</TabsTrigger>
+                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">培养</TabsTrigger>
                 </TabsList>
               </div>
 

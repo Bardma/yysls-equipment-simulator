@@ -16,11 +16,11 @@ interface ImageCropperProps {
 }
 
 /**
- * JiSuanTuPianDeZhongXinCaiJianQuYu
+ * 计算图片的中心裁剪区域
  */
 function centerAspectCrop(mediaWidth: number, mediaHeight: number) {
-  // MoRenShiYongZiYouCaiJian，BuXianZhiBiLi
-  // ZhiJieChuangJianYiGeJuZhongDeCaiJianQuYu，BuShiYong makeAspectCrop（TaXuYaoGuDingBiLi）
+  // 默认使用自由裁剪，不限制比例
+  // 直接创建一个居中的裁剪区域，不使用 makeAspectCrop（它需要固定比例）
   return centerCrop(
     {
       unit: '%',
@@ -39,13 +39,13 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
 
-  // TuPianJiaZaiWanChengHouSheZhiChuShiCaiJianQuYu
+  // 图片加载完成后设置初始裁剪区域
   const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
     setCrop(centerAspectCrop(width, height));
   }, []);
 
-  // ZhongZhiCaiJianQuYu
+  // 重置裁剪区域
   const handleReset = useCallback(() => {
     if (imgRef.current) {
       const { width, height } = imgRef.current;
@@ -53,10 +53,10 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
     }
   }, []);
 
-  // ConfirmCaiJian
+  // 确认裁剪
   const handleConfirm = useCallback(async () => {
     if (!completedCrop || !imgRef.current) {
-      // RuGuoMeiYouCaiJianQuYu，ShiYongYuanTu
+      // 如果没有裁剪区域，使用原图
       const response = await fetch(imageSrc);
       const blob = await response.blob();
       onCropComplete(blob);
@@ -72,7 +72,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
       return;
     }
 
-    // JiSuanShiJiCaiJianChiCun
+    // 计算实际裁剪尺寸
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
 
@@ -89,7 +89,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
     const cropWidth = completedCrop.width * scaleX;
     const cropHeight = completedCrop.height * scaleY;
 
-    // HuiZhiCaiJianQuYuDao canvas
+    // 绘制裁剪区域到 canvas
     ctx.drawImage(
       image,
       cropX,
@@ -102,7 +102,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
       completedCrop.height * scaleY
     );
 
-    // ZhuanHuanWei Blob
+    // 转换为 Blob
     canvas.toBlob(
       (blob) => {
         if (blob) {
@@ -116,7 +116,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
 
   return (
     <div className="flex flex-col h-full">
-      {/* GongJuLan */}
+      {/* 工具栏 */}
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border/40 bg-muted/30">
         <div className="flex items-center gap-1.5">
           <Button
@@ -124,18 +124,18 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
             size="sm"
             onClick={handleReset}
             className="h-8 px-2 text-xs"
-            title="ZhongZhiCaiJianQuYu"
+            title="重置裁剪区域"
           >
             <RotateCcw className="h-4 w-4 mr-1" />
-            ZhongZhi
+            重置
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          TuoDongSiJiaoTiaoZhengCaiJianQuYu
+          拖动四角调整裁剪区域
         </p>
       </div>
 
-      {/* CaiJianQuYu */}
+      {/* 裁剪区域 */}
       <div className="flex-1 min-h-0 overflow-hidden p-3 flex items-center justify-center bg-black/30">
         <ReactCrop
           crop={crop}
@@ -149,7 +149,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={imgRef}
-            alt="DaiCaiJianTuPian"
+            alt="待裁剪图片"
             src={imageSrc}
             onLoad={onImageLoad}
             style={{
@@ -162,7 +162,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
         </ReactCrop>
       </div>
 
-      {/* CaoZuoAnNiu */}
+      {/* 操作按钮 */}
       <div className="flex items-center justify-end gap-2 px-3 py-3 border-t border-border/40">
         <Button
           variant="secondary"
@@ -170,7 +170,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
           onClick={onCancel}
           className="text-xs sm:text-sm"
         >
-          FanHui
+          返回
         </Button>
         <Button
           size="sm"
@@ -178,7 +178,7 @@ export const ImageCropper = ({ imageSrc, onCropComplete, onCancel }: ImageCroppe
           className="text-xs sm:text-sm"
         >
           <CropIcon className="mr-1.5 h-4 w-4" />
-          ConfirmCaiJian
+          确认裁剪
         </Button>
       </div>
     </div>

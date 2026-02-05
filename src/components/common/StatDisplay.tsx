@@ -1,6 +1,7 @@
 'use client';
 
 import { CommonData } from '@/lib/data/commonData';
+import { statLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 
 interface StatDisplayProps {
@@ -29,7 +30,7 @@ export const StatDisplay = ({
         colorClass
       )}
     >
-      <span className="truncate">{type}</span>
+      <span className="truncate">{statLabel(type)}</span>
       <span className={cn('text-right tabular-nums', isHighQuality && 'font-medium')}>
         +{value}
         {isPercent ? '%' : ''}

@@ -11,14 +11,14 @@ import { calcRate, mockChengyin } from '@/lib/graduation';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-// JiSuanDanGeAffixDeWanZhengDu
+// 计算单个词条的完整度
 const getStatCompleteness = (stat: { type: string; value: number }): number => {
   const maxValue = CommonData.MAX_VALUES[stat.type] || 0;
   if (maxValue <= 0) return 0;
   return Math.min(stat.value / maxValue, 1);
 };
 
-// JiSuanEquipmentZongWanZhengDu
+// 计算装备总完整度
 const getEquipCompleteness = (equip: EquipItem): number => {
   const allStats = [equip.mainStat, ...equip.subStats];
   if (allStats.length === 0) return 0;
@@ -29,7 +29,7 @@ const getEquipCompleteness = (equip: EquipItem): number => {
   return (totalCompleteness / allStats.length) * 100;
 };
 
-// GenJuWanZhengDuFanHuiYanSeYangShi
+// 根据完整度返回颜色样式
 const getCompletenessColor = (completeness: number): string => {
   if (completeness >= 90) return 'text-amber-400 bg-amber-500/20 border-amber-500/30';
   if (completeness >= 80) return 'text-purple-400 bg-purple-500/20 border-purple-500/30';
@@ -106,15 +106,15 @@ export const CompareTab = ({
         <div className="flex items-center gap-4">
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-            JiaSheManChengYin
+            假设满承音
           </label>
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
-            DongJieDangQianDingyin
+            冻结当前定音
           </label>
         </div>
         <div className="text-muted-foreground py-10 text-center">
-          KuZhongMeiYouFuHeTiaoJianDeTongLeiEquipmentKeGongDuiBi
+          库中没有符合条件的同类装备可供对比
         </div>
       </div>
     );
@@ -125,11 +125,11 @@ export const CompareTab = ({
       <div className="flex items-center gap-4">
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-          JiaSheManChengYin
+          假设满承音
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
-          DongJieDangQianDingyin
+          冻结当前定音
         </label>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -154,7 +154,7 @@ export const CompareTab = ({
 
             return { equip, testEquip, newRate, diff, completeness };
           })
-          .sort((a, b) => a.diff - b.diff) // AnChaYiCongXiaoDaoDaPaiXu（FuZhiGengHao）
+          .sort((a, b) => a.diff - b.diff) // 按差异从小到大排序（负值更好）
           .map(({ equip, testEquip, newRate, diff, completeness }) => {
             const diffColor =
               diff > 0.0001
@@ -169,17 +169,17 @@ export const CompareTab = ({
               key={equip.id}
               className="relative p-3 border-slate-500/20 bg-slate-800/30"
             >
-              {/* TouBu：TuBiao、MingCheng、Graduation RateChaYi */}
+              {/* 头部：图标、名称、毕业率差异 */}
               <div className="flex items-start gap-3">
                 <EquipmentImage src={testEquip.icon} name={testEquip.name} size="sm" />
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-slate-100 truncate">
                     {testEquip.name}
-                    {assumeChengyin ? ' (Ni)' : ''}
+                    {assumeChengyin ? ' (拟)' : ''}
                   </div>
                   <div className="flex items-center gap-1.5 text-xs flex-nowrap">
                     <span className="text-slate-400 shrink-0">
-                      {testEquip.slotName}{testEquip.isChengyin ? '(Cheng)' : ''}
+                      {testEquip.slotName}{testEquip.isChengyin ? '(承)' : ''}
                     </span>
                     <span
                       className={cn(
@@ -191,7 +191,7 @@ export const CompareTab = ({
                     </span>
                   </div>
                   <div className="text-muted-foreground text-xs mt-0.5">
-                    Graduation Rate: {newRate.toFixed(2)}%
+                    毕业率: {newRate.toFixed(2)}%
                   </div>
                 </div>
                 <div className={cn('text-sm font-semibold whitespace-nowrap', diffColor)}>
@@ -200,16 +200,16 @@ export const CompareTab = ({
                 </div>
               </div>
 
-              {/* AffixZhanShi */}
+              {/* 词条展示 */}
               <div className="mt-2 text-xs">
-                {/* Primary Affix */}
+                {/* 主词条 */}
                 <StatDisplay
                   type={testEquip.mainStat.type}
                   value={testEquip.mainStat.value}
                   isPercent={testEquip.mainStat.isPercent}
                 />
                 <Separator className="my-1.5 bg-slate-600/40" />
-                {/* Secondary Affix */}
+                {/* 副词条 */}
                 <div className="space-y-1">
                   {testEquip.subStats.map((sub, idx) => (
                     <StatDisplay
@@ -220,8 +220,8 @@ export const CompareTab = ({
                     />
                   ))}
                 </div>
-                {/* Dingyin Affix */}
-                {testEquip.dingyinStat && testEquip.dingyinStat.type !== 'None' && (
+                {/* 定音词条 */}
+                {testEquip.dingyinStat && testEquip.dingyinStat.type !== '无' && (
                   <>
                     <Separator className="my-1.5 bg-cyan-600/40" />
                     <StatDisplay

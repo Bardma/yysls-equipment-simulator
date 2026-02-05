@@ -7,14 +7,14 @@ import type { EquipItem, EquippedItems } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 const SLOT_NAME_MAP: Record<keyof EquippedItems, string> = {
-  weapon1: 'WuQi1',
-  weapon2: 'WuQi2',
-  head: 'GuanZhou',
-  chest: 'XiongJia',
-  ring: 'Huan',
-  pendant: 'Pei',
-  legs: 'JingJia',
-  hands: 'WanJia',
+  weapon1: '武器1',
+  weapon2: '武器2',
+  head: '冠胄',
+  chest: '胸甲',
+  ring: '环',
+  pendant: '佩',
+  legs: '胫甲',
+  hands: '腕甲',
 };
 
 const SLOT_KEYS: Array<keyof EquippedItems> = [
@@ -54,13 +54,13 @@ export const EquipSlotSelector = ({
           >
             <Image
               src={`/${item?.icon || 'icon/icon1.jpg'}`}
-              alt={item?.name || 'WeiChuanDai'}
+              alt={item?.name || '未穿戴'}
               width={32}
               height={32}
               className="rounded-md border lg:w-10 lg:h-10"
             />
             <div className="flex-1 text-center lg:text-left">
-              <div className="text-[10px] lg:text-sm font-medium truncate max-w-full">{item?.name || 'WeiChuanDai'}</div>
+              <div className="text-[10px] lg:text-sm font-medium truncate max-w-full">{item?.name || '未穿戴'}</div>
               <div className="text-muted-foreground text-[9px] lg:text-xs hidden lg:block">{SLOT_NAME_MAP[key]}</div>
             </div>
             {item && (

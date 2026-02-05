@@ -38,11 +38,11 @@ export const XinfaSlot = ({ index, name, isLocked, onClick }: XinfaSlotProps) =>
               <span className="text-[10px] sm:text-xs font-medium text-white px-0.5 sm:px-1 text-center leading-tight truncate w-full">
                 {name}
               </span>
-              {isLocked && <span className="text-[8px] sm:text-[10px] text-white/70">BuKeBianGeng</span>}
+              {isLocked && <span className="text-[8px] sm:text-[10px] text-white/70">不可变更</span>}
             </div>
           </>
         ) : (
-          <span className="text-muted-foreground text-[9px] sm:text-[10px]">DianJiXuanZe</span>
+          <span className="text-muted-foreground text-[9px] sm:text-[10px]">点击选择</span>
         )}
       </div>
     </button>

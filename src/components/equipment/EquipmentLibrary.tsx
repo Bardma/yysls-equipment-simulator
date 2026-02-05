@@ -34,10 +34,10 @@ export const EquipmentLibrary = ({
   onEquipItem,
 }: EquipmentLibraryProps) => {
   const t = useTranslations('equipment');
-  // ShiYong jieba FenCiSouSuo
+  // 使用 jieba 分词搜索
   const { searchQuery, setSearchQuery, filteredItems: searchedItems } = useJiebaSearch(db);
 
-  // XianAnBuWeiShaiXuan，ZaiAnSouSuoGuanJianCiGuoL
+  // 先按部位筛选，再按搜索关键词过滤
   const filteredDb = searchedItems.filter((item) =>
     filter === 'all' ? true : item.slotId === filter
   );
@@ -61,7 +61,7 @@ export const EquipmentLibrary = ({
           </Button>
         </div>
 
-        {/* SouSuoKuang */}
+        {/* 搜索框 */}
         <div className="mt-3 sm:mt-4 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input

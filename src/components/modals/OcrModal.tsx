@@ -29,7 +29,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
-  // QingLiYuLanURL
+  // 清理预览URL
   useEffect(() => {
     return () => {
       if (previewUrl) {
@@ -38,7 +38,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     };
   }, [previewUrl]);
 
-  // QingLiCaiJianYuLanURL
+  // 清理裁剪预览URL
   useEffect(() => {
     return () => {
       if (croppedPreviewUrl) {
@@ -47,7 +47,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     };
   }, [croppedPreviewUrl]);
 
-  // MoTaiKuangGuanBiShiZhongZhiZhuangTai
+  // 模态框关闭时重置状态
   useEffect(() => {
     if (!open) {
       setStep('upload');
@@ -64,7 +64,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     }
   }, [open, previewUrl, croppedPreviewUrl]);
 
-  // ChuLiTuPianXuanZe
+  // 处理图片选择
   const handleImageSelect = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) {
       alert(t('selectImageFile'));
@@ -78,7 +78,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     setPreviewUrl(url);
   }, [t]);
 
-  // WenJianXuanZeChuLi
+  // 文件选择处理
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -86,7 +86,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     }
   };
 
-  // NianTieShiJianChuLi
+  // 粘贴事件处理
   const handlePaste = useCallback(
     (event: ClipboardEvent) => {
       if (!open || step !== 'upload') return;
@@ -108,7 +108,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     [open, step, handleImageSelect]
   );
 
-  // JianTingNianTieShiJian
+  // 监听粘贴事件
   useEffect(() => {
     if (open && step === 'upload') {
       document.addEventListener('paste', handlePaste);
@@ -118,7 +118,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     }
   }, [open, step, handlePaste]);
 
-  // TuoFangChuLi
+  // 拖放处理
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -134,46 +134,46 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
     }
   };
 
-  // JinRuCaiJianMoShi
+  // 进入裁剪模式
   const handleStartCrop = useCallback(() => {
     if (selectedImage && previewUrl) {
       setStep('crop');
     }
   }, [selectedImage, previewUrl]);
 
-  // CaiJianWanCheng
+  // 裁剪完成
   const handleCropComplete = useCallback((croppedBlob: Blob) => {
-    // Jiang Blob ZhuanHuanWei File
+    // 将 Blob 转换为 File
     const croppedFile = new File([croppedBlob], 'cropped-image.png', {
       type: 'image/png',
     });
     setCroppedImage(croppedFile);
-    // ChuangJianCaiJianHouTuPianDeYuLan URL
+    // 创建裁剪后图片的预览 URL
     const url = URL.createObjectURL(croppedBlob);
     setCroppedPreviewUrl(url);
     setStep('upload');
   }, []);
 
-  // CancelCaiJian
+  // 取消裁剪
   const handleCropCancel = useCallback(() => {
     setStep('upload');
   }, []);
 
-  // ConfirmShiBie
+  // 确认识别
   const handleConfirm = () => {
-    // YouXianShiYongCaiJianHouDeTuPian，FouZeShiYongYuanTu
+    // 优先使用裁剪后的图片，否则使用原图
     const imageToUse = croppedImage || selectedImage;
     if (imageToUse) {
       onConfirm(imageToUse);
     }
   };
 
-  // DianJiXuanZeQuYu
+  // 点击选择区域
   const handleDropZoneClick = () => {
     fileInputRef.current?.click();
   };
 
-  // HuoQuDangQianYuLanDeTuPianURL（YouXianXianShiCaiJianHouDeTuPian）
+  // 获取当前预览的图片URL（优先显示裁剪后的图片）
   const displayPreviewUrl = croppedPreviewUrl || previewUrl;
 
   return (
@@ -186,7 +186,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
             </DialogHeader>
 
             <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-4">
-              {/* ShiLiTuQuYu */}
+              {/* 示例图区域 */}
               <div className="space-y-2">
                 <p className="text-muted-foreground text-sm">{t('uploadHint')}</p>
                 <div className="flex justify-center rounded-md border p-2">
@@ -199,7 +199,7 @@ export const OcrModal = ({ open, onOpenChange, onConfirm, isLoading = false }: O
                 </div>
               </div>
 
-              {/* TuPianXuanZe/YuLanQuYu */}
+              {/* 图片选择/预览区域 */}
               <div className="space-y-2">
                 <p className="text-muted-foreground text-sm">
                   {t('selectOrPaste')} <kbd className="bg-muted rounded px-1.5 py-0.5 text-xs">Ctrl+V</kbd>

@@ -1,5 +1,6 @@
 'use client';
 
+import { statLabel } from '@/lib/statName';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -29,7 +30,7 @@ export const StatInputRow = ({
   options,
   disabledOptions = [],
   disabled = false,
-  placeholder = 'XuanZeAffix',
+  placeholder = 'Select stat',
   onTypeChange,
   onValueChange,
   onMaxClick,
@@ -44,11 +45,11 @@ export const StatInputRow = ({
         <SelectContent>
           {options.map((stat) => (
             <SelectItem
-              key={stat}
-              value={stat}
+              key={statLabel(stat)}
+              value={statLabel(stat)}
               disabled={disabledOptions.includes(stat)}
             >
-              {stat}
+              {statLabel(stat)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -59,7 +60,7 @@ export const StatInputRow = ({
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           disabled={disabled}
-          placeholder="ShuZhi"
+          placeholder="数值"
         />
         <Button
           variant="outline"

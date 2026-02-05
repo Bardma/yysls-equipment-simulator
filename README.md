@@ -1,216 +1,216 @@
-# Where Winds MeetEquipmentGraduation RateMoNiQi
+# 燕云十六声装备毕业率模拟器
 
 <div align="center">
 
-## 🌟 BenXiangMuJiYuYuanZuoPinKaiFa，ShiYuanZuoPinDeYouHuaZhongGouBanBen 🌟
+## 🌟 本项目基于原作品开发，是原作品的优化重构版本 🌟
 
-### 📌 [YuanZuoPinDiZhi：http://spongem.com/yysls/](http://spongem.com/yysls/) 📌
+### 📌 [原作品地址：http://spongem.com/yysls/](http://spongem.com/yysls/) 📌
 
-**HeXinGraduation RateJiSuanSuanFa、ZhouShuJu、JiNengGongShiDengJunLaiYuanYuYuanZuoPin**
+**核心毕业率计算算法、轴数据、技能公式等均来源于原作品**
 
-BenXiangMuZaiYuanZuoPinJiChuShangJinXingLe UI/UX YouHuaHeGongNengKuoZhan，GanXieYuanZuoZheDeJieChuGongXian！
+本项目在原作品基础上进行了 UI/UX 优化和功能扩展，感谢原作者的杰出贡献！
 
 ---
 
 </div>
 
-YiGeYongYuGuanLi《Where Winds Meet》YouXiEquipment、JiSuanGraduation RateDeXianDaiHua Web YingYong，JiYu Next.js 16 GouJian。
+一个用于管理《燕云十六声》游戏装备、计算毕业率的现代化 Web 应用，基于 Next.js 16 构建。
 
-## YuYuanZuoPinDeGuanXi
+## 与原作品的关系
 
-- **HeXinSuanFa**：Graduation RateJiSuanGongShi、DPS JiSuanLuoJi、JiNengShangHaiGongShiDengHeXinSuanFaJunYiZhiZiYuanZuoPin
-- **ZhouShuJu**：GeLiuPaiDeJiNengZhou、Xi Shu Deng Shu Ju Lai Yuan Yu Yuan Zuo Pin Ji She Qu Gong Xian Zhe Damage Bonus
-- **YouXiShuJu**：EquipmentAffix、Inner WayXiaoGuo、SetShuXingDengYouXiShuJuCanKaoYuanZuoPin
-- **BenXiangMuYouHua**：ZaiBaoLiuYuanZuoPinHeXinJiSuanLuoJiDeJiChuShang，ZhongGouLeQianDuanJieMianHeJiaoHuTiYan
+- **核心算法**：毕业率计算公式、DPS 计算逻辑、技能伤害公式等核心算法均移植自原作品
+- **轴数据**：各流派的技能轴、增伤系数等数据来源于原作品及社区贡献者
+- **游戏数据**：装备词条、心法效果、套装属性等游戏数据参考原作品
+- **本项目优化**：在保留原作品核心计算逻辑的基础上，重构了前端界面和交互体验
 
 [English](./README_EN.md)
 
-## YuLan
+## 预览
 
-BenYingYongKeBangZhuWanJiaGuanLiDuoCharacterEquipment Library，JinXingPeiZhuangMoNi，BingShiShiJiSuanGraduation Rate。
+本应用可帮助玩家管理多角色装备库，进行配装模拟，并实时计算毕业率。
 
-## GongNengTeXing
+## 功能特性
 
-### 🎭 CharacterGuanLi
+### 🎭 角色管理
 
-- ChuangJian、QieHuan、DeleteDuoGeCharacter
-- MeiGeCharacterDuLiDeEquipmentShuJuHePeiZhuangFangAn
+- 创建、切换、删除多个角色
+- 每个角色独立的装备数据和配装方案
 
-### ⚔️ EquipmentGuanLi
+### ⚔️ 装备管理
 
-- WanZhengDeEquipmentCaoWei：WuQi（ShuangWuQi）、Huan、Pei、GuanZhou、XiongJia、JingJia、WanJia
-- Primary Affix、Secondary Affix（4Tiao）、Dingyin AffixLuRu
-- ChengYinEquipment、ZiZhuang、KeZhuanLDengShuXingBiaoJi
-- **OCR WenZiShiBie**KuaiSuLuRuEquipment（JiYu Tesseract.js）
-- ZhiChiTuPianCaiJian，JingZhunShiBie
+- 完整的装备槽位：武器（双武器）、环、佩、冠胄、胸甲、胫甲、腕甲
+- 主词条、副词条（4条）、定音词条录入
+- 承音装备、紫装、可转律等属性标记
+- **OCR 文字识别**快速录入装备（基于 Tesseract.js）
+- 支持图片裁剪，精准识别
 
-### 🎯 LiuPaiZhiChi
+### 🎯 流派支持
 
-WanZhengZhiChi 9 DaLiuPaiDeGraduation RateJiSuan：
+完整支持 9 大流派的毕业率计算：
 
-- MingJinHong、MingJinYing
-- PoZhuChen、PoZhuFeng、PoZhuYuan
-- LieShiWei、LieShiJun（ShuangQie）、LieShiJun（ChunTang）
-- QianSiLin、QianSiYu
+- 鸣金虹、鸣金影
+- 破竹尘、破竹风、破竹鸢
+- 裂石威、裂石钧（双切）、裂石钧（纯唐）
+- 牵丝霖、牵丝玉
 
-### 🎮 Simulation
+### 🎮 穿戴模拟
 
-- 8 GeEquipmentCaoWeiKeShiHuaPeiZhi
-- Inner WayXuanZe（MeiLiuPai 4 GeInner WayCaoWei）
-- SetXuanZe（YuDou、FeiSun、ShiYu、LianXing、HanTian、DuanYueDeng）
-- TiQianSaiJiJiaChengXuanXiang
+- 8 个装备槽位可视化配置
+- 心法选择（每流派 4 个心法槽位）
+- 套装选择（玉斗、飞隼、时雨、连星、撼天、断岳等）
+- 提前赛季加成选项
 
-### 📊 Graduation RateJiSuan
+### 📊 毕业率计算
 
-- JiYuZhouQiWangDeJingQue DPS JiSuan
-- ShiShiGraduation RateBaiFenBiXianShi
-- Excel Level Mapping
-- YuJieDingyinMoShi（TiQianYuLanManDingyinXiaoGuo）
+- 基于轴期望的精确 DPS 计算
+- 实时毕业率百分比显示
+- Excel 等级对照
+- 预借定音模式（提前预览满定音效果）
 
-### 📈 Graduation Rate Analysis（GaoJiGongNeng）
+### 📈 毕业率分析（高级功能）
 
-- **AffixYouXianJiPaiMing**：AnalyzeMeiGeAffixDuiGraduation RateDeShouYiGongXian
-- **EquipmentShouYiDuiBi**：BiJiaoBuTongEquipmentDeGraduation RateTiSheng
-- **PeiYangFangXiangJianYi**：GenJuDangQianPeiZhuangTuiJianAffixPeiYangYouXianJi
-- **ZuiYouPeiZhuangJiSuan**：CongEquipment LibraryZhongZiDongSouSuoZuiGaoGraduation RatePeiZhuangFangAn
-- **ZhuanLAnalyze**：AnalyzeEquipmentZhuanLHouDeShouYiBianHua
+- **词条优先级排名**：分析每个词条对毕业率的收益贡献
+- **装备收益对比**：比较不同装备的毕业率提升
+- **培养方向建议**：根据当前配装推荐词条培养优先级
+- **最优配装计算**：从装备库中自动搜索最高毕业率配装方案
+- **转律分析**：分析装备转律后的收益变化
 
-### 🔍 Equipment LibrarySouSuo
+### 🔍 装备库搜索
 
-- ZhiChiPinYinSouSuo（RuShuRu "jq" SouSuo "JianQi"）
-- JieBaFenCiZhiNengPiPei
-- AnBuWei、ShuXingDengTiaoJianShaiXuan
+- 支持拼音搜索（如输入 "jq" 搜索 "剑气"）
+- 结巴分词智能匹配
+- 按部位、属性等条件筛选
 
-### 💾 ShuJuGuanLi
+### 💾 数据管理
 
-- Export/Import JSON ShuJuBeiFen
-- ShuJuBenDiChiJiuHua（localStorage）
-- ShengChengPeiZhuangBaoBiaoTuPianFenXiang
+- 导出/导入 JSON 数据备份
+- 数据本地持久化（localStorage）
+- 生成配装报表图片分享
 
-### 🎨 JieMianTeXing
+### 🎨 界面特性
 
-- XiangYingShiSheJi，ZhiChiZhuoMianDuanHeYiDongDuan
-- ShenSeZhuTiJieMian
-- KeZheDieMianBan，ZiDingYiBuJu
+- 响应式设计，支持桌面端和移动端
+- 深色主题界面
+- 可折叠面板，自定义布局
 
-## JiShuZhan
+## 技术栈
 
-| LeiBie | JiShu |
+| 类别 | 技术 |
 |------|------|
-| **KuangJia** | Next.js 16 (App Router) |
-| **QianDuan** | React 19 |
-| **YuYan** | TypeScript 5 |
-| **YangShi** | Tailwind CSS 4 |
-| **UI ZuJian** | shadcn/ui + Radix UI |
-| **ZhuangTaiGuanLi** | Zustand 5 |
+| **框架** | Next.js 16 (App Router) |
+| **前端** | React 19 |
+| **语言** | TypeScript 5 |
+| **样式** | Tailwind CSS 4 |
+| **UI 组件** | shadcn/ui + Radix UI |
+| **状态管理** | Zustand 5 |
 | **OCR** | Tesseract.js 7 |
-| **SouSuo** | jieba-wasm + pinyin-pro |
-| **TuPianChuLi** | react-image-crop, html2canvas-pro |
-| **CunChu** | localStorage |
+| **搜索** | jieba-wasm + pinyin-pro |
+| **图片处理** | react-image-crop, html2canvas-pro |
+| **存储** | localStorage |
 
-## KuaiSuKaiShi
+## 快速开始
 
-### HuanJingYaoQiu
+### 环境要求
 
 - Node.js 18+
-- npm Huo yarn Huo pnpm
+- npm 或 yarn 或 pnpm
 
-### AnZhuangYiLai
+### 安装依赖
 
 ```bash
 npm install
 ```
 
-### KaiFaMoShi
+### 开发模式
 
 ```bash
 npm run dev
 ```
 
-FangWen http://localhost:3000
+访问 http://localhost:3000
 
-### GouJianShengChanBanBen
+### 构建生产版本
 
 ```bash
 npm run build
 npm run start
 ```
 
-### DaiMaGeShiHua
+### 代码格式化
 
 ```bash
 npm run format
 ```
 
-## XiangMuJieGou
+## 项目结构
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── layout.tsx          # GenBuJu
-│   ├── page.tsx            # ZhuYeMian
-│   └── globals.css         # QuanJuYangShi
+│   ├── layout.tsx          # 根布局
+│   ├── page.tsx            # 主页面
+│   └── globals.css         # 全局样式
 ├── components/
-│   ├── ui/                 # shadcn/ui JiChuZuJian
-│   ├── common/             # TongYongZuJian（TuPianCaiJian、AffixXianShiDeng）
-│   ├── equipment/          # EquipmentXiangGuanZuJian（EquipmentKaPian、Equipment LibraryDeng）
-│   ├── simulation/         # SimulationZuJian
-│   ├── graduation/         # Graduation Rate AnalysisZuJian
-│   ├── layout/             # BuJuZuJian（TouBu、MianBanDeng）
-│   ├── stats/              # ShuXingTongJiZuJian
-│   └── modals/             # TanChuangZuJian（EquipmentEdit、Inner WayXuanZeDeng）
-├── stores/                 # Zustand ZhuangTaiGuanLi
-│   ├── accountStore.ts     # CharacterZhangHaoZhuangTai
-│   ├── equipmentStore.ts   # Equipment LibraryZhuangTai
-│   └── simulationStore.ts  # MoNiPeiZhiZhuangTai
-└── lib/                    # GongJuKu
-    ├── calculator/         # Graduation RateJiSuanHeXin
-    ├── data/               # YouXiShuJu（LiuPai、JiNeng、Inner WayDeng）
-    ├── graduation/         # Graduation RateXiangGuanSuanFa
-    ├── hooks/              # ZiDingYi Hooks
-    ├── types.ts            # TypeScript LeiXingDingYi
-    ├── ocrParser.ts        # OCR JieXi
-    ├── storage.ts          # BenDiCunChu
-    └── utils.ts            # GongJuHanShu
+│   ├── ui/                 # shadcn/ui 基础组件
+│   ├── common/             # 通用组件（图片裁剪、词条显示等）
+│   ├── equipment/          # 装备相关组件（装备卡片、装备库等）
+│   ├── simulation/         # 穿戴模拟组件
+│   ├── graduation/         # 毕业率分析组件
+│   ├── layout/             # 布局组件（头部、面板等）
+│   ├── stats/              # 属性统计组件
+│   └── modals/             # 弹窗组件（装备编辑、心法选择等）
+├── stores/                 # Zustand 状态管理
+│   ├── accountStore.ts     # 角色账号状态
+│   ├── equipmentStore.ts   # 装备库状态
+│   └── simulationStore.ts  # 模拟配置状态
+└── lib/                    # 工具库
+    ├── calculator/         # 毕业率计算核心
+    ├── data/               # 游戏数据（流派、技能、心法等）
+    ├── graduation/         # 毕业率相关算法
+    ├── hooks/              # 自定义 Hooks
+    ├── types.ts            # TypeScript 类型定义
+    ├── ocrParser.ts        # OCR 解析
+    ├── storage.ts          # 本地存储
+    └── utils.ts            # 工具函数
 ```
 
-## ShiYongShuoMing
+## 使用说明
 
-1. **ChuangJianCharacter**：DianJiYouShangJiao「+ New Character」AnNiu，ShuRuCharacterMingCheng
-2. **LuRuEquipment**：DianJi「+ LuRuEquipment」AnNiu，KeShouDongTianXieHuoShiYong OCR ShiBie
-3. **XuanZeLiuPai**：ZaiYouCeMoNiMianBanXuanZeDangQianLiuPai
-4. **Simulation**：DianJiEquipmentCaoWeiXuanZeYaoEquipmentDeWuPin
-5. **XuanZeInner Way**：DianJiInner WayCaoWeiPeiZhiInner Way
-6. **ChaKanGraduation Rate**：ShiShiXianShiDangQianPeiZhuangDeGraduation RateHe DPS
-7. **XiangXiAnalyze**：DianJi「Analyze」AnNiuChaKanAffixYouXianJiHePeiYangJianYi
-8. **Generate Report**：DianJi「Generate Report」ExportPeiZhuangTuPian
+1. **创建角色**：点击右上角「+ 新建角色」按钮，输入角色名称
+2. **录入装备**：点击「+ 录入装备」按钮，可手动填写或使用 OCR 识别
+3. **选择流派**：在右侧模拟面板选择当前流派
+4. **穿戴模拟**：点击装备槽位选择要装备的物品
+5. **选择心法**：点击心法槽位配置心法
+6. **查看毕业率**：实时显示当前配装的毕业率和 DPS
+7. **详细分析**：点击「分析」按钮查看词条优先级和培养建议
+8. **生成报表**：点击「生成报表」导出配装图片
 
-## ZhouShuJuLaiYuan
+## 轴数据来源
 
-Graduation RateJiSuanJiYuYiXiaZuoZheTiGongDeZhouShuJu：
+毕业率计算基于以下作者提供的轴数据：
 
-- **Violetta** - PoZhuChen、MingJinHong、MingJinYing、PoZhuFeng、PoZhuYuan、LieShiWei、LieShiJun（ShuangQie）、QianSiYu
-- **DouShaBao** - MingJinYing
-- **QiuXiJun** - LieShiJun（ChunTang）、QianSiLin
+- **Violetta** - 破竹尘、鸣金虹、鸣金影、破竹风、破竹鸢、裂石威、裂石钧（双切）、牵丝玉
+- **豆沙包** - 鸣金影
+- **秋夕君** - 裂石钧（纯唐）、牵丝霖
 
-## KaiFaJiHua
+## 开发计划
 
-- [ ] ZhiChiFenXiangBaoGaoTianJiaErWeiMa，KuaiJieSaoMaJiKeHuoDeCanKaoEquipment
-- [ ] KeShiHuaPaiZhouGongJu
-- [ ] XiaoChengXuBan
-- [ ] ZhiChiBanBenXuanZe（FangBianHaiWaiBanWanJiaShiYong）
-- [ ] ZhiChiDuoYuYan
+- [ ] 支持分享报告添加二维码，快捷扫码即可获得参考装备
+- [ ] 可视化排轴工具
+- [ ] 小程序版
+- [ ] 支持版本选择（方便海外版玩家使用）
+- [ ] 支持多语言
 
-## ZhiXie
+## 致谢
 
-- GanXie [YuanZuoPin](http://spongem.com/yysls/) DeChuangZuoZhe
-- GanXieGeLiuPaiZhouShuJuDeTiGongZhe
-- GanXie《Where Winds Meet》YouXiSheQu
+- 感谢 [原作品](http://spongem.com/yysls/) 的创作者
+- 感谢各流派轴数据的提供者
+- 感谢《燕云十六声》游戏社区
 
-## XuKeZheng
+## 许可证
 
 MIT License
 
-## MianZeShengMing
+## 免责声明
 
-BenXiangMuWeiFeiGuanFangFenSiZuoPin，Yu《Where Winds Meet》YouXiGuanFangNoneGuan。YouXiNeiRong、ShuJuDeBanQuanGuiYouXiKaiFaShangSuoYou。
+本项目为非官方粉丝作品，与《燕云十六声》游戏官方无关。游戏内容、数据的版权归游戏开发商所有。
