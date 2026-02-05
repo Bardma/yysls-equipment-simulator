@@ -8,6 +8,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  // Add this near the top of StatInputRow.tsx (before the component)
+const statLabel = (stat: unknown): string => {
+  if (typeof stat === 'string') return stat;
+  if (stat && typeof stat === 'object') {
+    const s = stat as any;
+    return String(s.label ?? s.name ?? s.type ?? s.value ?? '');
+  }
+  return String(stat ?? '');
+};
 } from '@/components/ui/select';
 const statLabel = (stat: unknown): string => {
   if (typeof stat === 'string') return stat;
