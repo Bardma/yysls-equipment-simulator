@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { CommonData } from '@/lib/data/commonData';
+import { slotLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 
 interface EquipmentFilterProps {
@@ -42,7 +43,7 @@ export const EquipmentFilter = ({ filter, onFilterChange }: EquipmentFilterProps
           variant={filter === slot.id ? 'default' : 'outline'}
           onClick={() => onFilterChange(slot.id)}
         >
-          {slot.name}
+          {slotLabel(slot.name)}
         </Button>
       ))}
     </div>

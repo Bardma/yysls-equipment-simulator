@@ -5,14 +5,14 @@ import { addFullDingyinToEquips } from './dingyin';
 import { calculateBuildRate } from './rate';
 
 export const SLOT_NAME_MAP: Record<keyof EquippedItems, string> = {
-  weapon1: '武器1',
-  weapon2: '武器2',
-  head: '冠胄',
-  chest: '胸甲',
-  ring: '环',
-  pendant: '佩',
-  legs: '胫甲',
-  hands: '腕甲',
+  weapon1: 'Weapon 1',
+  weapon2: 'Weapon 2',
+  head: 'Head',
+  chest: 'Chest',
+  ring: 'Ring',
+  pendant: 'Pendant',
+  legs: 'Legs',
+  hands: 'Hands',
 };
 
 /**
