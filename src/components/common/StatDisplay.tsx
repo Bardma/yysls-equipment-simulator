@@ -1,7 +1,6 @@
 'use client';
 
 import { CommonData } from '@/lib/data/commonData';
-import { statLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 
 interface StatDisplayProps {

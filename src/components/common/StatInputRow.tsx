@@ -1,5 +1,6 @@
 'use client';
 
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -7,78 +8,94 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 
-type AnyStat = unknown;
+type StatOption =
+  | string
+  | {
+      label?: string;
+      name?: string;
+      type?: string;
+      value?: string;
+      key?: string;
+      id?: string | number;
+    };
 
-const statKey = (stat: AnyStat): string => {
+// Helper: always return a stable string label for a stat option
+const statLabel = (stat: StatOption): string => {
   if (typeof stat === 'string') return stat;
-  if (stat && typeof stat === 'object') {
-    const s = stat as any;
-    return String(s.type ?? s.label ?? s.name ?? '');
-  }
-  return String(stat ?? '');
+
+  // try common fields in order of likelihood
+  const candidate =
+    stat.label ??
+    stat.name ??
+    stat.type ??
+    stat.value ??
+    stat.key ??
+    (stat.id !== undefined ? String(stat.id) : '');
+
+  return candidate || '';
 };
 
-// Mapping d’affichage (ajoute ce que tu veux)
-const STAT_LABEL_EN: Record<string, string> = {
-  '最大外功攻击': 'Max External Attack',
-  '最小外功攻击': 'Min External Attack',
-  '最大无相攻击': 'Max WuXiang Attack',
-  '最小无相攻击': 'Min WuXiang Attack',
-  '劲': 'Strength',
-  '敏': 'Agility',
-  '势': 'Poise',
-  '精准率': 'Accuracy',
-  '会心率': 'Crit Rate',
-  '会意率': 'Crit DMG Rate',
-  '直接会心率': 'Direct Crit Rate',
-  '直接会意率': 'Direct Crit DMG Rate',
-  '会心伤害加成': 'Crit DMG Bonus',
-  '会意伤害加成': 'Crit DMG Bonus (Yi)',
-  '属攻穿透': 'Elemental Penetration',
-  '鸣金伤害加成': 'Metal DMG Bonus',
-  '生存类词条': 'Survival',
-  '生存向': 'Survival',
-};
+interface StatInputRowProps {
+  label?: string;
 
-const statLabelEn = (key: string) => STAT_LABEL_EN[key] ?? key;
+  // current selected stat key/label
+  stat: string;
+  onStatChange: (value: string) => void;
 
-export interface StatInputRowProps {
-  options: AnyStat[];
-  value: string;
-  disabledOptions?: string[];
+  // numeric input value
+  value: string | number;
   onValueChange: (value: string) => void;
-  inputValue: string;
-  onInputChange: (value: string) => void;
+
+  options: StatOption[];
+
+  // optional disabling
+  disabled?: boolean;
+  disabledOptions?: StatOption[];
+
+  // optional UI hints
   placeholder?: string;
+  valuePlaceholder?: string;
 }
 
-export const StatInputRow = ({
-  options,
+export function StatInputRow({
+  label,
+  stat,
+  onStatChange,
   value,
-  disabledOptions = [],
   onValueChange,
-  inputValue,
-  onInputChange,
-  placeholder,
-}: StatInputRowProps) => {
+  options,
+  disabled = false,
+  disabledOptions = [],
+  placeholder = '—',
+  valuePlaceholder = '',
+}: StatInputRowProps) {
+
   return (
-    <div className="grid grid-cols-[1fr_140px] gap-2">
-      <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger>
-          <SelectValue placeholder={placeholder ?? 'Select Stat'} />
+    <div className="flex items-center gap-2">
+      {label ? <div className="text-sm text-muted-foreground w-24">{label}</div> : null}
+
+      <Select value={stat} onValueChange={onStatChange} disabled={disabled}>
+        <SelectTrigger className="w-[220px]">
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
+
         <SelectContent>
-          {options.map((stat) => {
-            const key = statKey(stat);
+          {options.map((opt) => {
+            const raw =
+              typeof opt === 'string'
+                ? opt
+                : (opt as any)?.type ?? (opt as any)?.value ?? (opt as any)?.name ?? String(opt);
+
+            const label = STAT_LABELS_EN[raw] ?? raw;
+
             return (
               <SelectItem
-                key={key}
-                value={key}
-                disabled={disabledOptions.includes(key)}
+                key={raw}
+                value={raw}
+                disabled={disabledOptions.includes(raw)}
               >
-                {statLabelEn(key)}
+                {label}
               </SelectItem>
             );
           })}
@@ -86,10 +103,12 @@ export const StatInputRow = ({
       </Select>
 
       <Input
-        value={inputValue}
-        onChange={(e) => onInputChange(e.target.value)}
-        placeholder="Value"
+        className="w-[120px]"
+        value={value}
+        placeholder={valuePlaceholder}
+        onChange={(e) => onValueChange(e.target.value)}
+        disabled={disabled}
       />
     </div>
   );
-};
+}
