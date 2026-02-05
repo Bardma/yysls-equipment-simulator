@@ -51,17 +51,17 @@ const WEAPON_LABELS: Record<string, string> = {
 };
 
 // Classes (couvre ce que tu as listé)
-const CLASS_LABELS: Record<string, string> = {
-  鸣金虹: 'Bellstrike - Umbra',
-  鸣金影: 'Bellstrike - Splendor',
-  牵丝玉: 'Skillbind - Jade',
-  牵丝霖: 'Skillbind - Deluge',
-  破竹风: 'Bamboocut - Wind',
-  裂石威: 'Stonesplit - Might',
-  破竹尘: 'Bamboocut - Dust',
-  破竹鸢: 'Bamboocut - Soar',
-  裂石钧（双切）: 'Stonesplit - Dualcut',
-  裂石钧（纯盾）: 'Stonesplit - Bulwark',
+export const CLASS_LABELS: Record<string, string> = {
+  '鸣金虹': 'Bellstrike - Umbra',
+  '鸣金影': 'Bellstrike - Splendor',
+  '破竹尘': 'Bamboocut - Dust',
+  '破竹风': 'Bamboocut - Wind',
+  '破竹鸢': 'Bamboocut - Soar',
+  '裂石威': 'Stonesplit - Might',
+  '裂石钧（双切）': 'Stonesplit - Dualcut',
+  '裂石钧（纯盾）': 'Stonesplit - Bulwark',
+  '牵丝霖': 'Silkbind - Deluge',
+  '牵丝玉': 'Silkbind - Jade',
 };
 
 // Sets (au moins celui vu + tes noms EN)
