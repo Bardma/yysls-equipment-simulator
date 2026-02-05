@@ -1,4 +1,3 @@
-import { statLabel } from '@/lib/statName';
 const DIRECT_MAP: Record<string, string> = {
   // Base / core stats
   最小外功攻击: 'Min Physical ATK',
@@ -23,63 +22,53 @@ const DIRECT_MAP: Record<string, string> = {
   单体类奇术增伤: 'Single-target Mystic Arts Damage Bonus',
   群体类奇术增伤: 'AoE Mystic Arts Damage Bonus',
 
-  // Primary attributes (no official EN label found on the 3 reference sites; keep clear EN with CN hint)
+  // Primary attributes
   劲: 'Strength (Jing)',
   敏: 'Agility (Min)',
   势: 'Momentum (Shi)',
 };
+
 const STAT_LABELS: Record<string, string> = {
   // Core
-  '劲': 'Power',
-  '敏': 'Agility',
-  '势': 'Momentum',
-  '体': 'Body',
-  '御': 'Defense',
+  劲: 'Power',
+  敏: 'Agility',
+  势: 'Momentum',
+  体: 'Body',
+  御: 'Defense',
 
   // Attacks/Def
-  '外功攻击': 'Physical Attack',
-  '外功防御': 'Physical Defense',
-  '鸣金攻击': 'Metal Attack',
-  '无相攻击': 'Attribute Attack',
+  外功攻击: 'Physical Attack',
+  外功防御: 'Physical Defense',
+  鸣金攻击: 'Metal Attack',
+  无相攻击: 'Attribute Attack',
 
   // Rates
-  '精准率': 'Precision Rate',
-  '会心率': 'Critical Rate',
-  '会意率': 'Affinity Rate',
-  '直接会心率': 'Direct Critical Rate',
-  '直接会意率': 'Direct Affinity Rate',
+  精准率: 'Precision Rate',
+  会心率: 'Critical Rate',
+  会意率: 'Affinity Rate',
+  直接会心率: 'Direct Critical Rate',
+  直接会意率: 'Direct Affinity Rate',
 
   // Bonuses
-  '会心伤害加成': 'Critical DMG Bonus',
-  '会意伤害加成': 'Affinity DMG Bonus',
-  '会心治疗加成': 'Critical Healing Bonus',
-  '外功伤害加成': 'Physical DMG Bonus',
-  '外功伤害减免': 'Physical DMG Reduction',
-  '外功治疗加成': 'Physical Healing Bonus',
-  '无相伤害加成': 'Attribute Attack DMG Bonus',
-  '无相治疗加成': 'Attribute Attack Healing Bonus',
+  会心伤害加成: 'Critical DMG Bonus',
+  会意伤害加成: 'Affinity DMG Bonus',
+  会心治疗加成: 'Critical Healing Bonus',
+  外功伤害加成: 'Physical DMG Bonus',
+  外功伤害减免: 'Physical DMG Reduction',
+  外功治疗加成: 'Physical Healing Bonus',
+  无相伤害加成: 'Attribute Attack DMG Bonus',
+  无相治疗加成: 'Attribute Attack Healing Bonus',
 
   // Penetration / Resistance
-  '属攻穿透': 'Attribute Attack Penetration',
-  '外功穿透': 'Physical Penetration',
-  '外功抗性': 'Physical Resistance',
+  属攻穿透: 'Attribute Attack Penetration',
+  外功穿透: 'Physical Penetration',
+  外功抗性: 'Physical Resistance',
 
-  // HP/Qi (si tu as les clés exactes)
-  '最大气血': 'Max HP',
-  '最大真气': 'Max Qi',
-
-  // etc...
+  // HP/Qi
+  最大气血: 'Max HP',
+  最大真气: 'Max Qi',
 };
 
-export function statLabel(stat: unknown): string {
-  if (typeof stat === 'string') return STAT_LABELS[stat] ?? stat;
-  if (stat && typeof stat === 'object') {
-    const s = stat as any;
-    const key = s.type ?? s.name ?? s.label;
-    if (typeof key === 'string') return STAT_LABELS[key] ?? key;
-  }
-  return String(stat);
-}
 const SCHOOL_MAP: Array<[RegExp, string]> = [
   [/鸣金/g, 'Bellstrike'],
   [/裂石/g, 'Stonesplit'],
@@ -107,12 +96,14 @@ function applyMaps(input: string) {
   return out;
 }
 
-export function statLabel(key: string): string {
+function labelFromKey(key: string): string {
   if (!key) return key;
 
+  // 1) Exact maps first
   if (DIRECT_MAP[key]) return DIRECT_MAP[key];
+  if (STAT_LABELS[key]) return STAT_LABELS[key];
 
-  // Common patterns
+  // 2) Patterns
   if (key.startsWith('最小') && key.endsWith('攻击')) {
     return 'Min ' + applyMaps(key.replace(/^最小/, '').replace(/攻击$/, ' ATK'));
   }
@@ -135,9 +126,26 @@ export function statLabel(key: string): string {
     return applyMaps(base) + ' Penetration';
   }
 
-  // Percent-like
+  // 3) Fallback heuristics
   if (key.includes('率')) return applyMaps(key).replace(/率/g, ' Rate');
   if (key.includes('增伤')) return applyMaps(key).replace(/增伤/g, ' Damage Bonus');
 
   return applyMaps(key);
+}
+
+// Overloads
+export function statLabel(key: string): string;
+export function statLabel(stat: unknown): string;
+
+// Single implementation
+export function statLabel(input: unknown): string {
+  if (typeof input === 'string') return labelFromKey(input);
+
+  if (input && typeof input === 'object') {
+    const s = input as any;
+    const key = s.type ?? s.name ?? s.label;
+    if (typeof key === 'string') return labelFromKey(key);
+  }
+
+  return String(input);
 }
