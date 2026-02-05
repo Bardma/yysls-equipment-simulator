@@ -1,567 +1,357 @@
 'use client';
 
-import html2canvas from 'html2canvas-pro';
-import { Download } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import type { DengLevelKey } from '@/stores/levelStore';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface ReportModalProps {
+import { Calculator } from '@/lib/calculator';
+import { ClassConfig } from '@/lib/data/classConfig';
+import { CommonData } from '@/lib/data/commonData';
+import type { EquipItem, EquippedItems } from '@/lib/types';
+
+import {
+  BestBuildTab,
+  CompareTab,
+  ConvertTab,
+  CultivationTab,
+  EquipSlotSelector,
+  StatPriorityTab,
+} from '../graduation';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { EquipPickerModal } from './EquipPickerModal';
+
+type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
+
+interface GraduationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  accountName: string | null;
+  db: EquipItem[];
+  equippedItems: EquippedItems;
   currentClass: string;
+  bowType: string;
   setType: string;
-  level?: DengLevelKey; // ✅ now accepted
+  level: DengLevelKey;
   xinfaLoadout: string[];
-  graduationInfo: {
-    accurate: string;
-    excel: string;
-    dps: number;
-  } | null;
-  statDisplay: Array<{
-    label: string;
-    value: string;
-    highlight?: string;
-    suffix?: string;
-    isLoaned?: boolean;
-    isEarlySeason?: boolean;
-  }>;
   earlySeasonBonus: boolean;
-  loanDingyin: boolean;
+  onApplyBuild: (equips: EquippedItems) => void;
 }
 
-const colors = {
-  bg: { primary: '#0f172a', secondary: '#1e293b', tertiary: '#334155' },
-  text: { primary: '#f1f5f9', secondary: '#94a3b8', muted: '#64748b' },
-  accent: {
-    amber: '#fbbf24',
-    yellow: '#fde047',
-    sky: '#38bdf8',
-    purple: '#a78bfa',
-    emerald: '#34d399',
-    cyan: '#22d3ee',
-    orange: '#fb923c',
-  },
-  border: {
-    default: 'rgba(71, 85, 105, 0.3)',
-    sky: 'rgba(56, 189, 248, 0.2)',
-    purple: 'rgba(167, 139, 250, 0.2)',
-    emerald: 'rgba(52, 211, 153, 0.2)',
-    amber: 'rgba(251, 191, 36, 0.2)',
-  },
+const formatDisplayTotals = (totals: Record<string, number>) => {
+  const displayTotals: Record<string, number> = { ...totals };
+  for (const key in displayTotals) {
+    const val = Number(displayTotals[key]) || 0;
+    const isPercent =
+      CommonData.PERCENT_STATS.includes(key) ||
+      key.includes('率') ||
+      key.includes('增效') ||
+      key.includes('加成') ||
+      key.includes('增伤') ||
+      key.includes('穿透');
+    displayTotals[key] = isPercent ? parseFloat(val.toFixed(1)) : Math.round(val);
+  }
+  return displayTotals;
 };
 
-export const ReportModal = ({
+export const GraduationModal = ({
   open,
   onOpenChange,
-  accountName,
+  db,
+  equippedItems,
   currentClass,
+  bowType,
   setType,
   level,
   xinfaLoadout,
-  graduationInfo,
-  statDisplay,
   earlySeasonBonus,
-  loanDingyin,
-}: ReportModalProps) => {
-  const t = useTranslations('report');
-  const tHeader = useTranslations('header');
-  const tGraduation = useTranslations('graduation');
-  const tSimulation = useTranslations('simulation');
-  const tStats = useTranslations('stats');
+  onApplyBuild,
+}: GraduationModalProps) => {
+  const [selectedSlotKey, setSelectedSlotKey] = useState<keyof EquippedItems>('weapon1');
+  const [selectedSubIndex, setSelectedSubIndex] = useState(0);
+  const [customTarget, setCustomTarget] = useState<EquipItem | null>(null);
+  const [assumeChengyin, setAssumeChengyin] = useState(false);
+  const [freezeDingyin, setFreezeDingyin] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerSlotId, setPickerSlotId] = useState('1');
+  const [pickerWeaponType, setPickerWeaponType] = useState<string | null>(null);
+  const [detailPanelOpen, setDetailPanelOpen] = useState(() => !!equippedItems.weapon1);
 
-  const reportRef = useRef<HTMLDivElement>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const rotationConfig = ClassConfig.ROTATIONS[currentClass];
+  const rotation = rotationConfig?.rotation || [];
+  const baseline = rotationConfig?.baseline || 4244078.34;
+  const skillDb = rotationConfig?.skillDatabase || {};
 
-  const handleDownload = async () => {
-    if (!reportRef.current) return;
+  const accTotals = Calculator.calculateTotal(
+    equippedItems,
+    currentClass,
+    bowType,
+    xinfaLoadout,
+    setType,
+    false,
+    null,
+    earlySeasonBonus,
+    level
+  );
 
-    setIsGenerating(true);
-    try {
-      const canvas = await html2canvas(reportRef.current, {
-        backgroundColor: colors.bg.primary,
-        scale: 2,
-        useCORS: true,
-        logging: false,
-      });
+  const accParams = { ...accTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+  const accResult = rotation.length
+    ? Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false)
+    : { graduationRate: '0.00%', totalDamage: 0 };
+  const currentRate = parseFloat(accResult.graduationRate);
 
-      const link = document.createElement('a');
-      link.download = `${accountName || t('character')}_${currentClass}_${t('reportFile')}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch (error) {
-      console.error('Generate report failed:', error);
-    } finally {
-      setIsGenerating(false);
-    }
+  const displayTotals = formatDisplayTotals(accTotals);
+  const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+  const excelResult = rotation.length
+    ? Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false)
+    : { graduationRate: '0.00%', totalDamage: 0 };
+
+  const convertTarget = customTarget || equippedItems[selectedSlotKey];
+
+  const handlePickEquip = () => {
+    const target = equippedItems[selectedSlotKey];
+    const slotId =
+      selectedSlotKey === 'weapon1' || selectedSlotKey === 'weapon2'
+        ? '1'
+        : selectedSlotKey === 'ring'
+          ? '3'
+          : selectedSlotKey === 'pendant'
+            ? '4'
+            : selectedSlotKey === 'head'
+              ? '5'
+              : selectedSlotKey === 'chest'
+                ? '6'
+                : selectedSlotKey === 'legs'
+                  ? '7'
+                  : '8';
+    setPickerSlotId(slotId);
+    setPickerWeaponType(target?.weaponTypeId || null);
+    setPickerOpen(true);
+  };
+
+  const handleSlotSelect = (slot: keyof EquippedItems) => {
+    setSelectedSlotKey(slot);
+    setSelectedSubIndex(0);
+    setCustomTarget(null);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex flex-col w-[800px] max-w-[95vw] max-h-[90vh] p-0 bg-slate-900 border-slate-700 overflow-hidden">
-        <DialogHeader className="shrink-0 px-6 pt-6 pb-4 border-b border-slate-700/50">
-          <DialogTitle className="text-xl font-bold text-slate-100">{t('preview')}</DialogTitle>
+      <DialogContent
+        className={`!flex !flex-col gap-0 p-0 transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] ${
+          detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'
+        }`}
+      >
+        <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
+          <DialogTitle className="text-base sm:text-lg">毕业率分析</DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-4">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row gap-3 lg:gap-4">
           <div
-            ref={reportRef}
-            style={{
-              padding: '24px',
-              borderRadius: '12px',
-              background: `linear-gradient(135deg, ${colors.bg.primary} 0%, ${colors.bg.secondary} 50%, ${colors.bg.primary} 100%)`,
-              width: '100%',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-            }}
+            className={`hidden lg:block relative transition-all duration-300 ${
+              detailPanelOpen ? 'w-56' : 'w-0'
+            } overflow-hidden shrink-0`}
           >
-            {/* Header */}
-            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '28px' }}>⚔</span>
-                <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: colors.accent.amber, margin: 0 }}>
-                  {tHeader('title')}
-                </h1>
+            {detailPanelOpen && equippedItems[selectedSlotKey] && (
+              <div className="border-border/60 bg-card rounded-lg border p-3 space-y-2 w-56">
+                <div className="text-xs font-medium text-center border-b border-border/40 pb-2">
+                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
+                </div>
+
+                {equippedItems[selectedSlotKey]?.mainStat && (
+                  <div className="space-y-1">
+                    <div className="text-muted-foreground text-xs">主词条</div>
+                    <div className="text-xs flex justify-between">
+                      <span>{equippedItems[selectedSlotKey]?.mainStat.type}</span>
+                      <span className="text-yellow-300">
+                        {equippedItems[selectedSlotKey]?.mainStat.value}
+                        {equippedItems[selectedSlotKey]?.mainStat.isPercent ? '%' : ''}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {equippedItems[selectedSlotKey]?.subStats &&
+                  equippedItems[selectedSlotKey]!.subStats.length > 0 && (
+                    <div className="space-y-1">
+                      <div className="text-muted-foreground text-xs">副词条</div>
+                      {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
+                        <div key={idx} className="text-xs flex justify-between">
+                          <span>{sub.type}</span>
+                          <span className="text-yellow-300">
+                            {sub.value}
+                            {sub.isPercent ? '%' : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                {equippedItems[selectedSlotKey]?.dingyinStat && (
+                  <div className="space-y-1">
+                    <div className="text-muted-foreground text-xs">定音词条</div>
+                    <div className="text-xs flex justify-between">
+                      <span>{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
+                      <span className="text-yellow-300">
+                        {equippedItems[selectedSlotKey]?.dingyinStat?.value}
+                        {equippedItems[selectedSlotKey]?.dingyinStat?.isPercent ? '%' : ''}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div style={{ color: colors.text.muted, fontSize: '14px' }}>
-                {tHeader('subtitle')} · {t('characterReport')}
-                {level ? ` · Lv ${String(level)}` : ''}
+            )}
+          </div>
+
+          <div className="w-full lg:w-[260px] shrink-0 space-y-2 lg:space-y-3 overflow-y-auto">
+            <div className="border-border/60 bg-card rounded-lg border p-2 lg:p-3 text-center">
+              <div className="text-muted-foreground text-[10px] lg:text-xs">当前毕业率</div>
+              <div className="text-lg lg:text-xl font-semibold text-yellow-300">{accResult.graduationRate}</div>
+              <div className="text-muted-foreground text-[10px] lg:text-xs">
+                excel表格显示：{excelResult.graduationRate}
               </div>
             </div>
 
-            {/* Character Name */}
-            <div
-              style={{
-                marginBottom: '24px',
-                padding: '16px',
-                borderRadius: '12px',
-                background:
-                  'linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(253, 224, 71, 0.05) 50%, rgba(251, 191, 36, 0.1) 100%)',
-                border: '1px solid rgba(251, 191, 36, 0.2)',
-                position: 'relative',
-                overflow: 'hidden',
+            <EquipSlotSelector
+              equippedItems={equippedItems}
+              selectedSlot={selectedSlotKey}
+              onSlotSelect={(slot) => {
+                handleSlotSelect(slot);
+                if (equippedItems[slot]) setDetailPanelOpen(true);
               }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '60px',
-                  height: '60px',
-                  borderBottomLeftRadius: '100%',
-                  background: 'linear-gradient(225deg, rgba(251, 191, 36, 0.2) 0%, transparent 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '22px' }}>👤</span>
-                <span style={{ fontSize: '22px', fontWeight: 'bold', color: '#fcd34d', letterSpacing: '-0.5px' }}>
-                  {accountName || t('unnamedCharacter')}
-                </span>
-              </div>
-            </div>
+            />
 
-            {/* Class & Set */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px', marginBottom: '24px' }}>
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  background:
-                    'linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(14, 165, 233, 0.05) 50%, rgba(56, 189, 248, 0.1) 100%)',
-                  border: '1px solid rgba(56, 189, 248, 0.2)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
+            {equippedItems[selectedSlotKey] && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-xs"
+                onClick={() => setDetailPanelOpen(!detailPanelOpen)}
               >
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '50px',
-                    height: '50px',
-                    borderBottomLeftRadius: '100%',
-                    background: 'linear-gradient(225deg, rgba(56, 189, 248, 0.2) 0%, transparent 100%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-                <div style={{ position: 'relative' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                    <span
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '18px',
-                        height: '18px',
-                        borderRadius: '4px',
-                        background: 'rgba(56, 189, 248, 0.2)',
-                        color: '#38bdf8',
-                        fontSize: '10px',
-                      }}
-                    >
-                      ⚔
-                    </span>
-                    <span style={{ color: 'rgba(56, 189, 248, 0.8)', fontSize: '11px' }}>{t('currentClass')}</span>
-                  </div>
-                  <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {currentClass}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  background:
-                    'linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(139, 92, 246, 0.05) 50%, rgba(167, 139, 250, 0.1) 100%)',
-                  border: '1px solid rgba(167, 139, 250, 0.2)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '50px',
-                    height: '50px',
-                    borderBottomLeftRadius: '100%',
-                    background: 'linear-gradient(225deg, rgba(167, 139, 250, 0.2) 0%, transparent 100%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-                <div style={{ position: 'relative' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                    <span
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '18px',
-                        height: '18px',
-                        borderRadius: '4px',
-                        background: 'rgba(167, 139, 250, 0.2)',
-                        color: '#a78bfa',
-                        fontSize: '10px',
-                      }}
-                    >
-                      🎽
-                    </span>
-                    <span style={{ color: 'rgba(167, 139, 250, 0.8)', fontSize: '11px' }}>{t('setSelection')}</span>
-                  </div>
-                  <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {setType || t('none')}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Xinfa Config */}
-            <div
-              style={{
-                marginBottom: '24px',
-                padding: '16px',
-                borderRadius: '12px',
-                background:
-                  'linear-gradient(135deg, rgba(52, 211, 153, 0.1) 0%, rgba(16, 185, 129, 0.05) 50%, rgba(52, 211, 153, 0.1) 100%)',
-                border: '1px solid rgba(52, 211, 153, 0.2)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '60px',
-                  height: '60px',
-                  borderBottomLeftRadius: '100%',
-                  background: 'linear-gradient(225deg, rgba(52, 211, 153, 0.2) 0%, transparent 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-              <div style={{ position: 'relative' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '4px',
-                      background: 'rgba(52, 211, 153, 0.2)',
-                      color: '#34d399',
-                      fontSize: '11px',
-                    }}
-                  >
-                    📖
-                  </span>
-                  <span style={{ color: 'rgba(52, 211, 153, 0.8)', fontSize: '12px', fontWeight: '500' }}>
-                    {tSimulation('xinfaConfig')}
-                  </span>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
-                  {xinfaLoadout.map((xinfa, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        padding: '10px 8px',
-                        borderRadius: '8px',
-                        background: 'rgba(30, 41, 59, 0.6)',
-                        border: '1px solid rgba(52, 211, 153, 0.15)',
-                        textAlign: 'center',
-                      }}
-                    >
-                      <div style={{ fontSize: '10px', color: colors.text.muted, marginBottom: '4px' }}>
-                        {t('slot')} {idx + 1}
-                      </div>
-                      <div style={{ fontSize: '13px', fontWeight: '600', color: '#6ee7b7', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {xinfa || t('empty')}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Graduation Rate */}
-            <div
-              style={{
-                marginBottom: '24px',
-                padding: '16px',
-                borderRadius: '12px',
-                background:
-                  loanDingyin && earlySeasonBonus
-                    ? 'linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(34, 211, 238, 0.05) 50%, rgba(34, 211, 238, 0.1) 100%)'
-                    : loanDingyin
-                      ? 'linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(167, 139, 250, 0.05) 50%, rgba(251, 191, 36, 0.1) 100%)'
-                      : earlySeasonBonus
-                        ? 'linear-gradient(135deg, rgba(34, 211, 238, 0.1) 0%, rgba(34, 211, 238, 0.05) 50%, rgba(251, 191, 36, 0.1) 100%)'
-                        : 'linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(253, 224, 71, 0.05) 50%, rgba(249, 115, 22, 0.1) 100%)',
-                border: `1px solid ${
-                  loanDingyin && earlySeasonBonus
-                    ? 'rgba(167, 139, 250, 0.3)'
-                    : loanDingyin
-                      ? 'rgba(167, 139, 250, 0.3)'
-                      : earlySeasonBonus
-                        ? 'rgba(34, 211, 238, 0.3)'
-                        : 'rgba(253, 224, 71, 0.2)'
-                }`,
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '80px',
-                  height: '80px',
-                  borderBottomLeftRadius: '100%',
-                  background:
-                    loanDingyin && earlySeasonBonus
-                      ? 'linear-gradient(225deg, rgba(167, 139, 250, 0.2) 0%, rgba(34, 211, 238, 0.1) 50%, transparent 100%)'
-                      : loanDingyin
-                        ? 'linear-gradient(225deg, rgba(167, 139, 250, 0.2) 0%, transparent 100%)'
-                        : earlySeasonBonus
-                          ? 'linear-gradient(225deg, rgba(34, 211, 238, 0.2) 0%, transparent 100%)'
-                          : 'linear-gradient(225deg, rgba(253, 224, 71, 0.2) 0%, transparent 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              <div style={{ position: 'relative' }}>
-                {(loanDingyin || earlySeasonBonus) && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11px', marginBottom: '8px' }}>
-                    {loanDingyin && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#d8b4fe' }}>
-                        <span>💰</span>
-                        <span>{tGraduation('loanDingyinLabel')}</span>
-                      </div>
-                    )}
-                    {earlySeasonBonus && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#67e8f9' }}>
-                        <span>⏩</span>
-                        <span>{tGraduation('earlySeasonLabel')}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {graduationInfo ? (
-                  <div>
-                    <div
-                      style={{
-                        fontSize: '40px',
-                        fontWeight: 'bold',
-                        color: loanDingyin ? '#c4b5fd' : earlySeasonBonus ? '#67e8f9' : '#fcd34d',
-                        letterSpacing: '-1px',
-                        marginBottom: '12px',
-                      }}
-                    >
-                      {graduationInfo.accurate}
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '4px',
-                            background: 'rgba(253, 224, 71, 0.2)',
-                            color: '#fcd34d',
-                            fontSize: '11px',
-                            fontWeight: '500',
-                          }}
-                        >
-                          E
-                        </span>
-                        <span style={{ color: colors.text.muted }}>{tGraduation('excel')}</span>
-                        <span style={{ marginLeft: 'auto', fontWeight: '500', color: '#fef08a' }}>{graduationInfo.excel}</span>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '4px',
-                            background: 'rgba(249, 115, 22, 0.2)',
-                            color: '#fb923c',
-                            fontSize: '11px',
-                            fontWeight: '500',
-                          }}
-                        >
-                          D
-                        </span>
-                        <span style={{ color: colors.text.muted }}>{tGraduation('dps')}</span>
-                        <span style={{ marginLeft: 'auto', fontWeight: '500', color: '#fed7aa' }}>
-                          {graduationInfo.dps.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                {detailPanelOpen ? (
+                  <>
+                    <ChevronLeft className="h-3 w-3 mr-1 hidden lg:inline" />
+                    <span className="hidden lg:inline">收起装备详情</span>
+                    <span className="lg:hidden">收起详情</span>
+                  </>
                 ) : (
-                  <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>{tGraduation('noRotation')}</div>
+                  <>
+                    <ChevronRight className="h-3 w-3 mr-1 hidden lg:inline" />
+                    <span className="hidden lg:inline">查看装备详情</span>
+                    <span className="lg:hidden">查看详情</span>
+                  </>
                 )}
+              </Button>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0 flex flex-col">
+            <Tabs defaultValue="compare" className="w-full flex flex-col flex-1">
+              <div className="shrink-0 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto scrollbar-none">
+                <TabsList className="w-max sm:w-full justify-start">
+                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">
+                    对比
+                  </TabsTrigger>
+                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">
+                    转律
+                  </TabsTrigger>
+                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">
+                    配装
+                  </TabsTrigger>
+                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">
+                    词条
+                  </TabsTrigger>
+                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">
+                    培养
+                  </TabsTrigger>
+                </TabsList>
               </div>
-            </div>
 
-            {/* Stats Panel */}
-            <div
-              style={{
-                padding: '16px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(16, 185, 129, 0.04) 50%, rgba(34, 197, 94, 0.08) 100%)',
-                border: '1px solid rgba(34, 197, 94, 0.2)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '80px',
-                  height: '80px',
-                  borderBottomLeftRadius: '100%',
-                  background: 'linear-gradient(225deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
+              <TabsContent value="compare" className="space-y-4 pt-4 flex-1 overflow-y-auto">
+                <CompareTab
+                  db={db}
+                  equippedItems={equippedItems}
+                  selectedSlotKey={selectedSlotKey}
+                  currentClass={currentClass}
+                  bowType={bowType}
+                  setType={setType}
+                  xinfaLoadout={xinfaLoadout}
+                  earlySeasonBonus={earlySeasonBonus}
+                  currentRate={currentRate}
+                  assumeChengyin={assumeChengyin}
+                  freezeDingyin={freezeDingyin}
+                  onAssumeChange={setAssumeChengyin}
+                  onFreezeChange={setFreezeDingyin}
+                />
+              </TabsContent>
 
-              <div style={{ position: 'relative' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '4px',
-                      background: 'rgba(34, 197, 94, 0.2)',
-                      color: '#22c55e',
-                      fontSize: '11px',
-                    }}
-                  >
-                    📊
-                  </span>
-                  <span style={{ color: 'rgba(34, 197, 94, 0.8)', fontSize: '12px', fontWeight: '500' }}>{tStats('title')}</span>
-                </div>
+              <TabsContent value="convert" className="pt-4 flex-1 overflow-auto">
+                <ConvertTab
+                  convertTarget={convertTarget}
+                  selectedSubIndex={selectedSubIndex}
+                  onSubIndexChange={setSelectedSubIndex}
+                  equippedItems={equippedItems}
+                  selectedSlotKey={selectedSlotKey}
+                  currentClass={currentClass}
+                  bowType={bowType}
+                  setType={setType}
+                  xinfaLoadout={xinfaLoadout}
+                  earlySeasonBonus={earlySeasonBonus}
+                  currentRate={currentRate}
+                  onPickEquip={handlePickEquip}
+                />
+              </TabsContent>
 
-                {statDisplay.length === 0 ? (
-                  <div style={{ textAlign: 'center', color: colors.text.muted, padding: '16px' }}>{tStats('noStats')}</div>
-                ) : (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '6px 24px' }}>
-                    {statDisplay.map((item) => (
-                      <div
-                        key={item.label}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          padding: '6px 10px',
-                          borderRadius: '6px',
-                          background: 'rgba(30, 41, 59, 0.4)',
-                          gap: '8px',
-                          minWidth: 0,
-                          border: '1px solid transparent',
-                        }}
-                      >
-                        <span style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                          {item.label}
-                        </span>
-                        <span style={{ fontSize: '12px', fontWeight: '600', color: '#e2e8f0', whiteSpace: 'nowrap', flexShrink: 0, textAlign: 'right' }}>
-                          {item.value}
-                          {item.highlight ? <span style={{ color: '#fbbf24', marginLeft: '2px' }}>{item.highlight}</span> : null}
-                          {item.suffix ? <span style={{ color: '#64748b', fontSize: '10px', marginLeft: '1px' }}>{item.suffix}</span> : null}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+              <TabsContent value="best-build" className="pt-4 flex-1 overflow-y-auto">
+                <BestBuildTab
+                  db={db}
+                  currentClass={currentClass}
+                  bowType={bowType}
+                  setType={setType}
+                  xinfaLoadout={xinfaLoadout}
+                  earlySeasonBonus={earlySeasonBonus}
+                  onApplyBuild={onApplyBuild}
+                />
+              </TabsContent>
 
-            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(71, 85, 105, 0.5)', textAlign: 'center' }}>
-              <div style={{ color: colors.text.muted, fontSize: '12px' }}>
-                {t('generatedAt')}: {new Date().toLocaleString()}
-              </div>
-            </div>
+              <TabsContent value="stat-priority" className="pt-4 flex-1 overflow-y-auto">
+                <StatPriorityTab
+                  equippedItems={equippedItems}
+                  currentClass={currentClass}
+                  bowType={bowType}
+                  setType={setType}
+                  xinfaLoadout={xinfaLoadout}
+                  earlySeasonBonus={earlySeasonBonus}
+                  currentRate={currentRate}
+                />
+              </TabsContent>
+
+              <TabsContent value="cultivation" className="pt-4 flex-1 overflow-y-auto">
+                <CultivationTab
+                  equippedItems={equippedItems}
+                  currentClass={currentClass}
+                  bowType={bowType}
+                  setType={setType}
+                  xinfaLoadout={xinfaLoadout}
+                  earlySeasonBonus={earlySeasonBonus}
+                  currentRate={currentRate}
+                />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
 
-        <DialogFooter className="shrink-0 px-6 py-4 border-t border-slate-700/50 bg-slate-900">
-          <Button
-            onClick={handleDownload}
-            disabled={isGenerating}
-            className="cursor-pointer bg-linear-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white shadow-md shadow-amber-900/20"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            {isGenerating ? t('generating') : t('download')}
-          </Button>
-        </DialogFooter>
+        <EquipPickerModal
+          open={pickerOpen}
+          onOpenChange={setPickerOpen}
+          slotId={pickerSlotId}
+          weaponTypeId={pickerWeaponType}
+          db={db}
+          onSelect={(item) => {
+            setCustomTarget(item);
+            setSelectedSubIndex(0);
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

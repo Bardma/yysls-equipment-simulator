@@ -1,26 +1,21 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import type { EquippedItems } from '@/lib/types';
-import { Calculator } from '@/lib/calculator';
-import { CommonData } from '@/lib/data/commonData';
 
-export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+export type DengLevelKey = NonNullable<
+  Parameters<typeof import('@/lib/calculator').Calculator.calculateTotal>[8]
+>;
 
-// SimulationPanelProps
 export interface SimulationPanelProps {
   expanded: boolean;
   onToggle: () => void;
+
   currentClass: string;
   bowType: string;
   setType: string;
-  level: DengLevelKey;
-  onLevelChange: (level: DengLevelKey) => void;  // obligatoire
-  // …autres props…
-}
 
-// SimulationPanel: implémentez un <select> ou un champ permettant de changer le niveau,
-// puis appelez onLevelChange lorsque l’utilisateur modifie la valeur.
+  level: DengLevelKey;
+  onLevelChange?: (next: DengLevelKey) => void;
 
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
@@ -28,51 +23,127 @@ export interface SimulationPanelProps {
   onClassChange: (value: string) => void;
   onBowChange: (value: string) => void;
   onSetChange: (value: string) => void;
+
   onXinfaClick: (idx: number) => void;
   onUnequip: (slotKey: keyof EquippedItems) => void;
 }
 
-export function SimulationPanel(props: SimulationPanelProps) {
-  const t = useTranslations('simulation');
-
-  // Si tu as déjà une liste officielle dans CommonData, on l’utilise, sinon fallback
-  const levelOptions: Array<{ label: string; value: DengLevelKey }> =
-    ((CommonData as any).DENG_LEVEL_OPTIONS as Array<{ label: string; value: DengLevelKey }>) ??
-    (['70', '80', '100'] as unknown as DengLevelKey[]).map((v) => ({ label: String(v), value: v }));
-
+export const SimulationPanel = ({
+  expanded,
+  onToggle,
+  currentClass,
+  bowType,
+  setType,
+  level,
+  onLevelChange,
+  equippedItems,
+  xinfaLoadout,
+  onClassChange,
+  onBowChange,
+  onSetChange,
+  onXinfaClick,
+  onUnequip,
+}: SimulationPanelProps) => {
+  // UI minimaliste volontaire (compile sûr). Tu peux re-styler ensuite.
   return (
-    <div className="border-border/60 bg-card rounded-lg border">
-      {/* header / toggle etc ... garde ton code */}
-      <div className="flex items-center justify-between p-3">
-        <div className="font-semibold">{t('title')}</div>
-        <button onClick={props.onToggle} className="text-xs opacity-70 hover:opacity-100">
-          {props.expanded ? t('collapse') : t('expand')}
+    <section className="border-border/60 bg-card rounded-lg border p-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="font-semibold">Simulation</div>
+        <button
+          type="button"
+          onClick={onToggle}
+          className="text-xs px-2 py-1 rounded border border-border/60"
+        >
+          {expanded ? 'Hide' : 'Show'}
         </button>
       </div>
 
-      {props.expanded && (
-        <div className="p-3 space-y-3">
-          {/* ... tes selects classe / arc / set etc */}
+      {expanded && (
+        <div className="mt-3 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label className="text-sm">
+              <div className="text-xs text-muted-foreground mb-1">Class</div>
+              <input
+                value={currentClass}
+                onChange={(e) => onClassChange(e.target.value)}
+                className="w-full rounded border border-border/60 bg-background px-2 py-1 text-sm"
+              />
+            </label>
 
-          {/* LEVEL (nouveau) */}
-          <div className="space-y-1">
-            <div className="text-xs text-muted-foreground">{t('level') ?? 'Level'}</div>
-            <select
-              className="w-full border border-border/60 bg-background rounded-md px-2 py-1 text-sm"
-              value={String(props.level)}
-              onChange={(e) => props.onLevelChange(e.target.value as unknown as DengLevelKey)}
-            >
-              {levelOptions.map((opt) => (
-                <option key={String(opt.value)} value={String(opt.value)}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            <label className="text-sm">
+              <div className="text-xs text-muted-foreground mb-1">Bow</div>
+              <input
+                value={bowType}
+                onChange={(e) => onBowChange(e.target.value)}
+                className="w-full rounded border border-border/60 bg-background px-2 py-1 text-sm"
+              />
+            </label>
+
+            <label className="text-sm">
+              <div className="text-xs text-muted-foreground mb-1">Set</div>
+              <input
+                value={setType}
+                onChange={(e) => onSetChange(e.target.value)}
+                className="w-full rounded border border-border/60 bg-background px-2 py-1 text-sm"
+              />
+            </label>
+
+            <label className="text-sm">
+              <div className="text-xs text-muted-foreground mb-1">Level</div>
+              <input
+                value={String(level)}
+                onChange={(e) => {
+                  if (!onLevelChange) return;
+                  // On cast volontairement: DengLevelKey est un union literal côté Calculator.
+                  onLevelChange(e.target.value as unknown as DengLevelKey);
+                }}
+                className="w-full rounded border border-border/60 bg-background px-2 py-1 text-sm"
+              />
+            </label>
           </div>
 
-          {/* ... le reste de ton panel */}
+          <div className="rounded border border-border/60 p-2">
+            <div className="text-xs text-muted-foreground mb-2">Xinfa</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {xinfaLoadout.map((x, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => onXinfaClick(idx)}
+                  className="rounded border border-border/60 px-2 py-2 text-xs text-left"
+                  title={x || 'Empty'}
+                >
+                  <div className="text-muted-foreground">Slot {idx + 1}</div>
+                  <div className="font-medium truncate">{x || '—'}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded border border-border/60 p-2">
+            <div className="text-xs text-muted-foreground mb-2">Equipped</div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((k) => {
+                const item = equippedItems[k];
+                return (
+                  <div key={String(k)} className="rounded border border-border/60 p-2">
+                    <div className="text-muted-foreground">{String(k)}</div>
+                    <div className="truncate font-medium">{item?.name || '—'}</div>
+                    <button
+                      type="button"
+                      onClick={() => onUnequip(k)}
+                      className="mt-2 text-[11px] px-2 py-1 rounded border border-border/60"
+                      disabled={!item}
+                    >
+                      Unequip
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
-    </div>
+    </section>
   );
-}
+};
