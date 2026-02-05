@@ -1,216 +1,216 @@
-# Where Winds Meet Equipment Graduation Rate Simulator
+# 燕云十六声装备毕业率模拟器
 
 <div align="center">
 
-## 🌟 This project is an optimized rebuild based on the original work 🌟
+## 🌟 本项目基于原作品开发，是原作品的优化重构版本 🌟
 
-### 📌 [Original Project: http://spongem.com/yysls/](http://spongem.com/yysls/) 📌
+### 📌 [原作品地址：http://spongem.com/yysls/](http://spongem.com/yysls/) 📌
 
-**Core graduation rate calculation algorithms, rotation data, and skill formulas are all derived from the original project**
+**核心毕业率计算算法、轴数据、技能公式等均来源于原作品**
 
-This project optimizes UI/UX and extends functionality based on the original work. Thanks to the original author for their outstanding contribution!
+本项目在原作品基础上进行了 UI/UX 优化和功能扩展，感谢原作者的杰出贡献！
 
 ---
 
 </div>
 
-A modern web application for managing equipment and calculating graduation rates for the game "燕云十六声" (Where Winds Meet), built with Next.js 16.
+一个用于管理《燕云十六声》游戏装备、计算毕业率的现代化 Web 应用，基于 Next.js 16 构建。
 
-## Relationship with the Original Project
+## 与原作品的关系
 
-- **Core Algorithms**: Graduation rate formulas, DPS calculation logic, skill damage formulas, and other core algorithms are ported from the original project
-- **Rotation Data**: Skill rotations and damage coefficients for each build come from the original project and community contributors
-- **Game Data**: Equipment stats, Xinfa effects, set bonuses, and other game data reference the original project
-- **This Project's Optimizations**: Rebuilt the frontend interface and interaction experience while preserving the original core calculation logic
+- **核心算法**：毕业率计算公式、DPS 计算逻辑、技能伤害公式等核心算法均移植自原作品
+- **轴数据**：各流派的技能轴、增伤系数等数据来源于原作品及社区贡献者
+- **游戏数据**：装备词条、心法效果、套装属性等游戏数据参考原作品
+- **本项目优化**：在保留原作品核心计算逻辑的基础上，重构了前端界面和交互体验
 
-[中文](./README.md)
+[English](./README_EN.md)
 
-## Overview
+## 预览
 
-This application helps players manage equipment libraries across multiple characters, simulate gear loadouts, and calculate graduation rates in real-time.
+本应用可帮助玩家管理多角色装备库，进行配装模拟，并实时计算毕业率。
 
-## Features
+## 功能特性
 
-### 🎭 Character Management
+### 🎭 角色管理
 
-- Create, switch, and delete multiple characters
-- Independent equipment data and loadout configurations per character
+- 创建、切换、删除多个角色
+- 每个角色独立的装备数据和配装方案
 
-### ⚔️ Equipment Management
+### ⚔️ 装备管理
 
-- Complete equipment slots: Weapons (dual-wield), Ring, Pendant, Helm, Chest, Legs, Gloves
-- Main stat, sub-stats (4 slots), and Dingyin stat entry
-- Chengyin equipment, purple gear, and convertible attribute marking
-- **OCR text recognition** for quick equipment input (powered by Tesseract.js)
-- Image cropping support for precise recognition
+- 完整的装备槽位：武器（双武器）、环、佩、冠胄、胸甲、胫甲、腕甲
+- 主词条、副词条（4条）、定音词条录入
+- 承音装备、紫装、可转律等属性标记
+- **OCR 文字识别**快速录入装备（基于 Tesseract.js）
+- 支持图片裁剪，精准识别
 
-### 🎯 Class/Build Support
+### 🎯 流派支持
 
-Full graduation rate calculation support for 9 builds:
+完整支持 9 大流派的毕业率计算：
 
-- Mingjin Hong (鸣金虹), Mingjin Ying (鸣金影)
-- Pozhu Chen (破竹尘), Pozhu Feng (破竹风), Pozhu Yuan (破竹鸢)
-- Lieshi Wei (裂石威), Lieshi Jun - Dual Cut (裂石钧·双切), Lieshi Jun - Pure Tang (裂石钧·纯唐)
-- Qiansi Lin (牵丝霖), Qiansi Yu (牵丝玉)
+- 鸣金虹、鸣金影
+- 破竹尘、破竹风、破竹鸢
+- 裂石威、裂石钧（双切）、裂石钧（纯唐）
+- 牵丝霖、牵丝玉
 
-### 🎮 Equipment Simulation
+### 🎮 穿戴模拟
 
-- Visual configuration of 8 equipment slots
-- Xinfa (心法) selection with 4 slots per build
-- Set bonuses (Yudou, Feisun, Shiyu, Lianxing, Hantian, Duanyue, etc.)
-- Pre-season bonus options
+- 8 个装备槽位可视化配置
+- 心法选择（每流派 4 个心法槽位）
+- 套装选择（玉斗、飞隼、时雨、连星、撼天、断岳等）
+- 提前赛季加成选项
 
-### 📊 Graduation Rate Calculation
+### 📊 毕业率计算
 
-- Precise DPS calculation based on rotation expectations
-- Real-time graduation rate percentage display
-- Excel grade reference
-- Pre-loan Dingyin mode (preview full Dingyin effects in advance)
+- 基于轴期望的精确 DPS 计算
+- 实时毕业率百分比显示
+- Excel 等级对照
+- 预借定音模式（提前预览满定音效果）
 
-### 📈 Advanced Analysis Features
+### 📈 毕业率分析（高级功能）
 
-- **Stat Priority Ranking**: Analyze each stat's contribution to graduation rate
-- **Equipment Comparison**: Compare graduation rate improvements between different gear
-- **Cultivation Recommendations**: Suggest stat priorities based on current loadout
-- **Optimal Build Calculator**: Automatically search for the highest graduation rate build from your library
-- **Transmutation Analysis**: Analyze potential gains from stat transmutation
+- **词条优先级排名**：分析每个词条对毕业率的收益贡献
+- **装备收益对比**：比较不同装备的毕业率提升
+- **培养方向建议**：根据当前配装推荐词条培养优先级
+- **最优配装计算**：从装备库中自动搜索最高毕业率配装方案
+- **转律分析**：分析装备转律后的收益变化
 
-### 🔍 Equipment Library Search
+### 🔍 装备库搜索
 
-- Pinyin search support (e.g., type "jq" to search for "剑气")
-- Intelligent matching with Jieba segmentation
-- Filter by slot, attributes, and more
+- 支持拼音搜索（如输入 "jq" 搜索 "剑气"）
+- 结巴分词智能匹配
+- 按部位、属性等条件筛选
 
-### 💾 Data Management
+### 💾 数据管理
 
-- Export/Import JSON data backups
-- Local data persistence (localStorage)
-- Generate loadout report images for sharing
+- 导出/导入 JSON 数据备份
+- 数据本地持久化（localStorage）
+- 生成配装报表图片分享
 
-### 🎨 UI Features
+### 🎨 界面特性
 
-- Responsive design for desktop and mobile
-- Dark theme interface
-- Collapsible panels with customizable layout
+- 响应式设计，支持桌面端和移动端
+- 深色主题界面
+- 可折叠面板，自定义布局
 
-## Tech Stack
+## 技术栈
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | Next.js 16 (App Router) |
-| **Frontend** | React 19 |
-| **Language** | TypeScript 5 |
-| **Styling** | Tailwind CSS 4 |
-| **UI Components** | shadcn/ui + Radix UI |
-| **State Management** | Zustand 5 |
+| 类别 | 技术 |
+|------|------|
+| **框架** | Next.js 16 (App Router) |
+| **前端** | React 19 |
+| **语言** | TypeScript 5 |
+| **样式** | Tailwind CSS 4 |
+| **UI 组件** | shadcn/ui + Radix UI |
+| **状态管理** | Zustand 5 |
 | **OCR** | Tesseract.js 7 |
-| **Search** | jieba-wasm + pinyin-pro |
-| **Image Processing** | react-image-crop, html2canvas-pro |
-| **Storage** | localStorage |
+| **搜索** | jieba-wasm + pinyin-pro |
+| **图片处理** | react-image-crop, html2canvas-pro |
+| **存储** | localStorage |
 
-## Getting Started
+## 快速开始
 
-### Prerequisites
+### 环境要求
 
 - Node.js 18+
-- npm or yarn or pnpm
+- npm 或 yarn 或 pnpm
 
-### Install Dependencies
+### 安装依赖
 
 ```bash
 npm install
 ```
 
-### Development Mode
+### 开发模式
 
 ```bash
 npm run dev
 ```
 
-Visit http://localhost:3000
+访问 http://localhost:3000
 
-### Production Build
+### 构建生产版本
 
 ```bash
 npm run build
 npm run start
 ```
 
-### Code Formatting
+### 代码格式化
 
 ```bash
 npm run format
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Main page
-│   └── globals.css         # Global styles
+│   ├── layout.tsx          # 根布局
+│   ├── page.tsx            # 主页面
+│   └── globals.css         # 全局样式
 ├── components/
-│   ├── ui/                 # shadcn/ui base components
-│   ├── common/             # Common components (image cropper, stat display, etc.)
-│   ├── equipment/          # Equipment components (cards, library, etc.)
-│   ├── simulation/         # Equipment simulation components
-│   ├── graduation/         # Graduation rate analysis components
-│   ├── layout/             # Layout components (header, panels, etc.)
-│   ├── stats/              # Stats display components
-│   └── modals/             # Modal components (equipment editor, xinfa selector, etc.)
-├── stores/                 # Zustand state management
-│   ├── accountStore.ts     # Character/account state
-│   ├── equipmentStore.ts   # Equipment library state
-│   └── simulationStore.ts  # Simulation configuration state
-└── lib/                    # Utility libraries
-    ├── calculator/         # Graduation rate calculation core
-    ├── data/               # Game data (classes, skills, xinfa, etc.)
-    ├── graduation/         # Graduation rate algorithms
-    ├── hooks/              # Custom React hooks
-    ├── types.ts            # TypeScript type definitions
-    ├── ocrParser.ts        # OCR parsing
-    ├── storage.ts          # Local storage utilities
-    └── utils.ts            # Utility functions
+│   ├── ui/                 # shadcn/ui 基础组件
+│   ├── common/             # 通用组件（图片裁剪、词条显示等）
+│   ├── equipment/          # 装备相关组件（装备卡片、装备库等）
+│   ├── simulation/         # 穿戴模拟组件
+│   ├── graduation/         # 毕业率分析组件
+│   ├── layout/             # 布局组件（头部、面板等）
+│   ├── stats/              # 属性统计组件
+│   └── modals/             # 弹窗组件（装备编辑、心法选择等）
+├── stores/                 # Zustand 状态管理
+│   ├── accountStore.ts     # 角色账号状态
+│   ├── equipmentStore.ts   # 装备库状态
+│   └── simulationStore.ts  # 模拟配置状态
+└── lib/                    # 工具库
+    ├── calculator/         # 毕业率计算核心
+    ├── data/               # 游戏数据（流派、技能、心法等）
+    ├── graduation/         # 毕业率相关算法
+    ├── hooks/              # 自定义 Hooks
+    ├── types.ts            # TypeScript 类型定义
+    ├── ocrParser.ts        # OCR 解析
+    ├── storage.ts          # 本地存储
+    └── utils.ts            # 工具函数
 ```
 
-## Usage Guide
+## 使用说明
 
-1. **Create a Character**: Click the "+ New Character" button in the top right corner
-2. **Add Equipment**: Click "+ Add Equipment" button, manually enter or use OCR recognition
-3. **Select Build**: Choose your current build in the simulation panel on the right
-4. **Equip Items**: Click equipment slots to select items to equip
-5. **Configure Xinfa**: Click xinfa slots to configure your xinfa loadout
-6. **View Graduation Rate**: Real-time display of current loadout's graduation rate and DPS
-7. **Detailed Analysis**: Click "Analyze" button to view stat priorities and cultivation recommendations
-8. **Generate Report**: Click "Generate Report" to export a loadout image
+1. **创建角色**：点击右上角「+ 新建角色」按钮，输入角色名称
+2. **录入装备**：点击「+ 录入装备」按钮，可手动填写或使用 OCR 识别
+3. **选择流派**：在右侧模拟面板选择当前流派
+4. **穿戴模拟**：点击装备槽位选择要装备的物品
+5. **选择心法**：点击心法槽位配置心法
+6. **查看毕业率**：实时显示当前配装的毕业率和 DPS
+7. **详细分析**：点击「分析」按钮查看词条优先级和培养建议
+8. **生成报表**：点击「生成报表」导出配装图片
 
-## Rotation Data Sources
+## 轴数据来源
 
-Graduation rate calculations are based on rotation data provided by:
+毕业率计算基于以下作者提供的轴数据：
 
-- **Violetta** - Pozhu Chen, Mingjin Hong, Mingjin Ying, Pozhu Feng, Pozhu Yuan, Lieshi Wei, Lieshi Jun (Dual Cut), Qiansi Yu
-- **豆沙包 (Doushabao)** - Mingjin Ying
-- **秋夕君 (Qiuxijun)** - Lieshi Jun (Pure Tang), Qiansi Lin
+- **Violetta** - 破竹尘、鸣金虹、鸣金影、破竹风、破竹鸢、裂石威、裂石钧（双切）、牵丝玉
+- **豆沙包** - 鸣金影
+- **秋夕君** - 裂石钧（纯唐）、牵丝霖
 
-## Roadmap
+## 开发计划
 
-- [ ] Add QR code to share reports for quick access to reference equipment
-- [ ] Visual rotation planning tool
-- [ ] Mini Program version (WeChat/Alipay)
-- [ ] Game version selection (for international server players)
-- [ ] Multi-language support
+- [ ] 支持分享报告添加二维码，快捷扫码即可获得参考装备
+- [ ] 可视化排轴工具
+- [ ] 小程序版
+- [ ] 支持版本选择（方便海外版玩家使用）
+- [ ] 支持多语言
 
-## Acknowledgments
+## 致谢
 
-- Thanks to the creator of the [original project](http://spongem.com/yysls/)
-- Thanks to all the rotation data contributors
-- Thanks to the Where Winds Meet game community
+- 感谢 [原作品](http://spongem.com/yysls/) 的创作者
+- 感谢各流派轴数据的提供者
+- 感谢《燕云十六声》游戏社区
 
-## License
+## 许可证
 
 MIT License
 
-## Disclaimer
+## 免责声明
 
-This is an unofficial fan project and is not affiliated with the official Where Winds Meet game. All game content and data copyrights belong to the game developers.
+本项目为非官方粉丝作品，与《燕云十六声》游戏官方无关。游戏内容、数据的版权归游戏开发商所有。
