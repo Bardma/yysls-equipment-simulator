@@ -56,19 +56,15 @@ export const StatInputRow = ({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {options.map((stat) => {
-  const label = statLabel(stat);
-
-  return (
-    <SelectItem
-      key={label}
-      value={label}
-      disabled={disabledOptions.includes(label)}
-    >
-      {label}
-    </SelectItem>
-  );
-})}
+          {options.map((stat) => (
+  <SelectItem
+    key={String(stat)}
+    value={String(stat)}
+    disabled={disabledOptions.includes(stat)}
+  >
+    {String(stat)}
+  </SelectItem>
+))}
         </SelectContent>
       </Select>
       <div className="flex gap-2">

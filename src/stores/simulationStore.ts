@@ -3,7 +3,26 @@ import { create } from 'zustand';
 import { ClassConfig } from '../lib/data/classConfig';
 import { SimLoadoutIds, loadSimState, saveSimState } from '../lib/storage';
 import type { EquipItem, EquippedItems } from '../lib/types';
+import { Calculator } from '@/lib/calculator';
 
+export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+
+// Valeur par défaut : on force un cast safe côté TS.
+// IMPORTANT: si ton Calculator attend d’autres clés, change juste "100".
+const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
+
+const levelStorageKey = (account: string) => `yysls_level_${account}`;
+
+const loadLevel = (account: string | null): DengLevelKey => {
+  if (typeof window === 'undefined' || !account) return DEFAULT_LEVEL;
+  const raw = window.localStorage.getItem(levelStorageKey(account));
+  return (raw as unknown as DengLevelKey) || DEFAULT_LEVEL;
+};
+
+const saveLevel = (account: string | null, level: DengLevelKey) => {
+  if (typeof window === 'undefined' || !account) return;
+  window.localStorage.setItem(levelStorageKey(account), String(level));
+};
 const emptyEquippedItems = (): EquippedItems => ({
   weapon1: null,
   weapon2: null,
@@ -16,7 +35,10 @@ const emptyEquippedItems = (): EquippedItems => ({
 });
 
 interface SimulationState {
+	level: DengLevelKey;
+setLevel: (account: string | null, level: DengLevelKey) => void;
   currentClass: string;
+  level: DEFAULT_LEVEL,
   bowType: string;
   setType: string;
   level: import('../lib/levelBaseStats').DengLevelKey;
