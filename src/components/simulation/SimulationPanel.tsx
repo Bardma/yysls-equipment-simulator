@@ -104,7 +104,12 @@ export function SimulationPanel(props: SimulationPanelProps) {
 
   const classOptions = getClassOptions(currentClass);
   const bowOptions = getBowOptions(bowType);
-  const setOptions = getSetOptionsForClass(currentClass, setType);
+  const setOptions = useMemo(() => {
+  const all = Object.keys(CommonData.SET_DATA || {});
+  const current = setType ? [setType] : [];
+  // met le set courant en premier + évite doublons
+  return Array.from(new Set([...current, ...all]));
+}, [setType]);
 
   if (!expanded) {
     return (
