@@ -173,9 +173,9 @@ export function SimulationPanel(props: SimulationPanelProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {setOptions.map((s) => (
-  <SelectItem key={s} value={s}>
-    {setLabel(s)}
+              {setOptions.map((set) => (
+  <SelectItem key={set} value={set}>
+    {setLabel(set)}
   </SelectItem>
 ))}
             </SelectContent>
