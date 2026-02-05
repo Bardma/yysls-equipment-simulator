@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { CommonData } from '@/lib/data/commonData';
 import type { EquipItem, StatValue } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { slotLabel } from '@/lib/statName';
 
 // 计算单个词条的完整度
 const getStatCompleteness = (stat: StatValue): number => {
@@ -107,7 +108,7 @@ export const EquipmentCard = ({
           <div className="font-medium text-slate-100 truncate text-sm sm:text-base">{equip.name}</div>
           <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs flex-wrap">
             <span className="text-slate-400">
-              {equip.slotName} {equip.isChengyin ? t('chengyin') : ''}
+              {slotLabel(equip.slotName)} {equip.isChengyin ? t('chengyin') : ''}
             </span>
             {/* 完整度标签 */}
             <span

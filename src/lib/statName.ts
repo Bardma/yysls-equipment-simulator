@@ -5,16 +5,32 @@ const STAT_LABELS: Record<string, string> = {
   '外功攻击': 'Physical Attack',
   '鸣金攻击': 'Mingjin Attack',
   '无相攻击': 'Phase-free Attack',
-  '精准率': 'Accuracy Rate',
+  '精准率': 'Precision Rate',
+  '实际精准率': 'Precision Rate',
   '会心率': 'Critical Rate',
+  '实际会心率': 'Critical Rate',
   '会意率': 'Affinity Rate',
+  '实际会意率': 'Affinity Rate',
   '直接会心率': 'Direct Critical Rate',
   '直接会意率': 'Direct Affinity Rate',
   '会心伤害加成': 'Critical DMG Bonus',
   '会意伤害加成': 'Affinity DMG Bonus',
+  '会心治疗加成': 'Critical Healing Bonus',
   '属攻穿透': 'Attribute Attack Penetration',
   '属攻': 'Attribute Attack',
   '属疗': 'Attribute Healing',
+  '外功防御': 'Physical Defense',
+  '外功穿透': 'Physical Penetration',
+  '外功伤害加成': 'Physical DMG Bonus',
+  '外功伤害减免': 'Physical DMG Reduction',
+  '外功治疗加成': 'Physical Healing Bonus',
+  '属攻伤害加成': 'Attribute Attack DMG Bonus',
+  '属攻治疗加成': 'Attribute Attack Healing Bonus',
+  '裂伤转化率': 'Abrasion Conversion Rate',
+  '最大气血': 'Max HP',
+  '气血上限': 'Max HP',
+  '最大真气': 'Max Qi',
+  '真气上限': 'Max Qi',
   '鸣金伤害加成': 'Mingjin DMG Bonus',
   '牵丝伤害加成': 'Silkbind DMG Bonus',
   '破竹伤害加成': 'Bamboosplit DMG Bonus',
@@ -32,10 +48,48 @@ const SLOT_LABELS: Record<string, string> = {
   '武器': 'Weapon',
   '环': 'Ring',
   '佩': 'Pendant',
+  '冠胄': 'Head',
   '冠骨': 'Head',
   '胸甲': 'Chest',
   '胫甲': 'Legs',
   '腕甲': 'Hands',
+};
+
+const XINFA_LABELS: Record<string, string> = {
+  '抗造大法': 'Adaptive Steel',
+  '孤忠不辞': 'Art of Resistance',
+  '千营一呼': 'Battle Anthem',
+  '所恨年年': 'Bitter Seasons',
+  '杏花不见': 'Blossom Barrage',
+  '断石之构': 'Breaking Point',
+  '君臣药': 'Divine Roulette',
+  '忘川绝响': 'Echoes of Oblivion',
+  '威猛歌': 'Envigorated Warrior',
+  '移经易武': 'Esoteric Revival',
+  '扶摇直上': 'Evasive Charge',
+  '霜天白夜': 'Evening Snow',
+  '山河绝韵': 'Exquisite Scenery',
+  '极乐泣血': 'Fivefold Bleed',
+  '绳舟行木': 'Flying Gourds',
+  '怒斩马': 'Fury Harvest',
+  '三穷致知': 'Insightful Strike',
+  '千丝蛊': 'Mending Loom',
+  '大唐歌': 'Morale Chant',
+  '擒天势': "Mountain's Might",
+  '花上月令': 'Restoring Blossom',
+  '心弥泥鱼': 'Riptide Reflex',
+  '无名心法': 'Royal Remedy',
+  '春雷篇': 'Seasonal Edge',
+  '凝神章': 'Shadow Assault',
+  '纵地摘星': 'Star Reacher',
+  '征人归': 'Steadfast Stance',
+  '剑气纵横': 'Sword Horizon',
+  '易水歌': 'Sword Morph',
+  '灯儿亮': 'Thunderous Bloom',
+  '穿喉决': 'Trapped Beast',
+  '明晦同尘': 'Vital Leech',
+  '逐狼心经': "Wolfchaser's Art",
+  '千山法': 'Wind Beneath Wings',
 };
 
 const WEAPON_LABELS: Record<string, string> = {
@@ -91,6 +145,10 @@ export function weaponLabel(cn: string): string {
 
 export function setLabel(name: string): string {
   return SET_LABELS[name] ?? name;
+}
+
+export function xinfaLabel(name: string): string {
+  return XINFA_LABELS[name] ?? name;
 }
 
 // IMPORTANT: une seule fonction statLabel

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { xinfaLabel } from '@/lib/statName';
 
 interface XinfaSlotProps {
   index: number;
@@ -36,7 +37,7 @@ export const XinfaSlot = ({ index, name, isLocked, onClick }: XinfaSlotProps) =>
             />
             <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-black/70 py-0.5 sm:py-1">
               <span className="text-[10px] sm:text-xs font-medium text-white px-0.5 sm:px-1 text-center leading-tight truncate w-full">
-                {name}
+                {xinfaLabel(name)}
               </span>
               {isLocked && <span className="text-[8px] sm:text-[10px] text-white/70">不可变更</span>}
             </div>
