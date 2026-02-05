@@ -193,3 +193,19 @@
     "character": "Are you sure you want to delete this character?"
   }
 }
+{
+  "terms": {
+    "innerWays": "Inner Ways",
+    "weaponTypes": "Weapon Types",
+    "sentientBeings": "Sentient Beings"
+  },
+  "ui": {
+    "level": "Level",
+    "none": "None",
+    "value": "Value",
+    "compare": "Compare",
+    "convert": "Convert",
+    "simulation": "Simulation",
+    "graduationRateAnalysis": "Graduation Rate Analysis"
+  }
+}
