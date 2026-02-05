@@ -106,16 +106,13 @@ export function SimulationPanel(props: SimulationPanelProps) {
   const classOptions = getClassOptions(currentClass);
   const bowOptions = getBowOptions(bowType);
 const setOptions = useMemo(() => {
-  // sets configurés pour la classe + tous les sets connus
-  const fromCfg = getSetOptionsForClass(currentClass);
+  const fromCfg = getSetOptionsForClass(currentClass, setType); // <-- 2 args
   const fromCommon = Object.keys(CommonData.SET_DATA ?? {});
-
-  // set courant en 1er, puis le reste, sans doublons
-  return Array.from(new Set([setType, ...fromCfg, ...fromCommon].filter(Boolean)));
+  return uniq([setType, ...fromCfg, ...fromCommon]);
 }, [currentClass, setType]);
-  // met le set courant en premier + évite doublons
-  return Array.from(new Set([...current, ...all]));
-}, [setType]);
+
+const uniq = (arr: Array<string | null | undefined>) =>
+  Array.from(new Set(arr.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)));
 
   if (!expanded) {
     return (
