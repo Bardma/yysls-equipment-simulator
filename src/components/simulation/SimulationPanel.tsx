@@ -5,7 +5,7 @@ import type { EquippedItems } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { DengLevelKey } from '@/stores/simulationStore';
-import { classLabel, setLabel } from '@/lib/statName';
+import { classLabel, setLabel, slotLabel, xinfaLabel } from '@/lib/statName';
 import { CommonData } from '@/lib/data/commonData';
 import { useMemo } from 'react';
 
@@ -212,7 +212,7 @@ const uniq = (arr: Array<string | null | undefined>) =>
         <div className="grid grid-cols-2 gap-2">
           {xinfaLoadout.map((x, idx) => (
             <Button key={`${x}-${idx}`} variant="outline" onClick={() => onXinfaClick(idx)}>
-              {x || `Slot ${idx + 1}`}
+              {x ? xinfaLabel(x) : `Slot ${idx + 1}`}
             </Button>
           ))}
         </div>
@@ -222,8 +222,8 @@ const uniq = (arr: Array<string | null | undefined>) =>
         <div className="text-xs text-muted-foreground">Equipped</div>
         <div className="grid grid-cols-2 gap-2">
           {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
-            <div key={String(slotKey)} className="border-border/60 rounded-md border p-2">
-              <div className="text-xs text-muted-foreground">{String(slotKey)}</div>
+            <div key={slotLabel(String(slotKey))} className="border-border/60 rounded-md border p-2">
+              <div className="text-xs text-muted-foreground">{slotLabel(String(slotKey))}</div>
               <div className="truncate">{equippedItems[slotKey]?.name ?? '—'}</div>
               <Button variant="outline" size="sm" className="mt-2 w-full" onClick={() => onUnequip(slotKey)}>
                 Unequip

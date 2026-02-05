@@ -504,7 +504,7 @@ export const EquipmentModal = ({
                       value={mainStatValue}
                       onChange={(event) => setMainStatValue(event.target.value)}
                       disabled={disableMainInput}
-                      placeholder="数值"
+                      placeholder={t('insertValue')}
                       className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                       aria-invalid={mainStatError}
                     />
@@ -582,7 +582,7 @@ export const EquipmentModal = ({
                               setSubStats(next);
                             }}
                             disabled={disableValue}
-                            placeholder="数值"
+                            placeholder={t('insertValue')}
                             className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                             aria-invalid={subStatErrors[idx]}
                           />
@@ -644,7 +644,7 @@ export const EquipmentModal = ({
                       value={dingyinValue}
                       onChange={(event) => setDingyinValue(event.target.value)}
                       disabled={dingyinType === '无'}
-                      placeholder="数值"
+                      placeholder={t('insertValue')}
                       className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                       aria-invalid={dingyinError}
                     />

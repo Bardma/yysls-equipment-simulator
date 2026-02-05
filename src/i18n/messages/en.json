@@ -122,15 +122,16 @@
     "selectMainStat": "Select Main Stat",
     "subStats": "Sub Stats (4)",
     "selectStat": "Select Stat",
-    "dingyinStat": "Dingyin Stat",
-    "selectDingyin": "Select Dingyin Stat",
+    "dingyinStat": "Atunnement",
+    "selectDingyin": "Select Atunnement",
     "ocrPreview": "OCR Source Image (for verification)",
     "ocrImage": "OCR Image",
     "ocr": "OCR Scan",
     "ocrTooltip": "OCR scan equipment stats",
     "selectWeaponFirst": "Please select weapon type first",
     "ocrError": "OCR recognition failed, please try again or enter manually",
-    "save": "Save Equipment"
+    "save": "Save Equipment",
+    "insertValue": "Insert Value"
   },
   "importExport": {
     "title": "Import/Export Data",

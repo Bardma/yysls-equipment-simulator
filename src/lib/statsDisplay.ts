@@ -68,7 +68,7 @@ export const buildStatsDisplay = (
     if (min > 0 || max > 0) {
       // 外功攻击受下赛季属性影响
       const isEarlySeason = earlySeasonBonus && EARLY_SEASON_STATS.includes(pair.label);
-      items.push({ label: pair.label, value: `${min} - ${max}`, isEarlySeason });
+      items.push({ label: statLabel(pair.label), value: `${min} - ${max}`, isEarlySeason });
       delete totals[pair.min];
       delete totals[pair.max];
     }
@@ -164,7 +164,7 @@ export const buildStatsDisplay = (
     }
 
     items.push({
-      label,
+      label: statLabel(label),
       value: displayValue,
       highlight,
       suffix,
