@@ -49,8 +49,7 @@ const bowOptions =
   const b = safeArray<string>(anyCfg.BOW_OPTIONS);
   if (b.length) return b;
 
-  // fallback minimal
-  return ['precision'];
+
 };
 
 const setOptions =
