@@ -1,3 +1,4 @@
+import { statLabel } from '@/lib/statName';
 const DIRECT_MAP: Record<string, string> = {
   // Base / core stats
   最小外功攻击: 'Min Physical ATK',

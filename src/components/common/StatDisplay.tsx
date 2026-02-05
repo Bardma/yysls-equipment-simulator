@@ -1,6 +1,7 @@
 'use client';
 
 import { CommonData } from '@/lib/data/commonData';
+import { statLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 
 interface StatDisplayProps {
@@ -23,12 +24,7 @@ export const StatDisplay = ({
   const colorClass = isHighQuality ? 'text-amber-400' : 'text-[#dfa8ff]/85';
 
   return (
-    <div
-      className={cn(
-        'flex items-center justify-between gap-2',
-        colorClass
-      )}
-    >
+    <div className={cn('flex items-center justify-between gap-2', colorClass)}>
       <span className="truncate">{statLabel(type)}</span>
       <span className={cn('text-right tabular-nums', isHighQuality && 'font-medium')}>
         +{value}
