@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { DengLevelKey } from '@/stores/simulationStore';
 import { classLabel, setLabel } from '@/lib/statName';
+import { CommonData } from '@/lib/data/commonData';
 
 export interface SimulationPanelProps {
   expanded: boolean;
