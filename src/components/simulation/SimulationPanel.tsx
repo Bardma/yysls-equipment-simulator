@@ -3,14 +3,13 @@
 import { ClassConfig } from '@/lib/data/classConfig';
 import type { EquippedItems } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { DengLevelKey } from '@/stores/simulationStore';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+// ✅ Le type doit venir d’UN seul endroit dans tout le projet.
+// Si tu as déjà ce type dans levelStore (recommandé), importe-le depuis là.
+import type { DengLevelKey } from '@/stores/levelStore';
+// Si tu n’as PAS DengLevelKey dans levelStore, remplace la ligne ci-dessus par :
+// import type { DengLevelKey } from '@/stores/simulationStore';
 
 export interface SimulationPanelProps {
   expanded: boolean;
@@ -21,11 +20,8 @@ export interface SimulationPanelProps {
   setType: string;
 
   level: DengLevelKey;
-onLevelChange={(nextLevel: DengLevelKey | null | undefined) => {
-  if (!currentAccount) return;
-  if (nextLevel == null) return;
-  setLevel(currentAccount, nextLevel);
-}}
+  onLevelChange: (value: DengLevelKey) => void;
+
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
 
@@ -37,31 +33,31 @@ onLevelChange={(nextLevel: DengLevelKey | null | undefined) => {
   onUnequip: (slotKey: keyof EquippedItems) => void;
 }
 
-const LEVEL_OPTIONS: DengLevelKey[] = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey[];
+// ✅ levels: retirés 60/70, gardés 80/85/90/95/100
+const LEVEL_OPTIONS = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey[];
 
-const safeArray = <T,>(v: unknown, fallback: T[] = []): T[] =>
-  Array.isArray(v) ? (v as T[]) : fallback;
+const safeArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 
 const getBowOptions = (): string[] => {
-  // essaie plusieurs noms possibles sans casser si absent
   const anyCfg = ClassConfig as any;
-  return (
-    safeArray<string>(anyCfg.BOW_TYPES) ||
-    safeArray<string>(anyCfg.BOW_OPTIONS) ||
-    ['precision']
-  );
+
+  const a = safeArray<string>(anyCfg.BOW_TYPES);
+  if (a.length) return a;
+
+  const b = safeArray<string>(anyCfg.BOW_OPTIONS);
+  if (b.length) return b;
+
+  // fallback minimal
+  return ['precision'];
 };
 
 const getSetOptionsForClass = (cls: string, currentSet: string): string[] => {
   const anyCfg = ClassConfig as any;
 
-  // Cas 1: un mapping sets par classe
   const byClass = anyCfg.SETS_BY_CLASS?.[cls] ?? anyCfg.SET_OPTIONS_BY_CLASS?.[cls];
   const arr = safeArray<string>(byClass);
+  if (arr.length) return arr;
 
-  if (arr.length > 0) return arr;
-
-  // Cas 2: fallback: au moins la valeur courante + défaut
   const dflt = anyCfg.DEFAULT_SETS?.[cls] ?? '';
   return Array.from(new Set([currentSet, dflt].filter(Boolean)));
 };
@@ -82,9 +78,23 @@ export function SimulationPanel({
   onXinfaClick,
   onUnequip,
 }: SimulationPanelProps) {
-  const classOptions = safeArray<string>((ClassConfig as any).CLASSES, [currentClass]).filter(Boolean);
-  const bowOptions = getBowOptions();
-  const setOptions = getSetOptionsForClass(currentClass, setType);
+  const classOptions = (() => {
+    const arr = safeArray<string>((ClassConfig as any).CLASSES);
+    const merged = Array.from(new Set([...arr, currentClass].filter(Boolean)));
+    return merged.length ? merged : [currentClass];
+  })();
+
+  const bowOptions = (() => {
+    const arr = getBowOptions();
+    const merged = Array.from(new Set([...arr, bowType].filter(Boolean)));
+    return merged.length ? merged : [bowType];
+  })();
+
+  const setOptions = (() => {
+    const arr = getSetOptionsForClass(currentClass, setType);
+    const merged = Array.from(new Set([...arr, setType].filter(Boolean)));
+    return merged.length ? merged : [setType];
+  })();
 
   if (!expanded) {
     return (
@@ -109,6 +119,7 @@ export function SimulationPanel({
       </div>
 
       <div className="grid grid-cols-2 gap-3">
+        {/* Class */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Class</div>
           <Select value={currentClass} onValueChange={onClassChange}>
@@ -125,6 +136,7 @@ export function SimulationPanel({
           </Select>
         </div>
 
+        {/* Bow */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Bow</div>
           <Select value={bowType} onValueChange={onBowChange}>
@@ -141,6 +153,7 @@ export function SimulationPanel({
           </Select>
         </div>
 
+        {/* Set */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Set</div>
           <Select value={setType} onValueChange={onSetChange}>
@@ -157,6 +170,7 @@ export function SimulationPanel({
           </Select>
         </div>
 
+        {/* Level */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Level</div>
           <Select value={String(level)} onValueChange={(v) => onLevelChange(v as unknown as DengLevelKey)}>
@@ -174,35 +188,22 @@ export function SimulationPanel({
         </div>
       </div>
 
-      <div className="border-t border-border/40 pt-3 space-y-2">
-        <div className="text-xs text-muted-foreground">Xinfa</div>
-        <div className="grid grid-cols-4 gap-2">
-          {xinfaLoadout.map((x, i) => (
-            <Button key={i} variant="outline" size="sm" onClick={() => onXinfaClick(i)}>
-              {x || `Slot ${i + 1}`}
-            </Button>
-          ))}
-        </div>
+      {/* Xinfa */}
+      <div className="grid grid-cols-4 gap-2">
+        {xinfaLoadout.map((x, idx) => (
+          <Button key={idx} variant="outline" onClick={() => onXinfaClick(idx)} className="truncate">
+            {x || `Slot ${idx + 1}`}
+          </Button>
+        ))}
       </div>
 
-      <div className="border-t border-border/40 pt-3 space-y-2">
-        <div className="text-xs text-muted-foreground">Equipped</div>
-        <div className="grid grid-cols-3 gap-2">
-          {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
-            <div key={slotKey} className="border-border/60 rounded border p-2">
-              <div className="text-[11px] text-muted-foreground">{slotKey}</div>
-              <div className="text-xs truncate">{equippedItems[slotKey]?.name || '—'}</div>
-              <Button
-                className="mt-2"
-                variant="secondary"
-                size="sm"
-                onClick={() => onUnequip(slotKey)}
-              >
-                Unequip
-              </Button>
-            </div>
-          ))}
-        </div>
+      {/* Unequip shortcuts (optionnel, exemple minimal) */}
+      <div className="flex flex-wrap gap-2">
+        {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
+          <Button key={String(slotKey)} size="sm" variant="secondary" onClick={() => onUnequip(slotKey)}>
+            Unequip {String(slotKey)}
+          </Button>
+        ))}
       </div>
     </section>
   );
