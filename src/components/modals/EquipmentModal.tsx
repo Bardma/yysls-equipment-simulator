@@ -16,7 +16,42 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { OcrModal } from './OcrModal';
+const SLOT_LABEL_EN: Record<string, string> = {
+  '武器': 'Weapon',
+  '环': 'Ring',
+  '佩': 'Pendant',
+  '冠骨': 'Head',
+  '胸甲': 'Chest',
+  '胫甲': 'Legs',
+  '腕甲': 'Hands',
+};
 
+const WEAPON_TYPE_EN: Record<string, string> = {
+  '剑': 'Sword',
+  '枪': 'Spear',
+  '伞': 'Umbrella',
+  '扇': 'Fan',
+  '绳标': 'Rope Dart',
+  '双刀': 'Dual Blades',
+  '陌刀': 'Mo Dao',
+  '横刀': 'Heng Dao',
+  '拳甲': 'Gauntlets',
+};
+
+const STAT_LABEL_EN: Record<string, string> = {
+  '最大外功攻击': 'Max External Attack',
+  '最小外功攻击': 'Min External Attack',
+  '最大无相攻击': 'Max WuXiang Attack',
+  '最小无相攻击': 'Min WuXiang Attack',
+  '劲': 'Strength',
+  '敏': 'Agility',
+  '势': 'Poise',
+  '精准率': 'Accuracy',
+  '会心率': 'Crit Rate',
+  '会意率': 'Crit DMG Rate',
+  '生存类词条': 'Survival',
+  '生存向': 'Survival',
+};
 const emptySubStats = () => Array.from({ length: 4 }).map(() => ({ type: '', value: '' }));
 
 interface EquipmentModalProps {
