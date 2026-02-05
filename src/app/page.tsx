@@ -120,26 +120,38 @@ export default function Home() {
     setRightPanels(loadRightPanelState(currentAccount));
   }, [mounted, currentAccount]);
 
-  // Calculations
-  const effectiveEquippedItems = useMemo(() => {
-    if (!loanDingyin) return equippedItems;
-    return addFullDingyinToEquips(equippedItems);
-  }, [equippedItems, loanDingyin]);
+// Calculations
+const effectiveEquippedItems = useMemo(() => {
+  if (!loanDingyin) return equippedItems;
+  return addFullDingyinToEquips(equippedItems);
+}, [equippedItems, loanDingyin]);
 
-  const totals = useMemo(() => {
-    if (!currentAccount) return null;
-    return Calculator.calculateTotal(
-      effectiveEquippedItems,
-      currentClass,
-      bowType,
-      xinfaLoadout,
-      setType,
-      false,
-      null,
-      earlySeasonBonus,
-      level
-    );
-  }, [currentAccount, effectiveEquippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus]);
+const level = currentAccount?.level ?? 100;
+
+const totals = useMemo(() => {
+  if (!currentAccount) return null;
+
+  return Calculator.calculateTotal(
+    effectiveEquippedItems,
+    currentClass,
+    bowType,
+    xinfaLoadout,
+    setType,
+    false,
+    null,
+    earlySeasonBonus,
+    level
+  );
+}, [
+  currentAccount,
+  effectiveEquippedItems,
+  currentClass,
+  bowType,
+  xinfaLoadout,
+  setType,
+  earlySeasonBonus,
+  level,
+]);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
