@@ -8,7 +8,7 @@ export const messages = {
   en,
 } as const;
 
-export type Messages = typeof zh;
+export type Messages = typeof en;
 
 export function getMessages(locale: Locale): Messages {
   return messages[locale];

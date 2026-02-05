@@ -17,12 +17,20 @@ import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
 import { addFullDingyinToEquips } from '@/lib/graduation/dingyin';
 import { buildStatsDisplay } from '@/lib/statsDisplay';
-import { clearAccountData, loadEquipData, loadRightPanelState, saveRightPanelState } from '@/lib/storage';
+import {
+  clearAccountData,
+  loadEquipData,
+  loadRightPanelState,
+  saveRightPanelState,
+} from '@/lib/storage';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 import { useAccountStore } from '@/stores/accountStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useLevelStore } from '@/stores/levelStore';
 import { useSimulationStore } from '@/stores/simulationStore';
+
+type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
 
 const formatDisplayTotals = (totals: Record<string, number>) => {
   const displayTotals: Record<string, number> = { ...totals };
@@ -58,9 +66,26 @@ export default function Home() {
 
   const t = useTranslations();
 
-  const { accounts, currentAccount, hydrated, hydrate, createAccount, deleteAccount, setCurrentAccount } = useAccountStore();
+  const {
+    accounts,
+    currentAccount,
+    hydrated,
+    hydrate,
+    createAccount,
+    deleteAccount,
+    setCurrentAccount,
+  } = useAccountStore();
 
-  const { db, filter, hydrate: hydrateDb, setFilter, addEquip, updateEquip, deleteEquip, replaceAll } = useEquipmentStore();
+  const {
+    db,
+    filter,
+    hydrate: hydrateDb,
+    setFilter,
+    addEquip,
+    updateEquip,
+    deleteEquip,
+    replaceAll,
+  } = useEquipmentStore();
 
   const {
     currentClass,
@@ -106,7 +131,8 @@ export default function Home() {
     return addFullDingyinToEquips(equippedItems);
   }, [equippedItems, loanDingyin]);
 
-  const level = getLevel(currentAccount);
+  // Ensure level is always a valid DengLevelKey (never undefined/null)
+  const level = (getLevel(currentAccount) ?? DEFAULT_LEVEL) as DengLevelKey;
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
@@ -122,7 +148,16 @@ export default function Home() {
       earlySeasonBonus,
       level
     );
-  }, [currentAccount, effectiveEquippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus, level]);
+  }, [
+    currentAccount,
+    effectiveEquippedItems,
+    currentClass,
+    bowType,
+    xinfaLoadout,
+    setType,
+    earlySeasonBonus,
+    level,
+  ]);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
@@ -333,7 +368,8 @@ export default function Home() {
                 level={level}
                 onLevelChange={(nextLevel) => {
                   if (!currentAccount) return;
-                  setLevel(currentAccount, nextLevel);
+                  if (nextLevel == null) return; // narrows DengLevelKey | null | undefined -> DengLevelKey
+                  setLevel(currentAccount, nextLevel as DengLevelKey);
                 }}
                 equippedItems={equippedItems}
                 xinfaLoadout={xinfaLoadout}
@@ -359,13 +395,22 @@ export default function Home() {
                 onToggle={() => toggleRightPanel('graduation')}
               />
 
-              <StatsPanel statDisplay={statDisplay} expanded={rightPanels.stats} onToggle={() => toggleRightPanel('stats')} />
+              <StatsPanel
+                statDisplay={statDisplay}
+                expanded={rightPanels.stats}
+                onToggle={() => toggleRightPanel('stats')}
+              />
             </section>
           </div>
         )}
       </main>
 
-      <EquipmentModal open={equipModalOpen} onOpenChange={setEquipModalOpen} initialEquip={editingEquip} onSave={handleSaveEquip} />
+      <EquipmentModal
+        open={equipModalOpen}
+        onOpenChange={setEquipModalOpen}
+        initialEquip={editingEquip}
+        onSave={handleSaveEquip}
+      />
 
       <XinfaModal
         open={xinfaModalOpen}
