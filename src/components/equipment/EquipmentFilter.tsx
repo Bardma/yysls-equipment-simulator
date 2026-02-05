@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { CommonData } from '@/lib/data/commonData';
+import { slotLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 import { slotLabel } from '@/lib/statName';
 

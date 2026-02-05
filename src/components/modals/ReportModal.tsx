@@ -87,7 +87,7 @@ export const ReportModal = ({
       });
 
       const link = document.createElement('a');
-      link.download = `${accountName || t('character')}_${currentClass}_${t('reportFile')}.png`;
+      link.download = `${accountName || t('character')}_${classLabel(currentClass)}_${t('reportFile')}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (error) {
@@ -179,7 +179,7 @@ export const ReportModal = ({
                 <div style={{ color: 'rgba(56, 189, 248, 0.85)', fontSize: '12px', marginBottom: '6px' }}>
                   {t('currentClass')}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc' }}>{currentClass}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc' }}>{classLabel(currentClass)}</div>
               </div>
 
               <div
@@ -194,7 +194,7 @@ export const ReportModal = ({
                 <div style={{ color: 'rgba(167, 139, 250, 0.85)', fontSize: '12px', marginBottom: '6px' }}>
                   {t('setSelection')}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd' }}>{setType || t('none')}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#c4b5fd' }}>{setType ? setLabel(setType) : t('none')}</div>
               </div>
             </div>
 
