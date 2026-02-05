@@ -19,6 +19,7 @@ interface SimulationState {
   currentClass: string;
   bowType: string;
   setType: string;
+  level: import('../lib/levelBaseStats').DengLevelKey;
   xinfaLoadout: string[];
   earlySeasonBonus: boolean;
   loanDingyin: boolean;
@@ -28,6 +29,7 @@ interface SimulationState {
   setCurrentClass: (account: string | null, name: string, db: EquipItem[]) => void;
   setBowType: (account: string | null, value: string) => void;
   setSetType: (account: string | null, value: string) => void;
+  setLevel: (account: string | null, value: import('../lib/levelBaseStats').DengLevelKey) => void;
   setXinfaLoadout: (account: string | null, loadout: string[]) => void;
   setEarlySeasonBonus: (account: string | null, value: boolean) => void;
   setLoanDingyin: (account: string | null, value: boolean) => void;

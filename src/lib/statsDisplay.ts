@@ -1,4 +1,5 @@
 import { CommonData } from './data/commonData';
+import { statLabel } from './statName';
 
 export interface StatDisplayItem {
   label: string;

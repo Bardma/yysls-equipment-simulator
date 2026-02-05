@@ -58,6 +58,7 @@ export const saveEquipData = (account: string | null, data: EquipItem[]): void =
 };
 
 export interface SimLoadoutIds {
+  level?: import('./levelBaseStats').DengLevelKey;
   weapon1: number | string | null;
   weapon2: number | string | null;
   head: number | string | null;

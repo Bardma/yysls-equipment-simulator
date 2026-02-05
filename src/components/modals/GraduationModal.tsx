@@ -89,7 +89,8 @@ export const GraduationModal = ({
     setType,
     false,
     null,
-    earlySeasonBonus
+    earlySeasonBonus,
+    level
   );
   const accParams = { ...accTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
   const accResult = rotation.length

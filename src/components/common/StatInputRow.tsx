@@ -1,6 +1,5 @@
 'use client';
 
-import { statLabel } from '@/lib/statName';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -30,7 +29,7 @@ export const StatInputRow = ({
   options,
   disabledOptions = [],
   disabled = false,
-  placeholder = 'Select stat',
+  placeholder = '选择词条',
   onTypeChange,
   onValueChange,
   onMaxClick,

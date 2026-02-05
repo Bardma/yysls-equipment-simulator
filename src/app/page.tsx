@@ -136,7 +136,8 @@ export default function Home() {
       setType,
       false,
       null,
-      earlySeasonBonus
+      earlySeasonBonus,
+      level
     );
   }, [currentAccount, effectiveEquippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus]);
 
@@ -323,6 +324,7 @@ export default function Home() {
                 currentClass={currentClass}
                 bowType={bowType}
                 setType={setType}
+        level={level}
                 equippedItems={equippedItems}
                 xinfaLoadout={xinfaLoadout}
                 onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
@@ -386,6 +388,7 @@ export default function Home() {
         currentClass={currentClass}
         bowType={bowType}
         setType={setType}
+        level={level}
         xinfaLoadout={xinfaLoadout}
         earlySeasonBonus={earlySeasonBonus}
         onApplyBuild={applyBuild}
@@ -410,6 +413,7 @@ export default function Home() {
         accountName={currentAccount}
         currentClass={currentClass}
         setType={setType}
+        level={level}
         xinfaLoadout={xinfaLoadout}
         graduationInfo={graduationInfo}
         statDisplay={statDisplay}
@@ -419,4 +423,3 @@ export default function Home() {
     </div>
   );
 }
- 

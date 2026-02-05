@@ -16,11 +16,13 @@ interface SimulationPanelProps {
   currentClass: string;
   bowType: string;
   setType: string;
+  level: import('@/lib/levelBaseStats').DengLevelKey;
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
   onClassChange: (value: string) => void;
   onBowChange: (value: string) => void;
   onSetChange: (value: string) => void;
+  onLevelChange: (value: import('@/lib/levelBaseStats').DengLevelKey) => void;
   onXinfaClick: (index: number) => void;
   onUnequip: (slotKey: keyof EquippedItems) => void;
 }
@@ -50,6 +52,8 @@ export const SimulationPanel = ({
   onClassChange,
   onBowChange,
   onSetChange,
+  level,
+  onLevelChange,
   onXinfaClick,
   onUnequip,
 }: SimulationPanelProps) => {
@@ -72,6 +76,8 @@ export const SimulationPanel = ({
           onClassChange={onClassChange}
           onBowChange={onBowChange}
           onSetChange={onSetChange}
+        level={level}
+        onLevelChange={onLevelChange}
         />
 
         <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-4">

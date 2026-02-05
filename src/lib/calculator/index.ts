@@ -1,5 +1,6 @@
 import { ClassConfig } from '../data/classConfig';
 import { CommonData } from '../data/commonData';
+import { getBaseStatsOverride, type DengLevelKey } from '../levelBaseStats';
 import type {
   CalculatorStatModifier,
   EquippedItems,
@@ -63,9 +64,13 @@ export const Calculator = {
     setType: string,
     debug = false,
     statModifier: CalculatorStatModifier | null = null,
-    earlySeasonBonus = false
+    earlySeasonBonus = false,
+    dengLevel: DengLevelKey | null = null
   ) {
-    let total = JSON.parse(JSON.stringify(CommonData.BASE_STATS));
+    let total = JSON.parse(JSON.stringify({
+      ...CommonData.BASE_STATS,
+      ...getBaseStatsOverride(dengLevel),
+    }));
     let baseSanWei = CommonData.BASE_STATS['敏'];
 
     if (debug) {

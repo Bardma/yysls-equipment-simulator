@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select';
 import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
+import { DENG_LEVEL_OPTIONS } from '@/lib/levelBaseStats';
 
 const BOW_OPTIONS = [
   { value: 'precision', labelKey: 'precisionBow' },
@@ -22,6 +23,8 @@ interface ClassSelectorProps {
   currentClass: string;
   bowType: string;
   setType: string;
+  level: import('@/lib/levelBaseStats').DengLevelKey;
+  onLevelChange: (value: import('@/lib/levelBaseStats').DengLevelKey) => void;
   onClassChange: (value: string) => void;
   onBowChange: (value: string) => void;
   onSetChange: (value: string) => void;
@@ -34,11 +37,13 @@ export const ClassSelector = ({
   onClassChange,
   onBowChange,
   onSetChange,
+  level,
+  onLevelChange,
 }: ClassSelectorProps) => {
   const t = useTranslations('simulation');
 
   return (
-    <div className="grid grid-cols-3 gap-2 sm:flex sm:justify-between sm:gap-4">
+    <div className="grid grid-cols-4 gap-2 sm:flex sm:justify-between sm:gap-4">
       <div className="flex flex-col gap-1">
         <label className="text-sky-300/80 text-xs font-medium">{t('class')}</label>
         <Select value={currentClass} onValueChange={onClassChange}>
@@ -85,7 +90,23 @@ export const ClassSelector = ({
             ))}
           </SelectContent>
         </Select>
+      
+      <div className="flex flex-col gap-1">
+        <span className="text-xs text-muted-foreground">{t('level')}</span>
+        <Select value={level} onValueChange={(v) => onLevelChange(v as any)}>
+          <SelectTrigger className="h-9">
+            <SelectValue placeholder={t('level')} />
+          </SelectTrigger>
+          <SelectContent>
+            {DENG_LEVEL_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+</div>
     </div>
   );
 };
