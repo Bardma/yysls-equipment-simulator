@@ -28,7 +28,7 @@ import { useAccountStore } from '@/stores/accountStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useLevelStore } from '@/stores/levelStore';
 import { useSimulationStore } from '@/stores/simulationStore';
-
+type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
 type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
 const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
 
@@ -367,10 +367,13 @@ export default function Home() {
                 setType={setType}
                 level={level}
                 onLevelChange={(nextLevel) => {
-                  if (!currentAccount) return;
-                  if (nextLevel == null) return; // narrows DengLevelKey | null | undefined -> DengLevelKey
-                  setLevel(currentAccount, nextLevel as DengLevelKey);
-                }}
+  if (!currentAccount) return;
+
+  // nextLevel peut arriver undefined/null selon le composant Select → fallback sur le level actuel
+  const safeLevel = ((nextLevel ?? level) as unknown) as DengLevelKey;
+
+  setLevel(currentAccount, safeLevel);
+}}
                 equippedItems={equippedItems}
                 xinfaLoadout={xinfaLoadout}
                 onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
