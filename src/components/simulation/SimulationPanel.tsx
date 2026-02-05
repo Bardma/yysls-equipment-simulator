@@ -136,9 +136,9 @@ export function SimulationPanel(props: SimulationPanelProps) {
             </SelectTrigger>
             <SelectContent>
               {classOptions.map((c) => (
-                <SelectItem key={cls} value={cls}>
-  {classLabel(cls)}
-</SelectItem>
+                <SelectItem key={c} value={c}>
+                      {classLabel(c)}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
