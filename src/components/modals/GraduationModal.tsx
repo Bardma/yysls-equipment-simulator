@@ -142,7 +142,7 @@ export const GraduationModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`!flex !flex-col gap-0 p-0 transition-all duration-300 max-h-[95vh] sm:max-h-[90vh] ${detailPanelOpen ? 'sm:max-w-7xl' : 'sm:max-w-6xl'}`}>
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">毕业率分析</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">Graduation Rate Analysis</DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row gap-3 lg:gap-4">
@@ -151,12 +151,12 @@ export const GraduationModal = ({
             {detailPanelOpen && equippedItems[selectedSlotKey] && (
               <div className="border-border/60 bg-card rounded-lg border p-3 space-y-2 w-56">
                 <div className="text-xs font-medium text-center border-b border-border/40 pb-2">
-                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
+                  {equippedItems[selectedSlotKey]?.name || 'Equipment Details'}
                 </div>
                 {/* 主词条 */}
                 {equippedItems[selectedSlotKey]?.mainStat && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">主词条</div>
+                    <div className="text-muted-foreground text-xs">Main Stat</div>
                     <div className="text-xs flex justify-between">
                       <span>{equippedItems[selectedSlotKey]?.mainStat.type}</span>
                       <span className="text-yellow-300">
@@ -169,7 +169,7 @@ export const GraduationModal = ({
                 {/* 副词条 */}
                 {equippedItems[selectedSlotKey]?.subStats && equippedItems[selectedSlotKey]!.subStats.length > 0 && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">副词条</div>
+                    <div className="text-muted-foreground text-xs">Sub Stats</div>
                     {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
                       <div key={idx} className="text-xs flex justify-between">
                         <span>{sub.type}</span>
@@ -184,7 +184,7 @@ export const GraduationModal = ({
                 {/* 定音词条 */}
                 {equippedItems[selectedSlotKey]?.dingyinStat && (
                   <div className="space-y-1">
-                    <div className="text-muted-foreground text-xs">定音词条</div>
+                    <div className="text-muted-foreground text-xs">Dingyin Stat</div>
                     <div className="text-xs flex justify-between">
                       <span>{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
                       <span className="text-yellow-300">
@@ -197,13 +197,13 @@ export const GraduationModal = ({
                 {/* 标签 */}
                 <div className="flex gap-2 pt-1 flex-wrap">
                   {equippedItems[selectedSlotKey]?.isConvertible && (
-                    <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">可转律</span>
+                    <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Convertible</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isChengyin && (
-                    <span className="text-xs bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">承音</span>
+                    <span className="text-xs bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">Chengyin</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isPurple && (
-                    <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">紫装</span>
+                    <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">Epic</span>
                   )}
                 </div>
               </div>
@@ -213,7 +213,7 @@ export const GraduationModal = ({
           {/* Left sidebar - Slot selector */}
           <div className="w-full lg:w-[260px] shrink-0 space-y-2 lg:space-y-3 overflow-y-auto">
             <div className="border-border/60 bg-card rounded-lg border p-2 lg:p-3 text-center">
-              <div className="text-muted-foreground text-[10px] lg:text-xs">当前毕业率</div>
+              <div className="text-muted-foreground text-[10px] lg:text-xs">Current Graduation Rate</div>
               <div className="text-lg lg:text-xl font-semibold text-yellow-300">
                 {accResult.graduationRate}
               </div>
@@ -243,14 +243,14 @@ export const GraduationModal = ({
                 {detailPanelOpen ? (
                   <>
                     <ChevronLeft className="h-3 w-3 mr-1 hidden lg:inline" />
-                    <span className="lg:hidden">收起详情</span>
-                    <span className="hidden lg:inline">收起装备详情</span>
+                    <span className="lg:hidden">Hide details</span>
+                    <span className="hidden lg:inline">Hide equipment details</span>
                   </>
                 ) : (
                   <>
                     <ChevronRight className="h-3 w-3 mr-1 hidden lg:inline" />
-                    <span className="lg:hidden">查看详情</span>
-                    <span className="hidden lg:inline">查看装备详情</span>
+                    <span className="lg:hidden">View details</span>
+                    <span className="hidden lg:inline">View equipment details</span>
                   </>
                 )}
               </Button>
@@ -260,14 +260,14 @@ export const GraduationModal = ({
             {detailPanelOpen && equippedItems[selectedSlotKey] && (
               <div className="lg:hidden border-border/60 bg-card rounded-lg border p-2 space-y-1.5">
                 <div className="text-[10px] font-medium text-center border-b border-border/40 pb-1.5">
-                  {equippedItems[selectedSlotKey]?.name || '装备详情'}
+                  {equippedItems[selectedSlotKey]?.name || 'Equipment Details'}
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[10px]">
                   {/* 左列：主词条 + 定音 */}
                   <div className="space-y-1">
                     {equippedItems[selectedSlotKey]?.mainStat && (
                       <div>
-                        <div className="text-muted-foreground">主词条</div>
+                        <div className="text-muted-foreground">Main Stat</div>
                         <div className="flex justify-between">
                           <span className="truncate">{equippedItems[selectedSlotKey]?.mainStat.type}</span>
                           <span className="text-yellow-300 shrink-0 ml-1">
@@ -279,7 +279,7 @@ export const GraduationModal = ({
                     )}
                     {equippedItems[selectedSlotKey]?.dingyinStat && (
                       <div>
-                        <div className="text-muted-foreground">定音</div>
+                        <div className="text-muted-foreground">Dingyin</div>
                         <div className="flex justify-between">
                           <span className="truncate">{equippedItems[selectedSlotKey]?.dingyinStat?.type}</span>
                           <span className="text-yellow-300 shrink-0 ml-1">
@@ -292,7 +292,7 @@ export const GraduationModal = ({
                   </div>
                   {/* 右列：副词条 */}
                   <div className="space-y-0.5">
-                    <div className="text-muted-foreground">副词条</div>
+                    <div className="text-muted-foreground">Sub Stats</div>
                     {equippedItems[selectedSlotKey]?.subStats.map((sub, idx) => (
                       <div key={idx} className="flex justify-between">
                         <span className="truncate">{sub.type}</span>
@@ -306,13 +306,13 @@ export const GraduationModal = ({
                 {/* 标签 */}
                 <div className="flex gap-1.5 pt-1 flex-wrap justify-center">
                   {equippedItems[selectedSlotKey]?.isConvertible && (
-                    <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">可转律</span>
+                    <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">Convertible</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isChengyin && (
-                    <span className="text-[9px] bg-yellow-500/20 text-yellow-300 px-1 py-0.5 rounded">承音</span>
+                    <span className="text-[9px] bg-yellow-500/20 text-yellow-300 px-1 py-0.5 rounded">Chengyin</span>
                   )}
                   {equippedItems[selectedSlotKey]?.isPurple && (
-                    <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1 py-0.5 rounded">紫装</span>
+                    <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1 py-0.5 rounded">Epic</span>
                   )}
                 </div>
               </div>
@@ -325,11 +325,11 @@ export const GraduationModal = ({
               {/* 移动端可滚动的 Tab 容器 */}
               <div className="shrink-0 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto scrollbar-none">
                 <TabsList className="w-max sm:w-full justify-start">
-                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">对比</TabsTrigger>
-                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">转律</TabsTrigger>
-                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">配装</TabsTrigger>
-                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">词条</TabsTrigger>
-                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">培养</TabsTrigger>
+                  <TabsTrigger value="compare" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Compare</TabsTrigger>
+                  <TabsTrigger value="convert" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Convert</TabsTrigger>
+                  <TabsTrigger value="best-build" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Best Build</TabsTrigger>
+                  <TabsTrigger value="stat-priority" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Stat Priority</TabsTrigger>
+                  <TabsTrigger value="cultivation" className="text-[11px] sm:text-xs lg:text-sm px-2 sm:px-3">Cultivation</TabsTrigger>
                 </TabsList>
               </div>
 

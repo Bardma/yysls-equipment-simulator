@@ -29,7 +29,7 @@ export const StatInputRow = ({
   options,
   disabledOptions = [],
   disabled = false,
-  placeholder = '选择词条',
+  placeholder = 'Select stat',
   onTypeChange,
   onValueChange,
   onMaxClick,
@@ -59,7 +59,7 @@ export const StatInputRow = ({
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           disabled={disabled}
-          placeholder="数值"
+          placeholder="Value"
         />
         <Button
           variant="outline"

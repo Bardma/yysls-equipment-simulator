@@ -37,9 +37,9 @@ export const ConvertTab = ({
   if (!convertTarget) {
     return (
       <div className="text-muted-foreground py-10 text-center">
-        当前部位未穿戴装备，请先穿戴或点击按钮选择装备
+        No equipment is equipped in this slot. Equip one or click the button to select.
         <div className="mt-4">
-          <Button onClick={onPickEquip}>选择/录入装备进行分析</Button>
+          <Button onClick={onPickEquip}>Select / Add equipment to analyze</Button>
         </div>
       </div>
     );

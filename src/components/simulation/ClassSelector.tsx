@@ -22,23 +22,27 @@ interface ClassSelectorProps {
   currentClass: string;
   bowType: string;
   setType: string;
+  level: number;
   onClassChange: (value: string) => void;
   onBowChange: (value: string) => void;
   onSetChange: (value: string) => void;
+  onLevelChange: (value: number) => void;
 }
 
 export const ClassSelector = ({
   currentClass,
   bowType,
   setType,
+  level,
   onClassChange,
   onBowChange,
   onSetChange,
+  onLevelChange,
 }: ClassSelectorProps) => {
   const t = useTranslations('simulation');
 
   return (
-    <div className="grid grid-cols-3 gap-2 sm:flex sm:justify-between sm:gap-4">
+    <div className="grid grid-cols-4 gap-2 sm:flex sm:justify-between sm:gap-4">
       <div className="flex flex-col gap-1">
         <label className="text-sky-300/80 text-xs font-medium">{t('class')}</label>
         <Select value={currentClass} onValueChange={onClassChange}>
@@ -83,6 +87,25 @@ export const ClassSelector = ({
                 {setName}
               </SelectItem>
             ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-sky-300/80 text-xs font-medium">{t('level')}</label>
+        <Select value={String(level)} onValueChange={(v) => onLevelChange(Number(v))}>
+          <SelectTrigger className="cursor-pointer w-full sm:w-28 h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: 20 }).map((_, i) => {
+              const lv = i + 1;
+              return (
+                <SelectItem key={lv} value={String(lv)}>
+                  {lv}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
       </div>

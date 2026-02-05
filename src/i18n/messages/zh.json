@@ -75,7 +75,8 @@
     "equippedItems": "已装备",
     "precisionBow": "精准弓",
     "critBow": "会心弓",
-    "intentBow": "会意弓"
+    "intentBow": "会意弓",
+    "level": "等级"
   },
   "graduation": {
     "title": "当前毕业率",

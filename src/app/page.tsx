@@ -90,6 +90,7 @@ export default function Home() {
     xinfaLoadout,
     earlySeasonBonus,
     loanDingyin,
+    level,
     equippedItems,
     hydrateForAccount,
     setCurrentClass,
@@ -98,6 +99,7 @@ export default function Home() {
     setXinfaLoadout,
     setEarlySeasonBonus,
     setLoanDingyin,
+    setLevel,
     equipSlot,
     updateEquipsById,
   } = useSimulationStore();
@@ -323,11 +325,13 @@ export default function Home() {
                 currentClass={currentClass}
                 bowType={bowType}
                 setType={setType}
+                level={level}
                 equippedItems={equippedItems}
                 xinfaLoadout={xinfaLoadout}
                 onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
                 onBowChange={(value) => setBowType(currentAccount, value)}
                 onSetChange={(value) => setSetType(currentAccount, value)}
+                onLevelChange={(value) => setLevel(currentAccount, value)}
                 onXinfaClick={(idx) => {
                   setXinfaIndex(idx);
                   setXinfaModalOpen(true);

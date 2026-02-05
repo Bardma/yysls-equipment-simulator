@@ -75,7 +75,8 @@
     "equippedItems": "Equipped",
     "precisionBow": "Precision Bow",
     "critBow": "Crit Bow",
-    "intentBow": "Intent Bow"
+    "intentBow": "Intent Bow",
+    "level": "Level"
   },
   "graduation": {
     "title": "Graduation Rate",

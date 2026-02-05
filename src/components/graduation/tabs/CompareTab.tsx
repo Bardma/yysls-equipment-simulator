@@ -106,7 +106,7 @@ export const CompareTab = ({
         <div className="flex items-center gap-4">
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-            假设满承音
+            Assume full Chengyin
           </label>
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
@@ -125,7 +125,7 @@ export const CompareTab = ({
       <div className="flex items-center gap-4">
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-          假设满承音
+          Assume full Chengyin
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
