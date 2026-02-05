@@ -5,6 +5,7 @@ import type { EquippedItems } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { DengLevelKey } from '@/stores/simulationStore';
+import { classLabel, setLabel } from '@/lib/statName';
 
 export interface SimulationPanelProps {
   expanded: boolean;
@@ -136,7 +137,7 @@ export function SimulationPanel(props: SimulationPanelProps) {
             <SelectContent>
               {classOptions.map((c) => (
                 <SelectItem key={c} value={c}>
-                  {c}
+                      {classLabel(c)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -167,10 +168,10 @@ export function SimulationPanel(props: SimulationPanelProps) {
             </SelectTrigger>
             <SelectContent>
               {setOptions.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s}
-                </SelectItem>
-              ))}
+  <SelectItem key={s} value={s}>
+    {setLabel(s)}
+  </SelectItem>
+))}
             </SelectContent>
           </Select>
         </div>

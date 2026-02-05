@@ -58,6 +58,10 @@ const CLASS_LABELS: Record<string, string> = {
   牵丝霖: 'Skillbind - Deluge',
   破竹风: 'Bamboocut - Wind',
   裂石威: 'Stonesplit - Might',
+  破竹尘: 'Bamboocut - Dust',
+  破竹鸢: 'Bamboocut - Soar',
+  裂石钧（双切）: 'Stonesplit - Dualcut',
+  裂石钧（纯盾）: 'Stonesplit - Bulwark',
 };
 
 // Sets (au moins celui vu + tes noms EN)
