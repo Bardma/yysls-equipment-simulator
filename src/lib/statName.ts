@@ -1,3 +1,5 @@
+// src/lib/statName.ts
+
 const DIRECT_MAP: Record<string, string> = {
   // Base / core stats
   最小外功攻击: 'Min Physical ATK',
@@ -29,27 +31,23 @@ const DIRECT_MAP: Record<string, string> = {
 };
 
 const STAT_LABELS: Record<string, string> = {
-  // Core
   劲: 'Power',
   敏: 'Agility',
   势: 'Momentum',
   体: 'Body',
   御: 'Defense',
 
-  // Attacks/Def
   外功攻击: 'Physical Attack',
   外功防御: 'Physical Defense',
   鸣金攻击: 'Metal Attack',
   无相攻击: 'Attribute Attack',
 
-  // Rates
   精准率: 'Precision Rate',
   会心率: 'Critical Rate',
   会意率: 'Affinity Rate',
   直接会心率: 'Direct Critical Rate',
   直接会意率: 'Direct Affinity Rate',
 
-  // Bonuses
   会心伤害加成: 'Critical DMG Bonus',
   会意伤害加成: 'Affinity DMG Bonus',
   会心治疗加成: 'Critical Healing Bonus',
@@ -59,12 +57,10 @@ const STAT_LABELS: Record<string, string> = {
   无相伤害加成: 'Attribute Attack DMG Bonus',
   无相治疗加成: 'Attribute Attack Healing Bonus',
 
-  // Penetration / Resistance
   属攻穿透: 'Attribute Attack Penetration',
   外功穿透: 'Physical Penetration',
   外功抗性: 'Physical Resistance',
 
-  // HP/Qi
   最大气血: 'Max HP',
   最大真气: 'Max Qi',
 };
@@ -89,63 +85,75 @@ const WEAPON_MAP: Array<[RegExp, string]> = [
   [/拳甲/g, 'Gauntlets'],
 ];
 
-function applyMaps(input: string) {
+const SLOT_MAP: Array<[RegExp, string]> = [
+  [/戒指/g, 'Ring'],
+  [/玉佩/g, 'Pendant'],
+  [/头/g, 'Head'],
+  [/头部/g, 'Head'],
+  [/胸/g, 'Chest'],
+  [/上衣/g, 'Chest'],
+  [/腿/g, 'Legs'],
+  [/腿部/g, 'Legs'],
+  [/手/g, 'Hands'],
+  [/护手/g, 'Hands'],
+  [/武器/g, 'Weapon'],
+];
+
+function applyMaps(input: string, maps: Array<[RegExp, string]>) {
   let out = input;
-  for (const [re, rep] of SCHOOL_MAP) out = out.replace(re, rep);
-  for (const [re, rep] of WEAPON_MAP) out = out.replace(re, rep);
+  for (const [re, rep] of maps) out = out.replace(re, rep);
   return out;
 }
 
-function labelFromKey(key: string): string {
-  if (!key) return key;
-
-  // 1) Exact maps first
-  if (DIRECT_MAP[key]) return DIRECT_MAP[key];
-  if (STAT_LABELS[key]) return STAT_LABELS[key];
-
-  // 2) Patterns
-  if (key.startsWith('最小') && key.endsWith('攻击')) {
-    return 'Min ' + applyMaps(key.replace(/^最小/, '').replace(/攻击$/, ' ATK'));
-  }
-  if (key.startsWith('最大') && key.endsWith('攻击')) {
-    return 'Max ' + applyMaps(key.replace(/^最大/, '').replace(/攻击$/, ' ATK'));
-  }
-
-  if (key.endsWith('武学增效')) {
-    const base = key.replace(/武学增效$/, '').trim();
-    return applyMaps(base) + ' Martial Arts Efficiency';
-  }
-
-  if (key.endsWith('伤害加成')) {
-    const base = key.replace(/伤害加成$/, '').trim();
-    return applyMaps(base) + ' Damage Bonus';
-  }
-
-  if (key.endsWith('穿透')) {
-    const base = key.replace(/穿透$/, '').trim();
-    return applyMaps(base) + ' Penetration';
-  }
-
-  // 3) Fallback heuristics
-  if (key.includes('率')) return applyMaps(key).replace(/率/g, ' Rate');
-  if (key.includes('增伤')) return applyMaps(key).replace(/增伤/g, ' Damage Bonus');
-
-  return applyMaps(key);
+export function weaponLabel(name: string): string {
+  if (!name) return name;
+  return applyMaps(name, WEAPON_MAP);
 }
 
-// Overloads
-export function statLabel(key: string): string;
-export function statLabel(stat: unknown): string;
+export function slotLabel(name: string): string {
+  if (!name) return name;
+  return applyMaps(name, SLOT_MAP);
+}
 
-// Single implementation
-export function statLabel(input: unknown): string {
-  if (typeof input === 'string') return labelFromKey(input);
+function statLabelFromKey(key: string): string {
+  if (!key) return key;
+  if (STAT_LABELS[key]) return STAT_LABELS[key];
+  if (DIRECT_MAP[key]) return DIRECT_MAP[key];
 
-  if (input && typeof input === 'object') {
-    const s = input as any;
-    const key = s.type ?? s.name ?? s.label;
-    if (typeof key === 'string') return labelFromKey(key);
+  // Generic patterns
+  const schoolThenWeapon = (s: string) => applyMaps(applyMaps(s, SCHOOL_MAP), WEAPON_MAP);
+
+  if (key.startsWith('最小') && key.endsWith('攻击')) {
+    return 'Min ' + schoolThenWeapon(key.replace(/^最小/, '').replace(/攻击$/, ' ATK'));
+  }
+  if (key.startsWith('最大') && key.endsWith('攻击')) {
+    return 'Max ' + schoolThenWeapon(key.replace(/^最大/, '').replace(/攻击$/, ' ATK'));
+  }
+  if (key.endsWith('武学增效')) {
+    const base = key.replace(/武学增效$/, '').trim();
+    return schoolThenWeapon(base) + ' Martial Arts Efficiency';
+  }
+  if (key.endsWith('伤害加成')) {
+    const base = key.replace(/伤害加成$/, '').trim();
+    return schoolThenWeapon(base) + ' Damage Bonus';
+  }
+  if (key.endsWith('穿透')) {
+    const base = key.replace(/穿透$/, '').trim();
+    return schoolThenWeapon(base) + ' Penetration';
   }
 
-  return String(input);
+  if (key.includes('率')) return schoolThenWeapon(key).replace(/率/g, ' Rate');
+  if (key.includes('增伤')) return schoolThenWeapon(key).replace(/增伤/g, ' Damage Bonus');
+
+  return schoolThenWeapon(key);
+}
+
+export function statLabel(stat: unknown): string {
+  if (typeof stat === 'string') return statLabelFromKey(stat);
+  if (stat && typeof stat === 'object') {
+    const s = stat as any;
+    const key = s.type ?? s.name ?? s.label;
+    if (typeof key === 'string') return statLabelFromKey(key);
+  }
+  return String(stat);
 }
