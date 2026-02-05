@@ -29,8 +29,7 @@ import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { useLevelStore } from '@/stores/levelStore';
 
-type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
-
+type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
 const formatDisplayTotals = (totals: Record<string, number>) => {
   const displayTotals: Record<string, number> = { ...totals };
   for (const key in displayTotals) {
@@ -134,7 +133,7 @@ export default function Home() {
   }, [equippedItems, loanDingyin]);
 
   // Get per-account level (typed for Calculator.calculateTotal)
-  const level = getLevel(currentAccount) as DengLevelKey;
+  const level = (getLevel(currentAccount) as DengLevelKey) ?? ('100' as DengLevelKey);
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
