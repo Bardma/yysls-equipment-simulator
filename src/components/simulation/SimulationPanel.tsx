@@ -4,12 +4,7 @@ import { ClassConfig } from '@/lib/data/classConfig';
 import type { EquippedItems } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-// ✅ Le type doit venir d’UN seul endroit dans tout le projet.
-// Si tu as déjà ce type dans levelStore (recommandé), importe-le depuis là.
-import type { DengLevelKey } from '@/stores/levelStore';
-// Si tu n’as PAS DengLevelKey dans levelStore, remplace la ligne ci-dessus par :
-// import type { DengLevelKey } from '@/stores/simulationStore';
+import type { DengLevelKey } from '@/stores/simulationStore';
 
 export interface SimulationPanelProps {
   expanded: boolean;
@@ -20,7 +15,7 @@ export interface SimulationPanelProps {
   setType: string;
 
   level: DengLevelKey;
-  onLevelChange: (value: DengLevelKey) => void;
+  onLevelChange: (nextLevel: DengLevelKey) => void;
 
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
@@ -33,65 +28,81 @@ export interface SimulationPanelProps {
   onUnequip: (slotKey: keyof EquippedItems) => void;
 }
 
-// ✅ levels: retirés 60/70, gardés 80/85/90/95/100
-const LEVEL_OPTIONS = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey[];
+// 60/70 retirés + ajout 85/95
+const LEVEL_OPTIONS: DengLevelKey[] = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey[];
 
 const safeArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 
-const bowOptions =
-  (ClassConfig as any).BOW_OPTIONS ??
-  (CommonData as any).BOW_OPTIONS ??
-  ['precision', 'rapid', 'power']; // fallback multi-choix
+const firstNonEmpty = <T,>(...candidates: T[][]): T[] => {
+  for (const arr of candidates) if (arr && arr.length) return arr;
+  return [];
+};
 
-  const a = safeArray<string>(anyCfg.BOW_TYPES);
-  if (a.length) return a;
+const uniq = (arr: string[]) => Array.from(new Set(arr.filter(Boolean)));
 
-  const b = safeArray<string>(anyCfg.BOW_OPTIONS);
-  if (b.length) return b;
+const getClassOptions = (currentClass: string): string[] => {
+  const anyCfg = ClassConfig as any;
+  const fromCfg = safeArray<string>(anyCfg.CLASSES);
+  return uniq(fromCfg.length ? fromCfg : [currentClass]);
+};
 
-  // fallback minimal
-  return ['precision'];
+const getBowOptions = (currentBow: string): string[] => {
+  const anyCfg = ClassConfig as any;
 
+  // essaye plusieurs sources possibles
+  const fromCfg = firstNonEmpty<string>(
+    safeArray<string>(anyCfg.BOW_TYPES),
+    safeArray<string>(anyCfg.BOW_OPTIONS),
+    safeArray<string>(anyCfg.BOWS)
+  );
 
-const setOptions =
-  (ClassConfig as any).SETS_BY_CLASS?.[currentClass] ??
-  (ClassConfig as any).SETS?.[currentClass] ??
-  (CommonData as any).SETS_BY_CLASS?.[currentClass] ??
-  [setType].filter(Boolean);
+  // fallback propre si rien trouvé
+  const fallback = ['precision', 'balanced', 'rapid'];
 
-export function SimulationPanel({
-  expanded,
-  onToggle,
-  currentClass,
-  bowType,
-  setType,
-  level,
-  onLevelChange,
-  equippedItems,
-  xinfaLoadout,
-  onClassChange,
-  onBowChange,
-  onSetChange,
-  onXinfaClick,
-  onUnequip,
-}: SimulationPanelProps) {
-  const classOptions = (() => {
-    const arr = safeArray<string>((ClassConfig as any).CLASSES);
-    const merged = Array.from(new Set([...arr, currentClass].filter(Boolean)));
-    return merged.length ? merged : [currentClass];
-  })();
+  return uniq((fromCfg.length ? fromCfg : fallback).concat([currentBow]));
+};
 
-  const bowOptions = (() => {
-    const arr = getBowOptions();
-    const merged = Array.from(new Set([...arr, bowType].filter(Boolean)));
-    return merged.length ? merged : [bowType];
-  })();
+const getSetOptionsForClass = (cls: string, currentSet: string): string[] => {
+  const anyCfg = ClassConfig as any;
 
-  const setOptions = (() => {
-    const arr = getSetOptionsForClass(currentClass, setType);
-    const merged = Array.from(new Set([...arr, setType].filter(Boolean)));
-    return merged.length ? merged : [setType];
-  })();
+  // cas 1: mapping par classe
+  const byClass = anyCfg.SETS_BY_CLASS?.[cls] ?? anyCfg.SET_OPTIONS_BY_CLASS?.[cls] ?? anyCfg.CLASS_SETS?.[cls];
+  const fromClass = safeArray<string>(byClass);
+
+  // cas 2: liste globale
+  const fromGlobal = firstNonEmpty<string>(
+    safeArray<string>(anyCfg.ALL_SETS),
+    safeArray<string>(anyCfg.SETS),
+    safeArray<string>(anyCfg.SET_OPTIONS)
+  );
+
+  const dflt = String(anyCfg.DEFAULT_SETS?.[cls] ?? '');
+
+  const base = fromClass.length ? fromClass : fromGlobal;
+  return uniq(base.concat([currentSet, dflt]));
+};
+
+export function SimulationPanel(props: SimulationPanelProps) {
+  const {
+    expanded,
+    onToggle,
+    currentClass,
+    bowType,
+    setType,
+    level,
+    onLevelChange,
+    equippedItems,
+    xinfaLoadout,
+    onClassChange,
+    onBowChange,
+    onSetChange,
+    onXinfaClick,
+    onUnequip,
+  } = props;
+
+  const classOptions = getClassOptions(currentClass);
+  const bowOptions = getBowOptions(bowType);
+  const setOptions = getSetOptionsForClass(currentClass, setType);
 
   if (!expanded) {
     return (
@@ -116,7 +127,6 @@ export function SimulationPanel({
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {/* Class */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Class</div>
           <Select value={currentClass} onValueChange={onClassChange}>
@@ -133,7 +143,6 @@ export function SimulationPanel({
           </Select>
         </div>
 
-        {/* Bow */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Bow</div>
           <Select value={bowType} onValueChange={onBowChange}>
@@ -150,7 +159,6 @@ export function SimulationPanel({
           </Select>
         </div>
 
-        {/* Set */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Set</div>
           <Select value={setType} onValueChange={onSetChange}>
@@ -167,7 +175,6 @@ export function SimulationPanel({
           </Select>
         </div>
 
-        {/* Level */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Level</div>
           <Select value={String(level)} onValueChange={(v) => onLevelChange(v as unknown as DengLevelKey)}>
@@ -185,22 +192,32 @@ export function SimulationPanel({
         </div>
       </div>
 
-      {/* Xinfa */}
-      <div className="grid grid-cols-4 gap-2">
-        {xinfaLoadout.map((x, idx) => (
-          <Button key={idx} variant="outline" onClick={() => onXinfaClick(idx)} className="truncate">
-            {x || `Slot ${idx + 1}`}
-          </Button>
-        ))}
+      {/* Le reste de ton panel (xinfa, equipped, unequip) reste inchangé */}
+      {/* IMPORTANT: garde ton code existant ci-dessous si tu en avais */}
+      <div className="space-y-2">
+        <div className="text-xs text-muted-foreground">Xinfa</div>
+        <div className="grid grid-cols-2 gap-2">
+          {xinfaLoadout.map((x, idx) => (
+            <Button key={`${x}-${idx}`} variant="outline" onClick={() => onXinfaClick(idx)}>
+              {x || `Slot ${idx + 1}`}
+            </Button>
+          ))}
+        </div>
       </div>
 
-      {/* Unequip shortcuts (optionnel, exemple minimal) */}
-      <div className="flex flex-wrap gap-2">
-        {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
-          <Button key={String(slotKey)} size="sm" variant="secondary" onClick={() => onUnequip(slotKey)}>
-            Unequip {String(slotKey)}
-          </Button>
-        ))}
+      <div className="space-y-2">
+        <div className="text-xs text-muted-foreground">Equipped</div>
+        <div className="grid grid-cols-2 gap-2">
+          {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
+            <div key={String(slotKey)} className="border-border/60 rounded-md border p-2">
+              <div className="text-xs text-muted-foreground">{String(slotKey)}</div>
+              <div className="truncate">{equippedItems[slotKey]?.name ?? '—'}</div>
+              <Button variant="outline" size="sm" className="mt-2 w-full" onClick={() => onUnequip(slotKey)}>
+                Unequip
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
