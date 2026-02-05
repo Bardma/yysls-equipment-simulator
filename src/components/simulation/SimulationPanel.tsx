@@ -21,8 +21,11 @@ export interface SimulationPanelProps {
   setType: string;
 
   level: DengLevelKey;
-  onLevelChange: (level: DengLevelKey) => void;
-
+onLevelChange={(nextLevel: DengLevelKey | null | undefined) => {
+  if (!currentAccount) return;
+  if (nextLevel == null) return;
+  setLevel(currentAccount, nextLevel);
+}}
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
 

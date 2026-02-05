@@ -28,8 +28,9 @@ import { useAccountStore } from '@/stores/accountStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useLevelStore } from '@/stores/levelStore';
 import { useSimulationStore } from '@/stores/simulationStore';
-type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
-type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+import type { DengLevelKey } from '@/stores/levelStore';
+
+// fallback sûr
 const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
 
 const formatDisplayTotals = (totals: Record<string, number>) => {
