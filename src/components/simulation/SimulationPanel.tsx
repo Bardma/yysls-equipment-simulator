@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import type { DengLevelKey } from '@/stores/simulationStore';
 import { classLabel, setLabel } from '@/lib/statName';
 import { CommonData } from '@/lib/data/commonData';
+import { useMemo } from 'react';
 
 export interface SimulationPanelProps {
   expanded: boolean;
@@ -105,7 +106,7 @@ export function SimulationPanel(props: SimulationPanelProps) {
   const classOptions = getClassOptions(currentClass);
   const bowOptions = getBowOptions(bowType);
   const setOptions = useMemo(() => {
-  const all = Object.keys(CommonData.SET_DATA || {});
+  const all = Object.keys(CommonData.SET_DATA ?? || {});
   const current = setType ? [setType] : [];
   // met le set courant en premier + évite doublons
   return Array.from(new Set([...current, ...all]));
