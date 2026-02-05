@@ -123,8 +123,8 @@ const WEAPON_LABELS: Record<string, string> = {
 
 // Classes (couvre ce que tu as listé)
 export const CLASS_LABELS: Record<string, string> = {
-  '鸣金虹': 'Bellstrike - Umbra',
-  '鸣金影': 'Bellstrike - Splendor',
+  '鸣金虹': 'Bellstrike - Splendor',
+  '鸣金影': 'Bellstrike - Umbra',
   '破竹尘': 'Bamboocut - Dust',
   '破竹风': 'Bamboocut - Wind',
   '破竹鸢': 'Bamboocut - Soar',
