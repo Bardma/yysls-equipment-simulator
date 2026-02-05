@@ -38,8 +38,10 @@ const LEVEL_OPTIONS = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey
 
 const safeArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 
-const getBowOptions = (): string[] => {
-  const anyCfg = ClassConfig as any;
+const bowOptions =
+  (ClassConfig as any).BOW_OPTIONS ??
+  (CommonData as any).BOW_OPTIONS ??
+  ['precision', 'rapid', 'power']; // fallback multi-choix
 
   const a = safeArray<string>(anyCfg.BOW_TYPES);
   if (a.length) return a;
@@ -51,16 +53,11 @@ const getBowOptions = (): string[] => {
   return ['precision'];
 };
 
-const getSetOptionsForClass = (cls: string, currentSet: string): string[] => {
-  const anyCfg = ClassConfig as any;
-
-  const byClass = anyCfg.SETS_BY_CLASS?.[cls] ?? anyCfg.SET_OPTIONS_BY_CLASS?.[cls];
-  const arr = safeArray<string>(byClass);
-  if (arr.length) return arr;
-
-  const dflt = anyCfg.DEFAULT_SETS?.[cls] ?? '';
-  return Array.from(new Set([currentSet, dflt].filter(Boolean)));
-};
+const setOptions =
+  (ClassConfig as any).SETS_BY_CLASS?.[currentClass] ??
+  (ClassConfig as any).SETS?.[currentClass] ??
+  (CommonData as any).SETS_BY_CLASS?.[currentClass] ??
+  [setType].filter(Boolean);
 
 export function SimulationPanel({
   expanded,

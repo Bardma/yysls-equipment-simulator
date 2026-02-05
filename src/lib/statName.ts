@@ -1,94 +1,61 @@
 // src/lib/statName.ts
 
-// Centralise tous les labels EN (pas de CN affiché).
-// Si une clé est inconnue, on renvoie la clé telle quelle.
-
-const STAT_LABELS: Record<string, string> = {
-  Body: "Body",
-  Power: "Power",
-  Defense: "Defense",
-  Agility: "Agility",
-  Momentum: "Momentum",
-
-  "Max HP": "Max HP",
-  "Max Qi": "Max Qi",
-  "Physical Attack": "Physical Attack",
-  "Physical Defense": "Physical Defense",
-
-  "Precision Rate": "Precision Rate",
-  "Critical Rate": "Critical Rate",
-  "Affinity Rate": "Affinity Rate",
-
-  "Abrasion Conversion Rate": "Abrasion Conversion Rate",
-  "Direct Critical Rate": "Direct Critical Rate",
-
-  "Attribute Attack": "Attribute Attack",
-  "Attribute Healing": "Attribute Healing",
-
-  "Critical DMG Bonus": "Critical DMG Bonus",
-  "Affinity DMG Bonus": "Affinity DMG Bonus",
-  "Critical Healing Bonus": "Critical Healing Bonus",
-
-  "Physical Penetration": "Physical Penetration",
-  "Physical Resistance": "Physical Resistance",
-  "Attribute Attack Penetration": "Attribute Attack Penetration",
-
-  "Physical DMG Bonus": "Physical DMG Bonus",
-  "Physical DMG Reduction": "Physical DMG Reduction",
-  "Physical Healing Bonus": "Physical Healing Bonus",
-
-  "Attribute Attack DMG Bonus": "Attribute Attack DMG Bonus",
-  "Attribute Attack Healing Bonus": "Attribute Attack Healing Bonus",
-};
-
-// Slots (si CommonData renvoie des noms CN, on les convertit ici)
+// Labels "slot" (CommonData.SLOTS.name -> EN)
 const SLOT_LABELS: Record<string, string> = {
-  Weapon: "Weapon",
-  Ring: "Ring",
-  Pendant: "Pendant",
-  Head: "Head",
-  Chest: "Chest",
-  Legs: "Legs",
-  Hands: "Hands",
+  '武器': 'Weapon',
+  '环': 'Ring',
+  '佩': 'Pendant',
+  '冠骨': 'Head',
+  '胸甲': 'Chest',
+  '胫甲': 'Legs',
+  '腕甲': 'Hands',
 };
 
-// Types d’armes (idem)
+// Labels "weapon type" (CommonData.WEAPON_TYPES.name -> EN)
 const WEAPON_LABELS: Record<string, string> = {
-  Sword: "Sword",
-  Spear: "Spear",
-  Blade: "Blade",
-  Fan: "Fan",
-  Umbrella: "Umbrella",
-  Bow: "Bow",
+  '剑': 'Sword',
+  '枪': 'Spear',
+  '伞': 'Umbrella',
+  '扇': 'Fan',
+  '绳标': 'Rope Dart',
+  '双刀': 'Dual Blades',
+  '陌刀': 'Mo Dao',
+  '横刀': 'Heng Dao',
+  '拳甲': 'Fist',
 };
 
-function coerceKey(x: unknown): string {
-  if (typeof x === "string") return x;
-  if (x && typeof x === "object") {
-    const anyX = x as any;
-    // on tente les propriétés les plus fréquentes
-    if (typeof anyX.key === "string") return anyX.key;
-    if (typeof anyX.id === "string") return anyX.id;
-    if (typeof anyX.name === "string") return anyX.name;
-    if (typeof anyX.value === "string") return anyX.value;
-    if (typeof anyX.type === "string") return anyX.type;
-  }
-  return "";
+// Labels stats (keys venant du jeu/calculator -> EN)
+const STAT_LABELS: Record<string, string> = {
+  '外功攻击': 'Physical Attack',
+  '鸣金攻击': 'Silkbind Attack',
+  '无相攻击': 'Attribute Attack',
+  '精准率': 'Precision Rate',
+  '会心率': 'Critical Rate',
+  '会意率': 'Affinity Rate',
+  '直接会心率': 'Direct Critical Rate',
+  '会心伤害加成': 'Critical DMG Bonus',
+  '会意伤害加成': 'Affinity DMG Bonus',
+  '会心伤害加成%': 'Critical DMG Bonus',
+  '会意伤害加成%': 'Affinity DMG Bonus',
+  '属攻穿透': 'Attribute Attack Penetration',
+  '物攻穿透': 'Physical Penetration',
+  '物理增伤': 'Physical DMG Bonus',
+  '物理减伤': 'Physical DMG Reduction',
+  // ajoute ici ce que ton calculator renvoie réellement
+};
+
+export function slotLabel(input: unknown): string {
+  if (typeof input !== 'string') return String(input ?? '');
+  return SLOT_LABELS[input] ?? input;
 }
 
-// EXPORT UNIQUE (pas de doublon)
-export function statLabel(stat: unknown): string {
-  const key = coerceKey(stat);
-  if (!key) return "";
-  return STAT_LABELS[key] ?? key;
+export function weaponLabel(input: unknown): string {
+  if (typeof input !== 'string') return String(input ?? '');
+  return WEAPON_LABELS[input] ?? input;
 }
 
-export function slotLabel(slotName: string): string {
-  if (!slotName) return slotName;
-  return SLOT_LABELS[slotName] ?? slotName;
-}
-
-export function weaponLabel(weaponName: string): string {
-  if (!weaponName) return weaponName;
-  return WEAPON_LABELS[weaponName] ?? weaponName;
+// ✅ UNE SEULE définition
+export function statLabel(input: unknown): string {
+  if (typeof input !== 'string') return String(input ?? '');
+  return STAT_LABELS[input] ?? input;
 }
