@@ -1,4 +1,3 @@
-// src/stores/levelStore.ts
 import { create } from 'zustand';
 import {
   DEFAULT_LEVEL,
@@ -8,17 +7,14 @@ import {
   deleteLevelForAccount,
 } from '@/lib/levelStorage';
 
-type LevelMap = Record<string, number>;
+type LevelMap = Record<string, string>;
 
 interface LevelState {
   levels: LevelMap;
   hydrated: boolean;
-
   hydrateLevels: () => void;
-
-  getLevel: (accountName: string | null) => number;
-  setLevel: (accountName: string | null, level: number) => number;
-
+  getLevel: (accountName: string | null) => string;
+  setLevel: (accountName: string | null, level: string) => string;
   deleteLevel: (accountName: string | null) => void;
 }
 
@@ -36,9 +32,8 @@ export const useLevelStore = create<LevelState>((set, get) => ({
 
     const { levels } = get();
     const cached = levels[accountName];
-    if (typeof cached === 'number' && Number.isFinite(cached)) return cached;
+    if (typeof cached === 'string' && cached.length > 0) return cached;
 
-    // Lazy load per-account if not cached yet
     const loaded = loadLevelForAccount(accountName);
     set({ levels: { ...levels, [accountName]: loaded } });
     return loaded;
