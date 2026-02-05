@@ -27,6 +27,7 @@ import type { EquipItem, EquippedItems } from '@/lib/types';
 import { useAccountStore } from '@/stores/accountStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useSimulationStore } from '@/stores/simulationStore';
+import { useLevelStore } from '@/stores/levelStore';
 
 const formatDisplayTotals = (totals: Record<string, number>) => {
   const displayTotals: Record<string, number> = { ...totals };
@@ -102,11 +103,15 @@ export default function Home() {
     updateEquipsById,
   } = useSimulationStore();
 
+  // Level store (NEW)
+  const { hydrateLevels, getLevel } = useLevelStore();
+
   // Hydration effects
   useEffect(() => {
     setMounted(true);
     hydrate();
-  }, [hydrate]);
+    hydrateLevels();
+  }, [hydrate, hydrateLevels]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -120,38 +125,39 @@ export default function Home() {
     setRightPanels(loadRightPanelState(currentAccount));
   }, [mounted, currentAccount]);
 
-// Calculations
-const effectiveEquippedItems = useMemo(() => {
-  if (!loanDingyin) return equippedItems;
-  return addFullDingyinToEquips(equippedItems);
-}, [equippedItems, loanDingyin]);
+  // Calculations
+  const effectiveEquippedItems = useMemo(() => {
+    if (!loanDingyin) return equippedItems;
+    return addFullDingyinToEquips(equippedItems);
+  }, [equippedItems, loanDingyin]);
 
-const level = currentAccount?.level ?? 100;
+  // Get per-account level (NEW)
+  const level = getLevel(currentAccount);
 
-const totals = useMemo(() => {
-  if (!currentAccount) return null;
+  const totals = useMemo(() => {
+    if (!currentAccount) return null;
 
-  return Calculator.calculateTotal(
+    return Calculator.calculateTotal(
+      effectiveEquippedItems,
+      currentClass,
+      bowType,
+      xinfaLoadout,
+      setType,
+      false,
+      null,
+      earlySeasonBonus,
+      level
+    );
+  }, [
+    currentAccount,
     effectiveEquippedItems,
     currentClass,
     bowType,
     xinfaLoadout,
     setType,
-    false,
-    null,
     earlySeasonBonus,
-    level
-  );
-}, [
-  currentAccount,
-  effectiveEquippedItems,
-  currentClass,
-  bowType,
-  xinfaLoadout,
-  setType,
-  earlySeasonBonus,
-  level,
-]);
+    level,
+  ]);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
@@ -328,7 +334,7 @@ const totals = useMemo(() => {
               onEquipItem={equipItemById}
             />
 
-            {/* Right: Simulation, Graduation, Stats panels - 在移动端显示在装备库前面 */}
+            {/* Right: Simulation, Graduation, Stats panels */}
             <section className="flex flex-col gap-3 order-first lg:order-none">
               <SimulationPanel
                 expanded={rightPanels.simulation}
@@ -336,7 +342,7 @@ const totals = useMemo(() => {
                 currentClass={currentClass}
                 bowType={bowType}
                 setType={setType}
-        level={level}
+                level={level}
                 equippedItems={equippedItems}
                 xinfaLoadout={xinfaLoadout}
                 onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
@@ -435,4 +441,3 @@ const totals = useMemo(() => {
     </div>
   );
 }
- 
