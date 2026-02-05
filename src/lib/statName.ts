@@ -27,13 +27,64 @@ const DIRECT_MAP: Record<string, string> = {
   敏: 'Agility (Min)',
   势: 'Momentum (Shi)',
 };
+const STAT_LABELS: Record<string, string> = {
+  // Core
+  '劲': 'Power',
+  '敏': 'Agility',
+  '势': 'Momentum',
+  '体': 'Body',
+  '御': 'Defense',
 
+  // Attacks/Def
+  '外功攻击': 'Physical Attack',
+  '外功防御': 'Physical Defense',
+  '鸣金攻击': 'Metal Attack',
+  '无相攻击': 'Attribute Attack',
+
+  // Rates
+  '精准率': 'Precision Rate',
+  '会心率': 'Critical Rate',
+  '会意率': 'Affinity Rate',
+  '直接会心率': 'Direct Critical Rate',
+  '直接会意率': 'Direct Affinity Rate',
+
+  // Bonuses
+  '会心伤害加成': 'Critical DMG Bonus',
+  '会意伤害加成': 'Affinity DMG Bonus',
+  '会心治疗加成': 'Critical Healing Bonus',
+  '外功伤害加成': 'Physical DMG Bonus',
+  '外功伤害减免': 'Physical DMG Reduction',
+  '外功治疗加成': 'Physical Healing Bonus',
+  '无相伤害加成': 'Attribute Attack DMG Bonus',
+  '无相治疗加成': 'Attribute Attack Healing Bonus',
+
+  // Penetration / Resistance
+  '属攻穿透': 'Attribute Attack Penetration',
+  '外功穿透': 'Physical Penetration',
+  '外功抗性': 'Physical Resistance',
+
+  // HP/Qi (si tu as les clés exactes)
+  '最大气血': 'Max HP',
+  '最大真气': 'Max Qi',
+
+  // etc...
+};
+
+export function statLabel(stat: unknown): string {
+  if (typeof stat === 'string') return STAT_LABELS[stat] ?? stat;
+  if (stat && typeof stat === 'object') {
+    const s = stat as any;
+    const key = s.type ?? s.name ?? s.label;
+    if (typeof key === 'string') return STAT_LABELS[key] ?? key;
+  }
+  return String(stat);
+}
 const SCHOOL_MAP: Array<[RegExp, string]> = [
-  [/鸣金/g, 'Resonance'],
-  [/裂石/g, 'Shatterstone'],
+  [/鸣金/g, 'Bellstrike'],
+  [/裂石/g, 'Stonesplit'],
   [/牵丝/g, 'Silkbind'],
   [/破竹/g, 'Bamboosplit'],
-  [/无相/g, 'Neutral'],
+  [/无相/g, 'Formless'],
 ];
 
 const WEAPON_MAP: Array<[RegExp, string]> = [
