@@ -24,7 +24,6 @@ type StatOption =
 const statLabel = (stat: StatOption): string => {
   if (typeof stat === 'string') return stat;
 
-  // try common fields in order of likelihood
   const candidate =
     stat.label ??
     stat.name ??
@@ -39,21 +38,17 @@ const statLabel = (stat: StatOption): string => {
 interface StatInputRowProps {
   label?: string;
 
-  // current selected stat key/label
   stat: string;
   onStatChange: (value: string) => void;
 
-  // numeric input value
   value: string | number;
   onValueChange: (value: string) => void;
 
   options: StatOption[];
 
-  // optional disabling
   disabled?: boolean;
   disabledOptions?: StatOption[];
 
-  // optional UI hints
   placeholder?: string;
   valuePlaceholder?: string;
 }
@@ -70,6 +65,7 @@ export function StatInputRow({
   placeholder = '—',
   valuePlaceholder = '',
 }: StatInputRowProps) {
+  const disabledLabels = new Set(disabledOptions.map((s) => statLabel(s)));
 
   return (
     <div className="flex items-center gap-2">
@@ -82,20 +78,12 @@ export function StatInputRow({
 
         <SelectContent>
           {options.map((opt) => {
-            const raw =
-              typeof opt === 'string'
-                ? opt
-                : (opt as any)?.type ?? (opt as any)?.value ?? (opt as any)?.name ?? String(opt);
-
-            const label = STAT_LABELS_EN[raw] ?? raw;
+            const lbl = statLabel(opt);
+            if (!lbl) return null;
 
             return (
-              <SelectItem
-                key={raw}
-                value={raw}
-                disabled={disabledOptions.includes(raw)}
-              >
-                {label}
+              <SelectItem key={lbl} value={lbl} disabled={disabledLabels.has(lbl)}>
+                {lbl}
               </SelectItem>
             );
           })}
