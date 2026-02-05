@@ -6,7 +6,7 @@ const STAT_LABELS: Record<string, string> = {
   '鸣金攻击': 'Attribute Attack',
   '无相攻击': 'Formless Attribute',
   '破竹攻击': 'Bamboocut Attack',
-  '牵丝攻击': 'Silkbond Attack',
+  '牵丝攻击': 'Silkbind Attack',
   '裂石攻击': 'Stonesplit Attack',
   '精准率': 'Precision Rate',
   '会心率': 'Critical Rate',
@@ -19,7 +19,7 @@ const STAT_LABELS: Record<string, string> = {
   '属攻': 'Attribute Attack',
   '属疗': 'Attribute Healing',
   '鸣金伤害加成': 'Attribute DMG Bonus',
-  '牵丝伤害加成': 'Silkbond DMG Bonus',
+  '牵丝伤害加成': 'Silkbind DMG Bonus',
   '破竹伤害加成': 'Bamboocut DMG Bonus',
   '裂石伤害加成': 'Stonesplit DMG Bonus',
 

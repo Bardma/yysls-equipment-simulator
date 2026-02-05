@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CommonData } from '@/lib/data/commonData';
 import { calcRate } from '@/lib/graduation';
 import type { EquipItem, EquippedItems } from '@/lib/types';
+import { statLabel } from '@/lib/statName';
 
 interface ConvertTabProps {
   convertTarget: EquipItem | null;
@@ -37,9 +38,9 @@ export const ConvertTab = ({
   if (!convertTarget) {
     return (
       <div className="text-muted-foreground py-10 text-center">
-        当前部位未穿戴装备，请先穿戴或点击按钮选择装备
+        No equipment is worn in the current slot. Equip one first or choose an item to analyze.
         <div className="mt-4">
-          <Button onClick={onPickEquip}>选择/录入装备进行分析</Button>
+          <Button onClick={onPickEquip}>Choose/Add Equipment for Analysis</Button>
         </div>
       </div>
     );
@@ -256,21 +257,21 @@ export const ConvertTab = ({
   return (
     <div className="space-y-4">
       <div className="border-border/60 bg-card space-y-2 rounded-lg border p-3">
-        <div className="text-muted-foreground text-xs">基准（当前身上穿的）</div>
+        <div className="text-muted-foreground text-xs">Baseline (currently equipped)</div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <div className="font-medium">
-              {baselineEquip?.name || '未穿戴'}
+              {baselineEquip?.name || 'Unequipped'}
             </div>
             {baselineEquip?.isChengyin ? (
-              <span className="text-[10px] text-muted-foreground">(承音)</span>
+              <span className="text-[10px] text-muted-foreground">(Chengyin)</span>
             ) : null}
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-muted-foreground text-xs">分析对象</div>
+            <div className="text-muted-foreground text-xs">Analysis Target</div>
             <div className="font-medium">{convertTarget.name}</div>
             <Button size="sm" variant="secondary" onClick={onPickEquip}>
-              更换分析对象
+              Change Analysis Target
             </Button>
           </div>
         </div>
@@ -287,7 +288,7 @@ export const ConvertTab = ({
             }`}
             onClick={() => onSubIndexChange(idx)}
           >
-            {sub.type}+{sub.value}
+            {statLabel(sub.type)}+{sub.value}
           </button>
         ))}
       </div>
@@ -306,14 +307,14 @@ export const ConvertTab = ({
                       : 'text-muted-foreground'
                 }`}
               >
-                <span className="hidden sm:inline">期望 </span>{armory.expected > 0 ? '+' : ''}
+                <span className="hidden sm:inline">Expected </span>{armory.expected > 0 ? '+' : ''}
                 {armory.expected.toFixed(2)}%
               </div>
             </div>
             <div className="text-muted-foreground mt-1.5 space-y-0.5 text-xs">
               {armory.outcomes.map((outcome) => (
                 <div key={outcome.name} className="flex items-center justify-between">
-                  <span className="truncate">{outcome.name}</span>
+                  <span className="truncate">{statLabel(outcome.name)}</span>
                   <span
                     className={`shrink-0 ml-1 ${
                       outcome.diff > 0 ? 'text-red-400' : outcome.diff < 0 ? 'text-green-400' : ''
@@ -332,34 +333,34 @@ export const ConvertTab = ({
       {bestRecommendation ? (
         bestRecommendation.expectedDiff > 0.0001 ? (
           <div className="border-green-500/40 bg-green-500/10 rounded-lg border px-4 py-3 text-sm text-green-200">
-            <div className="font-semibold mb-1">✅ 建议转律</div>
+            <div className="font-semibold mb-1">✅ Recommended Transmutation</div>
             <div>
-              建议对第{bestRecommendation.subIndex + 1}条词条
-              <span className="mx-1 font-semibold">{bestRecommendation.originalStat}</span>
-              转律为
-              <span className="mx-1 font-semibold">{bestRecommendation.stat}</span>
-              ，使用
+              Recommended: convert Sub Stat #{bestRecommendation.subIndex + 1}
+              <span className="mx-1 font-semibold">{statLabel(bestRecommendation.originalStat)}</span>
+              to
+              <span className="mx-1 font-semibold">{statLabel(bestRecommendation.stat)}</span>
+              using
               <span className="mx-1 font-semibold">
                 {bestRecommendation.armories.length > 1
-                  ? bestRecommendation.armories.join('、')
+                  ? bestRecommendation.armories.join(', ')
                   : bestRecommendation.armories[0]}
               </span>
-              ，期望收益
+              ; expected gain
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.expectedDiff.toFixed(2)}%
               </span>
-              ，最高收益
+              ; max gain
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.maxDiff.toFixed(2)}%
               </span>
-              （超过当前穿戴的装备）。
+              (better than current equipped item).
             </div>
           </div>
         ) : bestRecommendation.hasPositiveCase && bestRecommendation.positiveCases.length > 0 ? (
           <div className="border-yellow-500/40 bg-yellow-500/10 rounded-lg border px-4 py-3 text-sm text-yellow-200">
-            <div className="font-semibold mb-1">⚠️ 谨慎转律</div>
+            <div className="font-semibold mb-1">⚠️ Transmute with Caution</div>
             <div>
-              虽然所有武库的转律期望收益为负，但存在可以让毕业率上升的情况：
+              Although expected gains are negative across all armories, some cases can still improve graduation rate:
             </div>
             <div className="mt-1">
               {Array.from(
@@ -381,33 +382,33 @@ export const ConvertTab = ({
                   }
                 });
                 return (
-                  <div key={`${group.subIndex}-${group.stat}`}>
-                    将第{group.subIndex + 1}条词条 {group.originalStat} 转律为 {group.stat}，
-                    使用{group.armories.length > 1 ? group.armories.join('/') : group.armories[0]}武库
+                  <div key={`${group.subIndex}-${statLabel(group.stat)}`}>
+                    Convert Sub Stat #{group.subIndex + 1} {statLabel(group.originalStat)} to {statLabel(group.stat)}, 
+                    using {group.armories.length > 1 ? group.armories.join('/') : group.armories[0]} armory
                   </div>
                 );
               })}
             </div>
             <div className="mt-2">
-              最高可提升
+              Highest possible gain
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.positiveCases[0].maxDiff.toFixed(2)}%
               </span>
-              ，但期望收益仅为
+              but expected gain is only
               <span className="mx-1 font-semibold">
                 {bestRecommendation.positiveCases[0].expectedDiff.toFixed(2)}%
               </span>
-              ，请谨慎考虑。
+              please evaluate carefully.
             </div>
           </div>
         ) : (
           <div className="border-red-500/40 bg-red-500/10 rounded-lg border px-4 py-3 text-sm text-red-200">
-            <div className="font-semibold mb-1">⛔ 不建议转律</div>
+            <div className="font-semibold mb-1">⛔ Transmutation Not Recommended</div>
             <div>
-              经过分析，无论对哪个副词条进行转律，毕业率都无法超过当前穿戴的装备。
+              Analysis result: no sub-stat transmutation can outperform the currently equipped item.
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              （最大期望收益仅为 {bestRecommendation.expectedDiff.toFixed(2)}% 或为负）
+              (maximum expected gain is {bestRecommendation.expectedDiff.toFixed(2)}% or negative)
             </div>
           </div>
         )

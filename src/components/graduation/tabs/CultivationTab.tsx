@@ -8,6 +8,7 @@ import { CommonData } from '@/lib/data/commonData';
 import { calcRateWithStatModifier, findBestStatsForSlotAsync, SLOT_NAME_MAP } from '@/lib/graduation';
 import { Calculator } from '@/lib/calculator';
 import type { EquippedItems } from '@/lib/types';
+import { statLabel } from '@/lib/statName';
 
 interface CultivationTabProps {
   equippedItems: EquippedItems;
@@ -91,7 +92,7 @@ export const CultivationTab = ({
     );
     if (!slots.length) return;
 
-    setStatus({ running: true, text: '开始分析...', percent: 0, result: null });
+    setStatus({ running: true, text: 'Starting analysis...', percent: 0, result: null });
 
     const rotationConfig = ClassConfig.ROTATIONS[currentClass];
     const rotation = rotationConfig?.rotation || [];
@@ -149,7 +150,7 @@ export const CultivationTab = ({
         (text) => {
           setStatus({
             running: true,
-            text: `分析 ${SLOT_NAME_MAP[slotKey]}：${text}`,
+            text: `Analyzing ${SLOT_NAME_MAP[slotKey]}: ${text}`,
             percent: Math.min(100, ((idx + 1) / slots.length) * 100),
             result: null,
           });
@@ -193,7 +194,7 @@ export const CultivationTab = ({
 
     setStatus({
       running: false,
-      text: '分析完成',
+      text: 'Analysis complete',
       percent: 100,
       result: { bestImprovementEquip, secondBestWeapon },
     });
@@ -203,29 +204,29 @@ export const CultivationTab = ({
     <div className="space-y-3 sm:space-y-4">
       <div className="border-border/60 bg-card space-y-2 sm:space-y-3 rounded-lg border p-2.5 sm:p-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <div className="font-medium text-yellow-300 text-sm sm:text-base">培养总结</div>
+          <div className="font-medium text-yellow-300 text-sm sm:text-base">Cultivation Summary</div>
           <div className="text-muted-foreground text-[10px] sm:text-sm">
-            全词条统计（按满值比）总和：
+            All-stats total (by max-value ratio):
             <span className="ml-1 font-semibold text-yellow-300">
-              {cultivationSummary.totalStatsCount.toFixed(1)}/40条
+              {cultivationSummary.totalStatsCount.toFixed(1)}/40 entries
             </span>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-1.5 sm:gap-2 md:grid-cols-3">
           {cultivationSummary.sortedStats.map(([stat, count]) => (
             <div
-              key={stat}
+              key={statLabel(stat)}
               className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs"
             >
-              <div className="text-foreground font-medium truncate">{stat}</div>
-              <div className="text-muted-foreground mt-0.5 sm:mt-1">{count.toFixed(2)}条</div>
+              <div className="text-foreground font-medium truncate">{statLabel(stat)}</div>
+              <div className="text-muted-foreground mt-0.5 sm:mt-1">{count.toFixed(2)} entries</div>
             </div>
           ))}
         </div>
         <div className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs">
-          <div className="text-foreground font-medium">定音词条总结</div>
+          <div className="text-foreground font-medium">Attunement Summary</div>
           <div className="text-muted-foreground mt-0.5 sm:mt-1">
-            总体占满值百分比：
+            Overall max-value ratio:
             <span className="ml-1 font-semibold text-yellow-300">
               {cultivationSummary.dingyinPercent.toFixed(1)}%
             </span>
@@ -234,7 +235,7 @@ export const CultivationTab = ({
       </div>
 
       <Button size="sm" onClick={startCultivation} disabled={status.running} className="text-xs sm:text-sm">
-        {status.running ? '分析中...' : '计算培养建议'}
+        {status.running ? 'Analyzing...' : 'Calculate Cultivation Advice'}
       </Button>
 
       {status.running && (
@@ -267,12 +268,12 @@ export const CultivationTab = ({
                     {status.result.bestImprovementEquip.slotName}
                   </div>
                   <div className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {status.result.bestImprovementEquip.equip?.name || '未命名装备'}
+                    {status.result.bestImprovementEquip.equip?.name || 'Unnamed Equipment'}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间最大</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">Highest improvement potential</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">Improvement</div>
                   <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                   </div>
@@ -281,55 +282,55 @@ export const CultivationTab = ({
 
               {/* 分析结果说明 */}
               <div className="border-l-2 border-yellow-500/60 bg-yellow-500/10 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm">
-                <span className="font-semibold text-yellow-300">分析结果：</span>
-                当前贡献率{' '}
+                <span className="font-semibold text-yellow-300">Analysis Result:</span>
+                Current contribution 
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.originalContribution.toFixed(2)}%
                 </span>
-                ，上限{' '}
+; upper bound{' '}
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%
                 </span>
-                ，提升空间{' '}
+                ; improvement{' '}
                 <span className="font-semibold text-red-400">
                   {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                 </span>
                 <span className="hidden sm:inline">
-                  ，是所有部位中提升空间最大的一个。建议优先培养或更换此部位的装备。
+                   . This slot has the highest improvement potential among all slots. Prioritize cultivating or replacing this slot first.
                 </span>
               </div>
 
-              {/* 推荐词条配置 */}
+              {/* Recommended Stat Setup */}
               <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
-                  <span>推荐词条配置</span>
+                  <span>Recommended Stat Setup</span>
                 </div>
                 <div className="text-[10px] sm:text-xs text-muted-foreground">
-                  最大化贡献（{status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）的配置：
+                  Setup for maximum contribution ({status.result.bestImprovementEquip.maxContribution.toFixed(2)}%):
                 </div>
 
-                {/* 主词条 */}
+                {/* Main Stat */}
                 {status.result.bestImprovementEquip.bestMainStat && (
                   <div className="space-y-1 sm:space-y-2">
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">Main Stat</div>
                     <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
                       <div className="font-medium text-xs sm:text-base">
-                        {status.result.bestImprovementEquip.bestMainStat.stat}
+                        {statLabel(status.result.bestImprovementEquip.bestMainStat.stat)}
                       </div>
                       <div className="text-[10px] sm:text-xs text-muted-foreground">
-                        满值：{CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
+                        Max: {CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.bestImprovementEquip.bestMainStat.stat) ? '%' : ''}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* 副词条 */}
+                {/* Sub Stats */}
                 {status.result.bestImprovementEquip.bestSubStats?.length > 0 && (
                   <div className="space-y-1 sm:space-y-2">
                     <div className="text-[10px] sm:text-xs text-muted-foreground">
-                      副词条（推荐{status.result.bestImprovementEquip.bestSubStats.length}条）
+                      Sub Stats (recommended {status.result.bestImprovementEquip.bestSubStats.length} entries)
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.bestImprovementEquip.bestSubStats.map((stat: any, idx: number) => (
@@ -338,10 +339,10 @@ export const CultivationTab = ({
                           className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1 sm:py-2"
                         >
                           <div className="font-medium text-[10px] sm:text-base truncate">
-                            {idx + 1}. {stat.stat}
+                            {idx + 1}. {statLabel(stat.stat)}
                           </div>
                           <div className="text-[9px] sm:text-xs text-muted-foreground">
-                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            Max: {CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>
                         </div>
@@ -375,49 +376,49 @@ export const CultivationTab = ({
                     {status.result.secondBestWeapon.slotName}
                   </div>
                   <div className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {status.result.secondBestWeapon.equip?.name || '未命名装备'}
+                    {status.result.secondBestWeapon.equip?.name || 'Unnamed Equipment'}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">武器提升空间更大者</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">Higher weapon improvement potential</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">Improvement</div>
                   <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
               </div>
 
-              {/* 推荐词条配置 */}
+              {/* Recommended Stat Setup */}
               <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
-                  <span>推荐词条配置</span>
+                  <span>Recommended Stat Setup</span>
                 </div>
                 <div className="text-[10px] sm:text-xs text-muted-foreground">
-                  最大化贡献（{status.result.secondBestWeapon.maxContribution.toFixed(2)}%）的配置：
+                  Setup for maximum contribution ({status.result.secondBestWeapon.maxContribution.toFixed(2)}%):
                 </div>
 
-                {/* 主词条 */}
+                {/* Main Stat */}
                 {status.result.secondBestWeapon.bestMainStat && (
                   <div className="space-y-1 sm:space-y-2">
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">Main Stat</div>
                     <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
                       <div className="font-medium text-xs sm:text-base">
-                        {status.result.secondBestWeapon.bestMainStat.stat}
+                        {statLabel(status.result.secondBestWeapon.bestMainStat.stat)}
                       </div>
                       <div className="text-[10px] sm:text-xs text-muted-foreground">
-                        满值：{CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
+                        Max: {CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.secondBestWeapon.bestMainStat.stat) ? '%' : ''}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* 副词条 */}
+                {/* Sub Stats */}
                 {status.result.secondBestWeapon.bestSubStats?.length > 0 && (
                   <div className="space-y-1 sm:space-y-2">
                     <div className="text-[10px] sm:text-xs text-muted-foreground">
-                      副词条（推荐{status.result.secondBestWeapon.bestSubStats.length}条）
+                      Sub Stats (recommended {status.result.secondBestWeapon.bestSubStats.length} entries)
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.secondBestWeapon.bestSubStats.map((stat: any, idx: number) => (
@@ -426,10 +427,10 @@ export const CultivationTab = ({
                           className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1 sm:py-2"
                         >
                           <div className="font-medium text-[10px] sm:text-base truncate">
-                            {idx + 1}. {stat.stat}
+                            {idx + 1}. {statLabel(stat.stat)}
                           </div>
                           <div className="text-[9px] sm:text-xs text-muted-foreground">
-                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            Max: {CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>
                         </div>
