@@ -1,84 +1,79 @@
 import { create } from 'zustand';
+
 import { Calculator } from '@/lib/calculator';
+import { loadLevelsMap, saveLevelForAccount, saveLevelsMap } from '@/lib/storage';
 
-// Le type EXACT attendu par Calculator.calculateTotal en 9e argument
-export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
-
-type LevelMap = Record<string, DengLevelKey>;
-
-const STORAGE_KEY = 'yysls_levels_v1';
-
-// Défaut sûr (compile quoi qu’il arrive)
-const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
-
-// LocalStorage safe (SSR/Next)
-function canUseStorage() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-}
-
-function readAll(): LevelMap {
-  if (!canUseStorage()) return {};
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw) as LevelMap;
-  } catch {
-    return {};
-  }
-}
-
-function writeAll(map: LevelMap) {
-  if (!canUseStorage()) return;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
-  } catch {
-    // noop
-  }
-}
+/**
+ * The exact level type expected by Calculator.calculateTotal (parameter index 8).
+ * We force NonNullable so components can rely on a real value.
+ */
+export type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
 
 interface LevelState {
   hydrated: boolean;
-  levels: LevelMap;
+  levels: Record<string, DengLevelKey>;
 
   hydrateLevels: () => void;
 
-  // Retourne toujours un DengLevelKey (jamais undefined)
   getLevel: (accountName: string | null) => DengLevelKey;
-
-  // Set level pour un compte (si account null => noop)
   setLevel: (accountName: string | null, level: DengLevelKey) => void;
 
-  // Optionnel: reset
-  resetLevel: (accountName: string | null) => void;
+  deleteLevel: (accountName: string | null) => void;
 }
+
+const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
+
+const toLevelKey = (value: unknown): DengLevelKey => {
+  // We store as string in localStorage; Calculator accepts whatever DengLevelKey is.
+  // Keep it safe: if it’s empty/invalid, fallback.
+  if (value === null || value === undefined) return DEFAULT_LEVEL;
+  const s = String(value).trim();
+  if (!s) return DEFAULT_LEVEL;
+  return s as unknown as DengLevelKey;
+};
 
 export const useLevelStore = create<LevelState>((set, get) => ({
   hydrated: false,
   levels: {},
 
   hydrateLevels: () => {
-    const data = readAll();
-    set({ levels: data, hydrated: true });
+    const map = loadLevelsMap(); // Record<string, string>
+    const next: Record<string, DengLevelKey> = {};
+    for (const k of Object.keys(map)) {
+      next[k] = toLevelKey(map[k]);
+    }
+    set({ levels: next, hydrated: true });
   },
 
-  getLevel: (accountName) => {
+  getLevel: (accountName: string | null) => {
     if (!accountName) return DEFAULT_LEVEL;
     const { levels } = get();
-    return (levels[accountName] ?? DEFAULT_LEVEL) as DengLevelKey;
+    return levels[accountName] ?? DEFAULT_LEVEL;
   },
 
-  setLevel: (accountName, level) => {
+  setLevel: (accountName: string | null, level: DengLevelKey) => {
     if (!accountName) return;
-    const next = { ...get().levels, [accountName]: level } as LevelMap;
-    set({ levels: next });
-    writeAll(next);
+    const lvl = toLevelKey(level);
+    set((state) => ({
+      levels: {
+        ...state.levels,
+        [accountName]: lvl,
+      },
+    }));
+    // persist as string
+    saveLevelForAccount(accountName, String(lvl));
   },
 
-  resetLevel: (accountName) => {
+  deleteLevel: (accountName: string | null) => {
     if (!accountName) return;
-    const next = { ...get().levels };
-    delete next[accountName];
-    set({ levels: next });
-    writeAll(next);
+    set((state) => {
+      const next = { ...state.levels };
+      delete next[accountName];
+      return { levels: next };
+    });
+    // update persisted map
+    const map = loadLevelsMap();
+    delete map[accountName];
+    saveLevelsMap(map);
   },
 }));

@@ -120,3 +120,68 @@ export const clearAccountData = (account: string | null): void => {
   localStorage.removeItem(storageKeys.simKey(account));
   localStorage.removeItem(storageKeys.uiPanelKey(account));
 };
+// ===== Level storage (per-account) =====
+
+const LEVELS_KEY = 'yysls.levels.v1';
+
+type LevelsMap = Record<string, string>;
+
+/**
+ * Internal: load the whole map { [accountName]: levelKey }
+ */
+export const loadLevelsMap = (): LevelsMap => {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(LEVELS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return {};
+    return parsed as LevelsMap;
+  } catch {
+    return {};
+  }
+};
+
+/**
+ * Internal: save the whole map
+ */
+export const saveLevelsMap = (map: LevelsMap) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(LEVELS_KEY, JSON.stringify(map));
+  } catch {
+    // ignore write failures
+  }
+};
+
+/**
+ * Public: load one account level (string key)
+ */
+export const loadLevelForAccount = (accountName: string | null): string | null => {
+  if (!accountName) return null;
+  const map = loadLevelsMap();
+  const v = map[accountName];
+  return typeof v === 'string' ? v : null;
+};
+
+/**
+ * Public: save one account level (string key)
+ */
+export const saveLevelForAccount = (accountName: string | null, level: string) => {
+  if (!accountName) return;
+  const map = loadLevelsMap();
+  map[accountName] = level;
+  saveLevelsMap(map);
+};
+
+/**
+ * Optional: delete account level when deleting account data
+ */
+export const deleteLevelForAccount = (accountName: string | null) => {
+  if (!accountName) return;
+  const map = loadLevelsMap();
+  if (map[accountName] !== undefined) {
+    delete map[accountName];
+    saveLevelsMap(map);
+  }
+};

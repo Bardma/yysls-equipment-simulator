@@ -17,19 +17,13 @@ import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
 import { addFullDingyinToEquips } from '@/lib/graduation/dingyin';
 import { buildStatsDisplay } from '@/lib/statsDisplay';
-import {
-  clearAccountData,
-  loadEquipData,
-  loadRightPanelState,
-  saveRightPanelState,
-} from '@/lib/storage';
+import { clearAccountData, loadEquipData, loadRightPanelState, saveRightPanelState } from '@/lib/storage';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 import { useAccountStore } from '@/stores/accountStore';
 import { useEquipmentStore } from '@/stores/equipmentStore';
-import { useSimulationStore } from '@/stores/simulationStore';
 import { useLevelStore } from '@/stores/levelStore';
+import { useSimulationStore } from '@/stores/simulationStore';
 
-type DengLevelKey = NonNullable<Parameters<typeof Calculator.calculateTotal>[8]>;
 const formatDisplayTotals = (totals: Record<string, number>) => {
   const displayTotals: Record<string, number> = { ...totals };
   for (const key in displayTotals) {
@@ -64,26 +58,9 @@ export default function Home() {
 
   const t = useTranslations();
 
-  const {
-    accounts,
-    currentAccount,
-    hydrated,
-    hydrate,
-    createAccount,
-    deleteAccount,
-    setCurrentAccount,
-  } = useAccountStore();
+  const { accounts, currentAccount, hydrated, hydrate, createAccount, deleteAccount, setCurrentAccount } = useAccountStore();
 
-  const {
-    db,
-    filter,
-    hydrate: hydrateDb,
-    setFilter,
-    addEquip,
-    updateEquip,
-    deleteEquip,
-    replaceAll,
-  } = useEquipmentStore();
+  const { db, filter, hydrate: hydrateDb, setFilter, addEquip, updateEquip, deleteEquip, replaceAll } = useEquipmentStore();
 
   const {
     currentClass,
@@ -104,10 +81,8 @@ export default function Home() {
     updateEquipsById,
   } = useSimulationStore();
 
-  // Level store
   const { hydrateLevels, getLevel, setLevel } = useLevelStore();
 
-  // Hydration effects
   useEffect(() => {
     setMounted(true);
     hydrate();
@@ -126,14 +101,12 @@ export default function Home() {
     setRightPanels(loadRightPanelState(currentAccount));
   }, [mounted, currentAccount]);
 
-  // Calculations
   const effectiveEquippedItems = useMemo(() => {
     if (!loanDingyin) return equippedItems;
     return addFullDingyinToEquips(equippedItems);
   }, [equippedItems, loanDingyin]);
 
-  // Get per-account level (typed for Calculator.calculateTotal)
-  const level = (getLevel(currentAccount) as DengLevelKey) ?? ('100' as DengLevelKey);
+  const level = getLevel(currentAccount);
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
@@ -149,16 +122,7 @@ export default function Home() {
       earlySeasonBonus,
       level
     );
-  }, [
-    currentAccount,
-    effectiveEquippedItems,
-    currentClass,
-    bowType,
-    xinfaLoadout,
-    setType,
-    earlySeasonBonus,
-    level,
-  ]);
+  }, [currentAccount, effectiveEquippedItems, currentClass, bowType, xinfaLoadout, setType, earlySeasonBonus, level]);
 
   const rotationConfig = ClassConfig.ROTATIONS[currentClass];
   const rotation = rotationConfig?.rotation || [];
@@ -168,44 +132,24 @@ export default function Home() {
 
   const graduationInfo = useMemo(() => {
     if (!totals || rotation.length === 0) return null;
+
     const accParams = { ...totals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
-    const accResult = Calculator.calculateGraduationRate(
-      accParams,
-      skillDb,
-      rotation,
-      baseline,
-      false
-    );
+    const accResult = Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false);
+
     const displayTotals = formatDisplayTotals(totals);
     const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
-    const excelResult = Calculator.calculateGraduationRate(
-      excelParams,
-      skillDb,
-      rotation,
-      baseline,
-      false
-    );
+    const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
+
     const dps = Math.round(accResult.totalDamage / useTime);
-    return {
-      accurate: accResult.graduationRate,
-      excel: excelResult.graduationRate,
-      dps,
-      isLoaned: loanDingyin,
-    };
+
+    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
   }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
-    return buildStatsDisplay(
-      formatDisplayTotals(totals),
-      currentClass,
-      setType,
-      loanDingyin,
-      earlySeasonBonus
-    );
+    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin, earlySeasonBonus);
   }, [totals, currentClass, setType, loanDingyin, earlySeasonBonus]);
 
-  // Handlers
   const handleCreateAccount = () => {
     const success = createAccount(createName);
     if (success) setCreateName('');
@@ -220,8 +164,10 @@ export default function Home() {
 
   const handleSaveEquip = (equip: EquipItem, isNew: boolean) => {
     if (!currentAccount) return;
+
     if (isNew) {
       addEquip(currentAccount, equip);
+
       if (equip.slotId === '1') {
         if (!equippedItems.weapon1) equipSlot(currentAccount, 'weapon1', equip);
         else if (!equippedItems.weapon2) equipSlot(currentAccount, 'weapon2', equip);
@@ -241,6 +187,7 @@ export default function Home() {
       updateEquip(currentAccount, equip);
       updateEquipsById([equip]);
     }
+
     setEquipModalOpen(false);
     setEditingEquip(null);
   };
@@ -248,7 +195,9 @@ export default function Home() {
   const handleDeleteEquip = (equipId: number | string) => {
     if (!currentAccount) return;
     if (!window.confirm(t('equipment.deleteConfirm'))) return;
+
     deleteEquip(currentAccount, equipId);
+
     (Object.keys(equippedItems) as Array<keyof EquippedItems>).forEach((slotKey) => {
       const item = equippedItems[slotKey];
       if (item && item.id === equipId) equipSlot(currentAccount, slotKey, null);
@@ -257,20 +206,24 @@ export default function Home() {
 
   const applyBuild = (buildEquips: EquippedItems) => {
     if (!currentAccount) return;
+
     (Object.keys(buildEquips) as Array<keyof EquippedItems>).forEach((slotKey) => {
       const equip = buildEquips[slotKey];
       if (!equip) {
         equipSlot(currentAccount, slotKey, null);
         return;
       }
+
       let equipId = equip.id;
       if (typeof equipId === 'string' && equipId.includes('_chengyin')) {
         equipId = equipId.replace('_chengyin', '');
       }
+
       let found = db.find((item) => `${item.id}` === `${equipId}`);
       if (!found && equip.name) {
         found = db.find((item) => item.name === equip.name && item.slotId === equip.slotId);
       }
+
       equipSlot(currentAccount, slotKey, found || null);
     });
   };
@@ -285,8 +238,10 @@ export default function Home() {
         alert(t('equipment.cannotEquipWeapon'));
         return;
       }
+
       const w1 = equippedItems.weapon1;
       const w2 = equippedItems.weapon2;
+
       if (w1 && w1.weaponTypeId === item.weaponTypeId) {
         equipSlot(currentAccount, 'weapon1', item);
       } else if (w2 && w2.weaponTypeId === item.weaponTypeId) {
@@ -319,7 +274,6 @@ export default function Home() {
     });
   };
 
-  // Loading state
   if (!mounted) {
     return (
       <div className="flex min-h-screen flex-col">
@@ -352,7 +306,6 @@ export default function Home() {
           <WelcomeCard />
         ) : (
           <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.1fr_0.4fr] lg:items-start lg:gap-6">
-            {/* Left: Equipment Library */}
             <EquipmentLibrary
               db={db}
               equippedItems={equippedItems}
@@ -370,30 +323,29 @@ export default function Home() {
               onEquipItem={equipItemById}
             />
 
-            {/* Right: Simulation, Graduation, Stats panels */}
             <section className="flex flex-col gap-3 order-first lg:order-none">
               <SimulationPanel
-				expanded={rightPanels.simulation}
-				onToggle={() => toggleRightPanel('simulation')}
-				currentClass={currentClass}
-				bowType={bowType}
-				setType={setType}
-				level={level}
-				equippedItems={equippedItems}
-				xinfaLoadout={xinfaLoadout}
-				onLevelChange={(nextLevel) => {
-				if (!currentAccount) return;
-				setLevel(currentAccount, nextLevel);
-				}}
-				onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
-				onBowChange={(value) => setBowType(currentAccount, value)}
-				onSetChange={(value) => setSetType(currentAccount, value)}
-				onXinfaClick={(idx) => {
-					setXinfaIndex(idx);
-					setXinfaModalOpen(true);
-				}}
-				onUnequip={(slotKey) => equipSlot(currentAccount, slotKey, null)}
-/>
+                expanded={rightPanels.simulation}
+                onToggle={() => toggleRightPanel('simulation')}
+                currentClass={currentClass}
+                bowType={bowType}
+                setType={setType}
+                level={level}
+                onLevelChange={(nextLevel) => {
+                  if (!currentAccount) return;
+                  setLevel(currentAccount, nextLevel);
+                }}
+                equippedItems={equippedItems}
+                xinfaLoadout={xinfaLoadout}
+                onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
+                onBowChange={(value) => setBowType(currentAccount, value)}
+                onSetChange={(value) => setSetType(currentAccount, value)}
+                onXinfaClick={(idx) => {
+                  setXinfaIndex(idx);
+                  setXinfaModalOpen(true);
+                }}
+                onUnequip={(slotKey) => equipSlot(currentAccount, slotKey, null)}
+              />
 
               <GraduationRatePanel
                 graduationInfo={graduationInfo}
@@ -407,23 +359,13 @@ export default function Home() {
                 onToggle={() => toggleRightPanel('graduation')}
               />
 
-              <StatsPanel
-                statDisplay={statDisplay}
-                expanded={rightPanels.stats}
-                onToggle={() => toggleRightPanel('stats')}
-              />
+              <StatsPanel statDisplay={statDisplay} expanded={rightPanels.stats} onToggle={() => toggleRightPanel('stats')} />
             </section>
           </div>
         )}
       </main>
 
-      {/* Modals */}
-      <EquipmentModal
-        open={equipModalOpen}
-        onOpenChange={setEquipModalOpen}
-        initialEquip={editingEquip}
-        onSave={handleSaveEquip}
-      />
+      <EquipmentModal open={equipModalOpen} onOpenChange={setEquipModalOpen} initialEquip={editingEquip} onSave={handleSaveEquip} />
 
       <XinfaModal
         open={xinfaModalOpen}
@@ -446,9 +388,9 @@ export default function Home() {
         currentClass={currentClass}
         bowType={bowType}
         setType={setType}
-        level={level}
         xinfaLoadout={xinfaLoadout}
         earlySeasonBonus={earlySeasonBonus}
+        level={level}
         onApplyBuild={applyBuild}
       />
 

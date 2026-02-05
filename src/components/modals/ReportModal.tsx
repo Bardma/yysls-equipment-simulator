@@ -1,23 +1,24 @@
+// src/components/modals/ReportModal.tsx
+import html2canvas from 'html2canvas-pro';
 import { Calculator } from '@/lib/calculator';
-type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+import type { EquippedItems } from '@/lib/types';
+// …autres imports…
 
-interface ReportModalProps {
+export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+
+export interface ReportModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   accountName: string | null;
   currentClass: string;
   setType: string;
-
-  // ✅ NEW
-  level: DengLevelKey;
-
+  level: DengLevelKey;        // ← ajoutez level ici
   xinfaLoadout: string[];
   graduationInfo: {
     accurate: string;
     excel: string;
     dps: number;
   } | null;
-
   statDisplay: Array<{
     label: string;
     value: string;
@@ -26,7 +27,22 @@ interface ReportModalProps {
     isLoaned?: boolean;
     isEarlySeason?: boolean;
   }>;
-
   earlySeasonBonus: boolean;
   loanDingyin: boolean;
 }
+
+export const ReportModal = ({
+  open,
+  onOpenChange,
+  accountName,
+  currentClass,
+  setType,
+  level,
+  xinfaLoadout,
+  graduationInfo,
+  statDisplay,
+  earlySeasonBonus,
+  loanDingyin,
+}: ReportModalProps) => {
+  // …votre logique d’affichage…
+};

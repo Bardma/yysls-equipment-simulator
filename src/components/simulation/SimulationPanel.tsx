@@ -7,16 +7,20 @@ import { CommonData } from '@/lib/data/commonData';
 
 export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
 
+// SimulationPanelProps
 export interface SimulationPanelProps {
   expanded: boolean;
   onToggle: () => void;
-
   currentClass: string;
   bowType: string;
   setType: string;
-
   level: DengLevelKey;
-  onLevelChange: (level: DengLevelKey) => void;
+  onLevelChange: (level: DengLevelKey) => void;  // obligatoire
+  // …autres props…
+}
+
+// SimulationPanel: implémentez un <select> ou un champ permettant de changer le niveau,
+// puis appelez onLevelChange lorsque l’utilisateur modifie la valeur.
 
   equippedItems: EquippedItems;
   xinfaLoadout: string[];
