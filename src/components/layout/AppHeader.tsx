@@ -47,7 +47,7 @@ export const AppHeader = ({
 
   const handleCreateAccount = () => {
     onCreateAccount();
-    // 创建成功后清空输入框（假设父组件会处理）
+    // ChuangJianChengGongHouQingKongShuRuKuang（JiaSheFuZuJianHuiChuLi）
   };
 
   const handleDeleteAccount = () => {

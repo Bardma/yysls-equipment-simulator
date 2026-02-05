@@ -13,7 +13,7 @@ import {
 import { type Locale, useLocaleStore } from '@/stores/localeStore';
 
 const locales: { value: Locale; label: string; flag: string }[] = [
-  { value: 'zh', label: '中文', flag: '🇨🇳' },
+  { value: 'zh', label: 'ZhongWen', flag: '🇨🇳' },
   { value: 'en', label: 'English', flag: '🇺🇸' },
 ];
 

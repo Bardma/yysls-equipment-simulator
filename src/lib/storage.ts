@@ -71,7 +71,6 @@ export interface SimLoadoutIds {
   xinfa?: string[];
   earlySeasonBonus?: boolean;
   loanDingyin?: boolean;
-  level?: number;
 }
 
 export interface SimStorageState {

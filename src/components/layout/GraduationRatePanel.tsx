@@ -139,11 +139,11 @@ export const GraduationRatePanel = ({
               <div className="text-xs space-y-1">
                 <div className="text-amber-400 font-medium mb-1">{t('bonusStats')}</div>
                 <div className="text-zinc-300">{t('precision')}：+1.4%</div>
-                <div className="text-zinc-500 pl-2">劲：+14</div>
-                <div className="text-zinc-500 pl-2">敏：+14</div>
-                <div className="text-zinc-500 pl-2">势：+14</div>
-                <div className="text-zinc-500 pl-2">体：+14</div>
-                <div className="text-zinc-500 pl-2">御：+14</div>
+                <div className="text-zinc-500 pl-2">Strength：+14</div>
+                <div className="text-zinc-500 pl-2">Agility：+14</div>
+                <div className="text-zinc-500 pl-2">Momentum：+14</div>
+                <div className="text-zinc-500 pl-2">Ti：+14</div>
+                <div className="text-zinc-500 pl-2">Yu：+14</div>
               </div>
             </PopoverContent>
           </Popover>

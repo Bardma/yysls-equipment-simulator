@@ -29,7 +29,7 @@ export const StatInputRow = ({
   options,
   disabledOptions = [],
   disabled = false,
-  placeholder = 'Select stat',
+  placeholder = 'XuanZeAffix',
   onTypeChange,
   onValueChange,
   onMaxClick,
@@ -59,7 +59,7 @@ export const StatInputRow = ({
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           disabled={disabled}
-          placeholder="Value"
+          placeholder="ShuZhi"
         />
         <Button
           variant="outline"

@@ -43,14 +43,14 @@ export const EquipmentModal = ({
   const [isConvertible, setIsConvertible] = useState(false);
   const [mainStatType, setMainStatType] = useState('');
   const [mainStatValue, setMainStatValue] = useState('');
-  const [dingyinType, setDingyinType] = useState('无');
+  const [dingyinType, setDingyinType] = useState('None');
   const [dingyinValue, setDingyinValue] = useState('');
   const [subStats, setSubStats] = useState<{ type: string; value: string }[]>(emptySubStats());
 
-  // OCR相关状态
+  // OCRXiangGuanZhuangTai
   const [isOcrModalOpen, setIsOcrModalOpen] = useState(false);
   const [isOcrLoading, setIsOcrLoading] = useState(false);
-  const [ocrPreviewImage, setOcrPreviewImage] = useState<string | null>(null); // 识别后的预览图
+  const [ocrPreviewImage, setOcrPreviewImage] = useState<string | null>(null); // ShiBieHouDeYuLanTu
 
   useEffect(() => {
     if (!open) return;
@@ -68,7 +68,7 @@ export const EquipmentModal = ({
         setDingyinType(initialEquip.dingyinStat.type);
         setDingyinValue(initialEquip.dingyinStat.value.toString());
       } else {
-        setDingyinType('无');
+        setDingyinType('None');
         setDingyinValue('');
       }
       const nextSubStats = emptySubStats();
@@ -89,7 +89,7 @@ export const EquipmentModal = ({
     setIsConvertible(false);
     setMainStatType('');
     setMainStatValue('');
-    setDingyinType('无');
+    setDingyinType('None');
     setDingyinValue('');
     setSubStats(emptySubStats());
   }, [open, initialEquip]);
@@ -102,7 +102,7 @@ export const EquipmentModal = ({
   }, [slotId]);
 
   const dingyinOptions = useMemo(() => {
-    return CommonData.DINGYIN_RULES[slotId] || ['无'];
+    return CommonData.DINGYIN_RULES[slotId] || ['None'];
   }, [slotId]);
 
   const subStatOptions = useMemo(() => {
@@ -111,13 +111,13 @@ export const EquipmentModal = ({
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponTypeId);
       if (weapon) opts.push(weapon.stat);
     }
-    if (['3', '4'].includes(slotId)) opts.push('全武学增效');
+    if (['3', '4'].includes(slotId)) opts.push('All Martial Arts Effectiveness');
     if (['5', '6'].includes(slotId)) {
-      opts.push('单体类奇术增伤');
-      opts.push('群体类奇术增伤');
+      opts.push('Singletarget Technique Damage Bonus');
+      opts.push('AoE Technique Damage Bonus');
     }
-    if (['7', '8'].includes(slotId)) opts.push('对首领单位增伤');
-    opts.push('生存类词条');
+    if (['7', '8'].includes(slotId)) opts.push('Boss Damage Bonus');
+    opts.push('ShengCunLeiAffix');
     return Array.from(new Set(opts)).sort();
   }, [slotId, weaponTypeId]);
 
@@ -134,9 +134,9 @@ export const EquipmentModal = ({
     return `/${icon}`;
   }, [slotId, weaponTypeId, isPurple]);
 
-  // 校验函数：检查值是否在有效范围内
+  // JiaoYanHanShu：JianChaZhiShiFouZaiYouXiaoFanWeiNei
   const validateStatValue = (type: string, value: string): boolean => {
-    if (!type || type === '生存类词条' || !value) return true;
+    if (!type || type === 'ShengCunLeiAffix' || !value) return true;
     const numValue = parseFloat(value);
     if (isNaN(numValue)) return true;
     const max = CommonData.MAX_VALUES[type];
@@ -145,7 +145,7 @@ export const EquipmentModal = ({
     return true;
   };
 
-  // 计算各输入框的错误状态
+  // JiSuanGeShuRuKuangDeCuoWuZhuangTai
   const mainStatError = useMemo(() => {
     return !validateStatValue(mainStatType, mainStatValue);
   }, [mainStatType, mainStatValue]);
@@ -158,57 +158,57 @@ export const EquipmentModal = ({
     return !validateStatValue(dingyinType, dingyinValue);
   }, [dingyinType, dingyinValue]);
 
-  // 检查是否有任何校验错误
+  // JianChaShiFouYouRenHeJiaoYanCuoWu
   const hasValidationError = mainStatError || subStatErrors.some(Boolean) || dingyinError;
 
-  // 检查是否选择了武器但未选择武器种类
+  // JianChaShiFouXuanZeLeWuQiDanWeiXuanZeWuQiZhongLei
   const missingWeaponType = slotId === '1' && !weaponTypeId;
 
-  // OCR按钮是否可用：非武器位置直接可用，武器位置需要选择武器类型
+  // OCRAnNiuShiFouKeYong：FeiWuQiWeiZhiZhiJieKeYong，WuQiWeiZhiXuYaoXuanZeWuQiLeiXing
   const canUseOcr = slotId !== '1' || (slotId === '1' && weaponTypeId !== '');
 
-  // 打开OCR模态框
+  // DaKaiOCRMoTaiKuang
   const handleOcrClick = () => {
     setIsOcrModalOpen(true);
   };
 
-  // OCR识别确认处理
+  // OCRShiBieConfirmChuLi
   const handleOcrConfirm = async (file: File) => {
     setIsOcrLoading(true);
     try {
       const result = await ocrEquipmentStats(file, slotId, weaponTypeId || undefined);
       console.log('[OCR] Parse result:', result);
 
-      // 设置可转律标记：有[转]说明已转律，不勾选；没有[转]说明可转律，勾选
+      // SheZhiKeZhuanLBiaoJi：You[Zhuan]ShuoMingYiZhuanL，BuGouXuan；MeiYou[Zhuan]ShuoMingKeZhuanL，GouXuan
       if (result.convertedStat) {
-        // 已经转律过了，不可再转
+        // YiJingZhuanLGuoLe，BuKeZaiZhuan
         setIsConvertible(false);
         console.log('[OCR] Has converted stat, setting isConvertible to false');
       } else {
-        // 没有转律，可以转律
+        // MeiYouZhuanL，KeYiZhuanL
         setIsConvertible(true);
         console.log('[OCR] No converted stat, setting isConvertible to true');
       }
 
-      // 收集所有要填充的副词条（按解析顺序，包括转律词条）
+      // ShouJiSuoYouYaoTianChongDeSecondary Affix（AnJieXiShunXu，BaoKuoZhuanLAffix）
       const allSubStats: { type: string; value: string }[] = [];
-      const seenTypes = new Set<string>(); // 用于去重
+      const seenTypes = new Set<string>(); // YongYuQuZhong
 
-      // 添加副词条（已包含转律词条，按原始顺序）
+      // TianJiaSecondary Affix（YiBaoHanZhuanLAffix，AnYuanShiShunXu）
       for (const stat of result.subStats) {
         if (allSubStats.length < 4) {
           if (!seenTypes.has(stat.type)) {
-            // 不重复的词条正常添加
+            // BuChongFuDeAffixZhengChangTianJia
             allSubStats.push({ type: stat.type, value: stat.value.toString() });
             seenTypes.add(stat.type);
           } else {
-            // 重复的词条设为空
+            // ChongFuDeAffixSheWeiKong
             console.log('[OCR] Duplicate stat type, skipping:', stat.type);
           }
         }
       }
 
-      // 填充副词条
+      // TianChongSecondary Affix
       const newSubStats = emptySubStats();
       allSubStats.forEach((stat, idx) => {
         newSubStats[idx] = stat;
@@ -216,25 +216,25 @@ export const EquipmentModal = ({
       setSubStats(newSubStats);
       console.log('[OCR] Setting subStats:', newSubStats);
 
-      // 填充定音词条
+      // TianChongDingyin Affix
       if (result.dingyinStat) {
         setDingyinType(result.dingyinStat.type);
         setDingyinValue(result.dingyinStat.value.toString());
         console.log('[OCR] Setting dingyin:', result.dingyinStat);
       }
 
-      // 填充主词条（如果有的话）
+      // TianChongPrimary Affix（RuGuoYouDeHua）
       if (result.mainStat) {
         setMainStatType(result.mainStat.type);
         setMainStatValue(result.mainStat.value.toString());
         console.log('[OCR] Setting mainStat:', result.mainStat);
       }
 
-      // 保存预览图片供用户校验
+      // SaveYuLanTuPianGongYongHuJiaoYan
       const imageUrl = URL.createObjectURL(file);
       setOcrPreviewImage(imageUrl);
 
-      // 关闭OCR模态框
+      // GuanBiOCRMoTaiKuang
       setIsOcrModalOpen(false);
     } catch (error) {
       console.error('[OCR] Recognition failed:', error);
@@ -244,9 +244,9 @@ export const EquipmentModal = ({
     }
   };
 
-  // 计算完成度百分比
+  // JiSuanWanChengDuBaiFenBi
   const getCompletionPercent = (type: string, value: string): number | null => {
-    if (!type || type === '生存类词条' || !value) return null;
+    if (!type || type === 'ShengCunLeiAffix' || !value) return null;
     const numValue = parseFloat(value);
     if (isNaN(numValue)) return null;
     const max = CommonData.MAX_VALUES[type];
@@ -254,9 +254,9 @@ export const EquipmentModal = ({
     return Math.min(100, Math.round((numValue / max) * 100));
   };
 
-  // 获取范围提示文本
+  // HuoQuFanWeiTiShiWenBen
   const getRangeHint = (type: string): string => {
-    if (!type || type === '生存类词条') return '';
+    if (!type || type === 'ShengCunLeiAffix') return '';
     const max = CommonData.MAX_VALUES[type];
     if (!max) return '';
     return `0 ~ ${max}`;
@@ -266,10 +266,10 @@ export const EquipmentModal = ({
     if (nameEdited) return;
     if (slotValue === '1') {
       const weapon = CommonData.WEAPON_TYPES.find((w) => w.id === weaponValue);
-      if (weapon) setName(`我的${weapon.name}`);
+      if (weapon) setName(`WoDe${weapon.name}`);
     } else {
       const slot = CommonData.SLOTS.find((s) => s.id === slotValue);
-      if (slot) setName(`我的${slot.name}`);
+      if (slot) setName(`WoDe${slot.name}`);
     }
   };
 
@@ -279,12 +279,12 @@ export const EquipmentModal = ({
     nextDingyinType: string
   ) => {
     if (!isChengyin) return;
-    if (nextMainType && nextMainType !== '生存类词条') {
+    if (nextMainType && nextMainType !== 'ShengCunLeiAffix') {
       const max = CommonData.MAX_VALUES[nextMainType];
       if (max) setMainStatValue((max * 0.94).toFixed(1));
     }
     nextSubStats.forEach((sub, idx) => {
-      if (!sub.type || sub.type === '生存类词条') return;
+      if (!sub.type || sub.type === 'ShengCunLeiAffix') return;
       const max = CommonData.MAX_VALUES[sub.type];
       if (max) {
         nextSubStats[idx] = { ...sub, value: (max * 0.94).toFixed(1) };
@@ -300,20 +300,20 @@ export const EquipmentModal = ({
     setSlotId(value);
     const newWeaponTypeId = value !== '1' ? '' : weaponTypeId;
     if (value !== '1') setWeaponTypeId('');
-    // 重置主词条、副词条和定音词条，因为不同装备位置的可选项不同
+    // ZhongZhiPrimary Affix、Secondary AffixHeDingyin Affix，YinWeiBuTongEquipmentWeiZhiDeKeXuanXiangBuTong
     setMainStatType('');
     setMainStatValue('');
     setSubStats(emptySubStats());
-    setDingyinType('无');
+    setDingyinType('None');
     setDingyinValue('');
-    // 切换装备位置时重置 nameEdited，允许自动命名
+    // QieHuanEquipmentWeiZhiShiZhongZhi nameEdited，YunXuZiDongMingMing
     setNameEdited(false);
     handleAutoName(value, newWeaponTypeId);
   };
 
   const handleWeaponChange = (value: string) => {
     setWeaponTypeId(value);
-    // 切换武器种类时重置 nameEdited，允许自动命名
+    // QieHuanWuQiZhongLeiShiZhongZhi nameEdited，YunXuZiDongMingMing
     setNameEdited(false);
     handleAutoName(slotId, value);
   };
@@ -331,12 +331,12 @@ export const EquipmentModal = ({
 
   const handleSave = () => {
     const slotName = slotOptions.find((s) => s.id === slotId)?.name || '';
-    const mainIsSurvival = mainStatType === '生存类词条' || mainStatType === '生存向';
+    const mainIsSurvival = mainStatType === 'ShengCunLeiAffix' || mainStatType === 'ShengCunXiang';
     const mainValue = mainIsSurvival ? 0 : parseFloat(mainStatValue || '0');
     const finalSubStats = subStats
       .filter((sub) => sub.type)
       .map((sub) => {
-        const isSurvival = sub.type === '生存类词条' || sub.type === '生存向';
+        const isSurvival = sub.type === 'ShengCunLeiAffix' || sub.type === 'ShengCunXiang';
         const value = isSurvival ? 0 : parseFloat(sub.value || '0');
         return {
           type: sub.type,
@@ -349,7 +349,7 @@ export const EquipmentModal = ({
       slotId,
       slotName,
       weaponTypeId: slotId === '1' ? weaponTypeId || null : null,
-      name: name || `我的${slotName}`,
+      name: name || `WoDe${slotName}`,
       isChengyin,
       isPurple,
       isConvertible,
@@ -360,7 +360,7 @@ export const EquipmentModal = ({
         isPercent: !mainIsSurvival && CommonData.PERCENT_STATS.includes(mainStatType),
       },
       dingyinStat:
-        dingyinType && dingyinType !== '无'
+        dingyinType && dingyinType !== 'None'
           ? {
               type: dingyinType,
               value: parseFloat(dingyinValue || '0'),
@@ -372,7 +372,7 @@ export const EquipmentModal = ({
     onSave(equip, !initialEquip);
   };
 
-  const disableMainInput = isChengyin || mainStatType === '生存类词条';
+  const disableMainInput = isChengyin || mainStatType === 'ShengCunLeiAffix';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -381,11 +381,11 @@ export const EquipmentModal = ({
           <DialogTitle className="text-base sm:text-lg">{initialEquip ? t('editTitle') : t('addTitle')}</DialogTitle>
         </DialogHeader>
         <div className={`flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 ${ocrPreviewImage ? 'flex flex-col sm:flex-row gap-4' : ''}`}>
-        {/* 主表单区域 */}
+        {/* ZhuBiaoDanQuYu */}
         <div className={`space-y-4 sm:space-y-5 ${ocrPreviewImage ? 'flex-1' : ''}`}>
-          {/* 顶部区域：装备预览 + 基本信息 */}
+          {/* DingBuQuYu：EquipmentYuLan + JiBenXinXi */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            {/* 装备预览 */}
+            {/* EquipmentYuLan */}
             <div className="flex shrink-0 flex-row sm:flex-col items-center gap-2 sm:gap-1">
               <Image
                 src={iconPath}
@@ -396,7 +396,7 @@ export const EquipmentModal = ({
               />
               <span className="text-muted-foreground text-xs">{t('preview')}</span>
             </div>
-            {/* 基本信息 */}
+            {/* JiBenXinXi */}
             <div className="flex-1 space-y-2 sm:space-y-3">
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <div className="space-y-1">
@@ -472,12 +472,12 @@ export const EquipmentModal = ({
             </div>
           </div>
 
-          {/* 分隔线 */}
+          {/* FenGeXian */}
           <div className="border-border border-t" />
 
-          {/* 词条区域 */}
+          {/* AffixQuYu */}
           <div className="space-y-3 sm:space-y-4">
-            {/* 主词条 */}
+            {/* Primary Affix */}
             <div className="space-y-1.5">
               <Label className="text-xs">{t('mainStat')}</Label>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
@@ -485,7 +485,7 @@ export const EquipmentModal = ({
                   value={mainStatType}
                   onValueChange={(value) => {
                     setMainStatType(value);
-                    if (value === '生存类词条') setMainStatValue('');
+                    if (value === 'ShengCunLeiAffix') setMainStatValue('');
                     applyChengyin(subStats, value, dingyinType);
                   }}
                 >
@@ -507,7 +507,7 @@ export const EquipmentModal = ({
                       value={mainStatValue}
                       onChange={(event) => setMainStatValue(event.target.value)}
                       disabled={disableMainInput}
-                      placeholder="Value"
+                      placeholder="ShuZhi"
                       className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                       aria-invalid={mainStatError}
                     />
@@ -524,7 +524,7 @@ export const EquipmentModal = ({
                     </button>
                   </div>
                   <div className="text-muted-foreground w-[70px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
-                    {mainStatType && mainStatType !== '生存类词条' && (
+                    {mainStatType && mainStatType !== 'ShengCunLeiAffix' && (
                       <>
                         <span className="hidden sm:inline">{getRangeHint(mainStatType)}</span>
                         {getCompletionPercent(mainStatType, mainStatValue) !== null && (
@@ -539,12 +539,12 @@ export const EquipmentModal = ({
               </div>
             </div>
 
-            {/* 副词条 */}
+            {/* Secondary Affix */}
             <div className="space-y-1.5">
               <Label className="text-xs">{t('subStats')}</Label>
               <div className="space-y-1.5 sm:space-y-2">
                 {subStats.map((sub, idx) => {
-                  const disableValue = isChengyin || sub.type === '生存类词条';
+                  const disableValue = isChengyin || sub.type === 'ShengCunLeiAffix';
                   return (
                     <div key={`sub-${idx}`} className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                       <Select
@@ -565,7 +565,7 @@ export const EquipmentModal = ({
                               key={`${stat}-${idx}`}
                               value={stat}
                               disabled={
-                                stat !== '生存类词条' &&
+                                stat !== 'ShengCunLeiAffix' &&
                                 subStats.some((other, sIdx) => sIdx !== idx && other.type === stat)
                               }
                             >
@@ -585,7 +585,7 @@ export const EquipmentModal = ({
                               setSubStats(next);
                             }}
                             disabled={disableValue}
-                            placeholder="Value"
+                            placeholder="ShuZhi"
                             className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                             aria-invalid={subStatErrors[idx]}
                           />
@@ -606,7 +606,7 @@ export const EquipmentModal = ({
                           </button>
                         </div>
                         <div className="text-muted-foreground w-[60px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
-                          {sub.type && sub.type !== '生存类词条' && (
+                          {sub.type && sub.type !== 'ShengCunLeiAffix' && (
                             <>
                               <span className="hidden sm:inline">{getRangeHint(sub.type)}</span>
                               {getCompletionPercent(sub.type, sub.value) !== null && (
@@ -624,7 +624,7 @@ export const EquipmentModal = ({
               </div>
             </div>
 
-            {/* 定音词条 */}
+            {/* Dingyin Affix */}
             <div className="space-y-1.5">
               <Label className="text-xs">{t('dingyinStat')}</Label>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
@@ -635,7 +635,7 @@ export const EquipmentModal = ({
                   <SelectContent>
                     {dingyinOptions.map((stat) => (
                       <SelectItem key={stat} value={stat}>
-                        {stat === '无' ? 'None' : stat}
+                        {stat}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -646,14 +646,14 @@ export const EquipmentModal = ({
                       type="number"
                       value={dingyinValue}
                       onChange={(event) => setDingyinValue(event.target.value)}
-                      disabled={dingyinType === '无'}
-                      placeholder="Value"
+                      disabled={dingyinType === 'None'}
+                      placeholder="ShuZhi"
                       className="h-8 sm:h-9 pr-8 text-xs sm:text-sm"
                       aria-invalid={dingyinError}
                     />
                     <button
                       type="button"
-                      disabled={dingyinType === '无'}
+                      disabled={dingyinType === 'None'}
                       onClick={() => {
                         const max = CommonData.MAX_VALUES[dingyinType];
                         if (max) setDingyinValue(max.toString());
@@ -664,7 +664,7 @@ export const EquipmentModal = ({
                     </button>
                   </div>
                   <div className="text-muted-foreground w-[60px] sm:w-[100px] shrink-0 text-right text-[10px] sm:text-xs">
-                    {dingyinType && dingyinType !== '无' && (
+                    {dingyinType && dingyinType !== 'None' && (
                       <>
                         <span className="hidden sm:inline">{getRangeHint(dingyinType)}</span>
                         {getCompletionPercent(dingyinType, dingyinValue) !== null && (
@@ -680,7 +680,7 @@ export const EquipmentModal = ({
             </div>
           </div>
         </div>
-        {/* OCR 预览图区域 */}
+        {/* OCR YuLanTuQuYu */}
         {ocrPreviewImage && (
           <div className="w-full sm:w-64 shrink-0 space-y-2">
             <Label className="text-xs">{t('ocrPreview')}</Label>
@@ -717,7 +717,7 @@ export const EquipmentModal = ({
           </div>
         </DialogFooter>
 
-        {/* OCR识别模态框 */}
+        {/* OCRShiBieMoTaiKuang */}
         <OcrModal
           open={isOcrModalOpen}
           onOpenChange={setIsOcrModalOpen}

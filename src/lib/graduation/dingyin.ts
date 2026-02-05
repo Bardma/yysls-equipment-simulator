@@ -2,7 +2,7 @@ import { CommonData } from '@/lib/data/commonData';
 import type { EquipItem, EquippedItems } from '@/lib/types';
 
 /**
- * 为所有装备添加满定音词条
+ * WeiSuoYouEquipmentTianJiaManDingyin Affix
  */
 export const addFullDingyinToEquips = (equippedItems: EquippedItems): EquippedItems => {
   const equipsWithDingyin: EquippedItems = {
@@ -29,14 +29,14 @@ export const addFullDingyinToEquips = (equippedItems: EquippedItems): EquippedIt
 
     if (slotId === '1' || slotId === '3' || slotId === '4') {
       equipCopy.dingyinStat = {
-        type: '外功穿透',
-        value: CommonData.MAX_VALUES['外功穿透'],
+        type: 'Outer Penetration',
+        value: CommonData.MAX_VALUES['Outer Penetration'],
         isPercent: true,
       };
     } else if (['5', '6', '7', '8'].includes(slotId)) {
       equipCopy.dingyinStat = {
-        type: '指定武学技能增伤',
-        value: CommonData.MAX_VALUES['指定武学技能增伤'],
+        type: 'Specific Skill Damage Bonus',
+        value: CommonData.MAX_VALUES['Specific Skill Damage Bonus'],
         isPercent: true,
       };
     }

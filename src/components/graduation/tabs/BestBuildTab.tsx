@@ -61,18 +61,18 @@ export const BestBuildTab = ({
     if (!currentClass) return;
 
     let minIntentRate: number | null = null;
-    if (setType === '飞隼') {
-      const input = window.prompt('当前套装为飞隼，请输入最低会意率（0-100）', '20');
+    if (setType === 'FeiSun') {
+      const input = window.prompt('DangQianSetWeiFeiSun，QingShuRuZuiDiHuiYiL（0-100）', '20');
       if (input === null) return;
       const parsed = parseFloat(input);
       if (Number.isNaN(parsed) || parsed < 0 || parsed > 100) {
-        alert('请输入0-100之间的有效数值');
+        alert('QingShuRu0-100ZhiJianDeYouXiaoShuZhi');
         return;
       }
       minIntentRate = parsed;
     }
 
-    setStatus({ running: true, text: '正在准备装备数据...', percent: 0, result: null });
+    setStatus({ running: true, text: 'ZhengZaiZhunBeiEquipmentShuJu...', percent: 0, result: null });
     Calculator.clearCache();
 
     const allowedWeapons = ClassConfig.WEAPON_RULES[currentClass] || [];
@@ -238,7 +238,7 @@ export const BestBuildTab = ({
           earlySeasonBonus
         );
         const intentRate =
-          totals['实际会意率'] !== undefined ? totals['实际会意率'] : totals['会意率'] || 0;
+          totals['ShiJiHuiYiL'] !== undefined ? totals['ShiJiHuiYiL'] : totals['Insight Rate'] || 0;
         if (intentRate < minIntentRate) return;
       }
 
@@ -291,7 +291,7 @@ export const BestBuildTab = ({
         if (workQueue.length === 0 && generatorExhausted) {
           setStatus({
             running: false,
-            text: '计算完成！',
+            text: 'JiSuanWanCheng！',
             percent: 100,
             result: {
               buildA: bestBuildA,
@@ -315,7 +315,7 @@ export const BestBuildTab = ({
           : 0;
         setStatus({
           running: true,
-          text: `已检查 ${checkedCount} / ${totalCombinations} 种组合`,
+          text: `YiJianCha ${checkedCount} / ${totalCombinations} ZhongZuHe`,
           percent,
           result: null,
         });
@@ -334,7 +334,7 @@ export const BestBuildTab = ({
           return (
             <div key={slotKey} className="border-border/60 bg-card rounded-md border p-2 text-xs">
               <div className="font-medium">{SLOT_NAME_MAP[slotKey]}</div>
-              <div className="text-muted-foreground">{equip ? equip.name : '（空）'}</div>
+              <div className="text-muted-foreground">{equip ? equip.name : '（Kong）'}</div>
             </div>
           );
         })}
@@ -345,10 +345,10 @@ export const BestBuildTab = ({
   return (
     <div className="space-y-4">
       <p className="text-muted-foreground text-sm">
-        最佳配装将遍历数据库中所有可能的组合（贷款满定音），找出毕业率最高的方案。
+        ZuiJiaPeiZhuangJiangBianLiShuJuKuZhongSuoYouKeNengDeZuHe（DaiKuanManDingyin），ZhaoChuGraduation RateZuiGaoDeFangAn。
       </p>
       <Button onClick={startBestBuild} disabled={status.running}>
-        {status.running ? '计算中...' : '开始寻找最佳配装'}
+        {status.running ? 'JiSuanZhong...' : 'KaiShiXunZhaoZuiJiaPeiZhuang'}
       </Button>
 
       {status.running && (
@@ -361,16 +361,16 @@ export const BestBuildTab = ({
         <div className="space-y-4">
           <div className="border-border/60 bg-card rounded-lg border p-3">
             <div className="flex items-center justify-between">
-              <div className="font-medium">最佳配装方案</div>
+              <div className="font-medium">ZuiJiaPeiZhuangFangAn</div>
               <Button
                 size="sm"
                 onClick={() => onApplyBuild(status.result!.buildA.equippedItems!)}
               >
-                使用该方案
+                ShiYongGaiFangAn
               </Button>
             </div>
             <div className="text-muted-foreground mt-2 text-sm">
-              毕业率 {status.result.buildA.rate.toFixed(2)}%
+              Graduation Rate {status.result.buildA.rate.toFixed(2)}%
             </div>
             <div className="mt-3">{renderEquipList(status.result.buildA.equippedItems!)}</div>
           </div>
@@ -378,16 +378,16 @@ export const BestBuildTab = ({
           {status.result.buildB && (
             <div className="border-border/60 bg-card rounded-lg border p-3">
               <div className="flex items-center justify-between">
-                <div className="font-medium">转律后最佳配装方案</div>
+                <div className="font-medium">ZhuanLHouZuiJiaPeiZhuangFangAn</div>
                 <Button
                   size="sm"
                   onClick={() => onApplyBuild(status.result!.buildB!.equippedItems!)}
                 >
-                  使用该方案
+                  ShiYongGaiFangAn
                 </Button>
               </div>
               <div className="text-muted-foreground mt-2 text-sm">
-                毕业率 {status.result.buildB.rate.toFixed(2)}%
+                Graduation Rate {status.result.buildB.rate.toFixed(2)}%
               </div>
               <div className="mt-3">{renderEquipList(status.result.buildB.equippedItems!)}</div>
             </div>

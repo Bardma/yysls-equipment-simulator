@@ -32,7 +32,7 @@ interface ReportModalProps {
   loanDingyin: boolean;
 }
 
-// 颜色定义 - 使用标准 hex/rgb 格式以兼容 html2canvas
+// YanSeDingYi - ShiYongBiaoZhun hex/rgb GeShiYiJianRong html2canvas
 const colors = {
   bg: {
     primary: '#0f172a',
@@ -105,7 +105,7 @@ export const ReportModal = ({
     }
   };
 
-  // 根据状态获取毕业率显示颜色
+  // GenJuZhuangTaiHuoQuGraduation RateXianShiYanSe
   const getGradRateColor = () => {
     if (loanDingyin && earlySeasonBonus) return colors.accent.purple;
     if (loanDingyin) return colors.accent.purple;
@@ -122,7 +122,7 @@ export const ReportModal = ({
 
         {/* Scrollable Report Content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-4">
-          {/* Report Content - 使用内联样式以兼容 html2canvas */}
+          {/* Report Content - ShiYongNeiLianYangShiYiJianRong html2canvas */}
           <div
             ref={reportRef}
             style={{
@@ -161,7 +161,7 @@ export const ReportModal = ({
             position: 'relative',
             overflow: 'hidden',
           }}>
-            {/* 装饰性角落 */}
+            {/* ZhuangShiXingJiaoLuo */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -182,7 +182,7 @@ export const ReportModal = ({
 
           {/* Class & Set */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px', marginBottom: '24px' }}>
-            {/* 流派 */}
+            {/* LiuPai */}
             <div style={{
               padding: '16px',
               borderRadius: '12px',
@@ -219,7 +219,7 @@ export const ReportModal = ({
                 <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#7dd3fc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentClass}</div>
               </div>
             </div>
-            {/* 套装 */}
+            {/* Set */}
             <div style={{
               padding: '16px',
               borderRadius: '12px',
@@ -268,7 +268,7 @@ export const ReportModal = ({
             position: 'relative',
             overflow: 'hidden',
           }}>
-            {/* 装饰性角落 */}
+            {/* ZhuangShiXingJiaoLuo */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -332,7 +332,7 @@ export const ReportModal = ({
             position: 'relative',
             overflow: 'hidden',
           }}>
-            {/* 装饰性角落 */}
+            {/* ZhuangShiXingJiaoLuo */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -351,7 +351,7 @@ export const ReportModal = ({
             }} />
             
             <div style={{ position: 'relative' }}>
-              {/* 状态标签 */}
+              {/* ZhuangTaiBiaoQian */}
               {(loanDingyin || earlySeasonBonus) && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11px', marginBottom: '8px' }}>
                   {loanDingyin && (
@@ -371,7 +371,7 @@ export const ReportModal = ({
               
               {graduationInfo ? (
                 <div>
-                  {/* 大号毕业率 */}
+                  {/* DaHaoGraduation Rate */}
                   <div style={{
                     fontSize: '40px',
                     fontWeight: 'bold',
@@ -388,7 +388,7 @@ export const ReportModal = ({
                     {graduationInfo.accurate}
                   </div>
                   
-                  {/* 详情行 */}
+                  {/* XiangQingXing */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{
@@ -439,7 +439,7 @@ export const ReportModal = ({
             position: 'relative',
             overflow: 'hidden',
           }}>
-            {/* 装饰性角落 */}
+            {/* ZhuangShiXingJiaoLuo */}
             <div style={{
               position: 'absolute',
               top: 0,

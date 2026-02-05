@@ -14,7 +14,7 @@ This project optimizes UI/UX and extends functionality based on the original wor
 
 </div>
 
-A modern web application for managing equipment and calculating graduation rates for the game "燕云十六声" (Where Winds Meet), built with Next.js 16.
+A modern web application for managing equipment and calculating graduation rates for the game "Where Winds Meet" (Where Winds Meet), built with Next.js 16.
 
 ## Relationship with the Original Project
 
@@ -23,7 +23,7 @@ A modern web application for managing equipment and calculating graduation rates
 - **Game Data**: Equipment stats, Xinfa effects, set bonuses, and other game data reference the original project
 - **This Project's Optimizations**: Rebuilt the frontend interface and interaction experience while preserving the original core calculation logic
 
-[中文](./README.md)
+[ZhongWen](./README.md)
 
 ## Overview
 
@@ -48,15 +48,15 @@ This application helps players manage equipment libraries across multiple charac
 
 Full graduation rate calculation support for 9 builds:
 
-- Mingjin Hong (鸣金虹), Mingjin Ying (鸣金影)
-- Pozhu Chen (破竹尘), Pozhu Feng (破竹风), Pozhu Yuan (破竹鸢)
-- Lieshi Wei (裂石威), Lieshi Jun - Dual Cut (裂石钧·双切), Lieshi Jun - Pure Tang (裂石钧·纯唐)
-- Qiansi Lin (牵丝霖), Qiansi Yu (牵丝玉)
+- Mingjin Hong (MingJinHong), Mingjin Ying (MingJinYing)
+- Pozhu Chen (PoZhuChen), Pozhu Feng (PoZhuFeng), Pozhu Yuan (PoZhuYuan)
+- Lieshi Wei (LieShiWei), Lieshi Jun - Dual Cut (LieShiJun·ShuangQie), Lieshi Jun - Pure Tang (LieShiJun·ChunTang)
+- Qiansi Lin (QianSiLin), Qiansi Yu (QianSiYu)
 
 ### 🎮 Equipment Simulation
 
 - Visual configuration of 8 equipment slots
-- Xinfa (心法) selection with 4 slots per build
+- Xinfa (Inner Way) selection with 4 slots per build
 - Set bonuses (Yudou, Feisun, Shiyu, Lianxing, Hantian, Duanyue, etc.)
 - Pre-season bonus options
 
@@ -77,7 +77,7 @@ Full graduation rate calculation support for 9 builds:
 
 ### 🔍 Equipment Library Search
 
-- Pinyin search support (e.g., type "jq" to search for "剑气")
+- Pinyin search support (e.g., type "jq" to search for "JianQi")
 - Intelligent matching with Jieba segmentation
 - Filter by slot, attributes, and more
 
@@ -190,8 +190,8 @@ src/
 Graduation rate calculations are based on rotation data provided by:
 
 - **Violetta** - Pozhu Chen, Mingjin Hong, Mingjin Ying, Pozhu Feng, Pozhu Yuan, Lieshi Wei, Lieshi Jun (Dual Cut), Qiansi Yu
-- **豆沙包 (Doushabao)** - Mingjin Ying
-- **秋夕君 (Qiuxijun)** - Lieshi Jun (Pure Tang), Qiansi Lin
+- **DouShaBao (Doushabao)** - Mingjin Ying
+- **QiuXiJun (Qiuxijun)** - Lieshi Jun (Pure Tang), Qiansi Lin
 
 ## Roadmap
 

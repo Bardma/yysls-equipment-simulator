@@ -50,7 +50,7 @@ export const CultivationTab = ({
       if (!equip) return;
 
       const mainStat = equip.mainStat;
-      if (mainStat && mainStat.type !== '生存类词条' && mainStat.type !== '生存向') {
+      if (mainStat && mainStat.type !== 'ShengCunLeiAffix' && mainStat.type !== 'ShengCunXiang') {
         const maxValue = CommonData.MAX_VALUES[mainStat.type];
         if (maxValue) {
           statSummary[mainStat.type] =
@@ -59,7 +59,7 @@ export const CultivationTab = ({
       }
 
       equip.subStats.forEach((sub) => {
-        if (sub.type !== '生存类词条' && sub.type !== '生存向') {
+        if (sub.type !== 'ShengCunLeiAffix' && sub.type !== 'ShengCunXiang') {
           const maxValue = CommonData.MAX_VALUES[sub.type];
           if (maxValue) {
             statSummary[sub.type] = (statSummary[sub.type] || 0) + sub.value / maxValue;
@@ -91,7 +91,7 @@ export const CultivationTab = ({
     );
     if (!slots.length) return;
 
-    setStatus({ running: true, text: '开始分析...', percent: 0, result: null });
+    setStatus({ running: true, text: 'KaiShiAnalyze...', percent: 0, result: null });
 
     const rotationConfig = ClassConfig.ROTATIONS[currentClass];
     const rotation = rotationConfig?.rotation || [];
@@ -149,7 +149,7 @@ export const CultivationTab = ({
         (text) => {
           setStatus({
             running: true,
-            text: `分析 ${SLOT_NAME_MAP[slotKey]}：${text}`,
+            text: `Analyze ${SLOT_NAME_MAP[slotKey]}：${text}`,
             percent: Math.min(100, ((idx + 1) / slots.length) * 100),
             result: null,
           });
@@ -193,7 +193,7 @@ export const CultivationTab = ({
 
     setStatus({
       running: false,
-      text: '分析完成',
+      text: 'AnalyzeWanCheng',
       percent: 100,
       result: { bestImprovementEquip, secondBestWeapon },
     });
@@ -203,11 +203,11 @@ export const CultivationTab = ({
     <div className="space-y-3 sm:space-y-4">
       <div className="border-border/60 bg-card space-y-2 sm:space-y-3 rounded-lg border p-2.5 sm:p-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <div className="font-medium text-yellow-300 text-sm sm:text-base">培养总结</div>
+          <div className="font-medium text-yellow-300 text-sm sm:text-base">PeiYangZongJie</div>
           <div className="text-muted-foreground text-[10px] sm:text-sm">
-            全词条统计（按满值比）总和：
+            QuanAffixTongJi（AnManZhiBi）ZongHe：
             <span className="ml-1 font-semibold text-yellow-300">
-              {cultivationSummary.totalStatsCount.toFixed(1)}/40条
+              {cultivationSummary.totalStatsCount.toFixed(1)}/40Tiao
             </span>
           </div>
         </div>
@@ -218,14 +218,14 @@ export const CultivationTab = ({
               className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs"
             >
               <div className="text-foreground font-medium truncate">{stat}</div>
-              <div className="text-muted-foreground mt-0.5 sm:mt-1">{count.toFixed(2)}条</div>
+              <div className="text-muted-foreground mt-0.5 sm:mt-1">{count.toFixed(2)}Tiao</div>
             </div>
           ))}
         </div>
         <div className="border-border/60 bg-background/40 rounded-md border p-1.5 sm:p-2 text-[10px] sm:text-xs">
-          <div className="text-foreground font-medium">定音词条总结</div>
+          <div className="text-foreground font-medium">Dingyin AffixZongJie</div>
           <div className="text-muted-foreground mt-0.5 sm:mt-1">
-            总体占满值百分比：
+            ZongTiZhanManZhiBaiFenBi：
             <span className="ml-1 font-semibold text-yellow-300">
               {cultivationSummary.dingyinPercent.toFixed(1)}%
             </span>
@@ -234,7 +234,7 @@ export const CultivationTab = ({
       </div>
 
       <Button size="sm" onClick={startCultivation} disabled={status.running} className="text-xs sm:text-sm">
-        {status.running ? '分析中...' : '计算培养建议'}
+        {status.running ? 'AnalyzeZhong...' : 'JiSuanPeiYangJianYi'}
       </Button>
 
       {status.running && (
@@ -247,7 +247,7 @@ export const CultivationTab = ({
         <div className="space-y-4 sm:space-y-6">
           {status.result.bestImprovementEquip && (
             <div className="border-yellow-500/40 bg-card rounded-lg border p-2.5 sm:p-4 space-y-3 sm:space-y-4">
-              {/* 装备头部信息 */}
+              {/* EquipmentTouBuXinXi */}
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden shrink-0">
                   {status.result.bestImprovementEquip.equip?.icon ? (
@@ -267,69 +267,69 @@ export const CultivationTab = ({
                     {status.result.bestImprovementEquip.slotName}
                   </div>
                   <div className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {status.result.bestImprovementEquip.equip?.name || '未命名装备'}
+                    {status.result.bestImprovementEquip.equip?.name || 'WeiMingMingEquipment'}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间最大</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">TiShengKongJianZuiDa</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">TiShengKongJian</div>
                   <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
               </div>
 
-              {/* 分析结果说明 */}
+              {/* AnalyzeJieGuoShuoMing */}
               <div className="border-l-2 border-yellow-500/60 bg-yellow-500/10 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm">
-                <span className="font-semibold text-yellow-300">分析结果：</span>
-                当前贡献率{' '}
+                <span className="font-semibold text-yellow-300">AnalyzeJieGuo：</span>
+                DangQianGongXianL{' '}
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.originalContribution.toFixed(2)}%
                 </span>
-                ，上限{' '}
+                ，ShangXian{' '}
                 <span className="font-semibold text-yellow-300">
                   {status.result.bestImprovementEquip.maxContribution.toFixed(2)}%
                 </span>
-                ，提升空间{' '}
+                ，TiShengKongJian{' '}
                 <span className="font-semibold text-red-400">
                   {status.result.bestImprovementEquip.improvementSpace.toFixed(2)}%
                 </span>
                 <span className="hidden sm:inline">
-                  ，是所有部位中提升空间最大的一个。建议优先培养或更换此部位的装备。
+                  ，ShiSuoYouBuWeiZhongTiShengKongJianZuiDaDeYiGe。JianYiYouXianPeiYangHuoGengHuanCiBuWeiDeEquipment。
                 </span>
               </div>
 
-              {/* 推荐词条配置 */}
+              {/* TuiJianAffixPeiZhi */}
               <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
-                  <span>推荐词条配置</span>
+                  <span>TuiJianAffixPeiZhi</span>
                 </div>
                 <div className="text-[10px] sm:text-xs text-muted-foreground">
-                  最大化贡献（{status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）的配置：
+                  ZuiDaHuaGongXian（{status.result.bestImprovementEquip.maxContribution.toFixed(2)}%）DePeiZhi：
                 </div>
 
-                {/* 主词条 */}
+                {/* Primary Affix */}
                 {status.result.bestImprovementEquip.bestMainStat && (
                   <div className="space-y-1 sm:space-y-2">
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">Primary Affix</div>
                     <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
                       <div className="font-medium text-xs sm:text-base">
                         {status.result.bestImprovementEquip.bestMainStat.stat}
                       </div>
                       <div className="text-[10px] sm:text-xs text-muted-foreground">
-                        满值：{CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
+                        ManZhi：{CommonData.MAX_VALUES[status.result.bestImprovementEquip.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.bestImprovementEquip.bestMainStat.stat) ? '%' : ''}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* 副词条 */}
+                {/* Secondary Affix */}
                 {status.result.bestImprovementEquip.bestSubStats?.length > 0 && (
                   <div className="space-y-1 sm:space-y-2">
                     <div className="text-[10px] sm:text-xs text-muted-foreground">
-                      副词条（推荐{status.result.bestImprovementEquip.bestSubStats.length}条）
+                      Secondary Affix（TuiJian{status.result.bestImprovementEquip.bestSubStats.length}Tiao）
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.bestImprovementEquip.bestSubStats.map((stat: any, idx: number) => (
@@ -341,7 +341,7 @@ export const CultivationTab = ({
                             {idx + 1}. {stat.stat}
                           </div>
                           <div className="text-[9px] sm:text-xs text-muted-foreground">
-                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            ManZhi：{CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>
                         </div>
@@ -355,7 +355,7 @@ export const CultivationTab = ({
 
           {status.result.secondBestWeapon && (
             <div className="border-border/60 bg-card rounded-lg border p-2.5 sm:p-4 space-y-3 sm:space-y-4">
-              {/* 装备头部信息 */}
+              {/* EquipmentTouBuXinXi */}
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg border border-border/60 bg-background/60 flex items-center justify-center overflow-hidden shrink-0">
                   {status.result.secondBestWeapon.equip?.icon ? (
@@ -375,49 +375,49 @@ export const CultivationTab = ({
                     {status.result.secondBestWeapon.slotName}
                   </div>
                   <div className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {status.result.secondBestWeapon.equip?.name || '未命名装备'}
+                    {status.result.secondBestWeapon.equip?.name || 'WeiMingMingEquipment'}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">武器提升空间更大者</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">WuQiTiShengKongJianGengDaZhe</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-[10px] sm:text-xs text-muted-foreground">提升空间</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">TiShengKongJian</div>
                   <div className="text-lg sm:text-2xl font-bold text-red-400">
                     {status.result.secondBestWeapon.improvementSpace.toFixed(2)}%
                   </div>
                 </div>
               </div>
 
-              {/* 推荐词条配置 */}
+              {/* TuiJianAffixPeiZhi */}
               <div className="border-border/60 bg-background/40 rounded-lg border p-2.5 sm:p-4 space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2 text-yellow-300 font-medium text-xs sm:text-base">
                   <span>💡</span>
-                  <span>推荐词条配置</span>
+                  <span>TuiJianAffixPeiZhi</span>
                 </div>
                 <div className="text-[10px] sm:text-xs text-muted-foreground">
-                  最大化贡献（{status.result.secondBestWeapon.maxContribution.toFixed(2)}%）的配置：
+                  ZuiDaHuaGongXian（{status.result.secondBestWeapon.maxContribution.toFixed(2)}%）DePeiZhi：
                 </div>
 
-                {/* 主词条 */}
+                {/* Primary Affix */}
                 {status.result.secondBestWeapon.bestMainStat && (
                   <div className="space-y-1 sm:space-y-2">
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">主词条</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">Primary Affix</div>
                     <div className="border-l-2 border-yellow-500/60 bg-background/60 rounded-r-md px-2 sm:px-3 py-1.5 sm:py-2">
                       <div className="font-medium text-xs sm:text-base">
                         {status.result.secondBestWeapon.bestMainStat.stat}
                       </div>
                       <div className="text-[10px] sm:text-xs text-muted-foreground">
-                        满值：{CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
+                        ManZhi：{CommonData.MAX_VALUES[status.result.secondBestWeapon.bestMainStat.stat] || '-'}
                         {CommonData.PERCENT_STATS.includes(status.result.secondBestWeapon.bestMainStat.stat) ? '%' : ''}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* 副词条 */}
+                {/* Secondary Affix */}
                 {status.result.secondBestWeapon.bestSubStats?.length > 0 && (
                   <div className="space-y-1 sm:space-y-2">
                     <div className="text-[10px] sm:text-xs text-muted-foreground">
-                      副词条（推荐{status.result.secondBestWeapon.bestSubStats.length}条）
+                      Secondary Affix（TuiJian{status.result.secondBestWeapon.bestSubStats.length}Tiao）
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-1.5 sm:gap-2">
                       {status.result.secondBestWeapon.bestSubStats.map((stat: any, idx: number) => (
@@ -429,7 +429,7 @@ export const CultivationTab = ({
                             {idx + 1}. {stat.stat}
                           </div>
                           <div className="text-[9px] sm:text-xs text-muted-foreground">
-                            满值：{CommonData.MAX_VALUES[stat.stat] || '-'}
+                            ManZhi：{CommonData.MAX_VALUES[stat.stat] || '-'}
                             {CommonData.PERCENT_STATS.includes(stat.stat) ? '%' : ''}
                           </div>
                         </div>

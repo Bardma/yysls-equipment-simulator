@@ -5,17 +5,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { EquipItem } from '@/lib/types';
 
-// jieba-wasm 动态导入类型
+// jieba-wasm DongTaiImportLeiXing
 type JiebaModule = {
   cut: (text: string, hmm?: boolean) => string[];
   cut_for_search: (text: string, hmm?: boolean) => string[];
 };
 
-// 拼音缓存，避免重复计算
+// PinYinHuanCun，BiMianChongFuJiSuan
 const pinyinCache = new Map<string, { full: string; initials: string }>();
 
 /**
- * 获取文本的拼音（全拼和首字母）
+ * HuoQuWenBenDePinYin（QuanPinHeShouZiMu）
  */
 function getPinyin(text: string): { full: string; initials: string } {
   if (!text) return { full: '', initials: '' };
@@ -23,9 +23,9 @@ function getPinyin(text: string): { full: string; initials: string } {
   const cached = pinyinCache.get(text);
   if (cached) return cached;
 
-  // 全拼（无声调，无空格）
+  // QuanPin（NoneShengDiao，NoneKongGe）
   const full = pinyin(text, { toneType: 'none', type: 'array' }).join('').toLowerCase();
-  // 首字母
+  // ShouZiMu
   const initials = pinyin(text, { pattern: 'first', type: 'array' }).join('').toLowerCase();
 
   const result = { full, initials };
@@ -34,29 +34,29 @@ function getPinyin(text: string): { full: string; initials: string } {
 }
 
 /**
- * 检查是否为拼音字符（只包含英文字母）
+ * JianChaShiFouWeiPinYinZiFu（ZhiBaoHanYingWenZiMu）
  */
 function isPinyinQuery(query: string): boolean {
   return /^[a-zA-Z]+$/.test(query);
 }
 
 /**
- * 使用 jieba-wasm 进行中文分词搜索的 hook
- * 支持中文搜索和拼音搜索（全拼/首字母）
+ * ShiYong jieba-wasm JinXingZhongWenFenCiSouSuoDe hook
+ * ZhiChiZhongWenSouSuoHePinYinSouSuo（QuanPin/ShouZiMu）
  */
 export function useJiebaSearch(items: EquipItem[]) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isReady, setIsReady] = useState(false);
   const jiebaRef = useRef<JiebaModule | null>(null);
 
-  // 初始化 jieba-wasm
+  // ChuShiHua jieba-wasm
   useEffect(() => {
     let mounted = true;
 
     const initJieba = async () => {
       try {
         const jiebaWasm = await import('jieba-wasm');
-        // 浏览器端需要先初始化
+        // LiuLanQiDuanXuYaoXianChuShiHua
         if (jiebaWasm.default) {
           await jiebaWasm.default();
         }
@@ -66,7 +66,7 @@ export function useJiebaSearch(items: EquipItem[]) {
         }
       } catch (error) {
         console.error('Failed to initialize jieba-wasm:', error);
-        // 即使初始化失败，也标记为就绪，使用降级的简单搜索
+        // JiShiChuShiHuaShiBai，YeBiaoJiWeiJiuXu，ShiYongJiangJiDeJianDanSouSuo
         if (mounted) {
           setIsReady(true);
         }
@@ -80,7 +80,7 @@ export function useJiebaSearch(items: EquipItem[]) {
     };
   }, []);
 
-  // 预计算所有装备名称的拼音
+  // YuJiSuanSuoYouEquipmentMingChengDePinYin
   const itemsWithPinyin = useMemo(() => {
     return items.map((item) => ({
       ...item,
@@ -88,25 +88,25 @@ export function useJiebaSearch(items: EquipItem[]) {
     }));
   }, [items]);
 
-  // 对文本进行分词
+  // DuiWenBenJinXingFenCi
   const tokenize = useCallback((text: string): string[] => {
     if (!text) return [];
 
-    // 如果 jieba 可用，使用分词
+    // RuGuo jieba KeYong，ShiYongFenCi
     if (jiebaRef.current) {
       try {
-        // 使用 cut_for_search 获取更多匹配可能
+        // ShiYong cut_for_search HuoQuGengDuoPiPeiKeNeng
         return jiebaRef.current.cut_for_search(text, true);
       } catch {
-        // 降级到简单分词
+        // JiangJiDaoJianDanFenCi
       }
     }
 
-    // 降级：简单按字符分割
+    // JiangJi：JianDanAnZiFuFenGe
     return text.split('');
   }, []);
 
-  // 检查是否匹配（支持中文和拼音）
+  // JianChaShiFouPiPei（ZhiChiZhongWenHePinYin）
   const isMatch = useCallback(
     (
       itemName: string,
@@ -118,39 +118,39 @@ export function useJiebaSearch(items: EquipItem[]) {
       const normalizedQuery = query.toLowerCase().trim();
       const normalizedName = itemName.toLowerCase();
 
-      // 1. 直接包含匹配（优先）
+      // 1. ZhiJieBaoHanPiPei（YouXian）
       if (normalizedName.includes(normalizedQuery)) {
         return true;
       }
 
-      // 2. 拼音匹配（如果查询是纯英文字母）
+      // 2. PinYinPiPei（RuGuoChaXunShiChunYingWenZiMu）
       if (isPinyinQuery(normalizedQuery)) {
-        // 全拼匹配
+        // QuanPinPiPei
         if (itemPinyin.full.includes(normalizedQuery)) {
           return true;
         }
-        // 首字母匹配
+        // ShouZiMuPiPei
         if (itemPinyin.initials.includes(normalizedQuery)) {
           return true;
         }
-        // 全拼开头匹配
+        // QuanPinKaiTouPiPei
         if (itemPinyin.full.startsWith(normalizedQuery)) {
           return true;
         }
-        // 首字母开头匹配
+        // ShouZiMuKaiTouPiPei
         if (itemPinyin.initials.startsWith(normalizedQuery)) {
           return true;
         }
       }
 
-      // 3. 分词匹配
+      // 3. FenCiPiPei
       const queryTokens = tokenize(normalizedQuery);
       const nameTokens = tokenize(normalizedName);
 
-      // 查询的每个词都需要在名称中找到匹配
+      // ChaXunDeMeiGeCiDouXuYaoZaiMingChengZhongZhaoDaoPiPei
       return queryTokens.every((queryToken) => {
         if (!queryToken.trim()) return true;
-        // 检查是否有任何名称词包含查询词，或查询词包含名称词
+        // JianChaShiFouYouRenHeMingChengCiBaoHanChaXunCi，HuoChaXunCiBaoHanMingChengCi
         return nameTokens.some(
           (nameToken) => nameToken.includes(queryToken) || queryToken.includes(nameToken)
         );
@@ -159,7 +159,7 @@ export function useJiebaSearch(items: EquipItem[]) {
     [tokenize]
   );
 
-  // 过滤结果
+  // GuoLJieGuo
   const filteredItems = useMemo(() => {
     return itemsWithPinyin.filter((item) => isMatch(item.name, item.pinyin, searchQuery));
   }, [itemsWithPinyin, isMatch, searchQuery]);

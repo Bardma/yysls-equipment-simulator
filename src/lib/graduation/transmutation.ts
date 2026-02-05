@@ -5,18 +5,18 @@ import { addFullDingyinToEquips } from './dingyin';
 import { calculateBuildRate } from './rate';
 
 export const SLOT_NAME_MAP: Record<keyof EquippedItems, string> = {
-  weapon1: '武器1',
-  weapon2: '武器2',
-  head: '冠胄',
-  chest: '胸甲',
-  ring: '环',
-  pendant: '佩',
-  legs: '胫甲',
-  hands: '腕甲',
+  weapon1: 'WuQi1',
+  weapon2: 'WuQi2',
+  head: 'GuanZhou',
+  chest: 'XiongJia',
+  ring: 'Huan',
+  pendant: 'Pei',
+  legs: 'JingJia',
+  hands: 'WanJia',
 };
 
 /**
- * 获取装备的转律变体
+ * HuoQuEquipmentDeZhuanLBianTi
  */
 export const getTransmutationVariants = (
   equip: EquipItem,
@@ -32,14 +32,14 @@ export const getTransmutationVariants = (
   const armories = CommonData.TRANSMUTATION_POOLS;
   let armoryPool: string[] | null = null;
 
-  if (currentClass === '破竹尘' || currentClass === '破竹鸢') {
-    armoryPool = armories['破竹武库'];
-  } else if (currentClass.includes('鸣金')) {
-    armoryPool = armories['鸣金武库'];
-  } else if (currentClass.includes('裂石')) {
-    armoryPool = armories['裂石武库'];
-  } else if (currentClass.includes('牵丝')) {
-    armoryPool = armories['牵丝武库'];
+  if (currentClass === 'PoZhuChen' || currentClass === 'PoZhuYuan') {
+    armoryPool = armories['PoZhuWuKu'];
+  } else if (currentClass.includes('MingJin')) {
+    armoryPool = armories['MingJinWuKu'];
+  } else if (currentClass.includes('LieShi')) {
+    armoryPool = armories['LieShiWuKu'];
+  } else if (currentClass.includes('QianSi')) {
+    armoryPool = armories['QianSiWuKu'];
   }
 
   if (!armoryPool) return [];
@@ -95,7 +95,7 @@ export interface TransmutationResult {
 }
 
 /**
- * 寻找最佳转律方案
+ * XunZhaoZuiJiaZhuanLFangAn
  */
 export const findBestTransmutation = (
   baseEquipped: EquippedItems,
@@ -138,7 +138,7 @@ export const findBestTransmutation = (
           earlySeasonBonus
         );
         const intentRate =
-          totals['实际会意率'] !== undefined ? totals['实际会意率'] : totals['会意率'] || 0;
+          totals['ShiJiHuiYiL'] !== undefined ? totals['ShiJiHuiYiL'] : totals['Insight Rate'] || 0;
         if (intentRate < minIntentRate) return;
       }
 

@@ -19,7 +19,7 @@ const getScore = (equip: EquipItem) => {
   if (equip.isChengyin) return '94.0%';
   let totalPct = 0;
   let count = 0;
-  if (equip.mainStat && equip.mainStat.type !== '生存类词条' && equip.mainStat.type !== '生存向') {
+  if (equip.mainStat && equip.mainStat.type !== 'ShengCunLeiAffix' && equip.mainStat.type !== 'ShengCunXiang') {
     const mMax = CommonData.MAX_VALUES[equip.mainStat.type];
     if (mMax) {
       totalPct += equip.mainStat.value / mMax;
@@ -27,7 +27,7 @@ const getScore = (equip: EquipItem) => {
     }
   }
   equip.subStats.forEach((sub) => {
-    if (sub.type !== '生存类词条' && sub.type !== '生存向') {
+    if (sub.type !== 'ShengCunLeiAffix' && sub.type !== 'ShengCunXiang') {
       const sMax = CommonData.MAX_VALUES[sub.type];
       if (sMax) {
         totalPct += sub.value / sMax;
@@ -58,11 +58,11 @@ export const EquipPickerModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="!flex !flex-col gap-0 p-0 max-w-2xl max-h-[90vh]">
         <DialogHeader className="shrink-0 border-b border-border/40 px-4 sm:px-6 py-4">
-          <DialogTitle className="text-base sm:text-lg">选择装备</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">XuanZeEquipment</DialogTitle>
         </DialogHeader>
         <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-2 sm:space-y-3">
           {candidates.length === 0 ? (
-            <div className="text-muted-foreground py-10 text-center">没有找到符合条件的装备。</div>
+            <div className="text-muted-foreground py-10 text-center">MeiYouZhaoDaoFuHeTiaoJianDeEquipment。</div>
           ) : (
             candidates.map((equip) => (
               <button
@@ -83,7 +83,7 @@ export const EquipPickerModal = ({
                 <div className="flex-1">
                   <div className="font-medium">{equip.name}</div>
                   <div className="text-muted-foreground text-xs">
-                    {equip.mainStat.type}+{equip.mainStat.value} | 均值:{' '}
+                    {equip.mainStat.type}+{equip.mainStat.value} | JunZhi:{' '}
                     <span className="text-yellow-300">{getScore(equip)}</span>
                   </div>
                 </div>

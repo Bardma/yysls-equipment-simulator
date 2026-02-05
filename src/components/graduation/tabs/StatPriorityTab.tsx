@@ -56,7 +56,7 @@ export const StatPriorityTab = ({
       const isPercent = CommonData.PERCENT_STATS.includes(statType);
       let statExist = false;
 
-      if (statType.includes('武学增效') && statType !== '全武学增效') {
+      if (statType.includes('Wu Xue Effectiveness') && statType !== 'All Martial Arts Effectiveness') {
         if (
           weapon1Sub.find((sub) => sub.type === statType) ||
           weapon2Sub.find((sub) => sub.type === statType)
@@ -86,7 +86,7 @@ export const StatPriorityTab = ({
         gainResults.push({ stat: statType, diff: gainRate - baseRate });
       }
 
-      if (statExist || !statType.includes('武学增效') || statType === '全武学增效') {
+      if (statExist || !statType.includes('Wu Xue Effectiveness') || statType === 'All Martial Arts Effectiveness') {
         const lossParams = calcRateWithStatModifier(
           equippedItems,
           currentClass,
@@ -115,15 +115,15 @@ export const StatPriorityTab = ({
 
   return (
     <div className="space-y-4">
-      <Button onClick={calculate}>计算词条优先级</Button>
+      <Button onClick={calculate}>JiSuanAffixYouXianJi</Button>
 
       {result ? (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {/* 左侧 - 倒金字塔 */}
+          {/* ZuoCe - DaoJinZiTa */}
           <div className="space-y-1">
-            <div className="text-sm font-medium mb-2">新增词条收益</div>
+            <div className="text-sm font-medium mb-2">XinZengAffixShouYi</div>
             {result.gains.slice(0, 30).map((item, index, arr) => {
-              // 倒金字塔：第一行100%，最后一行最短
+              // DaoJinZiTa：DiYiHang100%，ZuiHouYiHangZuiDuan
               const widthPercent = 100 - (index / (arr.length - 1 || 1)) * 60;
               return (
                 <div key={item.stat} className="relative">
@@ -142,11 +142,11 @@ export const StatPriorityTab = ({
               );
             })}
           </div>
-          {/* 右侧 - 正金字塔 */}
+          {/* YouCe - ZhengJinZiTa */}
           <div className="space-y-1">
-            <div className="text-sm font-medium mb-2 text-right">扣除词条损失</div>
+            <div className="text-sm font-medium mb-2 text-right">KouChuAffixSunShi</div>
             {result.losses.slice(0, 30).map((item, index, arr) => {
-              // 正金字塔：第一行最短，最后一行100%
+              // ZhengJinZiTa：DiYiHangZuiDuan，ZuiHouYiHang100%
               const widthPercent = 40 + (index / (arr.length - 1 || 1)) * 60;
               return (
                 <div key={item.stat} className="relative">
@@ -167,7 +167,7 @@ export const StatPriorityTab = ({
           </div>
         </div>
       ) : (
-        <div className="text-muted-foreground text-sm">尚未计算。</div>
+        <div className="text-muted-foreground text-sm">ShangWeiJiSuan。</div>
       )}
     </div>
   );

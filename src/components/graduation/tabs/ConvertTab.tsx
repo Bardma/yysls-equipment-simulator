@@ -37,9 +37,9 @@ export const ConvertTab = ({
   if (!convertTarget) {
     return (
       <div className="text-muted-foreground py-10 text-center">
-        No equipment is equipped in this slot. Equip one or click the button to select.
+        DangQianBuWeiWeiChuanDaiEquipment，QingXianChuanDaiHuoDianJiAnNiuXuanZeEquipment
         <div className="mt-4">
-          <Button onClick={onPickEquip}>Select / Add equipment to analyze</Button>
+          <Button onClick={onPickEquip}>XuanZe/LuRuEquipmentJinXingAnalyze</Button>
         </div>
       </div>
     );
@@ -48,13 +48,13 @@ export const ConvertTab = ({
   const armories = CommonData.TRANSMUTATION_POOLS;
   const isWeapon = convertTarget.slotId === '1';
   const isElemental = (name: string) =>
-    name.includes('鸣金') ||
-    name.includes('裂石') ||
-    name.includes('牵丝') ||
-    name.includes('破竹') ||
-    name.includes('无相');
+    name.includes('MingJin') ||
+    name.includes('LieShi') ||
+    name.includes('QianSi') ||
+    name.includes('PoZhu') ||
+    name.includes('NoneXiang');
   const normalize = (name: string) =>
-    isWeapon && isElemental(name) ? name.replace(/鸣金|裂石|牵丝|破竹/g, '无相') : name;
+    isWeapon && isElemental(name) ? name.replace(/MingJin|LieShi|QianSi|PoZhu/g, 'NoneXiang') : name;
 
   const analysisByArmory = Object.entries(armories).map(([armoryName, pool]) => {
     let totalDiff = 0;
@@ -256,21 +256,21 @@ export const ConvertTab = ({
   return (
     <div className="space-y-4">
       <div className="border-border/60 bg-card space-y-2 rounded-lg border p-3">
-        <div className="text-muted-foreground text-xs">基准（当前身上穿的）</div>
+        <div className="text-muted-foreground text-xs">JiZhun（DangQianShenShangChuanDe）</div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <div className="font-medium">
-              {baselineEquip?.name || '未穿戴'}
+              {baselineEquip?.name || 'WeiChuanDai'}
             </div>
             {baselineEquip?.isChengyin ? (
-              <span className="text-[10px] text-muted-foreground">(承音)</span>
+              <span className="text-[10px] text-muted-foreground">(ChengYin)</span>
             ) : null}
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-muted-foreground text-xs">分析对象</div>
+            <div className="text-muted-foreground text-xs">AnalyzeDuiXiang</div>
             <div className="font-medium">{convertTarget.name}</div>
             <Button size="sm" variant="secondary" onClick={onPickEquip}>
-              更换分析对象
+              GengHuanAnalyzeDuiXiang
             </Button>
           </div>
         </div>
@@ -306,7 +306,7 @@ export const ConvertTab = ({
                       : 'text-muted-foreground'
                 }`}
               >
-                <span className="hidden sm:inline">期望 </span>{armory.expected > 0 ? '+' : ''}
+                <span className="hidden sm:inline">QiWang </span>{armory.expected > 0 ? '+' : ''}
                 {armory.expected.toFixed(2)}%
               </div>
             </div>
@@ -332,34 +332,34 @@ export const ConvertTab = ({
       {bestRecommendation ? (
         bestRecommendation.expectedDiff > 0.0001 ? (
           <div className="border-green-500/40 bg-green-500/10 rounded-lg border px-4 py-3 text-sm text-green-200">
-            <div className="font-semibold mb-1">✅ 建议转律</div>
+            <div className="font-semibold mb-1">✅ JianYiZhuanL</div>
             <div>
-              建议对第{bestRecommendation.subIndex + 1}条词条
+              JianYiDuiDi{bestRecommendation.subIndex + 1}TiaoAffix
               <span className="mx-1 font-semibold">{bestRecommendation.originalStat}</span>
-              转律为
+              ZhuanLWei
               <span className="mx-1 font-semibold">{bestRecommendation.stat}</span>
-              ，使用
+              ，ShiYong
               <span className="mx-1 font-semibold">
                 {bestRecommendation.armories.length > 1
                   ? bestRecommendation.armories.join('、')
                   : bestRecommendation.armories[0]}
               </span>
-              ，期望收益
+              ，QiWangShouYi
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.expectedDiff.toFixed(2)}%
               </span>
-              ，最高收益
+              ，ZuiGaoShouYi
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.maxDiff.toFixed(2)}%
               </span>
-              （超过当前穿戴的装备）。
+              （ChaoGuoDangQianChuanDaiDeEquipment）。
             </div>
           </div>
         ) : bestRecommendation.hasPositiveCase && bestRecommendation.positiveCases.length > 0 ? (
           <div className="border-yellow-500/40 bg-yellow-500/10 rounded-lg border px-4 py-3 text-sm text-yellow-200">
-            <div className="font-semibold mb-1">⚠️ 谨慎转律</div>
+            <div className="font-semibold mb-1">⚠️ JinShenZhuanL</div>
             <div>
-              虽然所有武库的转律期望收益为负，但存在可以让毕业率上升的情况：
+              SuiRanSuoYouWuKuDeZhuanLQiWangShouYiWeiFu，DanCunZaiKeYiRangGraduation RateShangShengDeQingKuang：
             </div>
             <div className="mt-1">
               {Array.from(
@@ -382,32 +382,32 @@ export const ConvertTab = ({
                 });
                 return (
                   <div key={`${group.subIndex}-${group.stat}`}>
-                    将第{group.subIndex + 1}条词条 {group.originalStat} 转律为 {group.stat}，
-                    使用{group.armories.length > 1 ? group.armories.join('/') : group.armories[0]}武库
+                    JiangDi{group.subIndex + 1}TiaoAffix {group.originalStat} ZhuanLWei {group.stat}，
+                    ShiYong{group.armories.length > 1 ? group.armories.join('/') : group.armories[0]}WuKu
                   </div>
                 );
               })}
             </div>
             <div className="mt-2">
-              最高可提升
+              ZuiGaoKeTiSheng
               <span className="mx-1 font-semibold">
                 +{bestRecommendation.positiveCases[0].maxDiff.toFixed(2)}%
               </span>
-              ，但期望收益仅为
+              ，DanQiWangShouYiJinWei
               <span className="mx-1 font-semibold">
                 {bestRecommendation.positiveCases[0].expectedDiff.toFixed(2)}%
               </span>
-              ，请谨慎考虑。
+              ，QingJinShenKaoL。
             </div>
           </div>
         ) : (
           <div className="border-red-500/40 bg-red-500/10 rounded-lg border px-4 py-3 text-sm text-red-200">
-            <div className="font-semibold mb-1">⛔ 不建议转律</div>
+            <div className="font-semibold mb-1">⛔ BuJianYiZhuanL</div>
             <div>
-              经过分析，无论对哪个副词条进行转律，毕业率都无法超过当前穿戴的装备。
+              JingGuoAnalyze，NoneLunDuiNaGeSecondary AffixJinXingZhuanL，Graduation RateDouNoneFaChaoGuoDangQianChuanDaiDeEquipment。
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              （最大期望收益仅为 {bestRecommendation.expectedDiff.toFixed(2)}% 或为负）
+              （ZuiDaQiWangShouYiJinWei {bestRecommendation.expectedDiff.toFixed(2)}% HuoWeiFu）
             </div>
           </div>
         )

@@ -18,8 +18,8 @@ export const getEquipScore = (equip: EquipItem): string => {
 
   if (
     equip.mainStat &&
-    equip.mainStat.type !== '生存类词条' &&
-    equip.mainStat.type !== '生存向'
+    equip.mainStat.type !== 'ShengCunLeiAffix' &&
+    equip.mainStat.type !== 'ShengCunXiang'
   ) {
     const maxVal = CommonData.MAX_VALUES[equip.mainStat.type];
     if (maxVal) {
@@ -29,7 +29,7 @@ export const getEquipScore = (equip: EquipItem): string => {
   }
 
   equip.subStats.forEach((sub) => {
-    if (sub.type !== '生存类词条' && sub.type !== '生存向') {
+    if (sub.type !== 'ShengCunLeiAffix' && sub.type !== 'ShengCunXiang') {
       const maxVal = CommonData.MAX_VALUES[sub.type];
       if (maxVal) {
         totalPct += sub.value / maxVal;
@@ -58,7 +58,7 @@ export const ScoreBadge = ({
 
   return (
     <span className={cn('text-yellow-300 text-xs font-medium', className)}>
-      均值: {score}
+      JunZhi: {score}
     </span>
   );
 };

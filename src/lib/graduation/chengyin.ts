@@ -2,20 +2,20 @@ import { CommonData } from '@/lib/data/commonData';
 import type { EquipItem } from '@/lib/types';
 
 /**
- * 模拟承音效果（将词条设为最大值的94%）
+ * MoNiChengYinXiaoGuo（JiangAffixSheWeiZuiDaZhiDe94%）
  */
 export const mockChengyin = (equip: EquipItem): void => {
   if (
     equip.mainStat &&
-    equip.mainStat.type !== '生存类词条' &&
-    equip.mainStat.type !== '生存向'
+    equip.mainStat.type !== 'ShengCunLeiAffix' &&
+    equip.mainStat.type !== 'ShengCunXiang'
   ) {
     const mMax = CommonData.MAX_VALUES[equip.mainStat.type];
     if (mMax) equip.mainStat.value = parseFloat((mMax * 0.94).toFixed(1));
   }
 
   equip.subStats.forEach((sub) => {
-    if (sub.type !== '生存类词条' && sub.type !== '生存向') {
+    if (sub.type !== 'ShengCunLeiAffix' && sub.type !== 'ShengCunXiang') {
       const sMax = CommonData.MAX_VALUES[sub.type];
       if (sMax) sub.value = parseFloat((sMax * 0.94).toFixed(1));
     }
@@ -25,7 +25,7 @@ export const mockChengyin = (equip: EquipItem): void => {
 };
 
 /**
- * 判断装备是否为承音装备
+ * PanDuanEquipmentShiFouWeiChengYinEquipment
  */
 export const isChengyinEquip = (equip: EquipItem): boolean => {
   if (equip.isChengyin) return true;
@@ -51,7 +51,7 @@ export const isChengyinEquip = (equip: EquipItem): boolean => {
 };
 
 /**
- * 创建装备的承音版本
+ * ChuangJianEquipmentDeChengYinBanBen
  */
 export const createChengyinVersion = (equip: EquipItem): EquipItem => {
   const chengyinEquip = JSON.parse(JSON.stringify(equip)) as EquipItem;

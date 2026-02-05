@@ -75,8 +75,7 @@
     "equippedItems": "Equipped",
     "precisionBow": "Precision Bow",
     "critBow": "Crit Bow",
-    "intentBow": "Intent Bow",
-    "level": "Level"
+    "intentBow": "Intent Bow"
   },
   "graduation": {
     "title": "Graduation Rate",
@@ -186,7 +185,7 @@
   },
   "language": {
     "switch": "Switch Language",
-    "chinese": "中文",
+    "chinese": "ZhongWen",
     "english": "English"
   },
   "deleteConfirm": {

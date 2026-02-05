@@ -5,8 +5,8 @@ import { I18nProvider } from '@/i18n/I18nProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'YYSLS Equipment Graduation Rate Manager',
-  description: 'YYSLS equipment management, graduation rate calculator, and loadout simulator.',
+  title: 'Where Winds MeetEquipmentGraduation RateGuanLiQi',
+  description: 'Where Winds MeetEquipmentGuanLi、Graduation RateJiSuan、SimulationGongJu',
 };
 
 export default function RootLayout({
