@@ -29,6 +29,8 @@ import { useEquipmentStore } from '@/stores/equipmentStore';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { useLevelStore } from '@/stores/levelStore';
 
+type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
+
 const formatDisplayTotals = (totals: Record<string, number>) => {
   const displayTotals: Record<string, number> = { ...totals };
   for (const key in displayTotals) {
@@ -103,7 +105,7 @@ export default function Home() {
     updateEquipsById,
   } = useSimulationStore();
 
-  // Level store (NEW)
+  // Level store
   const { hydrateLevels, getLevel } = useLevelStore();
 
   // Hydration effects
@@ -131,8 +133,8 @@ export default function Home() {
     return addFullDingyinToEquips(equippedItems);
   }, [equippedItems, loanDingyin]);
 
-  // Get per-account level (NEW)
-  const level = getLevel(currentAccount);
+  // Get per-account level (typed for Calculator.calculateTotal)
+  const level = getLevel(currentAccount) as DengLevelKey;
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
@@ -168,17 +170,40 @@ export default function Home() {
   const graduationInfo = useMemo(() => {
     if (!totals || rotation.length === 0) return null;
     const accParams = { ...totals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
-    const accResult = Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false);
+    const accResult = Calculator.calculateGraduationRate(
+      accParams,
+      skillDb,
+      rotation,
+      baseline,
+      false
+    );
     const displayTotals = formatDisplayTotals(totals);
     const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
-    const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
+    const excelResult = Calculator.calculateGraduationRate(
+      excelParams,
+      skillDb,
+      rotation,
+      baseline,
+      false
+    );
     const dps = Math.round(accResult.totalDamage / useTime);
-    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
+    return {
+      accurate: accResult.graduationRate,
+      excel: excelResult.graduationRate,
+      dps,
+      isLoaned: loanDingyin,
+    };
   }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
-    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin, earlySeasonBonus);
+    return buildStatsDisplay(
+      formatDisplayTotals(totals),
+      currentClass,
+      setType,
+      loanDingyin,
+      earlySeasonBonus
+    );
   }, [totals, currentClass, setType, loanDingyin, earlySeasonBonus]);
 
   // Handlers
@@ -203,7 +228,12 @@ export default function Home() {
         else if (!equippedItems.weapon2) equipSlot(currentAccount, 'weapon2', equip);
       } else {
         const slotKeyMap: Record<string, keyof EquippedItems> = {
-          '3': 'ring', '4': 'pendant', '5': 'head', '6': 'chest', '7': 'legs', '8': 'hands',
+          '3': 'ring',
+          '4': 'pendant',
+          '5': 'head',
+          '6': 'chest',
+          '7': 'legs',
+          '8': 'hands',
         };
         const slotKey = slotKeyMap[equip.slotId];
         if (slotKey && !equippedItems[slotKey]) equipSlot(currentAccount, slotKey, equip);
@@ -249,6 +279,7 @@ export default function Home() {
   const equipItemById = (id: number | string) => {
     const item = db.find((equip) => equip.id === id);
     if (!item) return;
+
     if (item.slotId === '1') {
       const allowed = ClassConfig.WEAPON_RULES[currentClass] || [];
       if (!allowed.includes(item.weaponTypeId || '')) {
@@ -268,8 +299,14 @@ export default function Home() {
       }
       return;
     }
+
     const slotKeyMap: Record<string, keyof EquippedItems> = {
-      '3': 'ring', '4': 'pendant', '5': 'head', '6': 'chest', '7': 'legs', '8': 'hands',
+      '3': 'ring',
+      '4': 'pendant',
+      '5': 'head',
+      '6': 'chest',
+      '7': 'legs',
+      '8': 'hands',
     };
     const slotKey = slotKeyMap[item.slotId];
     if (slotKey) equipSlot(currentAccount, slotKey, item);
