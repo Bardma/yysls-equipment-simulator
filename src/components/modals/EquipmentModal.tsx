@@ -406,6 +406,7 @@ export const EquipmentModal = ({
                     <SelectContent>
                       {slotOptions.map((slot) => (
                         <SelectItem key={slot.id} value={slot.id}>
+                          {slotLabel(slot.name)}
                         </SelectItem>
                       ))}
                     </SelectContent>
