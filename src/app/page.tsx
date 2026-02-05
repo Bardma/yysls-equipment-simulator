@@ -147,15 +147,59 @@ export default function Home() {
   const skillDb = rotationConfig?.skillDatabase || {};
 
   const graduationInfo = useMemo(() => {
-    if (!totals || rotation.length === 0) return null;
-    const accParams = { ...totals, Set: setType, Inner Way: xinfaLoadout, DangQianLiuPai: currentClass };
-    const accResult = Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false);
-    const displayTotals = formatDisplayTotals(totals);
-    const excelParams = { ...displayTotals, Set: setType, Inner Way: xinfaLoadout, DangQianLiuPai: currentClass };
-    const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
-    const dps = Math.round(accResult.totalDamage / useTime);
-    return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
-  }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
+  if (!totals || rotation.length === 0) return null;
+
+  const accParams = {
+    ...totals,
+    Set: setType,
+    "Inner Way": xinfaLoadout,
+    DangQianLiuPai: currentClass,
+  };
+
+  const accResult = Calculator.calculateGraduationRate(
+    accParams,
+    skillDb,
+    rotation,
+    baseline,
+    false
+  );
+
+  const displayTotals = formatDisplayTotals(totals);
+
+  const excelParams = {
+    ...displayTotals,
+    Set: setType,
+    "Inner Way": xinfaLoadout,
+    DangQianLiuPai: currentClass,
+  };
+
+  const excelResult = Calculator.calculateGraduationRate(
+    excelParams,
+    skillDb,
+    rotation,
+    baseline,
+    false
+  );
+
+  const dps = Math.round(accResult.totalDamage / useTime);
+
+  return {
+    accurate: accResult.graduationRate,
+    excel: excelResult.graduationRate,
+    dps,
+    isLoaned: loanDingyin,
+  };
+}, [
+  totals,
+  rotation,
+  setType,
+  xinfaLoadout,
+  currentClass,
+  skillDb,
+  baseline,
+  useTime,
+  loanDingyin,
+]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
