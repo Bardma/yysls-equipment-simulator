@@ -116,8 +116,8 @@ const WEAPON_LABELS: Record<string, string> = {
   '扇': 'Fan',
   '绳标': 'Rope Dart',
   '双刀': 'Dual Blades',
-  '陌刀': 'Long Sabre',
-  '横刀': 'Horizontal Sabre',
+  '陌刀': 'Modao',
+  '横刀': 'Teng Dao',
   '拳甲': 'Gauntlets',
 };
 

@@ -25,7 +25,7 @@ async function getWorker() {
   try {
     console.log('[OCR] Creating Tesseract worker...');
 
-    worker = await createWorker('chi_sim', 1, {
+    worker = await createWorker('chi_sim+eng', 1, {
       logger: (m) => {
         if (m.status === 'recognizing text') {
           console.log(`[OCR] Progress: ${Math.round(m.progress * 100)}%`);
@@ -111,6 +111,76 @@ const STAT_ALIASES: Record<string, string> = {
 
 // 定音词条列表
 const DINGYIN_STATS = ['外功穿透', '属攻穿透', '指定武学技能增伤'];
+
+const normalizeEnText = (line: string): string =>
+  line
+    .toLowerCase()
+    .replace(/[^a-z0-9%+\.\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const ENGLISH_STAT_MAPPINGS: Array<[string, string]> = [
+  ['precision rate', '精准率'],
+  ['critical rate', '会心率'],
+  ['affinity rate', '会意率'],
+  ['direct critical rate', '直接会心率'],
+  ['direct affinity rate', '直接会意率'],
+  ['critical dmg bonus', '会心伤害加成'],
+  ['affinity dmg bonus', '会意伤害加成'],
+  ['physical penetration', '外功穿透'],
+  ['attribute attack penetration', '属攻穿透'],
+  ['attribute penetration', '属攻穿透'],
+  ['physical attack', '最大外功攻击'],
+  ['attribute attack', '最大无相攻击'],
+  ['formless attribute', '最大无相攻击'],
+  ['bellstrike attack', '最大鸣金攻击'],
+  ['stonesplit attack', '最大裂石攻击'],
+  ['silkbind attack', '最大牵丝攻击'],
+  ['bamboocut attack', '最大破竹攻击'],
+  ['body', '劲'],
+  ['power', '劲'],
+  ['agility', '敏'],
+  ['momentum', '势'],
+  ['all martial bonus', '全武学增效'],
+  ['all weapon bonus', '全武学增效'],
+  ['boss damage bonus', '对首领单位增伤'],
+  ['single target', '单体类奇术增伤'],
+  ['aoe', '群体类奇术增伤'],
+  ['sword bonus', '剑武学增效'],
+  ['spear bonus', '枪武学增效'],
+  ['umbrella bonus', '伞武学增效'],
+  ['fan bonus', '扇武学增效'],
+  ['rope dart bonus', '绳标武学增效'],
+  ['dual blades bonus', '双刀武学增效'],
+  ['modao bonus', '陌刀武学增效'],
+  ['teng dao bonus', '横刀武学增效'],
+  ['gauntlets bonus', '拳甲武学增效'],
+];
+
+function smartMatchEnglishStatName(line: string): string | null {
+  const normalized = normalizeEnText(line);
+  if (!normalized) return null;
+
+  for (const [keyword, statName] of ENGLISH_STAT_MAPPINGS) {
+    if (normalized.includes(keyword)) return statName;
+  }
+
+  if (normalized.includes('min') && normalized.includes('physical attack')) return '最小外功攻击';
+  if (normalized.includes('max') && normalized.includes('physical attack')) return '最大外功攻击';
+  if (normalized.includes('min') && normalized.includes('attribute attack')) return '最小无相攻击';
+  if (normalized.includes('max') && normalized.includes('attribute attack')) return '最大无相攻击';
+  if (normalized.includes('min') && normalized.includes('bellstrike attack')) return '最小鸣金攻击';
+  if (normalized.includes('max') && normalized.includes('bellstrike attack')) return '最大鸣金攻击';
+  if (normalized.includes('min') && normalized.includes('stonesplit attack')) return '最小裂石攻击';
+  if (normalized.includes('max') && normalized.includes('stonesplit attack')) return '最大裂石攻击';
+  if (normalized.includes('min') && normalized.includes('silkbind attack')) return '最小牵丝攻击';
+  if (normalized.includes('max') && normalized.includes('silkbind attack')) return '最大牵丝攻击';
+  if (normalized.includes('min') && normalized.includes('bamboocut attack')) return '最小破竹攻击';
+  if (normalized.includes('max') && normalized.includes('bamboocut attack')) return '最大破竹攻击';
+
+  return null;
+}
+
 
 /**
  * 清洗 OCR 文本，移除干扰词
@@ -248,8 +318,8 @@ function parseStatLine(line: string, isLastLine: boolean = false): ParsedStat | 
     .replace(/转\]/g, '')
     .replace(/\[转/g, '');
 
-  // 使用智能匹配
-  let matchedStatType = smartMatchStatName(cleanLine, isLastLine);
+  // 使用智能匹配（优先英文，再中文）
+  let matchedStatType = smartMatchEnglishStatName(cleanLine) || smartMatchStatName(cleanLine, isLastLine);
 
   // 如果匹配到别名，转换为标准名称
   if (matchedStatType && STAT_ALIASES[matchedStatType]) {
