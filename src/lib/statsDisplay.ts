@@ -1,5 +1,6 @@
 import { CommonData } from './data/commonData';
 import { statLabel } from './statName';
+import { hasSetType } from './setUtils';
 
 export interface StatDisplayItem {
   label: string;
@@ -149,7 +150,7 @@ export const buildStatsDisplay = (
       if (overflowData.crit > 0) {
         let overflowReason = '';
         overflowReason += currentClass === '裂石威' ? '陌刀' : '';
-        overflowReason += setType === '浣花' ? '浣花' : '';
+        overflowReason += hasSetType(setType, '浣花') ? '浣花' : '';
         suffix = ` ${overflowReason}溢出${overflowData.crit.toFixed(1)}%白值`;
       }
     } else if (key === '实际会意率') {

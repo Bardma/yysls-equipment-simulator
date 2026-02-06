@@ -143,8 +143,9 @@ const SET_LABELS: Record<string, string> = {
   断岳: 'Formbend Set',
   烟柳: 'Veil of the Willow Set',
   浣花: 'Ivorybloom Set',
-  燕归: 'Swallowcall Set',
+  燕归: 'Calmwaters Set',
   连星: 'Eaglerise Set',
+  撼天: 'Moonflare Set',
   'Moonflare Set': 'Moonflare Set',
   // Ajoute ici toutes les corrélations CN -> EN quand tu les as (la structure est prête).
 };
@@ -162,6 +163,15 @@ export function weaponLabel(cn: string): string {
 }
 
 export function setLabel(name: string): string {
+  if (!name) return name;
+  if (name.includes('+')) {
+    return name
+      .split('+')
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => SET_LABELS[part] ?? part)
+      .join(' + ');
+  }
   return SET_LABELS[name] ?? name;
 }
 

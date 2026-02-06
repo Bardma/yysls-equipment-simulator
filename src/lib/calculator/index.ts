@@ -1,5 +1,6 @@
 import { ClassConfig } from '../data/classConfig';
 import { CommonData } from '../data/commonData';
+import { hasSetType, parseSetTypes } from '../setUtils';
 import { getBaseStatsOverride, type DengLevelKey } from '../levelBaseStats';
 import type {
   CalculatorStatModifier,
@@ -172,13 +173,15 @@ export const Calculator = {
     if (debug) {
       console.group('4. 套装加成明细');
     }
-    if (setType && CommonData.SET_DATA[setType]) {
-      const setStats = CommonData.SET_DATA[setType];
+    const activeSets = parseSetTypes(setType);
+    activeSets.forEach((activeSetName) => {
+      const setStats = CommonData.SET_DATA[activeSetName];
+      if (!setStats) return;
       for (const [key, val] of Object.entries(setStats)) {
         total[key] = (total[key] || 0) + val;
-        if (debug) console.log(`- [${setType}] ${key}:`, val);
+        if (debug) console.log(`- [${activeSetName}] ${key}:`, val);
       }
-    }
+    });
     if (debug) {
       console.groupEnd();
     }
@@ -301,7 +304,7 @@ export const Calculator = {
     const rawCrit = total['会心率'] / 1.85;
     let exCrit = 0;
     if (currentClass === '裂石威') exCrit += 24;
-    if (setType === '浣花') exCrit += 5;
+    if (hasSetType(setType, '浣花')) exCrit += 5;
 
     let finalCrit = rawCrit + exCrit;
     let critOverflow = 0;
@@ -545,7 +548,7 @@ export const Calculator = {
       }
 
       let effCritRate =
-        stats.critRate / 100 + (skillData.exCrit || 0) + (cachedSetName === '浣花' ? 5 : 0);
+        stats.critRate / 100 + (skillData.exCrit || 0) + (hasSetType(cachedSetName, '浣花') ? 5 : 0);
       if (effCritRate > 0.8) effCritRate = 0.8;
       effCritRate += stats.directCrit / 100;
 
@@ -554,7 +557,7 @@ export const Calculator = {
       effIntentRate += stats.directIntent / 100;
       if (skillData.modifiers?.['长风']) {
         effIntentRate += 0.03;
-        if (cachedSetName === '玉斗') effIntentRate += 0.075;
+        if (hasSetType(cachedSetName, '玉斗')) effIntentRate += 0.075;
       }
 
       let effPrecision = stats.precision / 100;
@@ -594,20 +597,20 @@ export const Calculator = {
       if (skillData.weaponType === '群体奇术') weaponBonus += stats.groupMagicBonus / 100;
 
       let finalGlobalMult = 1 + action.generalBonus + stats.bossDmgBonus / 100 + weaponBonus;
-      if (cachedSetName === '连星') finalGlobalMult += Number(skillData.modifiers?.['连星']) || 0;
+      if (hasSetType(cachedSetName, '连星')) finalGlobalMult += Number(skillData.modifiers?.['连星']) || 0;
 
       if (skillData.isCharge === 1 && cachedCheckXinfa('威猛歌')) finalGlobalMult += 0.15;
       if (cachedCheckXinfa('抗造大法')) finalGlobalMult += 0.1;
       let duanyueBonus = 0;
-      if (cachedSetName === '断岳') {
+      if (hasSetType(cachedSetName, '断岳')) {
         duanyueBonus = 0.05;
         if (skillData.modifiers?.['断岳']) duanyueBonus += 0.05;
       }
       finalGlobalMult += duanyueBonus;
-      if (skillData.modifiers?.['烟柳'] && cachedSetName === '烟柳') finalGlobalMult += 0.12;
+      if (skillData.modifiers?.['烟柳'] && hasSetType(cachedSetName, '烟柳')) finalGlobalMult += 0.12;
       if (cachedCheckXinfa('征人归') || cachedCheckXinfa('明晦同尘')) finalGlobalMult += 0.08;
 
-      let outerSetMult = cachedSetName === '飞隼' ? 1.1 : cachedSetName === '撼天' ? 1.05 : 1.0;
+      let outerSetMult = hasSetType(cachedSetName, '飞隼') ? 1.1 : hasSetType(cachedSetName, '撼天') ? 1.05 : 1.0;
       outerSetMult *= 1 + (skillData.exATK || 0);
 
       let finalBossDef = cachedBossDef * (skillData.modifiers?.['恶身'] ? 0.9 : 1);
@@ -648,10 +651,10 @@ export const Calculator = {
 
       let critMult = 1 + stats.critDmgBonus / 100 + (skillData.exCritDmg || 0) + dsBonus / 100;
       let intentMult = 1 + stats.intentDmgBonus / 100 + (skillData.exIntentDmg || 0);
-      if (cachedSetName === '时雨') critMult += 0.1;
-      if (cachedSetName === '浣花') critMult += 0.15;
+      if (hasSetType(cachedSetName, '时雨')) critMult += 0.1;
+      if (hasSetType(cachedSetName, '浣花')) critMult += 0.15;
       if (action.name.includes('Q') && cachedCheckXinfa('大唐歌')) critMult += 0.15;
-      if (skillData.modifiers?.['玉斗'] && cachedSetName === '玉斗') intentMult += 0.1;
+      if (skillData.modifiers?.['玉斗'] && hasSetType(cachedSetName, '玉斗')) intentMult += 0.1;
       if (cachedCheckXinfa('凝神章')) intentMult += 0.1;
       if (skillData.modifiers?.['移经'] && cachedCheckXinfa('移经易武')) critMult += 0.2;
       if (chuanHouModifier > 0 && cachedCheckXinfa('穿喉决')) {
@@ -710,7 +713,7 @@ export const Calculator = {
         elePen: number,
         eleDmgBonus: number
       ) {
-        let eleSetMult = cachedSetName === '撼天' ? 1.05 : 1.0;
+        let eleSetMult = hasSetType(cachedSetName, '撼天') ? 1.05 : 1.0;
         const extraEleAtk =
           skillData?.type === '武器' && skillData?.element === eleName
             ? 150.7 * (1 + stats.fixedDmgBonus)
@@ -762,7 +765,7 @@ export const Calculator = {
       }
       if (
         (skillData.special === '撼天' || skillData.special === '鼠鼠') &&
-        cachedSetName === '撼天'
+        hasSetType(cachedSetName, '撼天')
       ) {
         hanTianPenBonus += 4;
       }
@@ -845,11 +848,11 @@ export const Calculator = {
         console.log('🎯 命中概率:');
         console.log(`  精准率: ${(effPrecision * 100).toFixed(2)}%`);
         console.log(`  会心率: ${(effCritRate * 100).toFixed(2)}%`);
-        if (cachedSetName === '浣花') console.log(`    包含浣花套装白字会心率: 5%`);
+        if (hasSetType(cachedSetName, '浣花')) console.log(`    包含浣花套装白字会心率: 5%`);
         console.log(`  会意率: ${(effIntentRate * 100).toFixed(2)}%`);
         if (skillData.modifiers?.['长风']) {
           console.log(`  包含长风生效会意率: 3%`);
-          if (cachedSetName === '玉斗') console.log(`    包含玉斗套装生效会意率: 7.5%`);
+          if (hasSetType(cachedSetName, '玉斗')) console.log(`    包含玉斗套装生效会意率: 7.5%`);
         }
         console.log(`  直接会心率: ${stats.directCrit.toFixed(2)}%`);
         console.log(`  直接会意率: ${stats.directIntent.toFixed(2)}%`);
