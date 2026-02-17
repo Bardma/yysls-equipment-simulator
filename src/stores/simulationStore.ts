@@ -7,8 +7,8 @@ import type { EquipItem, EquippedItems } from '../lib/types';
 
 export type DengLevelKey = Parameters<typeof Calculator.calculateTotal>[8];
 
-// Default (adjust if your Calculator expects another valid key)
 const DEFAULT_LEVEL = '100' as unknown as DengLevelKey;
+const DEFAULT_ARMOR_SET = '断岳';
 
 const levelStorageKey = (account: string) => `yysls_level_${account}`;
 
@@ -37,6 +37,7 @@ const emptyEquippedItems = (): EquippedItems => ({
 interface SimulationState {
   currentClass: string;
   bowType: string;
+  armorSetType: string;
   setType: string;
   xinfaLoadout: string[];
   earlySeasonBonus: boolean;
@@ -44,13 +45,13 @@ interface SimulationState {
   equippedItems: EquippedItems;
   allClassLoadouts: Record<string, SimLoadoutIds>;
 
-  // NEW
   level: DengLevelKey;
   setLevel: (account: string | null, level: DengLevelKey) => void;
 
   hydrateForAccount: (account: string | null, db: EquipItem[]) => void;
   setCurrentClass: (account: string | null, name: string, db: EquipItem[]) => void;
   setBowType: (account: string | null, value: string) => void;
+  setArmorSetType: (account: string | null, value: string) => void;
   setSetType: (account: string | null, value: string) => void;
   setXinfaLoadout: (account: string | null, loadout: string[]) => void;
   setEarlySeasonBonus: (account: string | null, value: boolean) => void;
@@ -72,6 +73,7 @@ const buildLoadoutIds = (
   equippedItems: EquippedItems,
   bowType: string,
   setType: string,
+  armorSetType: string,
   xinfaLoadout: string[],
   earlySeasonBonus: boolean,
   loanDingyin: boolean
@@ -86,6 +88,7 @@ const buildLoadoutIds = (
   hands: equippedItems.hands?.id ?? null,
   bowType,
   setType,
+  armorSetType,
   xinfa: [...xinfaLoadout],
   earlySeasonBonus,
   loanDingyin,
@@ -110,6 +113,7 @@ const applyLoadout = (loadout: SimLoadoutIds | undefined, db: EquipItem[]): Equi
 export const useSimulationStore = create<SimulationState>((set, get) => ({
   currentClass: defaultClass,
   bowType: 'precision',
+  armorSetType: DEFAULT_ARMOR_SET,
   setType: ClassConfig.DEFAULT_SETS[defaultClass] || '',
   xinfaLoadout: getDefaultXinfa(defaultClass),
   earlySeasonBonus: false,
@@ -117,7 +121,6 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
   equippedItems: emptyEquippedItems(),
   allClassLoadouts: {},
 
-  // NEW
   level: DEFAULT_LEVEL,
   setLevel: (account, level) => {
     set({ level });
@@ -131,6 +134,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const loadout = allClassLoadouts[currentClass];
 
     const setType = loadout?.setType || ClassConfig.DEFAULT_SETS[currentClass] || '';
+    const armorSetType = loadout?.armorSetType || DEFAULT_ARMOR_SET;
     const bowType = loadout?.bowType || 'precision';
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(currentClass);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
@@ -143,6 +147,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       currentClass,
       allClassLoadouts,
       setType,
+      armorSetType,
       bowType,
       xinfaLoadout,
       earlySeasonBonus,
@@ -157,6 +162,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const loadout = allClassLoadouts[name];
 
     const setType = loadout?.setType || ClassConfig.DEFAULT_SETS[name] || '';
+    const armorSetType = loadout?.armorSetType || DEFAULT_ARMOR_SET;
     const bowType = loadout?.bowType || 'precision';
     const xinfaLoadout = loadout?.xinfa || getDefaultXinfa(name);
     const earlySeasonBonus = loadout?.earlySeasonBonus ?? false;
@@ -166,6 +172,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     set({
       currentClass: name,
       setType,
+      armorSetType,
       bowType,
       xinfaLoadout,
       earlySeasonBonus,
@@ -180,6 +187,11 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
   setBowType: (account, value) => {
     set({ bowType: value });
+    get().syncCurrentLoadoutIds(account);
+  },
+
+  setArmorSetType: (account, value) => {
+    set({ armorSetType: value });
     get().syncCurrentLoadoutIds(account);
   },
 
@@ -232,6 +244,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       equippedItems,
       bowType,
       setType,
+      armorSetType,
       xinfaLoadout,
       earlySeasonBonus,
       loanDingyin,
@@ -241,6 +254,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       equippedItems,
       bowType,
       setType,
+      armorSetType,
       xinfaLoadout,
       earlySeasonBonus,
       loanDingyin

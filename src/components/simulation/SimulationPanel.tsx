@@ -1,13 +1,13 @@
 'use client';
 
-import { ClassConfig } from '@/lib/data/classConfig';
-import type { EquippedItems } from '@/lib/types';
+import { useMemo } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ClassConfig } from '@/lib/data/classConfig';
+import { classLabel, setLabel, slotLabel, xinfaLabel } from '@/lib/statName';
+import type { EquippedItems } from '@/lib/types';
 import type { DengLevelKey } from '@/stores/simulationStore';
-import { classLabel, setLabel } from '@/lib/statName';
-import { CommonData } from '@/lib/data/commonData';
-import { useMemo } from 'react';
 
 export interface SimulationPanelProps {
   expanded: boolean;
@@ -15,6 +15,7 @@ export interface SimulationPanelProps {
 
   currentClass: string;
   bowType: string;
+  armorSetType: string;
   setType: string;
 
   level: DengLevelKey;
@@ -25,65 +26,18 @@ export interface SimulationPanelProps {
 
   onClassChange: (value: string) => void;
   onBowChange: (value: string) => void;
+  onArmorSetChange: (value: string) => void;
   onSetChange: (value: string) => void;
 
   onXinfaClick: (slotIndex: number) => void;
   onUnequip: (slotKey: keyof EquippedItems) => void;
 }
 
-// 60/70 retirés + ajout 85/95
 const LEVEL_OPTIONS: DengLevelKey[] = ['80', '85', '90', '95', '100'] as unknown as DengLevelKey[];
+const DEFAULT_BOW_OPTIONS = ['precision', 'balanced', 'rapid'];
 
-const safeArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
-
-const firstNonEmpty = <T,>(...candidates: T[][]): T[] => {
-  for (const arr of candidates) if (arr && arr.length) return arr;
-  return [];
-};
-
-const uniq = (arr: string[]) => Array.from(new Set(arr.filter(Boolean)));
-
-const getClassOptions = (currentClass: string): string[] => {
-  const anyCfg = ClassConfig as any;
-  const fromCfg = safeArray<string>(anyCfg.CLASSES);
-  return uniq(fromCfg.length ? fromCfg : [currentClass]);
-};
-
-const getBowOptions = (currentBow: string): string[] => {
-  const anyCfg = ClassConfig as any;
-
-  // essaye plusieurs sources possibles
-  const fromCfg = firstNonEmpty<string>(
-    safeArray<string>(anyCfg.BOW_TYPES),
-    safeArray<string>(anyCfg.BOW_OPTIONS),
-    safeArray<string>(anyCfg.BOWS)
-  );
-
-  // fallback propre si rien trouvé
-  const fallback = ['precision', 'balanced', 'rapid'];
-
-  return uniq((fromCfg.length ? fromCfg : fallback).concat([currentBow]));
-};
-
-const getSetOptionsForClass = (cls: string, currentSet: string): string[] => {
-  const anyCfg = ClassConfig as any;
-
-  // cas 1: mapping par classe
-  const byClass = anyCfg.SETS_BY_CLASS?.[cls] ?? anyCfg.SET_OPTIONS_BY_CLASS?.[cls] ?? anyCfg.CLASS_SETS?.[cls];
-  const fromClass = safeArray<string>(byClass);
-
-  // cas 2: liste globale
-  const fromGlobal = firstNonEmpty<string>(
-    safeArray<string>(anyCfg.ALL_SETS),
-    safeArray<string>(anyCfg.SETS),
-    safeArray<string>(anyCfg.SET_OPTIONS)
-  );
-
-  const dflt = String(anyCfg.DEFAULT_SETS?.[cls] ?? '');
-
-  const base = fromClass.length ? fromClass : fromGlobal;
-  return uniq(base.concat([currentSet, dflt]));
-};
+const ARMOR_SET_OPTIONS = ['断岳', '燕归', '连星', '撼天'];
+const WEAPON_SET_OPTIONS = ['玉斗', '飞隼', '时雨', '烟柳', '浣花'];
 
 export function SimulationPanel(props: SimulationPanelProps) {
   const {
@@ -91,6 +45,7 @@ export function SimulationPanel(props: SimulationPanelProps) {
     onToggle,
     currentClass,
     bowType,
+    armorSetType,
     setType,
     level,
     onLevelChange,
@@ -98,24 +53,21 @@ export function SimulationPanel(props: SimulationPanelProps) {
     xinfaLoadout,
     onClassChange,
     onBowChange,
+    onArmorSetChange,
     onSetChange,
     onXinfaClick,
     onUnequip,
   } = props;
 
-  const classOptions = getClassOptions(currentClass);
-  const bowOptions = getBowOptions(bowType);
-  const setOptions = useMemo(() => {
-    const fromCfg = getSetOptionsForClass(currentClass, setType);
-    const fromCommon = Object.keys(CommonData.SET_DATA ?? {});
+  const classOptions = useMemo(
+    () => (ClassConfig.CLASSES.length ? ClassConfig.CLASSES : [currentClass]),
+    [currentClass]
+  );
 
-    return Array.from(
-      new Set([setType, ...fromCfg, ...fromCommon].filter((x): x is string => Boolean(x)))
-    );
-  }, [currentClass, setType]);
-
-const uniq = (arr: Array<string | null | undefined>) =>
-  Array.from(new Set(arr.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)));
+  const bowOptions = useMemo(() => {
+    const options = Array.from(new Set([...DEFAULT_BOW_OPTIONS, bowType].filter(Boolean)));
+    return options.length ? options : DEFAULT_BOW_OPTIONS;
+  }, [bowType]);
 
   if (!expanded) {
     return (
@@ -147,9 +99,9 @@ const uniq = (arr: Array<string | null | undefined>) =>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {classOptions.map((c) => (
-                <SelectItem key={c} value={c}>
-                      {classLabel(c)}
+              {classOptions.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {classLabel(option)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -163,9 +115,9 @@ const uniq = (arr: Array<string | null | undefined>) =>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {bowOptions.map((b) => (
-                <SelectItem key={b} value={b}>
-                  {b}
+              {bowOptions.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -173,31 +125,47 @@ const uniq = (arr: Array<string | null | undefined>) =>
         </div>
 
         <div className="space-y-1">
-          <div className="text-xs text-muted-foreground">Set</div>
-          <Select value={setType} onValueChange={onSetChange}>
+          <div className="text-xs text-muted-foreground">Armor Set</div>
+          <Select value={armorSetType} onValueChange={onArmorSetChange}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {setOptions.map((set) => (
-  <SelectItem key={set} value={set}>
-    {setLabel(set)}
-  </SelectItem>
-))}
+              {ARMOR_SET_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {setLabel(option)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-1">
+          <div className="text-xs text-muted-foreground">Weapon Set</div>
+          <Select value={setType} onValueChange={onSetChange}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {WEAPON_SET_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {setLabel(option)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-1 col-span-2">
           <div className="text-xs text-muted-foreground">Level</div>
           <Select value={String(level)} onValueChange={(v) => onLevelChange(v as unknown as DengLevelKey)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {LEVEL_OPTIONS.map((lv) => (
-                <SelectItem key={String(lv)} value={String(lv)}>
-                  {String(lv)}
+              {LEVEL_OPTIONS.map((option) => (
+                <SelectItem key={String(option)} value={String(option)}>
+                  {String(option)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -205,14 +173,12 @@ const uniq = (arr: Array<string | null | undefined>) =>
         </div>
       </div>
 
-      {/* Le reste de ton panel (xinfa, equipped, unequip) reste inchangé */}
-      {/* IMPORTANT: garde ton code existant ci-dessous si tu en avais */}
       <div className="space-y-2">
-        <div className="text-xs text-muted-foreground">Xinfa</div>
+        <div className="text-xs text-muted-foreground">Innerway</div>
         <div className="grid grid-cols-2 gap-2">
-          {xinfaLoadout.map((x, idx) => (
-            <Button key={`${x}-${idx}`} variant="outline" onClick={() => onXinfaClick(idx)}>
-              {x || `Slot ${idx + 1}`}
+          {xinfaLoadout.map((name, index) => (
+            <Button key={`${name}-${index}`} variant="outline" onClick={() => onXinfaClick(index)}>
+              {name ? xinfaLabel(name) : `Slot ${index + 1}`}
             </Button>
           ))}
         </div>
@@ -222,8 +188,8 @@ const uniq = (arr: Array<string | null | undefined>) =>
         <div className="text-xs text-muted-foreground">Equipped</div>
         <div className="grid grid-cols-2 gap-2">
           {(Object.keys(equippedItems) as Array<keyof EquippedItems>).map((slotKey) => (
-            <div key={String(slotKey)} className="border-border/60 rounded-md border p-2">
-              <div className="text-xs text-muted-foreground">{String(slotKey)}</div>
+            <div key={slotLabel(String(slotKey))} className="border-border/60 rounded-md border p-2">
+              <div className="text-xs text-muted-foreground">{slotLabel(String(slotKey))}</div>
               <div className="truncate">{equippedItems[slotKey]?.name ?? '—'}</div>
               <Button variant="outline" size="sm" className="mt-2 w-full" onClick={() => onUnequip(slotKey)}>
                 Unequip

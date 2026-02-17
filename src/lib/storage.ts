@@ -69,6 +69,7 @@ export interface SimLoadoutIds {
   hands: number | string | null;
   bowType?: string;
   setType?: string;
+  armorSetType?: string;
   xinfa?: string[];
   earlySeasonBonus?: boolean;
   loanDingyin?: boolean;

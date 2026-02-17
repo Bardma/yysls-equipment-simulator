@@ -59,7 +59,7 @@ export const XinfaModal = ({
                 <div className="flex flex-col items-center gap-1 sm:gap-2">
                   <Image
                     src={`/icon/${name}.jpg`}
-                    alt={name}
+                    alt={xinfaLabel(name)}
                     width={48}
                     height={48}
                     className="border-border/60 rounded-md border sm:w-16 sm:h-16"

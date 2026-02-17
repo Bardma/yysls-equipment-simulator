@@ -17,6 +17,7 @@ import { ClassConfig } from '@/lib/data/classConfig';
 import { CommonData } from '@/lib/data/commonData';
 import { addFullDingyinToEquips } from '@/lib/graduation/dingyin';
 import { buildStatsDisplay } from '@/lib/statsDisplay';
+import { combineSetTypes } from '@/lib/setUtils';
 import {
   clearAccountData,
   loadEquipData,
@@ -92,6 +93,7 @@ export default function Home() {
     currentClass,
     bowType,
     setType,
+    armorSetType,
     xinfaLoadout,
     earlySeasonBonus,
     loanDingyin,
@@ -100,6 +102,7 @@ export default function Home() {
     setCurrentClass,
     setBowType,
     setSetType,
+    setArmorSetType,
     setXinfaLoadout,
     setEarlySeasonBonus,
     setLoanDingyin,
@@ -134,6 +137,7 @@ export default function Home() {
 
   // Ensure level is always a valid DengLevelKey (never undefined/null)
   const level = (getLevel(currentAccount) ?? DEFAULT_LEVEL) as DengLevelKey;
+  const combinedSetType = useMemo(() => combineSetTypes(armorSetType, setType), [armorSetType, setType]);
 
   const totals = useMemo(() => {
     if (!currentAccount) return null;
@@ -143,7 +147,7 @@ export default function Home() {
       currentClass,
       bowType,
       xinfaLoadout,
-      setType,
+      combinedSetType,
       false,
       null,
       earlySeasonBonus,
@@ -155,7 +159,7 @@ export default function Home() {
     currentClass,
     bowType,
     xinfaLoadout,
-    setType,
+    combinedSetType,
     earlySeasonBonus,
     level,
   ]);
@@ -169,22 +173,22 @@ export default function Home() {
   const graduationInfo = useMemo(() => {
     if (!totals || rotation.length === 0) return null;
 
-    const accParams = { ...totals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+    const accParams = { ...totals, 套装: combinedSetType, 心法: xinfaLoadout, 当前流派: currentClass };
     const accResult = Calculator.calculateGraduationRate(accParams, skillDb, rotation, baseline, false);
 
     const displayTotals = formatDisplayTotals(totals);
-    const excelParams = { ...displayTotals, 套装: setType, 心法: xinfaLoadout, 当前流派: currentClass };
+    const excelParams = { ...displayTotals, 套装: combinedSetType, 心法: xinfaLoadout, 当前流派: currentClass };
     const excelResult = Calculator.calculateGraduationRate(excelParams, skillDb, rotation, baseline, false);
 
     const dps = Math.round(accResult.totalDamage / useTime);
 
     return { accurate: accResult.graduationRate, excel: excelResult.graduationRate, dps, isLoaned: loanDingyin };
-  }, [totals, rotation, setType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
+  }, [totals, rotation, combinedSetType, xinfaLoadout, currentClass, skillDb, baseline, useTime, loanDingyin]);
 
   const statDisplay = useMemo(() => {
     if (!totals) return [];
-    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, setType, loanDingyin, earlySeasonBonus);
-  }, [totals, currentClass, setType, loanDingyin, earlySeasonBonus]);
+    return buildStatsDisplay(formatDisplayTotals(totals), currentClass, combinedSetType, loanDingyin, earlySeasonBonus);
+  }, [totals, currentClass, combinedSetType, loanDingyin, earlySeasonBonus]);
 
   const handleCreateAccount = () => {
     const success = createAccount(createName);
@@ -365,6 +369,7 @@ export default function Home() {
                 onToggle={() => toggleRightPanel('simulation')}
                 currentClass={currentClass}
                 bowType={bowType}
+                armorSetType={armorSetType}
                 setType={setType}
                 level={level}
                 onLevelChange={(nextLevel) => {
@@ -379,6 +384,7 @@ export default function Home() {
                 xinfaLoadout={xinfaLoadout}
                 onClassChange={(value) => setCurrentClass(currentAccount, value, db)}
                 onBowChange={(value) => setBowType(currentAccount, value)}
+                onArmorSetChange={(value) => setArmorSetType(currentAccount, value)}
                 onSetChange={(value) => setSetType(currentAccount, value)}
                 onXinfaClick={(idx) => {
                   setXinfaIndex(idx);
@@ -436,7 +442,7 @@ export default function Home() {
         equippedItems={equippedItems}
         currentClass={currentClass}
         bowType={bowType}
-        setType={setType}
+        setType={combinedSetType}
         xinfaLoadout={xinfaLoadout}
         earlySeasonBonus={earlySeasonBonus}
         level={level}
@@ -461,7 +467,7 @@ export default function Home() {
         onOpenChange={setReportOpen}
         accountName={currentAccount}
         currentClass={currentClass}
-        setType={setType}
+        setType={combinedSetType}
         level={level}
         xinfaLoadout={xinfaLoadout}
         graduationInfo={graduationInfo}

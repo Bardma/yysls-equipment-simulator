@@ -1,5 +1,6 @@
 import { CommonData } from './data/commonData';
 import { statLabel } from './statName';
+import { hasSetType } from './setUtils';
 
 export interface StatDisplayItem {
   label: string;
@@ -68,7 +69,7 @@ export const buildStatsDisplay = (
     if (min > 0 || max > 0) {
       // 外功攻击受下赛季属性影响
       const isEarlySeason = earlySeasonBonus && EARLY_SEASON_STATS.includes(pair.label);
-      items.push({ label: pair.label, value: `${min} - ${max}`, isEarlySeason });
+      items.push({ label: statLabel(pair.label), value: `${min} - ${max}`, isEarlySeason });
       delete totals[pair.min];
       delete totals[pair.max];
     }
@@ -149,7 +150,7 @@ export const buildStatsDisplay = (
       if (overflowData.crit > 0) {
         let overflowReason = '';
         overflowReason += currentClass === '裂石威' ? '陌刀' : '';
-        overflowReason += setType === '浣花' ? '浣花' : '';
+        overflowReason += hasSetType(setType, '浣花') ? '浣花' : '';
         suffix = ` ${overflowReason}溢出${overflowData.crit.toFixed(1)}%白值`;
       }
     } else if (key === '实际会意率') {
@@ -164,7 +165,7 @@ export const buildStatsDisplay = (
     }
 
     items.push({
-      label,
+      label: statLabel(label),
       value: displayValue,
       highlight,
       suffix,

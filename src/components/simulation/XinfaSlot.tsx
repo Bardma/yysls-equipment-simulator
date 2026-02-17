@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 
+import { xinfaLabel } from '@/lib/statName';
 import { cn } from '@/lib/utils';
 import { xinfaLabel } from '@/lib/statName';
 
@@ -31,7 +32,7 @@ export const XinfaSlot = ({ index, name, isLocked, onClick }: XinfaSlotProps) =>
           <>
             <Image
               src={`/icon/${name}.jpg`}
-              alt={name}
+              alt={xinfaLabel(name)}
               fill
               className="object-cover"
             />
@@ -39,11 +40,11 @@ export const XinfaSlot = ({ index, name, isLocked, onClick }: XinfaSlotProps) =>
               <span className="text-[10px] sm:text-xs font-medium text-white px-0.5 sm:px-1 text-center leading-tight truncate w-full">
                 {xinfaLabel(name)}
               </span>
-              {isLocked && <span className="text-[8px] sm:text-[10px] text-white/70">不可变更</span>}
+              {isLocked && <span className="text-[8px] sm:text-[10px] text-white/70">Locked</span>}
             </div>
           </>
         ) : (
-          <span className="text-muted-foreground text-[9px] sm:text-[10px]">点击选择</span>
+          <span className="text-muted-foreground text-[9px] sm:text-[10px]">Click to select</span>
         )}
       </div>
     </button>

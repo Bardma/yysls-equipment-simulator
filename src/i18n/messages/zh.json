@@ -130,7 +130,8 @@
     "ocrTooltip": "OCR识别装备词条",
     "selectWeaponFirst": "请先选择武器种类",
     "ocrError": "OCR识别失败，请重试或手动输入",
-    "save": "保存装备"
+    "save": "保存装备",
+    "insertValue": "输入数值"
   },
   "importExport": {
     "title": "导出/导入数据",

@@ -106,15 +106,15 @@ export const CompareTab = ({
         <div className="flex items-center gap-4">
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-            假设满承音
+            Assume full Chengyin
           </label>
           <label className="flex items-center gap-2 text-sm">
             <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
-            冻结当前定音
+            Freeze current attunement
           </label>
         </div>
         <div className="text-muted-foreground py-10 text-center">
-          库中没有符合条件的同类装备可供对比
+          No comparable items found in the library for this slot.
         </div>
       </div>
     );
@@ -125,11 +125,11 @@ export const CompareTab = ({
       <div className="flex items-center gap-4">
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={assumeChengyin} onCheckedChange={(v) => onAssumeChange(Boolean(v))} />
-          假设满承音
+          Assume full Chengyin
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox checked={freezeDingyin} onCheckedChange={(v) => onFreezeChange(Boolean(v))} />
-          冻结当前定音
+          Freeze current attunement
         </label>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -175,11 +175,11 @@ export const CompareTab = ({
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-slate-100 truncate">
                     {testEquip.name}
-                    {assumeChengyin ? ' (拟)' : ''}
+                    {assumeChengyin ? ' (sim)' : ''}
                   </div>
                   <div className="flex items-center gap-1.5 text-xs flex-nowrap">
                     <span className="text-slate-400 shrink-0">
-                      {testEquip.slotName}{testEquip.isChengyin ? '(承)' : ''}
+                      {testEquip.slotName}{testEquip.isChengyin ? ' (Chengyin)' : ''}
                     </span>
                     <span
                       className={cn(
@@ -191,7 +191,7 @@ export const CompareTab = ({
                     </span>
                   </div>
                   <div className="text-muted-foreground text-xs mt-0.5">
-                    毕业率: {newRate.toFixed(2)}%
+                    Graduation Rate: {newRate.toFixed(2)}%
                   </div>
                 </div>
                 <div className={cn('text-sm font-semibold whitespace-nowrap', diffColor)}>

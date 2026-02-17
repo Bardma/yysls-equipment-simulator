@@ -3,10 +3,12 @@
 const STAT_LABELS: Record<string, string> = {
   // Stats panel (noms CN -> EN in-game)
   '外功攻击': 'Physical Attack',
-  '鸣金攻击': 'Mingjin Attack',
-  '无相攻击': 'Phase-free Attack',
+  '鸣金攻击': 'Bellstrike Attack',
+  '无相攻击': 'Formless Attribute',
+  '破竹攻击': 'Bamboocut Attack',
+  '牵丝攻击': 'Silkbind Attack',
+  '裂石攻击': 'Stonesplit Attack',
   '精准率': 'Precision Rate',
-  '实际精准率': 'Precision Rate',
   '会心率': 'Critical Rate',
   '实际会心率': 'Critical Rate',
   '会意率': 'Affinity Rate',
@@ -19,21 +21,9 @@ const STAT_LABELS: Record<string, string> = {
   '属攻穿透': 'Attribute Attack Penetration',
   '属攻': 'Attribute Attack',
   '属疗': 'Attribute Healing',
-  '外功防御': 'Physical Defense',
-  '外功穿透': 'Physical Penetration',
-  '外功伤害加成': 'Physical DMG Bonus',
-  '外功伤害减免': 'Physical DMG Reduction',
-  '外功治疗加成': 'Physical Healing Bonus',
-  '属攻伤害加成': 'Attribute Attack DMG Bonus',
-  '属攻治疗加成': 'Attribute Attack Healing Bonus',
-  '裂伤转化率': 'Abrasion Conversion Rate',
-  '最大气血': 'Max HP',
-  '气血上限': 'Max HP',
-  '最大真气': 'Max Qi',
-  '真气上限': 'Max Qi',
-  '鸣金伤害加成': 'Mingjin DMG Bonus',
+  '鸣金伤害加成': 'Bellstrike DMG Bonus',
   '牵丝伤害加成': 'Silkbind DMG Bonus',
-  '破竹伤害加成': 'Bamboosplit DMG Bonus',
+  '破竹伤害加成': 'Bamboocut DMG Bonus',
   '裂石伤害加成': 'Stonesplit DMG Bonus',
 
   // Base attributes (si présents)
@@ -42,6 +32,73 @@ const STAT_LABELS: Record<string, string> = {
   '御': 'Defense',
   '敏': 'Agility',
   '势': 'Momentum',
+  '最大气血': 'Max HP',
+  '最大真气': 'Max Qi',
+  '外功防御': 'Physical Defense',
+  '外功穿透': 'Physical Penetration',
+  '外功抗性': 'Physical Resistance',
+  '磨砺转化率': 'Abrasion Conversion Rate',
+  '会心治疗加成': 'Critical Healing Bonus',
+  '外功治疗加成': 'Physical Healing Bonus',
+  '外功减伤': 'Physical DMG Reduction',
+  '外功伤害加成': 'Physical DMG Bonus',
+  '属攻伤害加成': 'Attribute Attack DMG Bonus',
+  '属疗加成': 'Attribute Attack Healing Bonus',
+  '鸣金穿透': 'Bellstrike Penetration',
+  '裂石穿透': 'Stonesplit Penetration',
+  '牵丝穿透': 'Silkbind Penetration',
+  '破竹穿透': 'Bamboocut Penetration',
+  '生存类词条': 'Survivability',
+  '生存向': 'Survivability',
+  '无': 'None',
+};
+
+
+const ATTUNEMENT_TEXT_LABELS: Record<string, string> = {
+  'Stonesplit Pentration': 'Stonesplit Penetration',
+  "Deal bonus Qi damage when breaking a target's defense with a Defense Break skill": "Deal bonus Qi damage when breaking a target's defense with a Defense Break skill",
+  'Gain Tenacity for a short period after damaging a target with a Counterattack skill': 'Gain Tenacity for a short period after damaging a target with a Counterattack skill',
+  'Recover Endurance after casting an Execution skill': 'Recover Endurance after casting an Execution skill',
+  "Increase the target's damage taken after breaking their defense with a Defense Break skill": "Increase the target's damage taken after breaking their defense with a Defense Break skill",
+  'Deal bonus Qi damage when hitting a non-defending enemy with a Counterattack skill': 'Deal bonus Qi damage when hitting a non-defending enemy with a Counterattack skill',
+  'Recover Vitality after casting an Execution skill': 'Recover Vitality after casting an Execution skill',
+};
+
+const XINFA_LABELS: Record<string, string> = {
+  '剑气纵横': 'Sword Horizon',
+  '千营一呼': 'Morale Chant',
+  '君臣药': 'Royal Remedy',
+  '山河绝韵': 'Exquisite Scenery',
+  '忘川绝响': 'Echoes of Oblivion',
+  '扶摇直上': 'Wind Beneath Wings',
+  '无名心法': 'Esoteric Revival',
+  '易水歌': 'Evening Snow',
+  '花上月令': 'Blossom Barrage',
+  '霜天白夜': 'Bitter Seasons',
+  '三穷致知': 'Insightful Strike',
+  '凝神章': 'Steadfast Stance',
+  '千丝蛊': 'Fivefold Bleed',
+  '千山法': "Mountain's Might",
+  '大唐歌': 'Battle Anthem',
+  '威猛歌': 'Envigorated Warrior',
+  '孤忠不辞': 'Vendetta',
+  '征人归': 'Riptide Reflex',
+  '心弥泥鱼': 'Mending Loom',
+  '怒斩马': 'Trapped Beast',
+  '所恨年年': 'Seasonal Edge',
+  '抗造大法': 'Art of Resistance',
+  '擒天势': 'Star Reacher',
+  '断石之构': 'Breaking Point',
+  '明晦同尘': 'Shadow Assault',
+  '春雷篇': 'Thunderous Bloom',
+  '杏花不见': 'Restoring Blossom',
+  '灯儿亮': 'Flying Gourds',
+  '移经易武': 'Sword Morph',
+  '穿喉决': 'Fury Harvest',
+  '纵地摘星': 'Divine Roulette',
+  '绳舟行木': 'Evasive Charge',
+  '逐狼心经': "Wolfchaser's Art",
+  '极乐泣血': 'Vital Leech',
 };
 
 const SLOT_LABELS: Record<string, string> = {
@@ -50,6 +107,7 @@ const SLOT_LABELS: Record<string, string> = {
   '佩': 'Pendant',
   '冠胄': 'Head',
   '冠骨': 'Head',
+  '冠胄': 'Head',
   '胸甲': 'Chest',
   '胫甲': 'Legs',
   '腕甲': 'Hands',
@@ -99,15 +157,15 @@ const WEAPON_LABELS: Record<string, string> = {
   '扇': 'Fan',
   '绳标': 'Rope Dart',
   '双刀': 'Dual Blades',
-  '陌刀': 'Long Sabre',
-  '横刀': 'Horizontal Sabre',
+  '陌刀': 'Modao',
+  '横刀': 'Teng Dao',
   '拳甲': 'Gauntlets',
 };
 
 // Classes (couvre ce que tu as listé)
 export const CLASS_LABELS: Record<string, string> = {
-  '鸣金虹': 'Bellstrike - Umbra',
-  '鸣金影': 'Bellstrike - Splendor',
+  '鸣金虹': 'Bellstrike - Splendor',
+  '鸣金影': 'Bellstrike - Umbra',
   '破竹尘': 'Bamboocut - Dust',
   '破竹风': 'Bamboocut - Wind',
   '破竹鸢': 'Bamboocut - Soar',
@@ -126,8 +184,10 @@ const SET_LABELS: Record<string, string> = {
   断岳: 'Formbend Set',
   烟柳: 'Veil of the Willow Set',
   浣花: 'Ivorybloom Set',
-  燕归: 'Swallowcall Set',
+  燕归: 'Calmwaters Set',
   连星: 'Eaglerise Set',
+  撼天: 'Moonflare Set',
+  'Moonflare Set': 'Moonflare Set',
   // Ajoute ici toutes les corrélations CN -> EN quand tu les as (la structure est prête).
 };
 
@@ -144,6 +204,15 @@ export function weaponLabel(cn: string): string {
 }
 
 export function setLabel(name: string): string {
+  if (!name) return name;
+  if (name.includes('+')) {
+    return name
+      .split('+')
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => SET_LABELS[part] ?? part)
+      .join(' + ');
+  }
   return SET_LABELS[name] ?? name;
 }
 
@@ -157,15 +226,18 @@ export function statLabel(key: string): string {
 
   // mapping direct prioritaire
   if (STAT_LABELS[key]) return STAT_LABELS[key];
+  if (ATTUNEMENT_TEXT_LABELS[key]) return ATTUNEMENT_TEXT_LABELS[key];
 
   // patterns min/max
   if (key.startsWith('最小') && key.endsWith('攻击')) {
     const core = key.replace(/^最小/, '').replace(/攻击$/, '');
-    return `Min ${STAT_LABELS[core + '攻击'] ?? core} ATK`;
+    const target = STAT_LABELS[core + '攻击'] ?? core;
+    return /(Attack|Attribute)$/i.test(target) ? `Min ${target}` : `Min ${target} ATK`;
   }
   if (key.startsWith('最大') && key.endsWith('攻击')) {
     const core = key.replace(/^最大/, '').replace(/攻击$/, '');
-    return `Max ${STAT_LABELS[core + '攻击'] ?? core} ATK`;
+    const target = STAT_LABELS[core + '攻击'] ?? core;
+    return /(Attack|Attribute)$/i.test(target) ? `Max ${target}` : `Max ${target} ATK`;
   }
 
   // fallback “rate/bonus/penetration”
