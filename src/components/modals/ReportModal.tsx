@@ -296,7 +296,7 @@ export const ReportModal = ({
                         color: colors.text.secondary,
                       }}
                     >
-                      <span style={{ whiteSpace: 'nowrap' }}>{item.label}</span>
+                      <span style={{ whiteSpace: 'nowrap' }}>{statLabel(item.label)}</span>
                       <span style={{ whiteSpace: 'nowrap', fontWeight: 800, color: colors.text.primary }}>
                         {item.value}
                         {item.highlight ? <span style={{ marginLeft: 4, color: colors.accent.amber }}>{item.highlight}</span> : null}
